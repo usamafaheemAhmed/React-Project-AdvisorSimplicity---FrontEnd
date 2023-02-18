@@ -1,5 +1,11 @@
 import React from "react";
 import "./dashBoard.css";
+import newTicket from "./images/newTicket.png";
+
+import openTicket from "./images/openTicket.png";
+import pendingTicket from "./images/pendingTickets.png";
+import resolvedTicket from "./images/resolvedTicket.png";
+import expiredTicket from "./images/expiredTicket.png";
 import chart from "./images/chart.jpeg"
 import cartoon from "./images/cartoon.png"
 import card1 from "./images/card1.jpg"

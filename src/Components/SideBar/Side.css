@@ -6,8 +6,9 @@
     height: 100vh;
     border: 1px solid black;
     border-radius: 20px;
+    /* margin-top: 20px; */
     position: fixed;
-    width: 220px;
+    width: 230px;
 }
 .topBar{
     border-radius: 20px;
@@ -32,7 +33,7 @@ li{
   padding-left:8%;
 }
 li:hover{
-    background-color: white;
+    /* background-color: black; */
     color: #4CBD92;
     cursor:pointer;
     /* padding-left: 30px; */

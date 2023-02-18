@@ -17,18 +17,24 @@ import child from "./images/child.svg";
 import male from "./images/male.svg";
 import female from "./images/female.svg";
 import Modal from "react-bootstrap/Modal";
+import SideBarrr from "../SideBar/SideBarrr";
 
 const PersonalDetail = () => {
   let letters = /^[a-zA-Z ]*$/;
   let phonePattern=/^[1-9][0-9]{9}$/;
   let postCodePattern=/^\d{4}$/;
+  let homeAddressPattern=/(b(?:(?!\s{2,}|\$|\:|\.\d).)*\s(?:Alley|Ally|Arcade|Arc|Avenue|Ave|Boulevard|Bvd|Bypass|Bypa|Circuit|Cct|Close|Cl|Corner|Crn|Court|Ct|Crescent|Cres|Cul-de-sac|Cds|Drive|Dr|Esplanade|Esp|Green|Grn|Grove|Gr|Highway|Hwy|Junction|Jnc|Lane|Lane|Link|Link|Mews|Mews|Parade|Pde|Place|Pl|Ridge|Rdge|Road|Rd|Square|Sq|Street|St|Terrace|Tce|ALLEY|ALLY|ARCADE|ARC|AVENUE|AVE|BOULEVARD|BVD|BYPASS|BYPA|CIRCUIT|CCT|CLOSE|CL|CORNER|CRN|COURT|CT|CRESCENT|CRES|CUL-DE-SAC|CDS|DRIVE|DR|ESPLANADE|ESP|GREEN|GRN|GROVE|GR|HIGHWAY|HWY|JUNCTION|JNC|LANE|LANE|LINK|LINK|MEWS|MEWS|PARADE|PDE|PLACE|PL|RIDGE|RDGE|ROAD|RD|SQUARE|SQ|STREET|ST|TERRACE|TCE))\s.*?(?=\s{2,})/;
   const [show, setShow] = useState(false);
   const [clientSmoker, setClientSmoker] = useState(true);
   const [clientGender, setClientGender] = useState("female");
   const [childGender, setChildGender] = useState("female");
-  console.log(childGender)
 
   const [clientDec, setClientDec] = useState(true);
+
+  const [clientPostalAddressCheckBox, setClientPostalAddressCheckBox] = useState(false);
+  const [clientPostalAddressState, setClientPostalAddressState] = useState("");
+  const [clientHomeAddressState, setClientHomeAddressState] = useState("");
+  const [clientPostCodeState, setClientPostCodeState] = useState("");
 
 
 
@@ -37,7 +43,7 @@ const PersonalDetail = () => {
   //  const handleShow = () => setShow(true);
 
   let smokerHandler=(elem)=>{
-    if(elem==="smoker"){
+    if(elem=="smoker"){
       // notSmokingID
       document.getElementById("YesSmokerID").classList.add('selectedimage');
       document.getElementById("notSmokingID").classList.add('notSelectedimage');
@@ -60,7 +66,7 @@ const PersonalDetail = () => {
   let genderHandler=(elem)=>{
 
     
-    if(elem==="female"){
+    if(elem=="female"){
       // window.localStorage.setItem("gender",elem)
     
       document.getElementById("female1").classList.add('selectedimage');
@@ -100,7 +106,7 @@ const PersonalDetail = () => {
 
     // if(document.getElementById("errorDes").contains("d-none")){}
 
-     if( document.getElementById("DescriptionID").value===""){
+     if( document.getElementById("DescriptionID").value==""){
       document.getElementById("errorDes").classList.remove("d-none");
        } 
        
@@ -110,7 +116,6 @@ const PersonalDetail = () => {
        }
    }
 
-   console.log(descriptionHandler)
 
   let childrenHandler=(elem)=>{
     let noChildren=document.getElementById("noChildren").classList;
@@ -136,10 +141,38 @@ const PersonalDetail = () => {
     fiveChildren5.add("childBtn");
 
     document.getElementById(elem).classList.add("selectedchildBtn");
+   let abc= document.getElementById(elem).value;
    
 
    setShow(true)
     
+}
+
+let childrenHandlerzero=(elem)=>{
+  let noChildren=document.getElementById("noChildren").classList;
+  let oneChildren=document.getElementById("oneChildren").classList;
+  let twoChildren=document.getElementById("twoChildren").classList;
+  let threeChildren3=document.getElementById("threeChildren").classList;
+  let fourChildren4=document.getElementById("fourChildren").classList;
+  let fiveChildren5=document.getElementById("fiveChildren").classList;
+
+   
+  
+  noChildren.remove("selectedchildBtn");
+  noChildren.add("childBtn");
+  oneChildren.remove("selectedchildBtn");
+  oneChildren.add("childBtn");
+  twoChildren.remove("selectedchildBtn");
+  twoChildren.add("childBtn");
+  threeChildren3.remove("selectedchildBtn");
+  threeChildren3.add("childBtn");
+  fourChildren4.remove("selectedchildBtn");
+  fourChildren4.add("childBtn");
+  fiveChildren5.remove("selectedchildBtn");
+  fiveChildren5.add("childBtn");
+
+  document.getElementById(elem).classList.add("selectedchildBtn");
+  
 }
 
 
@@ -177,7 +210,6 @@ let postCheckBoxHandler=()=>{
   
   
 }
-console.log(postCheckBoxHandler)
 
 const initialValues={
   titleID:'',
@@ -207,6 +239,15 @@ const initialValues={
 
 
 const onSubmit= (values,action) => {
+
+  // if(clientPostalAddressCheckBox=="true"){
+  //   setClientPostalAddressState(values.homeAddressID)
+  //   // alert("true")
+  // }
+  // else{
+  //   // alert("false")
+  //   setClientPostalAddressState(values.postalAddressID)
+  // }
 
   let AddPersonalDetail={
     titleID:values.titleID,
@@ -246,6 +287,7 @@ const onSubmit= (values,action) => {
 
 }
 const validationSchema = Yup.object({
+          //  givenNameID: Yup.string().required('Required') ,
            givenNameID: Yup.string().matches(letters, "only letters").required('Required') ,
 
            maritalStatus: Yup.string().required('Required'),
@@ -293,6 +335,9 @@ const validationSchema = Yup.object({
           //   "age must be greater then 1",
           //   (value) => value > 2),
 
+          // clientValidation
+          // titleID2:Yup.string().required("Required"),
+
  
 })
 
@@ -313,7 +358,7 @@ let ageHandler2=()=>{
  let modalGenderHandler=(elem)=>{
 
     
-    if(elem==="female"){
+    if(elem=="female"){
       // window.localStorage.setItem("gender",elem)
     
       document.getElementById("female").classList.add('selectedimage');
@@ -362,7 +407,7 @@ const onSubmit2= (values,action) => {
 }
 
   const validationSchema2=Yup.object({
-  childNameID: Yup.string().required('Required') ,
+  childNameID: Yup.string().matches(letters, "only letters").required('Required') ,
   childDoBID: Yup.date().required('Required'),
   childRelationship:Yup.string().required('Required'),
   childSupportReceived:Yup.string().required('Required'),
@@ -776,15 +821,17 @@ const onSubmit2= (values,action) => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="titleID" className="form-label">
+                        <label htmlFor="titleID2" className="form-label">
                           Title
                         </label>
                         <Field
-                          id="titleID"
+                        as="select"
+                          id="titleID2"
                           className="form-select shadow  inputDesign"
-                          as="select"
-                          onChange={(e) => setFieldValue("titleID", e.target.value)}
-                          value={values.titleID}
+                         
+                          name="titleID2"
+                          // onChange={(e) => setFieldValue("titleID2", e.target.value)}
+                          // value={values.titleID2}
                         >
                           <option>Select</option>
                           <option value="Dr">Dr</option>
@@ -795,7 +842,7 @@ const onSubmit2= (values,action) => {
                           <option value="Prof">Prof</option>
                           <option value="Other">Other</option>
                         </Field>
-                        <ErrorMessage name="titleID"  />
+                        <ErrorMessage name="titleID2"  />
                         {/* <ErrorMessage name="titleID" className="text-danger" 
                         component="span" /> */}
 
@@ -803,15 +850,14 @@ const onSubmit2= (values,action) => {
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="maritalStatus" className="form-label">
+                        <label htmlFor="maritalStatus2" className="form-label">
                           Marital Status
                         </label>
                         <Field
                         as="select"
-                          id="maritalStatus"
+                          id="maritalStatus2"
                           className="form-select shadow  inputDesign"
-                          onChange={(e) => setFieldValue("maritalStatus", e.target.value)}
-                          value={values.maritalStatus}
+                          name="maritalStatus2"
                         >
                           <option>Select</option>
                           <option value="Married">Married</option>
@@ -820,7 +866,7 @@ const onSubmit2= (values,action) => {
                           <option value="De-Facto">De-facto</option>
                           <option value="Widowed">Widowed</option>
                         </Field>
-                        <ErrorMessage name="maritalStatus" />
+                        <ErrorMessage name="maritalStatus2" />
 
                       </div>
                     </div>
@@ -831,35 +877,32 @@ const onSubmit2= (values,action) => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="givenNameID" className="form-label">
+                        <label htmlFor="givenNameID2" className="form-label">
                           Given Name
                         </label>
                         <Field
                           type="text"
                           className="form-control inputDesign shadow inputDesign"
                           id="givenNameID"
-                          placeholder="Given Name"
-                          value={values.clientName} onChange={(e)=>setFieldValue("givenNameID",e.target.value)}
+                          name="givenNameID2"
                         />
-                        <ErrorMessage  name='givenNameID'/>
+                        <ErrorMessage  name='givenNameID2'/>
 
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label
-                          htmlFor="employmentStatusID"
+                          htmlFor="employmentStatusID2"
                           className="form-label"
                         >
                           Employment Status
                         </label>
                         <Field
                         as="select"
-                          id="employmentStatusID"
+                          id="employmentStatusID2"
                           className="form-select shadow  inputDesign"
-                          value={values.employmentStatusID}
-                  onChange={(e) => setFieldValue("employmentStatusID", e.target.value)}
-
+                        name="employmentStatusID2"
                         >
                           <option>Select</option>
                           <option value="Employee">Employee</option>
@@ -880,7 +923,7 @@ const onSubmit2= (values,action) => {
                           <option value="Student">Student</option>
                           <option value="Unemployed">Unemployed</option>
                         </Field>
-                <ErrorMessage name="employmentStatusID" />
+                       <ErrorMessage name="employmentStatusID2" />
 
                       </div>
                     </div>
@@ -891,32 +934,30 @@ const onSubmit2= (values,action) => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="surnameID" className="form-label">
+                        <label htmlFor="surnameID2" className="form-label">
                           Surname
                         </label>
                         <Field
                           type="text"
                           className="form-control inputDesign shadow"
-                          id="surnameID"
+                          id="surnameID2"
                           placeholder="Surname"
-                          onChange={(e) => setFieldValue("surnameID",e.target.value)}
-                          value={values.surnameID}
+                          name="surnameID2"
                         />
-                          <ErrorMessage name="surnameID" />
+                          <ErrorMessage name="surnameID2" />
 
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="HealthID" className="form-label">
+                        <label htmlFor="HealthID2" className="form-label">
                           Health
                         </label>
                         <Field
                         as='select'
-                          id="HealthID"
+                          id="HealthID2"
                           className="form-select shadow  inputDesign"
-                          onChange={(e) => setFieldValue("HealthID", e.target.value)}
-                          value={values.HealthID}
+                          name="HealthID2"
                         >
                           <option>Select</option>
                           <option value="excellent">Excellent</option>
@@ -924,7 +965,7 @@ const onSubmit2= (values,action) => {
                           <option value="average">Average</option>
                           <option value="poor">Poor</option>
                         </Field>
-                        <ErrorMessage name="HealthID" />
+                        <ErrorMessage name="HealthID2" />
 
                       </div>
                     </div>
@@ -935,18 +976,17 @@ const onSubmit2= (values,action) => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="preferedNameID" className="form-label">
+                        <label htmlFor="preferedNameID2" className="form-label">
                         Prefered Name
                         </label>
                         <Field
                           type="text"
                           className="form-control inputDesign shadow"
-                          id="preferedNameID"
+                          id="preferedNameID2"
                           placeholder="Prefered Name"
-                          onChange={(e) => setFieldValue("preferedNameID",e.target.value)}
-                          value={values.preferedNameID}
+                          name="preferedNameID2"
                         />
-                          <ErrorMessage name="preferedNameID" />
+                          <ErrorMessage name="preferedNameID2" />
 
                       </div>
                     </div>
@@ -954,7 +994,7 @@ const onSubmit2= (values,action) => {
                       <div className="mb-3">
                         <label className="form-label">Smoker</label>
                         <div className="">
-                          <div  id="YesSmokerID" className=" selectedimage" onClick={()=>smokerHandler("smoker")}>
+                          <div  id="YesSmokerID2" className=" selectedimage" onClick={()=>smokerHandler("smoker")}>
                             <img
                               className="img-fluid imgPerson"
                               htmlFor="YesSmokerID"
@@ -964,7 +1004,7 @@ const onSubmit2= (values,action) => {
 
                           </div>
                          
-                         <div id="notSmokingID"  className="mx-1 notSelectedimage  " onClick={()=>smokerHandler("notSmoker")}>
+                         <div id="notSmokingID2"  className="mx-1 notSelectedimage  " onClick={()=>smokerHandler("notSmoker")}>
                             <img
                               className=" img-fluid imgPerson"
                               htmlFor="notSmokingID"
@@ -989,7 +1029,7 @@ const onSubmit2= (values,action) => {
                         </label>
                         <div className="">
                         
-                          <div id="female1" className=" selectedimage"
+                          <div id="female12" className=" selectedimage"
                           onClick={()=>genderHandler("female")}>
                             
                             <img
@@ -1003,7 +1043,7 @@ const onSubmit2= (values,action) => {
                         
 
                        
-                          <div id="male1" className=" mx-1 notSelectedimage"
+                          <div id="male12" className=" mx-1 notSelectedimage"
                           onClick={()=>genderHandler("male")}>
                             <img
                               className=" img-fluid imgPerson"
@@ -1019,7 +1059,7 @@ const onSubmit2= (values,action) => {
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label
-                          htmlFor="plannedRetirementAgeID"
+                          htmlFor="plannedRetirementAgeID2"
                           className="form-label"
                         >
                           Planned Retirement Age
@@ -1027,13 +1067,12 @@ const onSubmit2= (values,action) => {
                         <Field
                           type="number"
                           className="form-control inputDesign shadow"
-                          id="plannedRetirementAgeID"
+                          id="plannedRetirementAgeID2"
                           placeholder="Planned Retirement Age"
                           onWheel={ event => event.currentTarget.blur() }
-                          onChange={(e) => setFieldValue("plannedRetirementAgeID", e.target.value)}
-                          value={values.plannedRetirementAgeID}
+                         name="plannedRetirementAgeID2"
                         />
-                                        <ErrorMessage name="plannedRetirementAgeID" />
+                                        <ErrorMessage name="plannedRetirementAgeID2" />
 
                       </div>
                     </div>
@@ -1044,38 +1083,36 @@ const onSubmit2= (values,action) => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="DoBID" className="form-label">
+                        <label htmlFor="ClientDoBID2" className="form-label">
                           Date of Birth
                         </label>
                         <Field
                           type="date"
                           className="form-control inputDesign shadow"
-                          id="ClientDoBID"
+                          id="ClientDoBID2"
                            onBlur={(e)=>ageHandler(e)}
-                          onChange={(e) => setFieldValue("ClientDoBID", e.target.value)}
-                          value={values.DoBID}
+                         name="ClientDoBID2"
                           max="2022-1-31"
                         />
-                        <ErrorMessage name="ClientDoBID" />
+                        <ErrorMessage name="ClientDoBID2" />
 
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="ageID" className="form-label">
+                        <label htmlFor="employeeAgeID2" className="form-label">
                           Age
                         </label>
                         <Field
                           type="text"
                           className="form-control inputDesign shadow"
-                          id="employeeAgeID"
-                          name="employeeAgeID"
+                          id="employeeAgeID2"
+                          name="employeeAgeID2"
                           placeholder="Age"
                           readOnly
-                          // onChange={(e) => setFieldValue("employeeAgeID", e.target.value)}
-                          // value={values.employeeAgeID}
+                         
                         />
-                        <ErrorMessage name="employeeAgeID" />
+                        <ErrorMessage name="employeeAgeID2" />
 
                       </div>
                     </div>
@@ -1406,7 +1443,7 @@ const onSubmit2= (values,action) => {
                         How many children do you have?
                       </label>
                       <div>
-                      <span value="0" id="noChildren" className=" selectedchildBtn childBtn  mx-4" onClick={()=>childrenHandler("noChildren")}>0</span>
+                      <span value="0" id="noChildren" className=" selectedchildBtn childBtn  mx-4" onClick={()=>childrenHandlerzero("noChildren")}>0</span>
                       <span  id="oneChildren" className="childBtn text-center  mx-4" onClick={()=>childrenHandler("oneChildren")}>1</span>
                       <span  id="twoChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("twoChildren")}>2</span>
                       <span  id="threeChildren" className="childBtn   mx-4" onClick={()=>childrenHandler("threeChildren")}>3</span>

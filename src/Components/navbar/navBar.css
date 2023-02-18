@@ -1,0 +1,27 @@
+.sideImgContainer{
+    
+    width: 40px;
+    display: inline-block;
+}
+
+.select{
+    border: none;
+}
+option{
+   
+   /* background-color: rgba(232, 24, 24, 0.492); */
+}
+option:hover{
+background-color: rgb(153, 255, 0);
+}
+ul{
+    margin: 0px;
+    padding: 0px;
+}
+li{
+    list-style: none;
+    margin-top: 50px;
+}
+#maincontainer{
+    height: 100vh;
+}

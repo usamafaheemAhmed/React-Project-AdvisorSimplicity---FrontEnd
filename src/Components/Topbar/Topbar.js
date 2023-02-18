@@ -15,8 +15,9 @@ function Topbar() {
             <FontAwesomeIcon icon={faBell} id='BellIcon'/>
             <FontAwesomeIcon icon={faUser} id='UserIcon'/>
             <NavDropdown title="User" id="DropDown">
-                <NavDropdown.Item href="#action/3.1">UserName</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4">Forget Password</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.1" id="DropDown_Items">Username</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4" id="DropDown_Items">Change Password</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4" id="DropDown_Items">Logout</NavDropdown.Item>
             </NavDropdown>
             </Nav>
         </div>
