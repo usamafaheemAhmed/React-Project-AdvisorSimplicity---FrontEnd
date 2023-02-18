@@ -1,0 +1,27 @@
+.sidebar{
+    position: absolute;
+    background-color: #488A99;
+    color: white;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 104vh;
+    transform: translateX(-100%);
+    transition: all 0.4s;
+}
+.sidebar--open{
+    transform: translateX(0%);
+}
+.sidebar li{
+    list-style: none;
+    padding: 1rem 2rem;
+    border-bottom: solid 1px #00325B;
+    align-items: center;
+    gap: 2rem;
+    font-weight: 500;
+}
+.sidebar li:hover{
+    background-color: white;
+    color: #488A99;
+    cursor: pointer;
+}

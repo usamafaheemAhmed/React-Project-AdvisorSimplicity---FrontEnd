@@ -1,0 +1,12 @@
+.iconContainer{
+    color: #FFFFFF;
+    width: 20px;
+    display: inline-block;
+}
+
+.iconContainerLg{
+
+    width: 40px;
+    display: inline-block;
+    margin-left: 10px;
+}

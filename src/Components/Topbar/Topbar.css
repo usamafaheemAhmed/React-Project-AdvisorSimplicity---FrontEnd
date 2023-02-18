@@ -1,0 +1,31 @@
+#TopBar{
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 30px;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 85px;
+    z-index: 1;
+  }
+  #DropDown{
+    color: white;
+    /* padding-left: 0px; */
+  }
+  #UserIcon{
+    margin-top: 6%;
+    margin-left: 32%;
+  }
+  #BellIcon{
+    margin-top: 6%;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    #UserIcon{
+      margin-left: 1%;
+    }
+    #BellIcon{
+      margin-left: 64%;
+    } 
+  }
