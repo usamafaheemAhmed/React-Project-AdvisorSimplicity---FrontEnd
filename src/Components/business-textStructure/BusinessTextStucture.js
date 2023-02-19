@@ -11,8 +11,8 @@ import businessmen from "./images/businessmen.svg"
 import trustbuilding from "./images/trustbuilding.svg"
 import notebook from "./images/notebook.svg"
 
-
-
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from 'yup';
 
 const BusinessTextStucture = () => {
   const [show, setShow] = useState(false);
@@ -37,6 +37,52 @@ const BusinessTextStucture = () => {
   const handleCloseTrust = () => setShowTrust(false);
   const handleShowTrust = () => setShowTrust(true);
 
+  let initialValues =  {
+    soleBusinessName: '',
+    soleBusinessType: '',
+    soleIncomeGenerated: '',
+    soloBusinessExpenses: '',
+    soloNetBusinessIncome: ''
+  }
+
+  let validationSchema = Yup.object({
+    soleBusinessName: Yup.string().required('Required'),
+    soleBusinessType: Yup.string().required('Required'),
+    soleIncomeGenerated: Yup.string().required('Required'),
+    soloBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
+    soloNetBusinessIncome: Yup.number()
+  })
+
+  let onSubmit = (Values) => {
+    console.log(Values)
+  }
+
+  let Modal_initialValues = {
+    soleBusinessExpenses: '',
+    soleRent: '',
+    soleLeaseCosts: '',
+    soleInsurances: '',
+    soleStaffCosts: '',
+    soleRunningCosts: '',
+    soleTelephoneAndInternet: '',
+    soleProfessionalFees: '',
+    soleAllOther: ''
+  }
+
+  let Modal_validationSchema = Yup.object({
+    soleBusinessExpenses: Yup.number(),
+    soleRent: Yup.string().required('Required'),
+    soleLeaseCosts: Yup.string().required('Required'),
+    soleInsurances: Yup.string().required('Required'),
+    soleStaffCosts: Yup.string().required('Required'),
+    soleRunningCosts: Yup.string().required('Required'),
+    soleTelephoneAndInternet: Yup.string().required('Required'),
+    soleProfessionalFees: Yup.string().required('Required'),
+    soleAllOther: Yup.string().required('Required')
+  })
+
+  let Modal_onSubmit = (Values) => {}
+
   return (
     <>
       <div className="container-fluid mt-4 ">
@@ -44,371 +90,420 @@ const BusinessTextStucture = () => {
           <div className="col-md-2"></div>
           <div className="col-md-12">
             {/* -------------Sole Trader - Client----------------------------- */}
-            <div className="row">
-              <div className="col-md-12">
-                <div className=" shadow px-4 py-4">
-                  <h3 className="heading">Sole Trader - Client
-                  
-                  <div className="iconContainerLg">
-                            <img className="img-fluid" src={businessman} alt="" />
-
-                            </div>
-                  </h3>
-                  {/*first row*/}
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+              <Form>
                   <div className="row">
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="soleBusinessName"
-                          className="form-label"
-                        >
-                          Business Name
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control shadow inputDesign"
-                          id="soleBusinessName"
-                          placeholder="Business Name"
-                        />
-                      </div>
-                    </div>
+                  <div className="col-md-12">
+                    <div className=" shadow px-4 py-4">
+                      <h3 className="heading">Sole Trader - Client
+                      
+                      <div className="iconContainerLg">
+                                <img className="img-fluid" src={businessman} alt="" />
 
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="soleBusinessType"
-                          className="form-label"
-                        >
-                          Business Type
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control inputDesign shadow"
-                          id="soleBusinessType"
-                          placeholder="Business Type"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  {/*first row*/}
+                                </div>
+                      </h3>
 
-                  {/* second row */}
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="soleIncomeGenerated"
-                          className="form-label"
-                        >
-                          Income Generated
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control inputDesign shadow"
-                          id="soleIncomeGenerated"
-                          placeholder="Income Generated"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="soloBusinessExpenses"
-                          className="form-label"
-                        >
-                          Business Expenses
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control inputDesign shadow"
-                          id="soloBusinessExpenses"
-                          placeholder="Business Expenses"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  {/*second row*/}
-
-                  {/* Third row */}
-                  <div className="row ">
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label htmlFor="" className="form-label">
-                          Use Business Expense Schedule
-                        </label>
-                        <div>
-                          <button
-                            className=" btn 
-                            btn-outline-success "
-                            onClick={handleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Use Business Schedule
-                          </button>
-                        </div>
-
-                        {/* --------------------------------------------------------------- */}
-                        <div>
-                          {/* Business Expense Schedule */}
-                          <Modal
-                            show={show}
-                            onHide={handleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
+                      {/*first row*/}
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="soleBusinessName"
+                              className="form-label"
                             >
-                              <Modal.Title className="fontStyle">
-                                Business Expense Schedule
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                              {/*  first row*/}
-                              <div className="row">
-                                {/*  Business Expenses */}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleBusinessExpenses"
-                                      className="form-label"
-                                    >
-                                      Business Expenses
-                                    </label>
-                                    <input
-                                      id="soleBusinessExpenses"
-                                      readOnly
-                                      className="form-control inputDesign shadow"
-                                      type="number"
-                                    />
-                                  </div>
-                                </div>
-                                {/*  Business Expenses*/}
-
-                                {/* Rent*/}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleRent"
-                                      className="form-label"
-                                    >
-                                      Rent
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="form-control inputDesign  shadow"
-                                      id="soleRent"
-                                      placeholder="Rent"
-                                    />
-                                  </div>
-                                </div>
-                                {/* soleRent*/}
-                              </div>
-
-                              {/* row 2 */}
-                              <div className="row">
-                                {/* Lease Costs */}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleLeaseCosts"
-                                      className="form-label"
-                                    >
-                                      Lease Costs
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleLeaseCosts"
-                                      placeholder="Lease Costs"
-                                    />
-                                  </div>
-                                </div>
-                                {/* Lease Costs */}
-
-                                {/* Insurances */}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleInsurances"
-                                      className="form-label"
-                                    >
-                                      Insurances
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleInsurances"
-                                      placeholder="Insurances"
-                                    />
-                                  </div>
-                                </div>
-                                {/* Insurances */}
-                              </div>
-                              {/* row 2 */}
-
-                              {/* row 3 */}
-                              <div className="row">
-                                {/* Staff Costs */}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleStaffCosts"
-                                      className="form-label"
-                                    >
-                                      Staff Costs
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleStaffCosts"
-                                      placeholder="Staff Costs "
-                                    />
-                                  </div>
-                                </div>
-                                {/* Staff Costs  */}
-
-                                {/* Running Costs */}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleRunningCosts"
-                                      className="form-label"
-                                    >
-                                      Running Costs
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleRunningCosts"
-                                      placeholder="Running Costs"
-                                    />
-                                  </div>
-                                </div>
-                                {/* Running Costs */}
-                              </div>
-                              {/* row 3 */}
-
-                              {/* row 4 */}
-                              <div className="row">
-                                {/* Telephone and Internet*/}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleTelephoneAndInternet"
-                                      className="form-label"
-                                    >
-                                      Telephone and Internet
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleTelephoneAndInternet"
-                                      placeholder="Telephone and Internet "
-                                    />
-                                  </div>
-                                </div>
-                                {/* Telephone and Internet */}
-
-                                {/* Professional fees (Accounting or Other)*/}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleProfessionalFees"
-                                      className="form-label"
-                                    >
-                                      Professional fees (Accounting or Other)
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleProfessionalFees"
-                                      placeholder="Professional Fees"
-                                    />
-                                  </div>
-                                </div>
-                                {/* Professional fees (Accounting or Other) */}
-                              </div>
-                              {/* row 4 */}
-
-                              {/* row 5 */}
-                              <div className="row">
-                                {/* All Other*/}
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label
-                                      htmlFor="soleAllOther"
-                                      className="form-label"
-                                    >
-                                      All Other
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control inputDesign shadow"
-                                      id="soleAllOther"
-                                      placeholder="All Other"
-                                    />
-                                  </div>
-                                </div>
-                                {/* All Other */}
-                              </div>
-                              {/* row 5*/}
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  onClick={handleClose}
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={handleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
-                          </Modal>
-                          {/* Business Expense Schedule */}
+                              Business Name
+                            </label>
+                            <Field
+                              type="text"
+                              className="form-control shadow inputDesign"
+                              id="soleBusinessName"
+                              name='soleBusinessName'
+                              placeholder="Business Name"
+                            />
+                            <ErrorMessage name="soleBusinessName"/>
+                          </div>
                         </div>
 
-                        {/* --------------------------------------------------------------- */}
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="soleBusinessType"
+                              className="form-label"
+                            >
+                              Business Type
+                            </label>
+                            <Field
+                              type="text"
+                              className="form-control inputDesign shadow"
+                              id="soleBusinessType"
+                              name="soleBusinessType"
+                              placeholder="Business Type"
+                            />
+                            <ErrorMessage name='soleBusinessType'/>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                      {/*first row*/}
 
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="soloNetBusinessIncome"
-                          className="form-label"
-                        >
-                          Net Business Income
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control inputDesign shadow"
-                          id="soloNetBusinessIncome"
-                          readOnly
-                        />
+                      {/* second row */}
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="soleIncomeGenerated"
+                              className="form-label"
+                            >
+                              Income Generated
+                            </label>
+                            <Field
+                              type="number"
+                              className="form-control inputDesign shadow"
+                              id="soleIncomeGenerated"
+                              name='soleIncomeGenerated'
+                              placeholder="Income Generated"
+                            />
+                            <ErrorMessage name="soleIncomeGenerated" />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="soloBusinessExpenses"
+                              className="form-label"
+                            >
+                              Business Expenses
+                            </label>
+                            <Field
+                              type="number"
+                              className="form-control inputDesign shadow"
+                              id="soloBusinessExpenses"
+                              name='soloBusinessExpenses'
+                              placeholder="Business Expenses"
+                            />
+                            <ErrorMessage name="soloBusinessExpenses"/>
+                          </div>
+                        </div>
+                      </div>
+                      {/*second row*/}
+
+                      {/* Third row */}
+                      <div className="row ">
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label htmlFor="" className="form-label">
+                              Use Business Expense Schedule
+                            </label>
+                            <div>
+                              <button
+                                className=" btn 
+                                btn-outline-success "
+                                onClick={handleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Use Business Schedule
+                              </button>
+                            </div>
+
+                            {/* --------------------------------------------------------------- */}
+                            <div>
+                              {/* Business Expense Schedule */}
+                              <Modal
+                                show={show}
+                                onHide={handleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                    Business Expense Schedule
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                                
+                                  <Formik initialValues={Modal_initialValues} 
+                                  validationSchema={Modal_validationSchema} 
+                                  onSubmit={Modal_onSubmit} enableReinitialize>
+                                  <Form>
+                                  <Modal.Body>
+                                  {/*  first row*/}
+                                  <div className="row">
+                                    {/*  Business Expenses */}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleBusinessExpenses"
+                                          className="form-label"
+                                        >
+                                          Business Expenses
+                                        </label>
+                                        <Field
+                                          id="soleBusinessExpenses"
+                                          name='soleBusinessExpenses'
+                                          readOnly
+                                          className="form-control inputDesign shadow"
+                                          type="number"
+                                        />
+                                        <ErrorMessage name="soleBusinessExpenses"/>
+                                      </div>
+                                    </div>
+                                    {/*  Business Expenses*/}
+
+                                    {/* Rent*/}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleRent"
+                                          className="form-label"
+                                        >
+                                          Rent
+                                        </label>
+                                        <Field
+                                          type="text"
+                                          className="form-control inputDesign  shadow"
+                                          id="soleRent"
+                                          name='soleRent'
+                                          placeholder="Rent"
+                                        />
+                                        <ErrorMessage name='soleRent'/>
+                                      </div>
+                                    </div>
+                                    {/* soleRent*/}
+                                  </div>
+
+                                  {/* row 2 */}
+                                  <div className="row">
+                                    {/* Lease Costs */}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleLeaseCosts"
+                                          className="form-label"
+                                        >
+                                          Lease Costs
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleLeaseCosts"
+                                          name='soleLeaseCosts'
+                                          placeholder="Lease Costs"
+                                        />
+                                        <ErrorMessage name='soleLeaseCosts'/>
+                                      </div>
+                                    </div>
+                                    {/* Lease Costs */}
+
+                                    {/* Insurances */}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleInsurances"
+                                          className="form-label"
+                                        >
+                                          Insurances
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleInsurances"
+                                          name='soleInsurances'
+                                          placeholder="Insurances"
+                                        />
+                                        <ErrorMessage name='soleInsurances' />
+                                      </div>
+                                    </div>
+                                    {/* Insurances */}
+                                  </div>
+                                  {/* row 2 */}
+
+                                  {/* row 3 */}
+                                  <div className="row">
+                                    {/* Staff Costs */}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleStaffCosts"
+                                          className="form-label"
+                                        >
+                                          Staff Costs
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleStaffCosts"
+                                          name='soleStaffCosts'
+                                          placeholder="Staff Costs "
+                                        />
+                                        <ErrorMessage name="soleStaffCosts" />
+                                      </div>
+                                    </div>
+                                    {/* Staff Costs  */}
+
+                                    {/* Running Costs */}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleRunningCosts"
+                                          className="form-label"
+                                        >
+                                          Running Costs
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleRunningCosts"
+                                          name='soleRunningCosts'
+                                          placeholder="Running Costs"
+                                        />
+                                        <ErrorMessage name="soleRunningCosts" />
+                                      </div>
+                                    </div>
+                                    {/* Running Costs */}
+                                  </div>
+                                  {/* row 3 */}
+
+                                  {/* row 4 */}
+                                  <div className="row">
+                                    {/* Telephone and Internet*/}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleTelephoneAndInternet"
+                                          className="form-label"
+                                        >
+                                          Telephone and Internet
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleTelephoneAndInternet"
+                                          name='soleTelephoneAndInternet'
+                                          placeholder="Telephone and Internet "
+                                        />
+                                        <ErrorMessage name="soleTelephoneAndInternet" />
+                                      </div>
+                                    </div>
+                                    {/* Telephone and Internet */}
+
+                                    {/* Professional fees (Accounting or Other)*/}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleProfessionalFees"
+                                          className="form-label"
+                                        >
+                                          Professional fees (Accounting or Other)
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleProfessionalFees"
+                                          name="soleProfessionalFees"
+                                          placeholder="Professional Fees"
+                                        />
+                                        <ErrorMessage name="soleProfessionalFees" />
+                                      </div>
+                                    </div>
+                                    {/* Professional fees (Accounting or Other) */}
+                                  </div>
+                                  {/* row 4 */}
+
+                                  {/* row 5 */}
+                                  <div className="row">
+                                    {/* All Other*/}
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="soleAllOther"
+                                          className="form-label"
+                                        >
+                                          All Other
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control inputDesign shadow"
+                                          id="soleAllOther"
+                                          name="soleAllOther"
+                                          placeholder="All Other"
+                                        />
+                                        <ErrorMessage name="soleAllOther" />
+                                      </div>
+                                    </div>
+                                    {/* All Other */}
+                                  </div>
+                                  {/* row 5*/}
+                                  </Modal.Body>
+                                  
+                                
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                    type="submit"
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={handleClose}
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={handleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                  </Formik>
+                              </Modal>
+                              {/* Business Expense Schedule */}
+                            </div>
+
+                            {/* --------------------------------------------------------------- */}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="soloNetBusinessIncome"
+                              className="form-label"
+                            >
+                              Net Business Income
+                            </label>
+                            <Field
+                              type="number"
+                              className="form-control inputDesign shadow"
+                              id="soloNetBusinessIncome"
+                              name='soloNetBusinessIncome'
+                              readOnly
+                            />
+                            <ErrorMessage name="soloNetBusinessIncome" />
+                          </div>
+                        </div>
+                      </div>
+                      {/*Third row*/}
+                      <div className="row my-3">
+                        <div className="col-md-12">
+                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  {/*Third row*/}
                 </div>
-              </div>
-            </div>
+              </Form>
+            </Formik>
             {/* -------------Sole Trader - Client----------------------------- */}
 
             {/* -------------Sole Trader - Partner----------------------------- */}
@@ -736,6 +831,7 @@ const BusinessTextStucture = () => {
                             <Modal.Footer>
                               <div className="col-md-12">
                                 <button
+                                type="submit"
                                   className="float-end btn w-25  bgColor modalBtn"
                                   onClick={handleClosePartner}
                                 >

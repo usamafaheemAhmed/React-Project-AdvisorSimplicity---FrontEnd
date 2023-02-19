@@ -18,6 +18,8 @@ import male from "./images/male.svg";
 import female from "./images/female.svg";
 import Modal from "react-bootstrap/Modal";
 import SideBarrr from "../SideBar/SideBarrr";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
 const PersonalDetail = () => {
   let letters = /^[a-zA-Z ]*$/;
@@ -26,7 +28,11 @@ const PersonalDetail = () => {
   let homeAddressPattern=/(b(?:(?!\s{2,}|\$|\:|\.\d).)*\s(?:Alley|Ally|Arcade|Arc|Avenue|Ave|Boulevard|Bvd|Bypass|Bypa|Circuit|Cct|Close|Cl|Corner|Crn|Court|Ct|Crescent|Cres|Cul-de-sac|Cds|Drive|Dr|Esplanade|Esp|Green|Grn|Grove|Gr|Highway|Hwy|Junction|Jnc|Lane|Lane|Link|Link|Mews|Mews|Parade|Pde|Place|Pl|Ridge|Rdge|Road|Rd|Square|Sq|Street|St|Terrace|Tce|ALLEY|ALLY|ARCADE|ARC|AVENUE|AVE|BOULEVARD|BVD|BYPASS|BYPA|CIRCUIT|CCT|CLOSE|CL|CORNER|CRN|COURT|CT|CRESCENT|CRES|CUL-DE-SAC|CDS|DRIVE|DR|ESPLANADE|ESP|GREEN|GRN|GROVE|GR|HIGHWAY|HWY|JUNCTION|JNC|LANE|LANE|LINK|LINK|MEWS|MEWS|PARADE|PDE|PLACE|PL|RIDGE|RDGE|ROAD|RD|SQUARE|SQ|STREET|ST|TERRACE|TCE))\s.*?(?=\s{2,})/;
   const [show, setShow] = useState(false);
   const [clientSmoker, setClientSmoker] = useState(true);
+  const [clientSmoker2, setClientSmoker2] = useState(true);
+
   const [clientGender, setClientGender] = useState("female");
+  const [clientGender2, setClientGender2] = useState("female");
+
   const [childGender, setChildGender] = useState("female");
 
   const [clientDec, setClientDec] = useState(true);
@@ -62,6 +68,26 @@ const PersonalDetail = () => {
     
     
   }
+  let smokerHandler2=(elem)=>{
+    if(elem=="smoker"){
+      // notSmokingID
+      document.getElementById("YesSmokerID2").classList.add('selectedimage');
+      document.getElementById("notSmokingID2").classList.add('notSelectedimage');
+      document.getElementById("notSmokingID2").classList.remove('selectedimage');
+      setClientSmoker2("True")
+
+
+    }
+      else{
+        document.getElementById("notSmokingID2").classList.add('selectedimage');
+        document.getElementById("YesSmokerID2").classList.remove('selectedimage');
+        document.getElementById("YesSmokerID2").classList.add('notSelectedimage');
+        setClientSmoker2("False")
+
+      }
+    
+    
+  }
 
   let genderHandler=(elem)=>{
 
@@ -86,6 +112,29 @@ const PersonalDetail = () => {
     
     
   }
+  let genderHandler2=(elem)=>{
+
+    if(elem=="female"){
+      // window.localStorage.setItem("gender",elem)
+    
+      document.getElementById("female12").classList.add('selectedimage');
+      document.getElementById("male12").classList.add('notSelectedimage');
+      document.getElementById("male12").classList.remove('selectedimage');
+      setClientGender2("female")
+    }
+      else{
+        window.localStorage.setItem("gender",elem)
+        document.getElementById("male12").classList.add('selectedimage');
+        document.getElementById("female12").classList.remove('selectedimage');
+        document.getElementById("female12").classList.add('notSelectedimage');
+      setClientGender2("male")
+
+
+      }
+    
+    
+  }
+
   let clientHealthIssueHandler=(e)=>{
    console.log(e)
   //  let decRow=document.getElementById("clientDescriptionRow").classList;
@@ -211,6 +260,29 @@ let postCheckBoxHandler=()=>{
   
 }
 
+let partnerAgeHandler=()=>{
+  let DOB=document.getElementById("ClientDoBID2").value;
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  let currentDate = `${year}-${month}-${day}`;
+  let  age=(parseFloat(currentDate)-parseFloat(DOB));
+  document.getElementById("employeeAgeID2").value=age ||0;
+
+}
+
+
+function ChangeDateFormat(){
+  let CurrentDate = new Date(document.getElementById("HiddenDate").value);
+  let dd = CurrentDate.getDate();
+  let mm = CurrentDate.getMonth();
+  let yyyy = CurrentDate.getFullYear();
+  let setDate = yyyy + '/' + (mm+1) + '/' + dd;
+  document.getElementById("ClientDoBID").value = setDate;
+}
+
+
 const initialValues={
   titleID:'',
   maritalStatus:'',
@@ -234,22 +306,22 @@ const initialValues={
   postalAddressID:'',
   postalPostcodeIDSame:'',
  
+  // partner
+  titleID2:'',
+  maritalStatus2:'',
+  givenNameID2:'',
+  employmentStatusID2:'',
+  surnameID2:'',
+  HealthID2:'',
+  preferedNameID2:'',
+  plannedRetirementAgeID2:'',
+  ClientDoBID2:'',
+
+
 
 }
-
-
 const onSubmit= (values,action) => {
-
-  // if(clientPostalAddressCheckBox=="true"){
-  //   setClientPostalAddressState(values.homeAddressID)
-  //   // alert("true")
-  // }
-  // else{
-  //   // alert("false")
-  //   setClientPostalAddressState(values.postalAddressID)
-  // }
-
-  let AddPersonalDetail={
+let AddPersonalDetail={
     titleID:values.titleID,
     maritalStatus:values.maritalStatus,
     givenNameID:values.givenNameID,
@@ -278,16 +350,11 @@ const onSubmit= (values,action) => {
     
    
   }
-  // console.log(values.homeAddressID);
-  // console.log(values.postalAddressID);
-  // console.log(values.postalAddressID);
-
-
-  console.log(AddPersonalDetail);
+console.log(values);
 
 }
 const validationSchema = Yup.object({
-          //  givenNameID: Yup.string().required('Required') ,
+          //givenNameID: Yup.string().required('Required') ,
            givenNameID: Yup.string().matches(letters, "only letters").required('Required') ,
 
            maritalStatus: Yup.string().required('Required'),
@@ -330,15 +397,28 @@ const validationSchema = Yup.object({
           // DescriptionID:Yup.string().required("Required")
           
 
-          // employeeAgeID: Yup.number().test(
+          // employeeAgeID: Yup.number().required("Required").test(
           //   "Is positive?",
           //   "age must be greater then 1",
-          //   (value) => value > 2),
+          //   (value) => value > 0),
 
-          // clientValidation
-          // titleID2:Yup.string().required("Required"),
+          // partnerValidation
+          titleID2:Yup.string().required("Required"),
+          maritalStatus2:Yup.string().required("Required"),
+          givenNameID2: Yup.string().matches(letters, "only letters").required('Required') ,
+          employmentStatusID2:Yup.string().required("Required"),
+          surnameID2: Yup.string().matches(letters, "only letters").required('Required') ,
+          HealthID2:Yup.string().required("Required"),
+          preferedNameID2: Yup.string().matches(letters, "only letters").required('Required') ,
+          plannedRetirementAgeID2:Yup.number().required("Required")
+          .test(
+            "Is positive?",
+            "Age must be a positive number",
+            (value) => value > 0
+          ),
+          ClientDoBID2: Yup.string().required('Required'),
 
- 
+        
 })
 
 
@@ -378,50 +458,78 @@ let ageHandler2=()=>{
     
   }
 
-const initialValues2={
-childNameID:"",
-childDoBID:'',
-childRelationship:'',
-childSupportReceived:'',
-DependantUntilAge:'',
-CostofPrimaryEducation:'',
-CostofSecondaryEducation:'',
-CostofUniEducation:'',
-courseYears:'',
-}
-const onSubmit2= (values,action) => {
-  let addChildData={
-    childNameID:values.childNameID,
-    childDoBID:values.childDoBID,
-    childRelationship:values.childRelationship,
-    childSupportReceived:values.childSupportReceived,
-    CostofPrimaryEducation:values.CostofPrimaryEducation,
-    CostofSecondaryEducation:values.CostofSecondaryEducation,
-    CostofUniEducation:values.CostofUniEducation,
-    courseYears:values.courseYears,
-    
-  }
-  console.log(addChildData);
-  //  handleClose ();
-
-}
-
-  const validationSchema2=Yup.object({
-  childNameID: Yup.string().matches(letters, "only letters").required('Required') ,
-  childDoBID: Yup.date().required('Required'),
-  childRelationship:Yup.string().required('Required'),
-  childSupportReceived:Yup.string().required('Required'),
-  CostofPrimaryEducation:Yup.string().required('Required'),
-  CostofSecondaryEducation:Yup.string().required('Required'),
-  CostofUniEducation:Yup.string().required('Required'),
-  courseYears:Yup.string().required('Required'),
-  DependantUntilAge:Yup.string().required('Required'),
-
-
-
-
   
-  })
+const initialValues2={
+  childNameID:"",
+  childDoBID:'',
+  childRelationship:'',
+  childSupportReceived:'',
+  DependantUntilAge:'',
+  CostofPrimaryEducation:'',
+  CostofSecondaryEducation:'',
+  CostofUniEducation:'',
+  courseYears:'',
+  AmountPaidReceivedID:'',
+  }
+  const onSubmit2= (values,action) => {
+    let addChildData={
+      childNameID:values.childNameID,
+      childDoBID:values.childDoBID,
+      childRelationship:values.childRelationship,
+      childSupportReceived:values.childSupportReceived,
+      CostofPrimaryEducation:values.CostofPrimaryEducation,
+      CostofSecondaryEducation:values.CostofSecondaryEducation,
+      CostofUniEducation:values.CostofUniEducation,
+      courseYears:values.courseYears,
+      
+    }
+    console.log(addChildData);
+     handleClose ();
+  
+  }
+  
+    const validationSchema2=Yup.object({
+    childNameID: Yup.string().matches(letters, "only letters").required('Required') ,
+    childDoBID: Yup.date().required('Required'),
+    childRelationship:Yup.string().required('Required'),
+    childSupportReceived:Yup.string().required('Required'),
+    CostofPrimaryEducation:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    ),
+    CostofSecondaryEducation:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    ),
+    CostofUniEducation:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    ),
+    courseYears:Yup.string().required('Required'),
+    DependantUntilAge:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Age must be a positive number",
+      (value) => value > 0
+    ),
+    AmountPaidReceivedID:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    ),
+  
+  
+  
+  
+    
+    })
 
   let DependantHandler=(e)=>{
     
@@ -510,8 +618,8 @@ const onSubmit2= (values,action) => {
                           <option value="Prof">Prof</option>
                           <option value="Other">Other</option>
                         </Field>
-                        <ErrorMessage name="titleID"  />
-                        {/* <ErrorMessage name="titleID" className="text-danger" 
+                        <ErrorMessage component='div' className="text-success fw-bold" name="titleID"  />
+                        {/* <ErrorMessage component='div' className="text-success fw-bold"name="titleID" className="text-danger" 
                         component="span" /> */}
 
                       </div>
@@ -535,7 +643,7 @@ const onSubmit2= (values,action) => {
                           <option value="De-Facto">De-facto</option>
                           <option value="Widowed">Widowed</option>
                         </Field>
-                        <ErrorMessage name="maritalStatus" />
+                        <ErrorMessage component='div' className="text-success fw-bold"name="maritalStatus" />
 
                       </div>
                     </div>
@@ -556,7 +664,7 @@ const onSubmit2= (values,action) => {
                           placeholder="Given Name"
                           value={values.clientName} onChange={(e)=>setFieldValue("givenNameID",e.target.value)}
                         />
-                        <ErrorMessage  name='givenNameID'/>
+                        <ErrorMessage component='div' className="text-success fw-bold" name='givenNameID'/>
 
                       </div>
                     </div>
@@ -595,7 +703,7 @@ const onSubmit2= (values,action) => {
                           <option value="Student">Student</option>
                           <option value="Unemployed">Unemployed</option>
                         </Field>
-                <ErrorMessage name="employmentStatusID" />
+                <ErrorMessage component='div' className="text-success fw-bold"name="employmentStatusID" />
 
                       </div>
                     </div>
@@ -617,7 +725,7 @@ const onSubmit2= (values,action) => {
                           onChange={(e) => setFieldValue("surnameID",e.target.value)}
                           value={values.surnameID}
                         />
-                          <ErrorMessage name="surnameID" />
+                          <ErrorMessage component='div' className="text-success fw-bold"name="surnameID" />
 
                       </div>
                     </div>
@@ -639,7 +747,7 @@ const onSubmit2= (values,action) => {
                           <option value="average">Average</option>
                           <option value="poor">Poor</option>
                         </Field>
-                        <ErrorMessage name="HealthID" />
+                        <ErrorMessage component='div' className="text-success fw-bold"name="HealthID" />
 
                       </div>
                     </div>
@@ -661,7 +769,7 @@ const onSubmit2= (values,action) => {
                           onChange={(e) => setFieldValue("preferedNameID",e.target.value)}
                           value={values.preferedNameID}
                         />
-                          <ErrorMessage name="preferedNameID" />
+                          <ErrorMessage component='div' className="text-success fw-bold"name="preferedNameID" />
 
                       </div>
                     </div>
@@ -748,7 +856,7 @@ const onSubmit2= (values,action) => {
                           onChange={(e) => setFieldValue("plannedRetirementAgeID", e.target.value)}
                           value={values.plannedRetirementAgeID}
                         />
-                                        <ErrorMessage name="plannedRetirementAgeID" />
+                                        <ErrorMessage component='div' className="text-success fw-bold"name="plannedRetirementAgeID" />
 
                       </div>
                     </div>
@@ -758,22 +866,25 @@ const onSubmit2= (values,action) => {
                   {/* six row */}
                   <div className="row">
                     <div className="col-md-6">
-                      <div className="mb-3">
                         <label htmlFor="DoBID" className="form-label">
                           Date of Birth
                         </label>
+                      <div className="input-group ">
                         <Field
-                          type="date"
                           className="form-control inputDesign shadow"
                           id="ClientDoBID"
-                           onBlur={(e)=>ageHandler(e)}
-                          onChange={(e) => setFieldValue("ClientDoBID", e.target.value)}
+                          name='ClientDoBID'
+                          onBlur={(e)=>ageHandler(e)}
                           value={values.DoBID}
-                          max="2022-1-31"
+                          max="2023-1-31"
                         />
-                        <ErrorMessage name="ClientDoBID" />
-
+                        <div className="input-group-append">
+                          <span className="input-group-text" id="CalenderIcon">
+                            <input className="" name='ClientDoBID' type='date' id="HiddenDate" onChange={ChangeDateFormat}/>
+                          </span>
+                        </div>
                       </div>
+                      <ErrorMessage component='div' className="text-success fw-bold"name="ClientDoBID" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -790,7 +901,7 @@ const onSubmit2= (values,action) => {
                           // onChange={(e) => setFieldValue("employeeAgeID", e.target.value)}
                           // value={values.employeeAgeID}
                         />
-                        <ErrorMessage name="employeeAgeID" />
+                        <ErrorMessage component='div' className="text-success fw-bold"name="employeeAgeID" />
 
                       </div>
                     </div>
@@ -842,8 +953,8 @@ const onSubmit2= (values,action) => {
                           <option value="Prof">Prof</option>
                           <option value="Other">Other</option>
                         </Field>
-                        <ErrorMessage name="titleID2"  />
-                        {/* <ErrorMessage name="titleID" className="text-danger" 
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="titleID2"  />
+                        {/* <ErrorMessage className="text-success fw-bold" component="div"   name="titleID" className="text-danger" 
                         component="span" /> */}
 
                       </div>
@@ -866,7 +977,7 @@ const onSubmit2= (values,action) => {
                           <option value="De-Facto">De-facto</option>
                           <option value="Widowed">Widowed</option>
                         </Field>
-                        <ErrorMessage name="maritalStatus2" />
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="maritalStatus2" />
 
                       </div>
                     </div>
@@ -886,7 +997,7 @@ const onSubmit2= (values,action) => {
                           id="givenNameID"
                           name="givenNameID2"
                         />
-                        <ErrorMessage  name='givenNameID2'/>
+                        <ErrorMessage className="text-success fw-bold" component="div"    name='givenNameID2'/>
 
                       </div>
                     </div>
@@ -923,7 +1034,7 @@ const onSubmit2= (values,action) => {
                           <option value="Student">Student</option>
                           <option value="Unemployed">Unemployed</option>
                         </Field>
-                       <ErrorMessage name="employmentStatusID2" />
+                       <ErrorMessage className="text-success fw-bold" component="div"   name="employmentStatusID2" />
 
                       </div>
                     </div>
@@ -944,7 +1055,7 @@ const onSubmit2= (values,action) => {
                           placeholder="Surname"
                           name="surnameID2"
                         />
-                          <ErrorMessage name="surnameID2" />
+                          <ErrorMessage className="text-success fw-bold" component="div"   name="surnameID2" />
 
                       </div>
                     </div>
@@ -965,7 +1076,7 @@ const onSubmit2= (values,action) => {
                           <option value="average">Average</option>
                           <option value="poor">Poor</option>
                         </Field>
-                        <ErrorMessage name="HealthID2" />
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="HealthID2" />
 
                       </div>
                     </div>
@@ -986,7 +1097,7 @@ const onSubmit2= (values,action) => {
                           placeholder="Prefered Name"
                           name="preferedNameID2"
                         />
-                          <ErrorMessage name="preferedNameID2" />
+                          <ErrorMessage className="text-success fw-bold" component="div"   name="preferedNameID2" />
 
                       </div>
                     </div>
@@ -994,20 +1105,20 @@ const onSubmit2= (values,action) => {
                       <div className="mb-3">
                         <label className="form-label">Smoker</label>
                         <div className="">
-                          <div  id="YesSmokerID2" className=" selectedimage" onClick={()=>smokerHandler("smoker")}>
+                          <div  id="YesSmokerID2" className=" selectedimage" onClick={()=>smokerHandler2("smoker")}>
                             <img
                               className="img-fluid imgPerson"
-                              htmlFor="YesSmokerID"
+                              htmlFor="YesSmokerID2"
                               src={smoking}
                               alt=""
                             />
 
                           </div>
                          
-                         <div id="notSmokingID2"  className="mx-1 notSelectedimage  " onClick={()=>smokerHandler("notSmoker")}>
+                         <div id="notSmokingID2"  className="mx-1 notSelectedimage  " onClick={()=>smokerHandler2("notSmoker")}>
                             <img
                               className=" img-fluid imgPerson"
-                              htmlFor="notSmokingID"
+                              htmlFor="notSmokingID2"
                               src={notsmoking}
                               alt=""
                             />
@@ -1030,11 +1141,11 @@ const onSubmit2= (values,action) => {
                         <div className="">
                         
                           <div id="female12" className=" selectedimage"
-                          onClick={()=>genderHandler("female")}>
+                          onClick={()=>genderHandler2("female")}>
                             
                             <img
                               className="img-fluid imgPerson"
-                              htmlFor="female"
+                              htmlFor="female12"
                               src={female}
                               alt=""
 
@@ -1044,10 +1155,10 @@ const onSubmit2= (values,action) => {
 
                        
                           <div id="male12" className=" mx-1 notSelectedimage"
-                          onClick={()=>genderHandler("male")}>
+                          onClick={()=>genderHandler2("male")}>
                             <img
                               className=" img-fluid imgPerson"
-                              htmlFor="male"
+                              htmlFor="male12"
                               src={male}
                               alt=""
                             />
@@ -1070,9 +1181,9 @@ const onSubmit2= (values,action) => {
                           id="plannedRetirementAgeID2"
                           placeholder="Planned Retirement Age"
                           onWheel={ event => event.currentTarget.blur() }
-                         name="plannedRetirementAgeID2"
+                          name="plannedRetirementAgeID2"
                         />
-                                        <ErrorMessage name="plannedRetirementAgeID2" />
+                                        <ErrorMessage className="text-success fw-bold" component="div"   name="plannedRetirementAgeID2" />
 
                       </div>
                     </div>
@@ -1084,17 +1195,19 @@ const onSubmit2= (values,action) => {
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="ClientDoBID2" className="form-label">
-                          Date of Birth
+                         Partner Date of Birth
                         </label>
                         <Field
                           type="date"
                           className="form-control inputDesign shadow"
                           id="ClientDoBID2"
-                           onBlur={(e)=>ageHandler(e)}
-                         name="ClientDoBID2"
+                           onBlur={(e)=>partnerAgeHandler(e)}
+                          // onChange={(e) => setFieldValue("ClientDoBID2", e.target.value)}
+                          // value={values.ClientDoBID2}
+                          name="ClientDoBID2"
                           max="2022-1-31"
                         />
-                        <ErrorMessage name="ClientDoBID2" />
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="ClientDoBID2" />
 
                       </div>
                     </div>
@@ -1112,7 +1225,7 @@ const onSubmit2= (values,action) => {
                           readOnly
                          
                         />
-                        <ErrorMessage name="employeeAgeID2" />
+                        {/* <ErrorMessage className="text-success fw-bold" component="div"   name="employeeAgeID2" /> */}
 
                       </div>
                     </div>
@@ -1167,7 +1280,7 @@ const onSubmit2= (values,action) => {
                           // onChange={(e) => setFieldValue("homeAddressID", e.target.value)}
                           // value={values.homeAddressID}
                       />
-                        <ErrorMessage name="homeAddressID" />
+                        <ErrorMessage component='div' className="text-success fw-bold"name="homeAddressID" />
 
                     </div>
                   </div>
@@ -1185,7 +1298,7 @@ const onSubmit2= (values,action) => {
                          onChange={(e) => setFieldValue("homePhoneID", e.target.value)}
                           value={values.homePhoneID}
                       />
-                                              <ErrorMessage name="homePhoneID" />
+                                              <ErrorMessage component='div' className="text-success fw-bold"name="homePhoneID" />
 
                     </div>
                   </div>
@@ -1209,7 +1322,7 @@ const onSubmit2= (values,action) => {
                       onChange={(e) => setFieldValue("PostcodeID", e.target.value)}
                           value={values.PostcodeID}
                       />
-                                              <ErrorMessage name="PostcodeID" />
+                                              <ErrorMessage component='div' className="text-success fw-bold"name="PostcodeID" />
                     </div>
                   </div>
 
@@ -1227,7 +1340,7 @@ const onSubmit2= (values,action) => {
                         // onChange={(e) => setFieldValue("workPhoneID", e.target.value)}
                         //   value={values.workPhoneID}
                       />
-                                              <ErrorMessage name="workPhoneID" />
+                                              <ErrorMessage component='div' className="text-success fw-bold"name="workPhoneID" />
                     </div>
                   </div>
                 </div>
@@ -1248,7 +1361,7 @@ const onSubmit2= (values,action) => {
                      onChange={(e) => setFieldValue("emailID", e.target.value)}
                           value={values.emailID}
                       />
-                                              <ErrorMessage name="emailID" />
+                                              <ErrorMessage component='div' className="text-success fw-bold"name="emailID" />
                     </div>
                   </div>
 
@@ -1265,7 +1378,7 @@ const onSubmit2= (values,action) => {
                         onChange={(e) => setFieldValue("mobileID", e.target.value)}
                           value={values.mobileID}
                       />
-                                              <ErrorMessage name="mobileID" />
+                                              <ErrorMessage component='div' className="text-success fw-bold"name="mobileID" />
                     </div>
                   </div>
                 </div>
@@ -1342,7 +1455,7 @@ const onSubmit2= (values,action) => {
                         // onChange={(e) => setFieldValue("postalAddressID", e.target.value)}
                         // value={values.postalAddressID}
                     />
-                      <ErrorMessage name="postalAddressID" />
+                      <ErrorMessage component='div' className="text-success fw-bold"name="postalAddressID" />
                     </div>
                   </div>
 
@@ -1359,7 +1472,7 @@ const onSubmit2= (values,action) => {
                         onChange={(e) => setFieldValue("postalPostcodeIDSame", e.target.value)}
                         value={values.postalPostcodeIDSame}
                     />
-                    <ErrorMessage name="postalPostcodeIDSame" />
+                    <ErrorMessage component='div' className="text-success fw-bold"name="postalPostcodeIDSame" />
                     </div>
                   </div>
 
@@ -1382,7 +1495,7 @@ const onSubmit2= (values,action) => {
                         disabled={values.clientPostalAddressCheckBoxID}
                         
                     />
-                      <ErrorMessage name="postalAddressID" />
+                      <ErrorMessage component='div' className="text-success fw-bold"name="postalAddressID" />
                     </div>
                   </div>
 
@@ -1399,7 +1512,7 @@ const onSubmit2= (values,action) => {
                         disabled={values.clientPostalAddressCheckBoxID}
                         name="postalPostcodeIDSame"
                     />
-                    <ErrorMessage name="postalPostcodeIDSame" />
+                    <ErrorMessage component='div' className="text-success fw-bold"name="postalPostcodeIDSame" />
                     </div>
                   </div>
 
@@ -1464,7 +1577,7 @@ const onSubmit2= (values,action) => {
                   <div className="col-md-12">
                     <div className="mb-3">
                       
-                      <div>
+                    <div>
                         {/* child modal */}
                         <Modal
                           show={show}
@@ -1527,7 +1640,7 @@ const onSubmit2= (values,action) => {
                                     onChange={(e) => setFieldValue("childNameID", e.target.value)}
                                     value={values.childNameID}
                                 />
-                                  <ErrorMessage name="childNameID" />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="childNameID" />
                                 </div>
                               </div>
                             {/* child Name */}
@@ -1551,9 +1664,9 @@ const onSubmit2= (values,action) => {
                                     id="childDoBID"
                                     onBlur={(e)=>ageHandler2(e)}
                                     onChange={(e) => setFieldValue("childDoBID", e.target.value)}
-                          value={values.childDoBID}
+                                    value={values.childDoBID}
                       />
-                        <ErrorMessage name="childDoBID" />
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="childDoBID" />
                                 </div>
                               </div>
                               {/* DOB */}
@@ -1612,7 +1725,7 @@ const onSubmit2= (values,action) => {
                                     </option>
                                     <option value="other">Other</option>
                                   </Field>
-                        <ErrorMessage name="childRelationship" />
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="childRelationship" />
 
                                 </div>
                               </div>
@@ -1709,7 +1822,7 @@ const onSubmit2= (values,action) => {
                                     onChange={(e) => setFieldValue("DependantUntilAge", e.target.value)}
                                     value={values.DependantUntilAge}
                                   />
-                                  <ErrorMessage name="DependantUntilAge" />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="DependantUntilAge" />
 
                                 </div>
                               </div>
@@ -1737,7 +1850,7 @@ const onSubmit2= (values,action) => {
                                     <option value="Paid">Paid</option>
                                     <option value="Received">Received</option>
                                   </Field>
-                                  <ErrorMessage name="childSupportReceived" />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="childSupportReceived" />
 
                                 </div>
                                 </div>
@@ -1745,6 +1858,33 @@ const onSubmit2= (values,action) => {
 
                             </div>
                             {/* row 42*/}
+
+                            {/* row 42 Paid option*/}
+
+                              <div className="row" id="AmountPaidReceivedRowID">
+                               {/* Amount Paid/Received*/}
+                              <div className="col-md-6">
+                                <div className="mb-3">
+                                  <label htmlFor="AmountPaidReceivedID" className="form-label">
+                                  Amount Paid/Received
+                                  </label>
+                                  <Field
+                                    type="number"
+                                    className="form-control inputDesign shadow"
+                                    id="AmountPaidReceivedID"
+                                    placeholder="Cost of primary education"
+                                    onChange={(e) => setFieldValue("AmountPaidReceivedID", e.target.value)}
+                                    value={values.AmountPaidReceivedID}
+                                  />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="AmountPaidReceivedID" />
+
+                                </div>
+                              </div>
+                               {/*Dependant Until Age */}
+                           
+
+                            </div>
+                            {/* row 42 Paid option*/}
 
                             {/* row 5 */}
                             <div className="row">
@@ -1796,7 +1936,7 @@ const onSubmit2= (values,action) => {
                                     onChange={(e) => setFieldValue("CostofPrimaryEducation", e.target.value)}
                                     value={values.CostofPrimaryEducation}
                                   />
-                                  <ErrorMessage name="CostofPrimaryEducation" />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="CostofPrimaryEducation" />
 
                                 </div>
                               </div>
@@ -1816,7 +1956,7 @@ const onSubmit2= (values,action) => {
                                     onChange={(e) => setFieldValue("CostofSecondaryEducation", e.target.value)}
                                     value={values.CostofSecondaryEducation}
                                   />
-                                  <ErrorMessage name="CostofSecondaryEducation" />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="CostofSecondaryEducation" />
 
                                 </div>
                               </div>
@@ -1843,7 +1983,7 @@ const onSubmit2= (values,action) => {
                                     onChange={(e) => setFieldValue("CostofUniEducation", e.target.value)}
                                     value={values.CostofUniEducation}
                                   />
-                                  <ErrorMessage name="CostofUniEducation" />
+                                  <ErrorMessage className="text-success fw-bold" component="div"   name="CostofUniEducation" />
                                 </div>
                               </div>
                             {/* Cost of Uni Education */}
@@ -1876,7 +2016,7 @@ const onSubmit2= (values,action) => {
                                     <option value="9">9</option>
                                     <option value="10">10</option>
                                   </Field>
-                        <ErrorMessage name="courseYears" />
+                        <ErrorMessage className="text-success fw-bold" component="div"   name="courseYears" />
 
 
                                 </div>
@@ -2008,7 +2148,7 @@ const onSubmit2= (values,action) => {
                         
                       />
                       {/* <p className="" id="errorDes">error</p> */}
-                      <ErrorMessage name="DescriptionID"/>
+                      <ErrorMessage component='div' className="text-success fw-bold"name="DescriptionID"/>
 
 
 
