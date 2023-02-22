@@ -1,12 +1,13 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import PersonalDetail from './Components/personalDetail/PersonalDetail';
-import BusinessTextStucture from './Components/business-textStructure/BusinessTextStucture';
-import IncomeExpenses from './Components/incomeAndExpenses/IncomeExpenses';
-import ProfessionalAdvisers from './Components/professionalAdvisers/ProfessionalAdvisers';
-import SideBarrr from './Components/SideBar/SideBarrr';
-import Topbar from './Components/Topbar/Topbar';
-// import Shapaik from './Components/Shapaik';
+// import PersonalDetail from './components/personalDetail/PersonalDetail';
+import PersonalDetail from './components/personalDetail/PersonalDetail';
+import BusinessTextStucture from './components/business-textStructure/BusinessTextStucture';
+import IncomeExpenses from './components/incomeAndExpenses/IncomeExpenses';
+import ProfessionalAdvisers from './components/professionalAdvisers/ProfessionalAdvisers';
+import SideBarrr from './components/SideBar/SideBarrr';
+import Topbar from './components/Topbar/Topbar';
+// import Shapaik from './components/Shapaik';
 
 function App() {
   return (

@@ -9,12 +9,8 @@ label{
     font-weight: bold; 
    
 }
-#HiddenDate{
-    width: 42%;
-    border: none;
-}
-#HiddenDate:active{
-    width: 42%;
+.HiddenDate{
+    width: 41%;
     border: none;
 }
 

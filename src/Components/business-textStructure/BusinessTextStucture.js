@@ -41,23 +41,72 @@ const BusinessTextStucture = () => {
     soleBusinessName: '',
     soleBusinessType: '',
     soleIncomeGenerated: '',
-    soloBusinessExpenses: '',
-    soloNetBusinessIncome: ''
+    soleBusinessExpenses: '',
+    soleNetBusinessIncome: '',
+    
+    solePartnerBusinessName: '',
+    solePartnerBusinessType: '',
+    solePartnerIncomeGenerated: '',
+    solePartnerBusinessExpenses: '',
+
+    clientsShareofPartnership: '',
+    partnersShareofPartnership: '',
+    partnershipName: '',
+    businessType: '',
+    incomeGenerated: '',
+    businessExpenses: '',
+
+    privateNameOfCompany: '',
+    privateNetAssetValueofCompany: '',
+    privateTradingName: '',
+    privateTotalRevenue: '',
+    privateBusinessType: '',
+    PrivatebusinessExpenses: '',
+    privateDirectorsDetail: '',
+    privateClientsshareholding: '',
+    privatePartnersShareholding: '',
+    privateClient: '',
+    privatePartner: ''
   }
 
   let validationSchema = Yup.object({
     soleBusinessName: Yup.string().required('Required'),
     soleBusinessType: Yup.string().required('Required'),
     soleIncomeGenerated: Yup.string().required('Required'),
-    soloBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
-    soloNetBusinessIncome: Yup.number()
+    soleBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
+    soleNetBusinessIncome: Yup.number(),
+    
+    solePartnerBusinessName: Yup.string().required('Required'),
+    solePartnerBusinessType: Yup.string().required('Required'),
+    solePartnerIncomeGenerated: Yup.string().required('Required'),
+    solePartnerBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
+    solePartnerNetBusinessIncome: Yup.number(),
+
+    clientsShareofPartnership: Yup.number('Can only be numbers').required('Required'),
+    partnersShareofPartnership: Yup.number('Can only be numbers').required('Required'),
+    partnershipName: Yup.string().required('Required'),
+    businessType: Yup.string().required('Required'),
+    incomeGenerated: Yup.number('Can only be numbers').required('Required'),
+    businessExpenses: Yup.number('Can only be numbers').required('Required'),
+
+    privateNameOfCompany: Yup.string().required('Required'),
+    privateNetAssetValueofCompany: Yup.number('Can only be numbers').required('Required'),
+    privateTradingName: Yup.string().required('Required'),
+    privateTotalRevenue: Yup.number('Can only be numbers').required('Required'),
+    privateBusinessType: Yup.string().required('Required'),
+    PrivatebusinessExpenses: Yup.number('Can only be numbers').required('Required'),
+    privateDirectorsDetail: Yup.string().required('Required'),
+    privateClientsshareholding: Yup.number('Can only be numbers').required('Required'),
+    privatePartnersShareholding: Yup.number('Can only be numbers').required('Required'),
+    privateClient: Yup.number('Can only be numbers').required('Required'),
+    privatePartner: Yup.number('Can only be numbers').required('Required')
   })
 
   let onSubmit = (Values) => {
     console.log(Values)
   }
 
-  let Modal_initialValues = {
+  let ClientModal_initialValues = {
     soleBusinessExpenses: '',
     soleRent: '',
     soleLeaseCosts: '',
@@ -69,19 +118,80 @@ const BusinessTextStucture = () => {
     soleAllOther: ''
   }
 
-  let Modal_validationSchema = Yup.object({
+  let ClientModal_validationSchema = Yup.object({
     soleBusinessExpenses: Yup.number(),
-    soleRent: Yup.string().required('Required'),
-    soleLeaseCosts: Yup.string().required('Required'),
-    soleInsurances: Yup.string().required('Required'),
-    soleStaffCosts: Yup.string().required('Required'),
-    soleRunningCosts: Yup.string().required('Required'),
-    soleTelephoneAndInternet: Yup.string().required('Required'),
-    soleProfessionalFees: Yup.string().required('Required'),
-    soleAllOther: Yup.string().required('Required')
+    soleRent: Yup.number().required('Required'),
+    soleLeaseCosts: Yup.number().required('Required'),
+    soleInsurances: Yup.number().required('Required'),
+    soleStaffCosts: Yup.number().required('Required'),
+    soleRunningCosts: Yup.number().required('Required'),
+    soleTelephoneAndInternet: Yup.number().required('Required'),
+    soleProfessionalFees: Yup.number().required('Required'),
+    soleAllOther: Yup.number().required('Required')
   })
 
-  let Modal_onSubmit = (Values) => {}
+  let ClientModal_onSubmit = (Values) => {
+
+  }
+
+
+  let PartnerModal_initialValues = {
+    solePartnerBusinessExpenses: '',
+    solePartnerRent: '',
+    soleLeaseCosts: '',
+    solePartnerInsurances: '',
+    solePartnerStaffCosts: '',
+    solePartnerRunningCosts: '',
+    solePartnerTelephoneAndInternet: '',
+    solePartnerProfessionalFees: '',
+    solePartnerAllOther: ''
+  }
+
+  let PartnerModal_validationSchema = Yup.object({
+    solePartnerBusinessExpenses: Yup.number().required('Required'),
+    solePartnerRent: Yup.number().required('Required'),
+    soleLeaseCosts: Yup.number().required('Required'),
+    solePartnerInsurances: Yup.number().required('Required'),
+    solePartnerStaffCosts: Yup.number().required('Required'),
+    solePartnerRunningCosts: Yup.number().required('Required'),
+    solePartnerTelephoneAndInternet: Yup.number().required('Required'),
+    solePartnerProfessionalFees: Yup.number().required('Required'),
+    solePartnerAllOther: Yup.number().required('Required'),
+  })
+
+  let PartnerModal_onSubmit = (Values) => {
+
+  }
+
+  let Partnership_initialValues = {
+    partnershipRent: '',
+    partnershipLeaseCosts: '',
+    partnershipInsurances: '',
+    partnershipStaffCostWages: '',
+    partnershipWageTakingByClient: '',
+    partnerWageTakenByPartner: '',
+    partnershipRunningCosts: '',
+    partnershipTelephoneAndInternet: '',
+    partnershipProfessionalFees: '',
+    partnershipAllOther: ''
+  }
+
+  let Partnership_validationSchema = Yup.object({
+    partnershipRent: Yup.number().required('Required'),
+    partnershipLeaseCosts: Yup.number().required('Required'),
+    partnershipInsurances: Yup.number().required('Required'),
+    partnershipStaffCostWages: Yup.number().required('Required'),
+    partnershipWageTakingByClient: Yup.number().required('Required'),
+    partnerWageTakenByPartner: Yup.number().required('Required'),
+    partnershipRunningCosts: Yup.number().required('Required'),
+    partnershipTelephoneAndInternet: Yup.number().required('Required'),
+    partnershipProfessionalFees: Yup.number().required('Required'),
+    partnershipAllOther: Yup.number().required('Required'),
+  })
+
+  let Partnership_onSubmit = (Values) => {
+
+  }
 
   return (
     <>
@@ -89,9 +199,10 @@ const BusinessTextStucture = () => {
         <div className="row m-0 px-0">
           <div className="col-md-2"></div>
           <div className="col-md-12">
-            {/* -------------Sole Trader - Client----------------------------- */}
+            
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
               <Form>
+            {/* -------------Sole Trader - Client----------------------------- */}
                   <div className="row">
                   <div className="col-md-12">
                     <div className=" shadow px-4 py-4">
@@ -120,7 +231,7 @@ const BusinessTextStucture = () => {
                               name='soleBusinessName'
                               placeholder="Business Name"
                             />
-                            <ErrorMessage name="soleBusinessName"/>
+                            <ErrorMessage component='div' className="text-danger fw-bold" name="soleBusinessName"/>
                           </div>
                         </div>
 
@@ -139,7 +250,7 @@ const BusinessTextStucture = () => {
                               name="soleBusinessType"
                               placeholder="Business Type"
                             />
-                            <ErrorMessage name='soleBusinessType'/>
+                            <ErrorMessage component='div' className="text-danger fw-bold" name='soleBusinessType'/>
                           </div>
                         </div>
                       </div>
@@ -162,14 +273,14 @@ const BusinessTextStucture = () => {
                               name='soleIncomeGenerated'
                               placeholder="Income Generated"
                             />
-                            <ErrorMessage name="soleIncomeGenerated" />
+                            <ErrorMessage component='div' className="text-danger fw-bold" name="soleIncomeGenerated" />
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label
-                              htmlFor="soloBusinessExpenses"
+                              htmlFor="soleBusinessExpenses"
                               className="form-label"
                             >
                               Business Expenses
@@ -177,11 +288,11 @@ const BusinessTextStucture = () => {
                             <Field
                               type="number"
                               className="form-control inputDesign shadow"
-                              id="soloBusinessExpenses"
-                              name='soloBusinessExpenses'
+                              id="soleBusinessExpenses"
+                              name='soleBusinessExpenses'
                               placeholder="Business Expenses"
                             />
-                            <ErrorMessage name="soloBusinessExpenses"/>
+                            <ErrorMessage component='div' className="text-danger fw-bold" name="soleBusinessExpenses"/>
                           </div>
                         </div>
                       </div>
@@ -195,8 +306,8 @@ const BusinessTextStucture = () => {
                               Use Business Expense Schedule
                             </label>
                             <div>
-                              <button
-                                className=" btn 
+                              <span
+                                className=" btn w-50 h-50
                                 btn-outline-success "
                                 onClick={handleShow}
                               >
@@ -205,7 +316,7 @@ const BusinessTextStucture = () => {
 
                                 </div>
                                 Use Business Schedule
-                              </button>
+                              </span>
                             </div>
 
                             {/* --------------------------------------------------------------- */}
@@ -231,9 +342,9 @@ const BusinessTextStucture = () => {
                                   </Modal.Title>
                                 </Modal.Header>
                                 
-                                  <Formik initialValues={Modal_initialValues} 
-                                  validationSchema={Modal_validationSchema} 
-                                  onSubmit={Modal_onSubmit} enableReinitialize>
+                                  <Formik initialValues={ClientModal_initialValues} 
+                                  validationSchema={ClientModal_validationSchema} 
+                                  onSubmit={ClientModal_onSubmit} enableReinitialize>
                                   <Form>
                                   <Modal.Body>
                                   {/*  first row*/}
@@ -254,7 +365,7 @@ const BusinessTextStucture = () => {
                                           className="form-control inputDesign shadow"
                                           type="number"
                                         />
-                                        <ErrorMessage name="soleBusinessExpenses"/>
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="soleBusinessExpenses"/>
                                       </div>
                                     </div>
                                     {/*  Business Expenses*/}
@@ -275,7 +386,7 @@ const BusinessTextStucture = () => {
                                           name='soleRent'
                                           placeholder="Rent"
                                         />
-                                        <ErrorMessage name='soleRent'/>
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name='soleRent'/>
                                       </div>
                                     </div>
                                     {/* soleRent*/}
@@ -299,7 +410,7 @@ const BusinessTextStucture = () => {
                                           name='soleLeaseCosts'
                                           placeholder="Lease Costs"
                                         />
-                                        <ErrorMessage name='soleLeaseCosts'/>
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name='soleLeaseCosts'/>
                                       </div>
                                     </div>
                                     {/* Lease Costs */}
@@ -320,7 +431,7 @@ const BusinessTextStucture = () => {
                                           name='soleInsurances'
                                           placeholder="Insurances"
                                         />
-                                        <ErrorMessage name='soleInsurances' />
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name='soleInsurances' />
                                       </div>
                                     </div>
                                     {/* Insurances */}
@@ -345,7 +456,7 @@ const BusinessTextStucture = () => {
                                           name='soleStaffCosts'
                                           placeholder="Staff Costs "
                                         />
-                                        <ErrorMessage name="soleStaffCosts" />
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="soleStaffCosts" />
                                       </div>
                                     </div>
                                     {/* Staff Costs  */}
@@ -366,7 +477,7 @@ const BusinessTextStucture = () => {
                                           name='soleRunningCosts'
                                           placeholder="Running Costs"
                                         />
-                                        <ErrorMessage name="soleRunningCosts" />
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="soleRunningCosts" />
                                       </div>
                                     </div>
                                     {/* Running Costs */}
@@ -391,7 +502,7 @@ const BusinessTextStucture = () => {
                                           name='soleTelephoneAndInternet'
                                           placeholder="Telephone and Internet "
                                         />
-                                        <ErrorMessage name="soleTelephoneAndInternet" />
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="soleTelephoneAndInternet" />
                                       </div>
                                     </div>
                                     {/* Telephone and Internet */}
@@ -412,7 +523,7 @@ const BusinessTextStucture = () => {
                                           name="soleProfessionalFees"
                                           placeholder="Professional Fees"
                                         />
-                                        <ErrorMessage name="soleProfessionalFees" />
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="soleProfessionalFees" />
                                       </div>
                                     </div>
                                     {/* Professional fees (Accounting or Other) */}
@@ -437,7 +548,7 @@ const BusinessTextStucture = () => {
                                           name="soleAllOther"
                                           placeholder="All Other"
                                         />
-                                        <ErrorMessage name="soleAllOther" />
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="soleAllOther" />
                                       </div>
                                     </div>
                                     {/* All Other */}
@@ -476,7 +587,7 @@ const BusinessTextStucture = () => {
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label
-                              htmlFor="soloNetBusinessIncome"
+                              htmlFor="soleNetBusinessIncome"
                               className="form-label"
                             >
                               Net Business Income
@@ -484,26 +595,19 @@ const BusinessTextStucture = () => {
                             <Field
                               type="number"
                               className="form-control inputDesign shadow"
-                              id="soloNetBusinessIncome"
-                              name='soloNetBusinessIncome'
+                              id="soleNetBusinessIncome"
+                              name='soleNetBusinessIncome'
                               readOnly
                             />
-                            <ErrorMessage name="soloNetBusinessIncome" />
+                            <ErrorMessage component='div' className="text-danger fw-bold" name="soleNetBusinessIncome" />
                           </div>
                         </div>
                       </div>
                       {/*Third row*/}
-                      <div className="row my-3">
-                        <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
-                        </div>
-                      </div>
+                     
                     </div>
                   </div>
                 </div>
-              </Form>
-            </Formik>
             {/* -------------Sole Trader - Client----------------------------- */}
 
             {/* -------------Sole Trader - Partner----------------------------- */}
@@ -517,6 +621,7 @@ const BusinessTextStucture = () => {
 
                             </div>
                   </h3>
+                      
                   {/*first row*/}
                   <div className="row">
                     <div className="col-md-6">
@@ -527,12 +632,14 @@ const BusinessTextStucture = () => {
                         >
                           Business Name
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow inputDesign"
                           id="solePartnerBusinessName"
+                          name='solePartnerBusinessName'
                           placeholder="Business Name"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name='solePartnerBusinessName' />
                       </div>
                     </div>
 
@@ -544,12 +651,14 @@ const BusinessTextStucture = () => {
                         >
                           Business Type
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow"
                           id="solePartnerBusinessType"
+                          name='solePartnerBusinessType'
                           placeholder="Business Type"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name='solePartnerBusinessType' />
                       </div>
                     </div>
                   </div>
@@ -565,29 +674,33 @@ const BusinessTextStucture = () => {
                         >
                           Income Generated
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="solePartnerIncomeGenerated"
+                          name="solePartnerIncomeGenerated"
                           placeholder="Income Generated"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerIncomeGenerated" />
                       </div>
                     </div>
 
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label
-                          htmlFor="soloPartnerBusinessExpenses"
+                          htmlFor="solePartnerBusinessExpenses"
                           className="form-label"
                         >
                           Business Expenses
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
-                          id="soloPartnerBusinessExpenses"
+                          id="solePartnerBusinessExpenses"
+                          name="solePartnerBusinessExpenses"
                           placeholder="Business Expenses"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerBusinessExpenses" />
                       </div>
                     </div>
                   </div>
@@ -602,8 +715,8 @@ const BusinessTextStucture = () => {
                         
                         </label>
                         <div>
-                          <button
-                            className=" btn
+                          <span
+                            className=" btn w-50 h-50
                             btn-outline-success "
                             onClick={handleShowPartner}
                           >
@@ -612,7 +725,7 @@ const BusinessTextStucture = () => {
 
                             </div>
                             Use Business Schedule
-                          </button>
+                          </span>
                         </div>
 
                         {/* --------------------------------------------------------------- */}
@@ -637,7 +750,9 @@ const BusinessTextStucture = () => {
                             </div>
                               </Modal.Title>
                             </Modal.Header>
-                            <Modal.Body>
+                            <Formik initialValues={PartnerModal_initialValues} validationSchema={PartnerModal_validationSchema} onSubmit={PartnerModal_onSubmit}>
+                              <Form>
+                              <Modal.Body>
                               {/*  first row*/}
                               <div className="row">
                                 {/*  Business Expenses */}
@@ -649,8 +764,9 @@ const BusinessTextStucture = () => {
                                     >
                                       Business Expenses
                                     </label>
-                                    <input
+                                    <Field
                                       id="solePartnerBusinessExpenses"
+                                      name='solePartnerBusinessExpenses'
                                       readOnly
                                       className="form-control inputDesign shadow"
                                       type="number"
@@ -668,12 +784,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Rent
                                     </label>
-                                    <input
+                                    <Field
                                       type="text"
                                       className="form-control inputDesign  shadow"
                                       id="solePartnerRent"
+                                      name='solePartnerRent'
                                       placeholder="Rent"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerRent" />
                                   </div>
                                 </div>
                                 {/* soleRent*/}
@@ -690,12 +808,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Lease Costs
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="soleLeaseCosts"
+                                      name='soleLeaseCosts'
                                       placeholder="Lease Costs"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="soleLeaseCosts" />
                                   </div>
                                 </div>
                                 {/* Lease Costs */}
@@ -709,12 +829,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Insurances
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="solePartnerInsurances"
+                                      name='solePartnerInsurances'
                                       placeholder="Insurances"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerInsurances" />
                                   </div>
                                 </div>
                                 {/* Insurances */}
@@ -732,12 +854,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Staff Costs
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="solePartnerStaffCosts"
+                                      name='solePartnerStaffCosts'
                                       placeholder="Staff Costs "
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerStaffCosts" />
                                   </div>
                                 </div>
                                 {/* Staff Costs  */}
@@ -751,12 +875,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Running Costs
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="solePartnerRunningCosts"
+                                      name='solePartnerRunningCosts'
                                       placeholder="Running Costs"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerRunningCosts" />
                                   </div>
                                 </div>
                                 {/* Running Costs */}
@@ -774,12 +900,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Telephone and Internet
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="solePartnerTelephoneAndInternet"
+                                      name='solePartnerTelephoneAndInternet'
                                       placeholder="Telephone and Internet "
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerTelephoneAndInternet" />
                                   </div>
                                 </div>
                                 {/* Telephone and Internet */}
@@ -793,12 +921,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Professional fees (Accounting or Other)
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="solePartnerProfessionalFees"
+                                      name='solePartnerProfessionalFees'
                                       placeholder="Professional Fees"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerProfessionalFees" />
                                   </div>
                                 </div>
                                 {/* Professional fees (Accounting or Other) */}
@@ -816,12 +946,14 @@ const BusinessTextStucture = () => {
                                     >
                                       All Other
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="solePartnerAllOther"
+                                      name="solePartnerAllOther"
                                       placeholder="All Other"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="solePartnerAllOther" />
                                   </div>
                                 </div>
                                 {/* All Other */}
@@ -833,7 +965,7 @@ const BusinessTextStucture = () => {
                                 <button
                                 type="submit"
                                   className="float-end btn w-25  bgColor modalBtn"
-                                  onClick={handleClosePartner}
+                                  // onClick={handleClosePartner}
                                 >
                                   Save
                                 </button>
@@ -845,6 +977,8 @@ const BusinessTextStucture = () => {
                                 </button>
                               </div>
                             </Modal.Footer>
+                              </Form>
+                            </Formik>
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
@@ -861,10 +995,11 @@ const BusinessTextStucture = () => {
                         >
                           Net Business Income
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="solePartnerNetBusinessIncome"
+                          name="solePartnerNetBusinessIncome"
                           readOnly
                         />
                       </div>
@@ -882,9 +1017,8 @@ const BusinessTextStucture = () => {
                 <div className=" shadow px-4 py-4">
                   <h3 className="heading">Partnership
                   <div className="iconContainerLg">
-                            <img className="img-fluid" src={dealdone} alt="" />
-
-                            </div>
+                    <img className="img-fluid" src={dealdone} alt="" />
+                  </div>
                   </h3>
                   {/*first row*/}
                   <div className="row">
@@ -896,12 +1030,14 @@ const BusinessTextStucture = () => {
                         >
                           Client’s Share of Partnership
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow inputDesign"
                           id="clientsShareofPartnership"
+                          name='clientsShareofPartnership'
                           placeholder="Client’s Share of Partnership"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="clientsShareofPartnership" />
                       </div>
                     </div>
 
@@ -913,12 +1049,14 @@ const BusinessTextStucture = () => {
                         >
                           Partner’s Share of Partnership
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow"
                           id="partnersShareofPartnership"
+                          name='partnersShareofPartnership'
                           placeholder="Partner’s Share of Partnership"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="partnersShareofPartnership" />
                       </div>
                     </div>
                   </div>
@@ -931,12 +1069,14 @@ const BusinessTextStucture = () => {
                         <label htmlFor="partnershipName" className="form-label">
                           Partnership Name
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="partnershipName"
+                          name='partnershipName'
                           placeholder="Partnership Name"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipName" />
                       </div>
                     </div>
 
@@ -945,12 +1085,14 @@ const BusinessTextStucture = () => {
                         <label htmlFor="businessType" className="form-label">
                           Business Type
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="businessType"
+                          name='businessType'
                           placeholder="Business Type"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="businessType" />
                       </div>
                     </div>
                   </div>
@@ -963,12 +1105,14 @@ const BusinessTextStucture = () => {
                         <label htmlFor="incomeGenerated" className="form-label">
                           Income Generated
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="incomeGenerated"
+                          name='incomeGenerated'
                           placeholder="Income Generated"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="incomeGenerated" />
                       </div>
                     </div>
 
@@ -980,12 +1124,14 @@ const BusinessTextStucture = () => {
                         >
                           Business Expenses
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="businessExpenses"
+                          name='businessExpenses'
                           placeholder="Business Expenses"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="businessExpenses"/>
                       </div>
                     </div>
                   </div>
@@ -999,8 +1145,8 @@ const BusinessTextStucture = () => {
                           Use Business Expense Schedule
                         </label>
                         <div>
-                          <button
-                            className=" btn btn-outline-success "
+                          <span
+                            className=" btn btn-outline-success w-50 h-50"
                             onClick={handleShowPartnership}
                           >
                             <div className="iconContainer mx-1">
@@ -1008,7 +1154,7 @@ const BusinessTextStucture = () => {
 
                             </div>
                             Use Business Schedule
-                          </button>
+                          </span>
                         </div>
 
                         {/* -----------------------------Model------------------------------ */}
@@ -1033,7 +1179,9 @@ const BusinessTextStucture = () => {
                             </div>
                               </Modal.Title>
                             </Modal.Header>
-                            <Modal.Body>
+                            <Formik initialValues={Partnership_initialValues} validationSchema={Partnership_validationSchema} onSubmit={Partnership_onSubmit}>
+                              <Form>
+                              <Modal.Body>
                               {/*  first row*/}
                               <div className="row">
                                 {/*  Business Expenses */}
@@ -1045,7 +1193,7 @@ const BusinessTextStucture = () => {
                                     >
                                       Business Expenses
                                     </label>
-                                    <input
+                                    <Field
                                       id="partnershipBusinessExpenses"
                                       readOnly
                                       className="form-control inputDesign shadow"
@@ -1064,12 +1212,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Rent
                                     </label>
-                                    <input
+                                    <Field
                                       type="text"
                                       className="form-control inputDesign  shadow"
                                       id="partnershipRent"
+                                      name='partnershipRent'
                                       placeholder="Rent"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipRent" />
                                   </div>
                                 </div>
                                 {/* soleRent*/}
@@ -1086,12 +1236,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Lease Costs
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipLeaseCosts"
+                                      name='partnershipLeaseCosts'
                                       placeholder="Lease Costs"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipLeaseCosts" />
                                   </div>
                                 </div>
                                 {/* Lease Costs */}
@@ -1105,12 +1257,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Insurances
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipInsurances"
+                                      name='partnershipInsurances'
                                       placeholder="Insurances"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipInsurances" />
                                   </div>
                                 </div>
                                 {/* Insurances */}
@@ -1128,12 +1282,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Staff Costs(Wages and Super)
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipStaffCostWages"
+                                      name='partnershipStaffCostWages'
                                       placeholder="Staff Costs "
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipStaffCostWages" />
                                   </div>
                                 </div>
                                 {/* Staff Costs(Wages and Super)  */}
@@ -1147,12 +1303,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Wage taking by Client
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipWageTakingByClient"
+                                      name='partnershipWageTakingByClient'
                                       placeholder="Wage taking by Client"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipWageTakingByClient" />
                                   </div>
                                 </div>
                                 {/*Wage taking by Client*/}
@@ -1170,12 +1328,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Wage taken by Partner
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnerWageTakenByPartner"
+                                      name='partnerWageTakenByPartner'
                                       placeholder="Wage taken by Partner"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnerWageTakenByPartner" />
                                   </div>
                                 </div>
                                 {/* Wage taken by Partner*/}
@@ -1189,12 +1349,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Running Costs(Utilities)
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipRunningCosts"
+                                      name='partnershipRunningCosts'
                                       placeholder="Running Costs(Utilities)"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipRunningCosts" />
                                   </div>
                                 </div>
                                 {/* Running Costs(Utilities) */}
@@ -1212,12 +1374,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Telephone and Internet
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipTelephoneAndInternet"
+                                      name='partnershipTelephoneAndInternet'
                                       placeholder="Telephone and Internet "
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipTelephoneAndInternet" />
                                   </div>
                                 </div>
                                 {/* Telephone and Internet */}
@@ -1231,12 +1395,14 @@ const BusinessTextStucture = () => {
                                     >
                                       Professional fees
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipProfessionalFees"
+                                      name='partnershipProfessionalFees'
                                       placeholder="Professional Fees"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipProfessionalFees" />
                                   </div>
                                 </div>
                                 {/* Professional fees (Accounting or Other) */}
@@ -1254,12 +1420,14 @@ const BusinessTextStucture = () => {
                                     >
                                       All Other
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="partnershipAllOther"
+                                      name='partnershipAllOther'
                                       placeholder="All Other"
                                     />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name="partnershipAllOther" />
                                   </div>
                                 </div>
                                 {/* All Other */}
@@ -1270,7 +1438,7 @@ const BusinessTextStucture = () => {
                               <div className="col-md-12">
                                 <button
                                   className="float-end btn w-25  bgColor modalBtn"
-                                  onClick={handleClosePartnership}
+                                  // onClick={handleClosePartnership}
                                 >
                                   Save
                                 </button>
@@ -1282,10 +1450,11 @@ const BusinessTextStucture = () => {
                                 </button>
                               </div>
                             </Modal.Footer>
+                              </Form>
+                            </Formik>
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
-
                         {/* ---------------------Model---------------------------- */}
                       </div>
                     </div>
@@ -1293,7 +1462,7 @@ const BusinessTextStucture = () => {
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label
-                          htmlFor="soloNetBusinessIncome"
+                          htmlFor="soleNetBusinessIncome"
                           className="form-label"
                         >
                           Net Business Income
@@ -1301,7 +1470,7 @@ const BusinessTextStucture = () => {
                         <input
                           type="number"
                           className="form-control inputDesign shadow"
-                          id="soloNetBusinessIncome"
+                          id="soleNetBusinessIncome"
                           readOnly
                         />
                       </div>
@@ -1335,12 +1504,14 @@ const BusinessTextStucture = () => {
                         >
                           Name of Company
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow inputDesign"
                           id="privateNameOfCompany"
+                          name='privateNameOfCompany'
                           placeholder="Name of Company"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateNameOfCompany" />
                       </div>
                     </div>
 
@@ -1352,12 +1523,14 @@ const BusinessTextStucture = () => {
                         >
                           Net Asset Value of Company
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow"
                           id="privateNetAssetValueofCompany"
+                          name='privateNetAssetValueofCompany'
                           placeholder="Net Asset Value of Company"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateNetAssetValueofCompany" />
                       </div>
                     </div>
                   </div>
@@ -1373,12 +1546,14 @@ const BusinessTextStucture = () => {
                         >
                           Trading Name
                         </label>
-                        <input
+                        <Field
                           type="Text"
                           className="form-control inputDesign shadow"
                           id="privateTradingName"
+                          name='privateTradingName'
                           placeholder="Trading Name"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateTradingName" />
                       </div>
                     </div>
 
@@ -1390,12 +1565,14 @@ const BusinessTextStucture = () => {
                         >
                           Total Revenue
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="privateTotalRevenue"
+                          name='privateTotalRevenue'
                           placeholder="Total Revenue"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateTotalRevenue" />
                       </div>
                     </div>
                   </div>
@@ -1411,12 +1588,14 @@ const BusinessTextStucture = () => {
                         >
                           Business Type
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow"
                           id="privateBusinessType"
+                          name='privateBusinessType'
                           placeholder="Business Type"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateBusinessType" />
                       </div>
                     </div>
 
@@ -1428,12 +1607,14 @@ const BusinessTextStucture = () => {
                         >
                           Business Expenses
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="PrivatebusinessExpenses"
+                          name='PrivatebusinessExpenses'
                           placeholder="Business Expenses"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="PrivatebusinessExpenses" />
                       </div>
                     </div>
                   </div>
@@ -1446,16 +1627,19 @@ const BusinessTextStucture = () => {
                         <label htmlFor="privateDirectorsDetail" className="form-label">
                         Directors Detail
                         </label>
-                        <select
+                        <Field
                           id="privateDirectorsDetail"
+                          name='privateDirectorsDetail'
                           className="form-select shadow  inputDesign"
+                          as='select'
                         >
-                          <option>Select</option>
+                          <option value=''>Select</option>
                           <option value="Client">Client</option>
                           <option value="Partner">Partner</option>
                           <option value="Client & Partner">Client & Partner</option>
                           
-                        </select>
+                        </Field>
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateDirectorsDetail" />
                       </div>
                     </div>
 
@@ -1465,8 +1649,8 @@ const BusinessTextStucture = () => {
                           Use Business Expense Schedule
                         </label>
                         <div>
-                          <button
-                            className=" btn 
+                          <span
+                            className=" btn w-50 h-50
                             btn-outline-success "
                             onClick={handleShowPrivate}
                           >
@@ -1475,7 +1659,7 @@ const BusinessTextStucture = () => {
 
                             </div>
                             Use Business Schedule
-                          </button>
+                          </span>
                         </div>
 
                         {/* -----------------------------Model------------------------------ */}
@@ -1818,12 +2002,10 @@ const BusinessTextStucture = () => {
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
-
                         {/* ---------------------Model---------------------------- */}
+                      
                       </div>
-                    </div>
-
-                  
+                    </div>                  
                   </div>
                   {/*four row*/}
 
@@ -1837,12 +2019,14 @@ const BusinessTextStucture = () => {
                         >
                           Client’s shareholding %
                         </label>
-                        <input
+                        <Field
                           type="text"
                           className="form-control inputDesign shadow"
                           id="privateClientsshareholding"
+                          name='privateClientsshareholding'
                           placeholder="Client’s shareholding %"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateClientsshareholding" />
                       </div>
                     </div>
 
@@ -1854,12 +2038,14 @@ const BusinessTextStucture = () => {
                         >
                           Partner’s shareholding %
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="privatePartnersShareholding"
+                          name='privatePartnersShareholding'
                           placeholder="Partner’s shareholding %"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privatePartnersShareholding" />
                       </div>
                     </div>
                   </div>
@@ -1922,12 +2108,14 @@ const BusinessTextStucture = () => {
                         >
                           Client %
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="privateClient"
+                          name='privateClient'
                           placeholder="Client %"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privateClient" />
                       </div>
                     </div>
 
@@ -1939,21 +2127,31 @@ const BusinessTextStucture = () => {
                         >
                           Partner %
                         </label>
-                        <input
+                        <Field
                           type="number"
                           className="form-control inputDesign shadow"
                           id="privatePartner"
+                          name="privatePartner"
                           placeholder="Partner %"
                         />
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="privatePartner" />
                       </div>
                     </div>
                   </div>
                   {/*7 row*/}
-
+                  
+                  <div className="row my-3">
+                    <div className="col-md-12">
+                      <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                      <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                    </div>
+                  </div>
 
                 </div>
               </div>
             </div>
+              </Form>
+            </Formik>
             {/* -------------Private Company----------------------------- */}
 
 
@@ -2456,7 +2654,6 @@ const BusinessTextStucture = () => {
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
-
                         {/* ---------------------Model---------------------------- */}
                       </div>
                     </div>
