@@ -11,9 +11,7 @@ const SideBarrr = () => {
     
   
 //   let Navigate = useNavigate();
-  let manageTaskHandler=()=>{
-    alert("manageTaskHandler")
-  }
+
   
 
   return (
@@ -73,7 +71,7 @@ const SideBarrr = () => {
       <li className="dropdown d-block">
       <li className=""><FontAwesomeIcon icon={faTasks}/> Task</li>
       <div className="dropdown-content">
-    <a onClick={manageTaskHandler} className='py-1'>Manage Task</a>
+    <a  className='py-1'>Manage Task</a>
     <a href="#" className='py-1'>Manage Document</a>
 
     </div>

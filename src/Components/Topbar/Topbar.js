@@ -8,7 +8,7 @@ import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 function Topbar() {
   return (
     <div className='container-fluid'>
-        <div className='row' id="TopBar">
+        <div className='row ' id="TopBar">
         <div className='col-md-10 text-center'></div>
         <div className='col-md-2 float-right'>
             <Nav className="me-auto">

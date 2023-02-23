@@ -119,8 +119,8 @@ const IncomeExpenses = () => {
 
   <input type="checkbox" class="btn-check" id="Mortgage1" autocomplete="off"/>
   <label class="btn btn-outline-success" for="Mortgage1">Mortgage</label>
-
-  <input type="checkbox" class="btn-check" id="Other1" autocomplete="off"/>
+  
+ <input type="checkbox" class="btn-check" id="Other1" autocomplete="off"/>
   <label class="btn btn-outline-success" for="Other1">Other</label>
 </div>
 

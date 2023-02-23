@@ -35,8 +35,12 @@ const PersonalDetail = () => {
 
   const [clientDec, setClientDec] = useState(true);
 
+  const [numOfChild, setNumOfChild] = useState(1);
+  const [checkNumber, setcheckNumber] = useState();
+
+
   const handleClose = () => setShow(false);
-  //  const handleShow = () => setShow(true);
+   const handleShow = () => setShow(true);
 
   let smokerHandler=(elem)=>{
     if(elem=="smoker"){
@@ -142,7 +146,9 @@ const PersonalDetail = () => {
    }
   }
   
-  let childrenHandler=(elem)=>{
+  let childrenHandler=(elem,num)=>{
+    setcheckNumber(num)
+    // alert(numOfChild)
     let noChildren=document.getElementById("noChildren").classList;
     let oneChildren=document.getElementById("oneChildren").classList;
     let twoChildren=document.getElementById("twoChildren").classList;
@@ -170,6 +176,7 @@ const PersonalDetail = () => {
    
 
    setShow(true)
+
     
 }
 
@@ -265,10 +272,6 @@ let partnerAgeHandler=()=>{
   document.getElementById("employeeAgeID2").value=age ||0;
 
 }
-
-
-
-
 
 const initialValues={
   titleID:'',
@@ -488,6 +491,22 @@ const initialValues2={
     }
     console.log(values);
     //  handleClose ();
+    if(numOfChild==checkNumber){
+      // alert("1")
+      handleClose ();
+      setNumOfChild(1)
+    }
+    else{
+      setNumOfChild(numOfChild+1)
+      alert(numOfChild)
+      handleClose ();
+      // setShow(true)
+      setTimeout(() => {
+        handleShow();
+      }, 600);
+    }
+
+   
   
   }
   
@@ -612,6 +631,7 @@ const initialValues2={
 
   return (
     <>
+    
         {/* --------------------------Start client Form-------------------- */}
                   <Formik
                     initialValues={initialValues}
@@ -1633,11 +1653,11 @@ const initialValues2={
                       </label>
                       <div>
                       <span value="0" id="noChildren" className=" selectedchildBtn childBtn  mx-4" onClick={()=>childrenHandlerzero("noChildren")}>0</span>
-                      <span  id="oneChildren" className="childBtn text-center  mx-4" onClick={()=>childrenHandler("oneChildren")}>1</span>
-                      <span  id="twoChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("twoChildren")}>2</span>
-                      <span  id="threeChildren" className="childBtn   mx-4" onClick={()=>childrenHandler("threeChildren")}>3</span>
-                      <span  id="fourChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("fourChildren")}>4</span>
-                      <span  id="fiveChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("fiveChildren")}>5</span>
+                      <span  id="oneChildren" className="childBtn text-center  mx-4" onClick={()=>childrenHandler("oneChildren",1)}>1</span>
+                      <span  id="twoChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("twoChildren",2)}>2</span>
+                      <span  id="threeChildren" className="childBtn   mx-4" onClick={()=>childrenHandler("threeChildren",3)}>3</span>
+                      <span  id="fourChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("fourChildren",4)}>4</span>
+                      <span  id="fiveChildren" className="childBtn  mx-4" onClick={()=>childrenHandler("fiveChildren",5)}>5</span>
 
 
                       </div>
@@ -1693,7 +1713,7 @@ const initialValues2={
                                   >
                                     Child
                                   </label>
-                                  <input readOnly className="form-control inputDesign shadow" type="text" value="#1" />
+                                  <input readOnly className="form-control inputDesign shadow" type="text" value={numOfChild} />
                                   
                                 </div>
                               </div>
