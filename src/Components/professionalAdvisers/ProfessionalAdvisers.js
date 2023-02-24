@@ -1,18 +1,17 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
-
 
 import plus from "./images/plus.svg"
 import doctor from './images/doctor.svg'
 import lawyer from './images/lawyer.svg'
 import accounting from './images/accounting.svg'
 import businessman from './images/businessman.svg'
-import notebook from './images/notebook.svg'
+import notebook from './images/notebook.svg';
 
+import * as Yup from 'yup';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 
-
-
-const ProfessionalAdvisers = () => {
+const ProfessionalAdvisors = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,6 +19,65 @@ const ProfessionalAdvisers = () => {
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
+
+  let Client_initialValues={
+    solicitorName: '',
+    solicitorCompany: '',
+    solicitorPhone: '',
+    solicitorEmail: '',
+
+    accountantName: '',
+    accountantCompany: '',
+    accountantPhone: '',
+    accountantEmail: '',
+
+    insuranceAdvisorName: '',
+    insuranceAdvisorCompany: '',
+    insuranceAdvisorPhone: '',
+    insuranceAdvisorEmail: '',
+
+    doctorName: '',
+    doctorCompany: '',
+    doctorPhone: '',
+    doctorEmail: '',
+
+    otherName: '',
+    otherCompany: '',
+    otherPhone: '',
+    otherEmail: ''
+  }
+
+  let Client_validationSchema = Yup.object({
+    solicitorName: Yup.string("Can't contain letters").required('Required'),
+    solicitorCompany: Yup.string("Can't contain letters").required('Required'),
+    solicitorPhone: Yup.string("Can't contain letters").required('Required'),
+    solicitorEmail: Yup.string("Can't contain letters").required('Required'),
+
+    accountantName: Yup.string("Can't contain letters").required('Required'),
+    accountantCompany: Yup.string("Can't contain letters").required('Required'),
+    accountantPhone: Yup.string("Can't contain letters").required('Required'),
+    accountantEmail: Yup.string("Can't contain letters").required('Required'),
+
+    insuranceAdvisorName: Yup.string("Can't contain letters").required('Required'),
+    insuranceAdvisorCompany: Yup.string("Can't contain letters").required('Required'),
+    insuranceAdvisorPhone: Yup.string("Can't contain letters").required('Required'),
+    insuranceAdvisorEmail: Yup.string("Can't contain letters").required('Required'),
+
+    doctorName: Yup.string("Can't contain letters").required('Required'),
+    doctorCompany: Yup.string("Can't contain letters").required('Required'),
+    doctorPhone: Yup.string("Can't contain letters").required('Required'),
+    doctorEmail: Yup.string("Can't contain letters").required('Required'),
+
+    otherName: Yup.string("Can't contain letters").required('Required'),
+    otherCompany: Yup.string("Can't contain letters").required('Required'),
+    otherPhone: Yup.string("Can't contain letters").required('Required'),
+    otherEmail: Yup.string("Can't contain letters").required('Required'),
+  })
+
+  let Client_onSubmit = (Values) => {
+
+  }
+
 
   return (
     <>
@@ -32,28 +90,28 @@ const ProfessionalAdvisers = () => {
               <div className="row my-4">
                   <div className="col-md-12">
                     <div className="shadow px-4 py-4">
-                      <h3 className="text-center">Professional Advisers</h3>
+                      <h3 className="text-center">Professional Advisors</h3>
 
-                      {/* Client Professional Advisers */}
+                      {/* Client Professional Advisors */}
                       <div>
-                      <h3 className="">Client Professional Advisers</h3>
+                      <h3 className="">Client Professional Advisors</h3>
 
                            {/* 1 row */}
                            <div className="row">
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Do you have any Professional advisers?
+                            Do you have any Professional Advisors?
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="ProfessionalAdvisers1radio" id="ProfessionalAdvisers1opt1" />
-                            <label htmlFor="ProfessionalAdvisers1opt1" className="label1">
+                            <input type="radio" name="ProfessionalAdvisors1radio" id="ProfessionalAdvisors1opt1" />
+                            <label htmlFor="ProfessionalAdvisors1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="ProfessionalAdvisers1radio" id="ProfessionalAdvisers1opt2" />
-                            <label htmlFor="ProfessionalAdvisers1opt2" className="label2">
+                            <input type="radio" name="ProfessionalAdvisors1radio" id="ProfessionalAdvisors1opt2" />
+                            <label htmlFor="ProfessionalAdvisors1opt2" className="label2">
                               <span>NO</span>
                             </label>
                           </div>
@@ -62,7 +120,7 @@ const ProfessionalAdvisers = () => {
                         </div>
                         <div className='col-md-6'>
                         <label  className="form-label">
-                        Please enter the details of your professional advisers
+                        Please enter the details of your professional Advisors
                             </label>
                             <br />
                           
@@ -95,15 +153,17 @@ const ProfessionalAdvisers = () => {
                               closeButton
                             >
                               <Modal.Title className="fontStyle">
-                              Professional Adviser Detail
+                              Professional Advisor Detail
                                 <div className="iconContainerLg">
                             <img className="img-fluid" src={notebook} alt="" />
 
                             </div>
                               </Modal.Title>
                             </Modal.Header>
+                           <Formik initialValues={Client_initialValues} validationSchema={Client_validationSchema} onSubmit={Client_onSubmit}>
+                            <Form>
                             <Modal.Body>
-                                {/* Professional Adviser Detail Form */}
+                                {/* Professional Advisor Detail Form */}
 
                          <div className=''>
 
@@ -121,31 +181,35 @@ const ProfessionalAdvisers = () => {
                        <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="solicitorName" className="form-label">Name</   label>
-                          <input type="text" className="form-control shadow inputDesign" id="solicitorName"
-                           placeholder="Name"/>
+                          <Field type="text" className="form-control shadow inputDesign" 
+                          id="solicitorName" name='solicitorName' placeholder="Name"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='solicitorName' />
                         </div>            
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="solicitorCompany" className="form-label">Company</   label>
-                          <input type="text" className="form-control shadow inputDesign"
-                           id="solicitorCompany" placeholder="Company"/>
+                          <Field type="text" className="form-control shadow inputDesign"
+                           id="solicitorCompany" name='solicitorCompany' placeholder="Company"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='solicitorCompany' />
                         </div>            
                         </div>
 
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="solicitorPhone" className="form-label">Phone</   label>
-                          <input type="number" className="form-control shadow inputDesign"
-                           id="solicitorPhone" placeholder="Phone"/>
+                          <Field type="number" className="form-control shadow inputDesign"
+                           id="solicitorPhone" name='solicitorPhone' placeholder="Phone"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='solicitorPhone' />
                         </div>            
                         </div>
 
                          <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="solicitorEmail" className="form-label">Email</   label>
-                          <input type="email" className="form-control shadow inputDesign" id="solicitorEmail"
-                           placeholder="Email"/>
+                          <Field type="email" className="form-control shadow inputDesign" 
+                          id="solicitorEmail" name='solicitorEmail' placeholder="Email"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='solicitorEmail' />
                         </div>            
                         </div>
                         </div>
@@ -163,75 +227,83 @@ const ProfessionalAdvisers = () => {
                        <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="accountantName" className="form-label">Name</   label>
-                          <input type="text" className="form-control shadow inputDesign" id="accountantName"
-                           placeholder="Name"/>
+                          <Field type="text" className="form-control shadow inputDesign" 
+                          id="accountantName" name='accountantName' placeholder="Name"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='accountantName' />
                         </div>            
                         </div><div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="accountantCompany" className="form-label">Company</   label>
-                          <input type="text" className="form-control shadow inputDesign"
-                           id="accountantCompany" placeholder="Company"/>
+                          <Field type="text" className="form-control shadow inputDesign"
+                          id="accountantCompany" name='accountantCompany' placeholder="Company"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='accountantCompany' />
                         </div>            
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="accountantPhone" className="form-label">Phone</   label>
-                          <input type="number" className="form-control shadow inputDesign"
-                           id="accountantPhone" placeholder="Phone"/>
+                          <Field type="number" className="form-control shadow inputDesign"
+                           id="accountantPhone" name='accountantPhone' placeholder="Phone"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='accountantPhone' />
                         </div>            
                         </div>
 
                          <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="accountantEmail" className="form-label">Email</   label>
-                          <input type="email" className="form-control shadow inputDesign" id="accountantEmail"
-                           placeholder="Email"/>
+                          <Field type="email" className="form-control shadow inputDesign" 
+                          id="accountantEmail" name='accountantEmail' placeholder="Email"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='accountantEmail' />
                         </div>            
                         </div>
                         </div>
                           </div>
                          {/* Accountant */}
 
-                           {/* InsuranceAdviser */}
+                           {/* InsuranceAdvisor */}
                            <div className='my-2'>
                         <h3 className='mt-1'>
                         <div className="iconContainerLg mx-1">
                             <img className="img-fluid" src={businessman} alt="" />
 
                             </div>
-                            Insurance Adviser</h3>
+                            Insurance Advisor</h3>
                         <div className="row">
                        <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserName" className="form-label">Name</   label>
-                          <input type="text" className="form-control shadow inputDesign" id="insuranceAdviserName"
-                           placeholder="Name"/>
+                          <label htmlFor="insuranceAdvisorName" className="form-label">Name</   label>
+                          <Field type="text" className="form-control shadow inputDesign" 
+                          id="insuranceAdvisorName" name="insuranceAdvisorName" placeholder="Name"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='insuranceAdvisorName' />
                         </div>            
                         </div><div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserCompany" className="form-label">Company</   label>
-                          <input type="text" className="form-control shadow inputDesign"
-                           id="insuranceAdviserCompany" placeholder="Company"/>
+                          <label htmlFor="insuranceAdvisorCompany" className="form-label">Company</   label>
+                          <Field type="text" className="form-control shadow inputDesign"
+                          id="insuranceAdvisorCompany" name="insuranceAdvisorCompany" placeholder="Company"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='insuranceAdvisorCompany' />
                         </div>            
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserPhone" className="form-label">Phone</   label>
-                          <input type="number" className="form-control shadow inputDesign"
-                           id="insuranceAdviserPhone" placeholder="Phone"/>
+                          <label htmlFor="insuranceAdvisorPhone" className="form-label">Phone</   label>
+                          <Field type="number" className="form-control shadow inputDesign"
+                          id="insuranceAdvisorPhone" name="insuranceAdvisorPhone" placeholder="Phone"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='insuranceAdvisorPhone' />
                         </div>            
                         </div>
 
                          <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserEmail" className="form-label">Email</   label>
-                          <input type="email" className="form-control shadow inputDesign" id="insuranceAdviserEmail"
-                           placeholder="Email"/>
+                          <label htmlFor="insuranceAdvisorEmail" className="form-label">Email</   label>
+                          <Field type="email" className="form-control shadow inputDesign" 
+                          id="insuranceAdvisorEmail" name="insuranceAdvisorEmail" placeholder="Email"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='insuranceAdvisorEmail' />
                         </div>            
                         </div>
                         </div>
                           </div>
-                         {/* Insurance adviser */}
+                         {/* Insurance Advisor */}
 
                             {/* Doctor */}
                             <div className='my-2'>
@@ -246,29 +318,33 @@ const ProfessionalAdvisers = () => {
                        <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="doctorName" className="form-label">Name</   label>
-                          <input type="text" className="form-control shadow inputDesign" id="doctorName"
-                           placeholder="Name"/>
+                          <Field type="text" className="form-control shadow inputDesign" 
+                          id="doctorName" name='doctorName' placeholder="Name"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='doctorName' />
                         </div>            
                         </div><div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="doctorCompany" className="form-label">Company</   label>
-                          <input type="text" className="form-control shadow inputDesign"
-                           id="doctorCompany" placeholder="Company"/>
+                          <Field type="text" className="form-control shadow inputDesign"
+                           id="doctorCompany" name='doctorCompany' placeholder="Company"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='doctorCompany' />
                         </div>            
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="doctorPhone" className="form-label">Phone</   label>
-                          <input type="number" className="form-control shadow inputDesign"
-                           id="doctorPhone" placeholder="Phone"/>
+                          <Field type="number" className="form-control shadow inputDesign"
+                           id="doctorPhone" name='doctorPhone' placeholder="Phone"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='doctorPhone'/>
                         </div>            
                         </div>
 
                          <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="doctorEmail" className="form-label">Email</   label>
-                          <input type="email" className="form-control shadow inputDesign" id="doctorEmail"
-                           placeholder="Email"/>
+                          <Field type="email" className="form-control shadow inputDesign" 
+                          id="doctorEmail" name='doctorEmail' placeholder="Email"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='doctorEmail' />
                         </div>            
                         </div>
                         </div>
@@ -287,49 +363,48 @@ const ProfessionalAdvisers = () => {
                        <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="otherName" className="form-label">Name</   label>
-                          <input type="text" className="form-control shadow inputDesign" id="otherName"
-                           placeholder="Name"/>
+                          <Field type="text" className="form-control shadow inputDesign" 
+                          id="otherName" name='otherName' placeholder="Name"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='otherName' />
                         </div>            
                         </div><div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="otherCompany" className="form-label">Company</   label>
-                          <input type="text" className="form-control shadow inputDesign"
-                           id="otherCompany" placeholder="Company"/>
+                          <Field type="text" className="form-control shadow inputDesign"
+                           id="otherCompany" name='otherCompany' placeholder="Company"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='otherCompany' />
                         </div>            
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="otherPhone" className="form-label">Phone</   label>
-                          <input type="number" className="form-control shadow inputDesign"
-                           id="otherPhone" placeholder="Phone"/>
+                          <Field type="number" className="form-control shadow inputDesign"
+                           id="otherPhone" name='otherPhone' placeholder="Phone"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='otherPhone' />
                         </div>            
                         </div>
 
                          <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="otherEmail" className="form-label">Email</   label>
-                          <input type="email" className="form-control shadow inputDesign" id="otherEmail"
-                           placeholder="Email"/>
+                          <Field type="email" className="form-control shadow inputDesign" id="otherEmail"
+                          name='otherEmail' placeholder="Email"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='otherEmail' />
                         </div>            
                         </div>
                         </div>
                           </div>
                          {/* Other */}
                          </div>
-                         {/* Professional Adviser Detail Form */}
-                            
-
-                            
-
-                        
-
+                         {/* Professional Advisor Detail Form */}
                            
                             </Modal.Body>
                             <Modal.Footer>
                               <div className="col-md-12">
                                 <button
                                   className="float-end btn w-25  bgColor modalBtn"
-                                  onClick={handleClose}
+                                  // onClick={handleClose}
+                                  type='submit'
                                 >
                                   Save
                                 </button>
@@ -341,32 +416,34 @@ const ProfessionalAdvisers = () => {
                                 </button>
                               </div>
                             </Modal.Footer>
+                            </Form>
+                           </Formik>
                           </Modal>
                            {/* ---------------------------------------------------- */}
                       </div>
-                      {/* Client Professional Advisers */}
+                      {/* Client Professional Advisors */}
 
 
-                       {/* Partner Professional Advisers */}
-                       <div>
-                      <h3 className="">Partner Professional Advisers</h3>
+                       {/* Partner Professional Advisors */}
+                       <div className='mt-5'>
+                      <h3 className="">Partner Professional Advisors</h3>
 
                            {/* 1 row */}
                            <div className="row">
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Do you have any Professional advisers?
+                            Do you have any Professional Advisors?
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="ProfessionalAdvisers2radio" id="ProfessionalAdvisers2opt1" />
-                            <label htmlFor="ProfessionalAdvisers2opt1" className="label1">
+                            <input type="radio" name="ProfessionalAdvisors2radio" id="ProfessionalAdvisors2opt1" />
+                            <label htmlFor="ProfessionalAdvisors2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="ProfessionalAdvisers2radio" id="ProfessionalAdvisers2opt2" />
-                            <label htmlFor="ProfessionalAdvisers2opt2" className="label2">
+                            <input type="radio" name="ProfessionalAdvisors2radio" id="ProfessionalAdvisors2opt2" />
+                            <label htmlFor="ProfessionalAdvisors2opt2" className="label2">
                               <span>NO</span>
                             </label>
                           </div>
@@ -375,7 +452,7 @@ const ProfessionalAdvisers = () => {
                         </div>
                         <div className='col-md-6'>
                         <label  className="form-label">
-                        Please enter the details of your professional advisers
+                        Please enter the details of your professional Advisors
                             </label>
                             <br />
                           
@@ -408,7 +485,7 @@ const ProfessionalAdvisers = () => {
                               closeButton
                             >
                               <Modal.Title className="fontStyle">
-                              Professional Adviser Detail
+                              Professional Advisor Detail
                                 <div className="iconContainerLg">
                             <img className="img-fluid" src={notebook} alt="" />
 
@@ -416,7 +493,7 @@ const ProfessionalAdvisers = () => {
                               </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                {/* Professional Adviser Detail Form */}
+                                {/* Professional Advisor Detail Form */}
 
                          <div className=''>
 
@@ -505,46 +582,46 @@ const ProfessionalAdvisers = () => {
                           </div>
                          {/* Accountant */}
 
-                           {/* InsuranceAdviser */}
+                           {/* InsuranceAdvisor */}
                            <div className='my-2'>
                         <h3 className='mt-1'>
                         <div className="iconContainerLg mx-1">
                             <img className="img-fluid" src={businessman} alt="" />
 
                             </div>
-                            Insurance Adviser</h3>
+                            Insurance Advisor</h3>
                         <div className="row">
                        <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserName2" className="form-label">Name</   label>
-                          <input type="text" className="form-control shadow inputDesign" id="insuranceAdviserName2"
+                          <label htmlFor="insuranceAdvisorName2" className="form-label">Name</   label>
+                          <input type="text" className="form-control shadow inputDesign" id="insuranceAdvisorName2"
                            placeholder="Name"/>
                         </div>            
                         </div><div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserCompany2" className="form-label">Company</   label>
+                          <label htmlFor="insuranceAdvisorCompany2" className="form-label">Company</   label>
                           <input type="text" className="form-control shadow inputDesign"
-                           id="insuranceAdviserCompany2" placeholder="Company"/>
+                           id="insuranceAdvisorCompany2" placeholder="Company"/>
                         </div>            
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserPhone2" className="form-label">Phone</   label>
+                          <label htmlFor="insuranceAdvisorPhone2" className="form-label">Phone</   label>
                           <input type="number" className="form-control shadow inputDesign"
-                           id="insuranceAdviserPhone2" placeholder="Phone"/>
+                           id="insuranceAdvisorPhone2" placeholder="Phone"/>
                         </div>            
                         </div>
 
                          <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="insuranceAdviserEmail2" className="form-label">Email</   label>
-                          <input type="email" className="form-control shadow inputDesign" id="insuranceAdviserEmail2"
+                          <label htmlFor="insuranceAdvisorEmail2" className="form-label">Email</   label>
+                          <input type="email" className="form-control shadow inputDesign" id="insuranceAdvisorEmail2"
                            placeholder="Email"/>
                         </div>            
                         </div>
                         </div>
                           </div>
-                         {/* Insurance adviser */}
+                         {/* Insurance Advisor */}
 
                             {/* Doctor */}
                             <div className='my-2'>
@@ -629,7 +706,7 @@ const ProfessionalAdvisers = () => {
                           </div>
                          {/* Other */}
                          </div>
-                         {/* Professional Adviser Detail Form */}
+                         {/* Professional Advisor Detail Form */}
                             
 
                             
@@ -657,7 +734,7 @@ const ProfessionalAdvisers = () => {
                           </Modal>
                            {/* ---------------------------------------------------- */}
                            </div>
-                      {/* Partner Professional Advisers */}
+                      {/* Partner Professional Advisors */}
 
                      </div>
                   </div>
@@ -674,4 +751,4 @@ const ProfessionalAdvisers = () => {
   )
 }
 
-export default ProfessionalAdvisers
+export default ProfessionalAdvisors

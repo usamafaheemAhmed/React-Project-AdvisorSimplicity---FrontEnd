@@ -19,10 +19,10 @@ function App() {
 
       <div className="col-md-10 m-0 p-0"> 
         <Topbar />
-        <PersonalDetail/>
-        <BusinessTextStucture/>
-        <IncomeExpenses/>
-        <ProfessionalAdvisers/>
+        {/* <PersonalDetail/> */}
+        {/* <BusinessTextStucture/> */}
+        {/* <IncomeExpenses/> */}
+        {/* <ProfessionalAdvisers/> */}
       </div>
     </div>
     {/* <Shapaik /> */}

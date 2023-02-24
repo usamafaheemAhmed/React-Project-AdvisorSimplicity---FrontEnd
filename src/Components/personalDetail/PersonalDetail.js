@@ -15,15 +15,11 @@ import child from "./images/child.svg";
 import male from "./images/male.svg";
 import female from "./images/female.svg";
 import Modal from "react-bootstrap/Modal";
-import SideBarrr from "../SideBar/SideBarrr";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
 const PersonalDetail = () => {
   let letters = /^[a-zA-Z ]*$/;
   let phonePattern=/^[1-9][0-9]{9}$/;
   let postCodePattern=/^\d{4}$/;
-  let homeAddressPattern=/(b(?:(?!\s{2,}|\$|\:|\.\d).)*\s(?:Alley|Ally|Arcade|Arc|Avenue|Ave|Boulevard|Bvd|Bypass|Bypa|Circuit|Cct|Close|Cl|Corner|Crn|Court|Ct|Crescent|Cres|Cul-de-sac|Cds|Drive|Dr|Esplanade|Esp|Green|Grn|Grove|Gr|Highway|Hwy|Junction|Jnc|Lane|Lane|Link|Link|Mews|Mews|Parade|Pde|Place|Pl|Ridge|Rdge|Road|Rd|Square|Sq|Street|St|Terrace|Tce|ALLEY|ALLY|ARCADE|ARC|AVENUE|AVE|BOULEVARD|BVD|BYPASS|BYPA|CIRCUIT|CCT|CLOSE|CL|CORNER|CRN|COURT|CT|CRESCENT|CRES|CUL-DE-SAC|CDS|DRIVE|DR|ESPLANADE|ESP|GREEN|GRN|GROVE|GR|HIGHWAY|HWY|JUNCTION|JNC|LANE|LANE|LINK|LINK|MEWS|MEWS|PARADE|PDE|PLACE|PL|RIDGE|RDGE|ROAD|RD|SQUARE|SQ|STREET|ST|TERRACE|TCE))\s.*?(?=\s{2,})/;
   const [show, setShow] = useState(false);
   const [clientSmoker, setClientSmoker] = useState(true);
   const [clientSmoker2, setClientSmoker2] = useState(true);
@@ -37,6 +33,9 @@ const PersonalDetail = () => {
 
   const [numOfChild, setNumOfChild] = useState(1);
   const [checkNumber, setcheckNumber] = useState();
+  const [listOfChild, setListOfChild] = useState([])
+
+  const [isChildTable, setIsChildTable] = useState(false)
 
 
   const handleClose = () => setShow(false);
@@ -49,8 +48,6 @@ const PersonalDetail = () => {
       document.getElementById("notSmokingID").classList.add('notSelectedimage');
       document.getElementById("notSmokingID").classList.remove('selectedimage');
       setClientSmoker("True")
-
-
     }
       else{
         document.getElementById("notSmokingID").classList.add('selectedimage');
@@ -59,8 +56,6 @@ const PersonalDetail = () => {
         setClientSmoker("False")
 
       }
-    
-    
   }
   let smokerHandler2=(elem)=>{
     if(elem=="smoker"){
@@ -439,23 +434,21 @@ let ageHandler2=()=>{
 
 }
  let modalGenderHandler=(elem)=>{
-
-    
     if(elem=="female"){
       // window.localStorage.setItem("gender",elem)
-    
       document.getElementById("female").classList.add('selectedimage');
       document.getElementById("male").classList.add('notSelectedimage');
       document.getElementById("male").classList.remove('selectedimage');
-      setChildGender("male")
+      setChildGender("female")
 
     }
       else{
+      // alert(elem)
         window.localStorage.setItem("gender",elem)
         document.getElementById("male").classList.add('selectedimage');
         document.getElementById("female").classList.remove('selectedimage');
         document.getElementById("female").classList.add('notSelectedimage');
-        setChildGender("female")
+        setChildGender("male")
       }
     
     
@@ -478,6 +471,11 @@ const initialValues2={
   childAge:'',
   }
   const onSubmit2= (values,action) => {
+
+
+
+    let age=document.getElementById("childAge").value;
+    
     let addChildData={
       childNameID:values.childNameID,
       childDoBID:values.childDoBID,
@@ -487,19 +485,26 @@ const initialValues2={
       CostofSecondaryEducation:values.CostofSecondaryEducation,
       CostofUniEducation:values.CostofUniEducation,
       courseYears:values.courseYears,
-      
+       childAge:age,
+      // childGender:window.localStorage.getItem("gender"),
+      childGender:childGender
     }
-    console.log(values);
+     setListOfChild([...listOfChild,addChildData])
+    console.log(addChildData);
+    setChildGender("female")
     //  handleClose ();
     if(numOfChild==checkNumber){
       // alert("1")
       handleClose ();
       setNumOfChild(1)
+      setIsChildTable(true)
     }
     else{
       setNumOfChild(numOfChild+1)
-      alert(numOfChild)
+      // alert(numOfChild)
       handleClose ();
+      setIsChildTable(true)
+
       // setShow(true)
       setTimeout(() => {
         handleShow();
@@ -627,6 +632,14 @@ const initialValues2={
      
  
     }
+   }
+
+   let deleteHandler=(e)=>{
+    console.log("delete",e)
+   }
+
+   let updateHandler=(e)=>{
+    console.log("update",e)
    }
 
   return (
@@ -1635,8 +1648,6 @@ const initialValues2={
           <div className="col-md-2"></div>
 
           <div className="col-md-12">
-           
-       
               <div className=" shadow px-4 py-4">
               <h3 className=" heading">
                 Children Details
@@ -2275,13 +2286,10 @@ const initialValues2={
                         
 
 
-                        
+                 
                       />
                       {/* <p className="" id="errorDes">error</p> */}
                       <ErrorMessage component='div' className="text-danger fw-bold"name="DescriptionID"/>
-
-
-
                     </div>
                   </div>
                 </div>
@@ -2296,12 +2304,9 @@ const initialValues2={
 </div>
         </div>
               </div>
-            
             {/*end children details form */}
           </div>
-
-          
-        </div>
+          </div>
       </div>
       {/* -------------end children details form----------------------------- */}
       
@@ -2309,6 +2314,52 @@ const initialValues2={
       </Form>
                       }
                   </Formik>
+
+                  <div className="row mx-3">
+                  <div className="col-md-12 mt-1">
+            
+          {/*  table  */}
+          { isChildTable &&
+         <div   className='table-responsive my-3' id="childTable">
+         <table className="table table-bordered table-hover text-center">
+  <thead className="text-light" id="tableHead">
+  <tr>
+        <th>Child Name</th>
+        <th>Date of Birth</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Relationship</th>
+       <th>Operations</th>
+    </tr>
+  </thead>
+  <tbody>
+  {  listOfChild. map((elem,index)=>{
+        let {childNameID,childDoBID,childRelationship,childAge,childGender}=elem;
+return(
+    
+    <tr key={index}>
+        <td>{childNameID}</td>
+        <td>{childDoBID}</td>
+        <td>{childAge}</td>
+        <td>{childGender}</td>
+        <td>{childRelationship}</td>
+        <td >
+         {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+         <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+
+         </td> 
+    
+    </tr>
+    );
+        
+    })}
+  </tbody>
+</table>
+         </div>
+}
+          {/*  table  */}
+          </div>
+                  </div>
     </>
   );
 };

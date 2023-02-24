@@ -173,3 +173,7 @@ input[type="number"] {
     color: black;
     font-weight: 500;
   }
+
+  #tableHead{
+    background-color: #36B446;
+  }
