@@ -21,7 +21,7 @@ function App() {
         <Topbar />
         {/* <PersonalDetail/> */}
         {/* <BusinessTextStucture/> */}
-        {/* <IncomeExpenses/> */}
+        <IncomeExpenses/>
         {/* <ProfessionalAdvisers/> */}
       </div>
     </div>

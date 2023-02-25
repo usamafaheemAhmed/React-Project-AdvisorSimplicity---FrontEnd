@@ -182,8 +182,6 @@ let childrenHandlerzero=(elem)=>{
   let threeChildren3=document.getElementById("threeChildren").classList;
   let fourChildren4=document.getElementById("fourChildren").classList;
   let fiveChildren5=document.getElementById("fiveChildren").classList;
-
-   
   
   noChildren.remove("selectedchildBtn");
   noChildren.add("childBtn");
@@ -416,10 +414,6 @@ const validationSchema = Yup.object({
 
         })
 
-       
-   
-
-
 // ----------------------------------------------------------------------
 let ageHandler2=()=>{
   let DOB=document.getElementById("childDoBID").value;
@@ -453,7 +447,6 @@ let ageHandler2=()=>{
     
     
   }
-
   
 const initialValues2={
   childNameID:"",

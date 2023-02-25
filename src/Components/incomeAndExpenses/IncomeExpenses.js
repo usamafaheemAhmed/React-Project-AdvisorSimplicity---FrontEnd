@@ -10,8 +10,8 @@ import noteBook from "./images/notebook.svg"
 import moneyBag from "./images/moneyBag.svg"
 import dollarBag from "./images/dollarBag.svg"
 
-
-
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from'yup';
 
 
 const IncomeExpenses = () => {
@@ -24,11 +24,43 @@ const IncomeExpenses = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
+  let Client_initialValues = {
+    centrelinkPayments1: '',
+    PaymentAmountFortnightly1: '',
+    AnnualPaymentAmount1: '',
+    FamilyTaxBenefit1: '',
+    AssetBeenGiftedHM1: '',
+    AssetBeenGiftedYears1: '',
+    ActualDateofyear1: ''
+  }
 
+  let Client_validationSchema = Yup.object({
+    centrelinkPayments1: Yup.string().required('Required'),
+    PaymentAmountFortnightly1: Yup.number().required('Required'),
+    AnnualPaymentAmount1: Yup.string().required('Required'),
+    FamilyTaxBenefit1: Yup.string().required('Required'),
+    AssetBeenGiftedHM1: Yup.string().required('Required'),
+    AssetBeenGiftedYears1: Yup.string().required('Required'),
+    ActualDateofyear1: Yup.string().required('Required')
+  })
 
+  let Client_onSubmit = (Values) => {}
 
- 
+  let Partner_initialValues = {    
+    centrelinkPayments2: '',
+    PaymentAmountFortnightly2:'',
+    AnnualPaymentAmount2: '',
+    FamilyTaxBenefit2: '',
+  }
 
+  let Partner_validationSchema = Yup.object({ 
+    centrelinkPayments2: Yup.string().required('Required'),
+    PaymentAmountFortnightly2: Yup.number().required('Required'),
+    AnnualPaymentAmount2: Yup.string().required('Required'),
+    FamilyTaxBenefit2: Yup.string().required('Required')
+  })
+
+  let Partner_onSubmit = (Values) => {}
   
   return (
     <>
@@ -1041,28 +1073,31 @@ const IncomeExpenses = () => {
                         </div>
                       {/* 1 row */}
 
-                      {/* 2 row */}
+                      <Formik initialValues={Client_initialValues}
+                      validationSchema={Client_validationSchema} onSubmit={Client_onSubmit}>
+                        <Form>
+                          {/* 2 row */}
                         <div className="row">
                         <div className="col-md-6">
                                 <div className="mb-3">
                             <label htmlFor="centrelinkPayments1" className="form-label">
                             Centrelink Payments
                             </label>
-                            <select
+                            <Field
                               id="centrelinkPayments1"
+                              name='centrelinkPayments1'
                               className="form-select shadow  inputDesign"
+                              as='select'
                             >
-                              <option>Select</option>
+                              <option value=''>Select</option>
                               <option value="NotEligible">Not Eligible</option>
                               <option value="AgePension">Age Pension</option>
                               <option value="Newstart Allowance">Newstart Allowance</option>
                               <option value="Disability Pension">Disability Pension</option>
                               <option value="CarersPayment">Carers Payment</option>
                               <option value="Other">Other</option>
-
-
-                      
-                            </select>
+                              </Field>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name="centrelinkPayments1" />
                                 </div>
     
                         </div>
@@ -1070,19 +1105,22 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="PaymentAmountFortnightly1" className="form-label">Payment Amount (Fortnightly)</   label>
-                          <input type="number" className="form-control shadow inputDesign" id="PaymentAmountFortnightly1" placeholder="Payment Amount (Fortnightly)"/>
+                          <Field type="number" className="form-control shadow inputDesign" 
+                          id="PaymentAmountFortnightly1" name="PaymentAmountFortnightly1" placeholder="Payment Amount (Fortnightly)"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name="PaymentAmountFortnightly1" />
                         </div>            
                         </div>
                       
                         </div>
                       {/* 2 row */}
-
-                        {/* 3 row */}
-                        <div className="row">
+                      {/* 3 row */}
+                      <div className="row">
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="AnnualPaymentAmount1" className="form-label">Annual Payment Amount</   label>
-                          <input type="number" className="form-control shadow inputDesign" id="AnnualPaymentAmount1" placeholder="Annual Payment Amount"/>
+                          <Field type="number" className="form-control shadow inputDesign" 
+                          id="AnnualPaymentAmount1" name="AnnualPaymentAmount1" placeholder="Annual Payment Amount"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name="AnnualPaymentAmount1" />
                         </div>            
                         </div>
 
@@ -1116,16 +1154,19 @@ const IncomeExpenses = () => {
                             <label htmlFor="FamilyTaxBenefit1" className="form-label">
                             Are you claiming the Family Tax Benefit?
                             </label>
-                            <select
+                            <Field
                               id="FamilyTaxBenefit1"
+                              name='FamilyTaxBenefit1'
                               className="form-select shadow  inputDesign"
+                              as='select'
                             >
-                              <option>Select</option>
+                              <option value=''>Select</option>
                               <option value="Part A">Part A</option>
                               <option value="Part B">Part B</option>
                               <option value="Part A & B">Part A & B</option>
                               <option value="No">No</option>
-                            </select>
+                            </Field>
+                            <ErrorMessage component='div' className='text-danger fw-bold' name="FamilyTaxBenefit1" />
                                 </div>
     
                         </div>
@@ -1189,8 +1230,9 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="AssetBeenGiftedHM1" className="form-label">How Much?</   label>
-                          <input type="number" className="form-control shadow inputDesign" 
-                          id="AssetBeenGiftedHM1" placeholder="How Much?"/>
+                          <Field type="number" className="form-control shadow inputDesign" 
+                          id="AssetBeenGiftedHM1" name="AssetBeenGiftedHM1" placeholder="How Much?"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name="AssetBeenGiftedHM1" />
                         </div>            
                         </div>
 
@@ -1199,10 +1241,12 @@ const IncomeExpenses = () => {
                             <label htmlFor="" className="form-label">
                             How many years back?
                             </label>
-                            <select
+                            <Field
                               id="AssetBeenGiftedYears1"
-                              className="form-select shadow  inputDesign">
-                              <option>Select</option>
+                              name='AssetBeenGiftedYears1'
+                              className="form-select shadow  inputDesign"
+                              as='select'>
+                              <option value=''>Select</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -1213,7 +1257,8 @@ const IncomeExpenses = () => {
                               <option value="8">8</option>
 
 
-                            </select>
+                            </Field>
+                            <ErrorMessage component='div' className='text-danger fw-bold' name="AssetBeenGiftedYears1" />
                                 </div>
     
                         </div>
@@ -1227,17 +1272,28 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="ActualDateofyear1" className="form-label">Actual Date of year</   label>
-                          <input type="date" className="form-control shadow inputDesign" 
-                          id="ActualDateofyear1" />
+                          <Field type="date" className="form-control shadow inputDesign" 
+                          id="ActualDateofyear1" name="ActualDateofyear1" />
+                          <ErrorMessage component='div' className='text-danger fw-bold' name="ActualDateofyear1" />
                         </div>            
                         </div>
 
                         </div>
                       {/* 7 row */}
-                   </div>
+
+
+                      <div className="row mt-5 mb-3">
+                        <div className="col-md-12">
+                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                        </div>
+                      </div>
+                      
+                      
+                        </Form>
+                      </Formik>
+                      </div>
                   </div>
-
-
                 </div>
                 {/* Client Centre Link */}
 
@@ -1281,29 +1337,32 @@ const IncomeExpenses = () => {
                         </div>
                       </div>
                     {/* 1 row */}
-
-                    {/* 2 row */}
+                    
+                    <Formik initialValues={Partner_initialValues}
+                    validationSchema={Partner_validationSchema} onSubmit={Partner_onSubmit}>
+                      <Form>
+                        {/* 2 row */}
                       <div className="row">
                       <div className="col-md-6">
                               <div className="mb-3">
                           <label htmlFor="centrelinkPayments2" className="form-label">
                           Centrelink Payments
                           </label>
-                          <select
+                          <Field
                             id="centrelinkPayments2"
+                            name='centrelinkPayments2'
                             className="form-select shadow  inputDesign"
+                            as='select'
                           >
-                            <option>Select</option>
+                            <option value=''>Select</option>
                             <option value="NotEligible">Not Eligible</option>
                             <option value="AgePension">Age Pension</option>
                             <option value="Newstart Allowance">Newstart Allowance</option>
                             <option value="Disability Pension">Disability Pension</option>
                             <option value="CarersPayment">Carers Payment</option>
-                            <option value="Other">Other</option>
-
-
-                    
-                          </select>
+                            <option value="Other">Other</option>                    
+                          </Field>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name="centrelinkPayments2" />
                               </div>
   
                       </div>
@@ -1311,7 +1370,9 @@ const IncomeExpenses = () => {
                       <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="PaymentAmountFortnightly2" className="form-label">Payment Amount (Fortnightly)</   label>
-                        <input type="number" className="form-control shadow inputDesign" id="PaymentAmountFortnightly2" placeholder="Payment Amount (Fortnightly)"/>
+                        <Field type="number" className="form-control shadow inputDesign" 
+                        id="PaymentAmountFortnightly2" name="PaymentAmountFortnightly2" placeholder="Payment Amount (Fortnightly)"/>
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="PaymentAmountFortnightly2" />
                       </div>            
                       </div>
                     
@@ -1323,7 +1384,9 @@ const IncomeExpenses = () => {
                       <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="AnnualPaymentAmount2" className="form-label">Annual Payment Amount</   label>
-                        <input type="number" className="form-control shadow inputDesign" id="AnnualPaymentAmount2" placeholder="Annual Payment Amount"/>
+                        <Field type="number" className="form-control shadow inputDesign" 
+                        id="AnnualPaymentAmount2" name="AnnualPaymentAmount2" placeholder="Annual Payment Amount"/>
+                        <ErrorMessage component='div' className='text-danger fw-bold' name="AnnualPaymentAmount2" />
                       </div>            
                       </div>
 
@@ -1357,23 +1420,36 @@ const IncomeExpenses = () => {
                           <label htmlFor="FamilyTaxBenefit2" className="form-label">
                           Are you claiming the Family Tax Benefit?
                           </label>
-                          <select
+                          <Field
                             id="FamilyTaxBenefit2"
+                            name='FamilyTaxBenefit2'
                             className="form-select shadow  inputDesign"
+                            as='select'
                           >
-                            <option>Select</option>
+                            <option value=''>Select</option>
                             <option value="Part A">Part A</option>
                             <option value="Part B">Part B</option>
                             <option value="Part A & B">Part A & B</option>
                             <option value="No">No</option>
-                          </select>
+                          </Field>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name="FamilyTaxBenefit2" />
                               </div>
-  
-                      </div>
-
-                  
-                      </div>
+                            </div>
+                          </div>
                     {/* 4 row */}
+
+
+                      <div className="row mt-5 mb-3">
+                        <div className="col-md-12">
+                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                        </div>
+                      </div>
+                      
+                      
+                      </Form>
+                    </Formik>
+
                   </div>
                 </div>
 
@@ -1529,7 +1605,7 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Do u have any other taxable income (including overseas pensions)?
+                            Do you have any other taxable income (including overseas pensions)?
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
@@ -1727,7 +1803,7 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Do u have any other taxable income (including overseas pensions)?
+                            Do you have any other taxable income (including overseas pensions)?
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
