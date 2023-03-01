@@ -1,7 +1,6 @@
-import React,{useEffect, useState} from "react";
+import React,{ useState } from "react";
 import "./incomeExpenses.css"
 import Modal from "react-bootstrap/Modal";
-import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 
 import plus from "./images/plus.svg"
@@ -24,27 +23,518 @@ const IncomeExpenses = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
-  let Client_initialValues = {
+  const [currentSaleryState, setCurrentSaleryState] = useState(false);
+  const [carState, setCarState] = useState(false);
+  const [creditCardState, seTcreditCardState] = useState(false)
+  const [sacrificState, setSacrificState] = useState(false);
+  const [contributionState, setContributionState] = useState(false);
+  const [otherTaxableIncomeState, setotherTaxableIncomeState] = useState(false)
+  const [currentSaleryState2, setCurrentSaleryState2] = useState(false);
+  const [carState2, setCarState2] = useState(false);
+  const [creditCardState2, seTcreditCardState2] = useState(false)
+  const [sacrificState2, setSacrificState2] = useState(false);
+  const [contributionState2, setContributionState2] = useState(false);
+  let letters = /^[a-zA-Z ]*$/;
+
+   
+let currentlySalaryPackageHandler2=(elem)=>{
+  if (elem==="No"){
+    setCurrentSaleryState2(false)
+  
+  }
+  else{
+    setCurrentSaleryState2(true)
+  
+  }
+  
+  }
+  
+  let sacrificeradioHandler2=(elem)=>{
+    if (elem==="No"){
+      setSacrificState2(false)
+    
+    }
+    else{
+      setSacrificState2(true)
+    
+    }
+    
+    }
+  
+    let contributionradioHandler2=(elem)=>{
+      if (elem==="No"){
+        setContributionState2(false)
+      
+      }
+      else{
+        setContributionState2(true)
+      
+      }
+      
+      }
+  
+  let carStateHandler2=(elem)=>{
+    let myCar=document.getElementById("car2");
+    if(myCar.checked){
+      setCarState2(true)
+    }
+    else{
+      setCarState2(false)
+    }
+    
+    
+  }
+  
+  let creditCardStateHandler2=(elem)=>{
+    
+    let creditCard=document.getElementById("CreditCard2");
+    let Mortgage=document.getElementById("Mortgage2");
+    let Other=document.getElementById("Other2");
+  
+  
+    if(creditCard.checked){
+      seTcreditCardState2(true)
+    }
+    else if(Mortgage.checked){
+      seTcreditCardState2(true)
+    }
+    
+    else if(Other.checked){
+      seTcreditCardState2(true)
+    }
+  
+    else{
+      seTcreditCardState2(false)
+    }
+    
+  }
+    
+  let currentlySalaryPackageHandler=(elem)=>{
+  if (elem==="No"){
+    setCurrentSaleryState(false)
+  
+  }
+  else{
+    setCurrentSaleryState(true)
+  
+  }
+  
+  }
+  
+  let sacrificeradioHandler=(elem)=>{
+    if (elem==="No"){
+      setSacrificState(false)
+    
+    }
+    else{
+      setSacrificState(true)
+    
+    }
+    
+    }
+  
+    let contributionradioHandler=(elem)=>{
+      if (elem==="No"){
+        setContributionState(false)
+      
+      }
+      else{
+        setContributionState(true)
+      
+      }
+      
+      }
+  
+  let carStateHandler=(elem)=>{
+    let myCar=document.getElementById("car1");
+    if(myCar.checked){
+      setCarState(true)
+    }
+    else{
+      setCarState(false)
+    }
+    
+    
+  }
+  
+  let creditCardStateHandler=(elem)=>{
+    
+    let creditCard=document.getElementById("CreditCard1");
+    let Mortgage=document.getElementById("Mortgage1");
+    let Other=document.getElementById("Other1");
+  
+  
+    if(creditCard.checked){
+      seTcreditCardState(true)
+    }
+    else if(Mortgage.checked){
+      seTcreditCardState(true)
+    }
+    
+    else if(Other.checked){
+      seTcreditCardState(true)
+    }
+  
+    else{
+      seTcreditCardState(false)
+    }
+    
+    
+  }
+  
+  function ChangeDateFormat(CDoB,HDate){
+    let CurrentDate = new Date(document.getElementById(HDate).value);
+    let dd = CurrentDate.getDate();
+    let mm = CurrentDate.getMonth();
+    let yyyy = CurrentDate.getFullYear();
+    let setDate =  dd + '/' + (mm+1) + '/' + yyyy;
+    document.getElementById(CDoB).value = setDate;
+  }
+  
+  let otherTaxableIncomeHandler=(elem)=>{
+    if (elem==="No"){
+      setotherTaxableIncomeState(false)
+    
+    }
+    else{
+      setotherTaxableIncomeState(true)
+    
+    }
+    
+    }
+
+  const initialValues={
+
+    //Client employment details
+    clientPrimaryOccupation:'',
+    currentlySalaryPackageRadio:'No',
+    clientEmployerFBTStatus:'',
+    clientCostBaseofCar:'',
+    FBTradio:'No',
+    clientCreditCardMortgageorOther:'',
+    clientRunningCostsofCarPackaged:'',
+    clientEmploymentStatus:'',
+    clientNameofCompany:'',
+    clientCommencementDate:'',
+    clientNumberofhoursperweek:'',
+    clientSalaryExcludingSuper:'',
+    clientSuperAnnuationGuaranteeNumber:'',
+    clientSuperAnnuationGuaranteeType:'',
+    UnusedSickLeaveEntitlementsNumber:'',
+    UnusedSickLeaveEntitlementsType:'',
+
+    clientUnusedAnnualleaveentitlementsNumber:'',
+    clientUnusedAnnualleaveentitlementsType:'',
+    clientUnusedlongserviceleaveNumber:'',
+    clientUnusedlongserviceleaveType:'',
+    sacrificeradio:'No',
+    clientAbilitytoSalarySacrificeHM:'',
+    contributionradio:'No',
+    clientTaxContributiontoSuperHM:'',
+    significantlyradio:"No",
+    ChoiceofFundradio:'No',
+    whatDoYouHave:[],
+
+    // partner employeement Detaails
+    clientPrimaryOccupation2:'',
+    currentlySalaryPackageRadio2:'No',
+    clientEmployerFBTStatus2:'',
+    clientCostBaseofCar2:'',
+    FBTradio2:'No',
+    clientCreditCardMortgageorOther2:'',
+    clientRunningCostsofCarPackaged2:'',
+    clientEmploymentStatus2:'',
+    clientNameofCompany2:'',
+    clientCommencementDate2:'',
+    clientNumberofhoursperweek2:'',
+    clientSalaryExcludingSuper2:'',
+    clientSuperAnnuationGuaranteeNumber2:'',
+    clientSuperAnnuationGuaranteeType2:'',
+    UnusedSickLeaveEntitlementsNumber2:'',
+    UnusedSickLeaveEntitlementsType2:'',
+
+    clientUnusedAnnualleaveentitlementsNumber2:'',
+    clientUnusedAnnualleaveentitlementsType2:'',
+    clientUnusedlongserviceleaveNumber2:'',
+    clientUnusedlongserviceleaveType2:'',
+    sacrificeradio2:'No',
+    clientAbilitytoSalarySacrificeHM2:'',
+    contributionradio2:'No',
+    clientTaxContributiontoSuperHM2:'',
+    significantlyradio2:"No",
+    ChoiceofFundradio2:'No',
+    whatDoYouHave2:[],
+    // partner employeement Detaails
+
+    //Client Centre Link
     centrelinkPayments1: '',
+    centerlink1radio: 'No',
     PaymentAmountFortnightly1: '',
     AnnualPaymentAmount1: '',
+    CarerAllowance1radio: 'No',
     FamilyTaxBenefit1: '',
+    currentlyrenting1radio: 'No',
+    AssetGifted1radio: 'No',
     AssetBeenGiftedHM1: '',
     AssetBeenGiftedYears1: '',
     ActualDateofyear1: '',
 
+    //Partner Centre Link
+    centerlink2radio: 'No',
+    centrelinkPayments2: '',
+    PaymentAmountFortnightly2:'',
+    AnnualPaymentAmount2: '',
+    CarerAllowance2radio: 'No',
+    FamilyTaxBenefit2: '',
+
+    //Client Other Taxable Income
+    AustralianResident1radio:'No',
+    PrivateHospital1radio:'No',
+    HECSdebt1radio:'No',
+    claimingRebate1radio:'No',
+    applicationPAYG1radio:'No',
+    TaxPaymentsOutstanding1:'',
+    otherTaxableIncome1radio:'No',
+    AmountofOtherTaxableIncome1:'',
+    TaxLossesCarriedForward1:'',
+
+    //Partner Other Taxable Income
+    AustralianResident2radio: 'No',
+    PrivateHospital2radio: 'No',
+    HECSdebt2radio: "No",
+    claimingRebate2radio: 'No',
+    applicationPAYG2radio: 'No',
+    TaxPaymentsOutstanding2: '',
+    otherTaxableIncome2radio: 'No',
+    TaxLossesCarriedForward2: '',
+    AmountofOtherTaxableIncome2: '',
+
+    // Expenses
     totalGeneralLivingCosts: '',
     incomeInRetirement: '',
     lumpsumExpensesopt1: '',
+    lumpsumExpensesradio: "No",
     lumpSumExpenseDescription: '',
     lumpSumExpenseYear: '',
     lumpSumExpenseAmount: '',
+    expectingInheritancesradio: 'No',
     expectingInheritancesDescription: '',
     expectingInheritancesYear: '',
-    expectingInheritancesAmount: ''
+    expectingInheritancesAmount: '',
   }
 
-  let Client_validationSchema = Yup.object({
+  const onSubmit= (values,action) => {
+  console.log(values)
+  }
+  
+  const validationSchema = Yup.object({
+    clientPrimaryOccupation: Yup.string().matches(letters, "only letters").required('Required') ,
+    clientEmployerFBTStatus:Yup.string().required( "Required"),
+    clientCostBaseofCar:Yup.number()
+    .when('whatDoYouHave',{
+      is: val => val && val.length <=4,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    clientRunningCostsofCarPackaged:Yup.number()
+    .when('whatDoYouHave',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    clientCreditCardMortgageorOther:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientEmploymentStatus:Yup.string().required( "Required"),
+    clientNameofCompany: Yup.string().matches(letters, "only letters").required('Required') ,
+    clientCommencementDate:Yup.string().required( "Required"),
+    clientNumberofhoursperweek:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientSalaryExcludingSuper:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientSuperAnnuationGuaranteeNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientSuperAnnuationGuaranteeType:Yup.string().required( "Required"),
+    UnusedSickLeaveEntitlementsNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    UnusedSickLeaveEntitlementsType:Yup.string().required( "Required"),
+    clientUnusedAnnualleaveentitlementsNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientUnusedAnnualleaveentitlementsType:Yup.string().required( "Required"),
+    clientUnusedlongserviceleaveNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientUnusedlongserviceleaveType:Yup.string().required( "Required"),
+    clientAbilitytoSalarySacrificeHM:Yup.number()
+    .when('sacrificeradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    clientTaxContributiontoSuperHM:Yup.number()
+    .when('contributionradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    
+
+        // partner employeement Details
+        clientPrimaryOccupation2: Yup.string().matches(letters, "only letters").required('Required') ,
+        clientEmployerFBTStatus2:Yup.string().required( "Required"),
+        clientCostBaseofCar2:Yup.number()
+        .when('whatDoYouHave2',{
+          is: val => val && val.length <=4,
+          then:Yup.number().required("Required")
+          .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
+          otherwise: Yup.number().notRequired()
+        }),
+        clientRunningCostsofCarPackaged2:Yup.number().required("Required")
+        
+          .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
+    
+        clientCreditCardMortgageorOther2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        clientEmploymentStatus2:Yup.string().required( "Required"),
+        clientNameofCompany2: Yup.string().matches(letters, "only letters").required('Required') ,
+        clientCommencementDate2:Yup.string().required( "Required"),
+        clientNumberofhoursperweek2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        clientSalaryExcludingSuper2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        clientSuperAnnuationGuaranteeNumber2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        clientSuperAnnuationGuaranteeType2:Yup.string().required( "Required"),
+        UnusedSickLeaveEntitlementsNumber2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        UnusedSickLeaveEntitlementsType2:Yup.string().required( "Required"),
+        clientUnusedAnnualleaveentitlementsNumber2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        clientUnusedAnnualleaveentitlementsType2:Yup.string().required( "Required"),
+        clientUnusedlongserviceleaveNumber2:Yup.number().required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+        clientUnusedlongserviceleaveType2:Yup.string().required( "Required"),
+        clientAbilitytoSalarySacrificeHM2:Yup.number()
+        .when('sacrificeradio2',{
+          is: val => val && val.length ===3,
+          then:Yup.number().required("Required")
+          .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
+          otherwise: Yup.number().notRequired()
+        }),
+        clientTaxContributiontoSuperHM2:Yup.number()
+        .when('contributionradio2',{
+          is: val => val && val.length ===3,
+          then:Yup.number().required("Required")
+          .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
+          otherwise: Yup.number().notRequired()
+        }),
+    
+    
+        AmountPaidReceivedID:Yup.number()
+        .when('childSupportReceived',{
+          is: val => val && val.length ===4,
+          then:Yup.number().required("Required")
+          .test(
+            "Is positive?",
+            "Amount must be a positive number",
+            (value)=> value >0
+          ),
+          otherwise: Yup.number().notRequired()
+        }),
+
+    // partner employeement Details
+
+    //Client Centre Link
     centrelinkPayments1: Yup.string().required('Required'),
     PaymentAmountFortnightly1: Yup.number().required('Required'),
     AnnualPaymentAmount1: Yup.string().required('Required'),
@@ -53,6 +543,43 @@ const IncomeExpenses = () => {
     AssetBeenGiftedYears1: Yup.string().required('Required'),
     ActualDateofyear1: Yup.string().required('Required'),
 
+    //Partner Centre Link
+    centrelinkPayments2: Yup.string().required('Required'),
+    PaymentAmountFortnightly2: Yup.number().required('Required'),
+    AnnualPaymentAmount2: Yup.string().required('Required'),
+    FamilyTaxBenefit2: Yup.string().required('Required'),
+
+    //Client other taxable income
+    TaxPaymentsOutstanding1:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value)=> value >0
+    ),
+    TaxLossesCarriedForward1:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value)=> value >0
+    ),
+    AmountofOtherTaxableIncome1:Yup.number()
+    .when('otherTaxableIncome1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+    //Partner Other Taxable Income
+    TaxPaymentsOutstanding2: Yup.string().required('Required'),
+    TaxLossesCarriedForward2: Yup.string().required('Required'),
+    AmountofOtherTaxableIncome2: Yup.string().required('Required'),
+
+    //Expenses
     totalGeneralLivingCosts: Yup.number().required('Required'),
     incomeInRetirement: Yup.number().required('Required'),
     lumpsumExpensesopt1: Yup.string().required('Required'),
@@ -61,34 +588,163 @@ const IncomeExpenses = () => {
     lumpSumExpenseAmount: Yup.number().required('Required'),
     expectingInheritancesDescription: Yup.string().required('Required'),
     expectingInheritancesYear: Yup.string().required('Required'),
-    expectingInheritancesAmount: Yup.number().required('Required')
+    expectingInheritancesAmount: Yup.number().required('Required'),
   })
 
-  let Client_onSubmit = (Values) => {}
+  const initialValues2={
+    houseHoldrent:'',
+    houseHoldElectricity:'',
+    houseHoldrentType:'',
+    houseHoldElectricityType:'',
+    houseHoldWaterRates:'',
+    houseHoldWaterRateType:'',
 
-  let Partner_initialValues = {    
-    centrelinkPayments2: '',
-    PaymentAmountFortnightly2:'',
-    AnnualPaymentAmount2: '',
-    FamilyTaxBenefit2: '',
+    houseHoldGas:'',
+    houseHoldGasType:'',
+    houseHoldPhone:'',
+    houseHoldPhoneType:'',
+    houseHoldCouncilRates:'',
+    houseHoldCouncilRatesType:'',
+    houseHoldInternet:'',
+houseHoldInternetType:'',
+houseHoldOther:'',
+houseHoldOtherType:'',
 
-    TaxPaymentsOutstanding2: '',
-    TaxLossesCarriedForward2: '',
-    AmountofOtherTaxableIncome2: ''
+PersonalFood:'',
+PersonalFoodType:'',
+PersonalClothing:'',
+PersonalClothingValueType:'',
+
+PersonalCigarettes:'',
+PersonalCigarettesType:'',
+PersonalAlcohol:'',
+PersonalAlcoholType:'',
+
+PersonalSubscriptionFees:'',
+PersonalSubscriptionFeesType:'',
+PersonalMembershipsClubs:'',
+PersonalMembershipsClubsType:'',
+
+PersonalOther:'',
+PersonalOtherType:'',
+PersonalHolidays:'',
+PersonalHolidaysType:'',
+
+PersonalDiningOut:'',
+PersonalDiningOutType:'',
+PersonalMobilePhone:'',
+PersonalMobilePhoneType:'',
+
+PersonalMedicalExpenses:'',
+PersonalMedicalExpensesType:'',
+
+TransportPetrol:'',
+TransportPetrolType:'',
+TransportCarRepairs:'',
+TransportCarRepairsType:'',
+
+TransportCarRegistration:'',
+TransportCarRegistrationType:'',
+PublicTransport:'',
+PublicTransportType:'',
+TransportOther:'',
+TransportOtherType:'',
+
+PrivateHealth:'',
+PrivateHealthType:'',
+LifeTPDTrauma:'',
+LifeTPDTraumaType:'',
+
+
+InsuranceIncomeProtection:'',
+InsuranceIncomeProtectionType:'',
+InsuranceCar:'',
+InsuranceCarType:'',
+
+InsuranceHomeContents:'',
+InsuranceHomeContentsType:'',
+InsuranceOther:'',
+TransInsuranceType:'',
+
   }
 
-  let Partner_validationSchema = Yup.object({ 
-    centrelinkPayments2: Yup.string().required('Required'),
-    PaymentAmountFortnightly2: Yup.number().required('Required'),
-    AnnualPaymentAmount2: Yup.string().required('Required'),
-    FamilyTaxBenefit2: Yup.string().required('Required'),
-    
-    TaxPaymentsOutstanding2: Yup.string().required('Required'),
-    TaxLossesCarriedForward2: Yup.string().required('Required'),
-    AmountofOtherTaxableIncome2: Yup.string().required('Required')
-  })
+  const onSubmit2=(values)=>{
+    console.log(values)
 
-  let Partner_onSubmit = (Values) => {}
+  }
+
+  const validationSchema2=Yup.object({
+    houseHoldrent:Yup.number().required("Required"),
+    houseHoldElectricity:Yup.number().required("Required"),
+    houseHoldrentType:Yup.string().required("Required"),
+    houseHoldElectricityType:Yup.string().required("Required"),
+    houseHoldWaterRateType:Yup.string().required("Required"),
+    houseHoldWaterRates:Yup.string().required("Required"),
+    houseHoldGas:Yup.string().required("Required"),
+    houseHoldGasType:Yup.string().required("Required"),
+    houseHoldPhone:Yup.string().required("Required"),
+    houseHoldPhoneType:Yup.string().required("Required"),
+    houseHoldCouncilRates:Yup.string().required("Required"),
+    houseHoldCouncilRatesType:Yup.string().required("Required"),
+
+    houseHoldInternet:Yup.string().required("Required"),
+    houseHoldInternetType:Yup.string().required("Required"),
+    houseHoldOther:Yup.string().required("Required"),
+    houseHoldOtherType:Yup.string().required("Required"),
+
+    PersonalFood:Yup.string().required("Required"),
+    PersonalFoodType:Yup.string().required("Required"),
+    PersonalClothing:Yup.string().required("Required"),
+    PersonalClothingValueType:Yup.string().required("Required"),
+
+    PersonalCigarettes:Yup.string().required("Required"),
+    PersonalCigarettesType:Yup.string().required("Required"),
+    PersonalAlcohol:Yup.string().required("Required"),
+    PersonalAlcoholType:Yup.string().required("Required"),
+
+    PersonalSubscriptionFees:Yup.string().required("Required"),
+    PersonalSubscriptionFeesType:Yup.string().required("Required"),
+    PersonalMembershipsClubs:Yup.string().required("Required"),
+    PersonalMembershipsClubsType:Yup.string().required("Required"),
+
+    PersonalOther:Yup.string().required("Required"),
+    PersonalOtherType:Yup.string().required("Required"),
+    PersonalHolidays:Yup.string().required("Required"),
+    PersonalHolidaysType:Yup.string().required("Required"),
+
+    PersonalDiningOut:Yup.string().required("Required"),
+    PersonalDiningOutType:Yup.string().required("Required"),
+    PersonalMobilePhone:Yup.string().required("Required"),
+    PersonalMobilePhoneType:Yup.string().required("Required"),
+    PersonalMedicalExpenses:Yup.string().required("Required"),
+    PersonalMedicalExpensesType:Yup.string().required("Required"),
+
+    TransportPetrol:Yup.string().required("Required"),
+    TransportPetrolType:Yup.string().required("Required"),
+    TransportCarRepairs:Yup.string().required("Required"),
+    TransportCarRepairsType:Yup.string().required("Required"),
+
+    TransportCarRegistration:Yup.string().required("Required"),
+    TransportCarRegistrationType:Yup.string().required("Required"),
+    PublicTransport:Yup.string().required("Required"),
+    PublicTransportType:Yup.string().required("Required"),
+    TransportOther:Yup.string().required("Required"),
+    TransportOtherType:Yup.string().required("Required"),
+
+    PrivateHealth:Yup.string().required("Required"),
+    PrivateHealthType:Yup.string().required("Required"),
+    LifeTPDTrauma:Yup.string().required("Required"),
+    LifeTPDTraumaType:Yup.string().required("Required"),
+
+    InsuranceIncomeProtection:Yup.string().required("Required"),
+    InsuranceIncomeProtectionType:Yup.string().required("Required"),
+    InsuranceCar:Yup.string().required("Required"),
+    InsuranceCarType:Yup.string().required("Required"),
+    InsuranceHomeContents:Yup.string().required("Required"),
+    InsuranceHomeContentsType:Yup.string().required("Required"),
+    InsuranceOther:Yup.string().required("Required"),
+    TransInsuranceType:Yup.string().required("Required"),
+  })
   
   return (
     <>
@@ -96,9 +752,17 @@ const IncomeExpenses = () => {
         <div className="row m-0 px-0">
           <div className="col-md-2"></div>
           <div className="col-md-12">
-                   
+
+          <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+              enableReinitialize>
+                  {({values , setFieldValue ,setValues,handleChange,formik})=>
+                  <Form>
+
                   {/* Client Employment Details */}
-                    <div className="row">
+                  <div className="row">
                       <div className="col-md-12">
                         <div className="shadow px-4 py-4">
                           <h3 className="text-center">Income & Expense</h3>
@@ -114,7 +778,9 @@ const IncomeExpenses = () => {
                               <div className="col-md-6">
                               <div className="mb-3">
                                 <label htmlFor="clientPrimaryOccupation" className="form-label">Primary Occupation</   label>
-                                <input type="text" className="form-control shadow inputDesign" id="clientPrimaryOccupation" placeholder="Primary Occupation"/>
+                                <Field type="text" className="form-control shadow inputDesign"
+                                 id="clientPrimaryOccupation" name="clientPrimaryOccupation" placeholder="Primary Occupation"/>
+                                 <ErrorMessage name="clientPrimaryOccupation" component='div' className="text-danger fw-bold"/>
                               </div>            
                               </div>
                                 <div className="col-md-6">
@@ -123,14 +789,26 @@ const IncomeExpenses = () => {
                                 Do you currently Salary Package?
                                 </label>
                               {/* switch button style */}
+                               
+
                                 <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="radio" id="opt1" />
-                                <label htmlFor="opt1" className="label1">
+                                <input type="radio" name="currentlySalaryPackageRadio"
+                                 id="currentlySalaryPackage1" value="Yes"
+                                  onClick={()=>currentlySalaryPackageHandler("yes")} 
+                                   onChange={handleChange}
+                                   checked={values.currentlySalaryPackageRadio==="Yes"}
+                                   />
+                                <label htmlFor="currentlySalaryPackage1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="radio" id="opt2" />
-                                <label htmlFor="opt2" className="label2">
+                                <input type="radio" name="currentlySalaryPackageRadio"  
+                                onClick={()=>currentlySalaryPackageHandler("No")}
+                                 id="currentlySalaryPackage2" value="No"
+                                onChange={handleChange} 
+                                checked={values.currentlySalaryPackageRadio==="No"}
+                                />
+                                <label htmlFor="currentlySalaryPackage2" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -142,23 +820,27 @@ const IncomeExpenses = () => {
                           {/* 1 row */}
 
                           {/* 2 row */}
+                          { currentSaleryState &&
                             <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3">
                                 <label htmlFor="clientEmployerFBTStatus" className="form-label">
                                 Employer FBT Status
                                 </label>
-                                <select
+                                <Field
+                                as="select"
+                                name="clientEmployerFBTStatus"
                                   id="clientEmployerFBTStatus"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Fll FBT">Fll FBT</option>
                                   <option value="Rebatable">Rebatable</option>
                                   <option value="Exempt ($17K Cap)">Exempt ($17K Cap)</option>
                                   <option value="Exempt ($30K Cap)">Exempt ($30K Cap)</option>
                           
-                                </select>
+                                </Field>
+                               <ErrorMessage  name="clientEmployerFBTStatus" component='div' className="text-danger fw-bold"  />
                                 </div>
                             </div>
                             <div className="col-md-6">
@@ -169,33 +851,47 @@ const IncomeExpenses = () => {
                                 </label>
                                 </div>
                            
-                                <div class="btn-group " role="group" aria-label="Basic checkbox toggle button group">
+                                <div className="btn-group " role="group" aria-label="Basic checkbox toggle button group">
                             
-  <input type="checkbox" class="btn-check" id="car1" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="car1">Car</label>
+  <Field type="checkbox" className="btn-check" id="car1"
+  name="whatDoYouHave" value="car"
+  onClick={()=>carStateHandler()}
 
-  <input type="checkbox" class="btn-check" id="CreditCard1" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="CreditCard1">Credit Card</label>
+   />
+  <label className="btn btn-outline-success"htmlFor="car1">Car</label>
 
-  <input type="checkbox" class="btn-check" id="Mortgage1" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="Mortgage1">Mortgage</label>
+  <Field type="checkbox" className="btn-check" id="CreditCard1"
+  name="whatDoYouHave" value="CreditCard" 
+  onClick={()=>creditCardStateHandler()} />
+  <label className="btn btn-outline-success"htmlFor="CreditCard1">Credit Card</label>
+
+  <Field type="checkbox" className="btn-check" id="Mortgage1"
+  name="whatDoYouHave" value="Mortgage"
+  onClick={()=>creditCardStateHandler()}  />
+  <label className="btn btn-outline-success"htmlFor="Mortgage1">Mortgage</label>
   
- <input type="checkbox" class="btn-check" id="Other1" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="Other1">Other</label>
+ <Field type="checkbox" className="btn-check" id="Other1"
+ name="whatDoYouHave" value="Other"
+ onClick={()=>creditCardStateHandler()} />
+  <label className="btn btn-outline-success"htmlFor="Other1">Other</label>
 </div>
 
                            
                           
                             </div>
                             </div>
+                            }
                           {/* 2 row */}
 
                           {/* 3 row */}
-                            <div className="row">
+                           {carState && <div className="row">
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCostBaseofCar" className="form-label">Cost Base of Car</   label>
-                              <input type="number" className="form-control shadow inputDesign" id="clientCostBaseofCar" placeholder="Cost Base of Car"/>
+                              <Field type="number" className="form-control shadow inputDesign"
+                               id="clientCostBaseofCar" name='clientCostBaseofCar' placeholder="Cost Base of Car"/>
+                        <ErrorMessage component='div' className="text-danger fw-bold" name="clientCostBaseofCar"  />
+
                             </div>            
                             </div>
                                 <div className="col-md-6">
@@ -206,11 +902,15 @@ const IncomeExpenses = () => {
                                 {/* switch button style */}
                                 <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="FBTradio" id="FBTopt1" />
+                                <input type="radio" name="FBTradio" id="FBTopt1"
+                                onChange={handleChange} value='Yes'
+                                checked={values.FBTradio==="Yes"}  />
                                 <label htmlFor="FBTopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="FBTradio" id="FBTopt2" />
+                                <input type="radio" name="FBTradio" id="FBTopt2"
+                                onChange={handleChange} value='No'
+                                checked={values.FBTradio==="No"} />
                                 <label htmlFor="FBTopt2" className="label2">
                                   <span>NO</span>
                                 </label>
@@ -238,22 +938,33 @@ const IncomeExpenses = () => {
                             
                                     
                                 </div>
-                            </div>
+                            </div>}
                           {/* 3 row */}
 
                           {/* 4 row */}
                             <div className="row">
+                          
                             <div className="col-md-6">
-                            <div className="mb-3">
+                            {carState &&   <div className="mb-3">
                               <label htmlFor="clientRunningCostsofCarPackaged" className="form-label ">Running Costs of Car Packaged?</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientRunningCostsofCarPackaged" placeholder="Running Costs of Car Packaged"/>
-                            </div>            
+                              <Field type="number" className="form-control inputDesign shadow"
+                              name='clientRunningCostsofCarPackaged'
+                              id="clientRunningCostsofCarPackaged" placeholder="Running Costs of Car Packaged"/>
+                         <ErrorMessage component='div' className="text-danger fw-bold" name="clientRunningCostsofCarPackaged"  />
+
+                            </div>    }        
                             </div>
+
                             <div className="col-md-6">
+                            {creditCardState &&    
                             <div className="mb-3">
                               <label htmlFor="clientCreditCardMortgageorOther" className="form-label">Credit Card, Mortgage or Other?</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientCreditCardMortgageorOther" placeholder="Credit Card, Mortgage or Other"/>
-                            </div>            
+                              <Field type="number" className="form-control inputDesign shadow" 
+                              name='clientCreditCardMortgageorOther' id="clientCreditCardMortgageorOther" placeholder="Credit Card, Mortgage or Other"/>
+                         <ErrorMessage component='div' className="text-danger fw-bold" name="clientCreditCardMortgageorOther"  />
+                           
+                            </div> 
+                            }           
                             </div>
                               
                           </div>
@@ -268,26 +979,32 @@ const IncomeExpenses = () => {
                                 <label htmlFor="clientEmploymentStatus" className="form-label">
                                 Employment Status
                                 </label>
-                                <select
+                                <Field
+                                as='select'
                                   id="clientEmploymentStatus"
                                   className="form-select shadow  inputDesign"
+                                  name="clientEmploymentStatus"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Full Time">Full Time</option>
                                   <option value="Part Time">Part Time</option>
                                   <option value="Casual">Casual</option>
                                   <option value="Conratct">Conratct</option>
                                   <option value="OnLeave">On Leave</option>
+                                </Field>
+                                <ErrorMessage component='div' className="text-danger fw-bold" name="clientEmploymentStatus"  />
 
-                          
-                                </select>
                                     </div>
         
                             </div>
                             <div className="col-md-6">
                               <div className="mb-3">
                                 <label htmlFor="clientNameofCompany" className="form-label">Name of Company</   label>
-                                <input type="text" className="form-control inputDesign shadow" id="clientNameofCompany" placeholder="Name of Company"/>
+                                <Field type="text" className="form-control inputDesign shadow"
+                                name="clientNameofCompany"
+                                id="clientNameofCompany" placeholder="Name of Company"/>
+                              <ErrorMessage component='div' className="text-danger fw-bold" name="clientNameofCompany"  />
+
                               </div>            
                             </div>
                             
@@ -300,13 +1017,34 @@ const IncomeExpenses = () => {
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCommencementDate" className="form-label">Commencement Date</   label>
-                              <input type="date" className="form-control inputDesign shadow" id="clientCommencementDate" placeholder=""/>
-                            </div>            
+                              <div className="input-group ">
+                        <Field
+                          className="form-control inputDesign shadow"
+                          id="clientCommencementDate"
+                          name='clientCommencementDate'
+                          // onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
+                          value={values.DoBID}
+                          max="2023-1-31"
+                        />
+                        <div className="input-group-append">
+                          <span className="input-group-text" id="CalenderIcon">
+                            <input className="HiddenDate" name='clientCommencementDate'
+                             type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("clientCommencementDate","HiddenDate")}/>
+                          </span>
+                        </div>
+                              </div>
+                      <ErrorMessage component='div' className="text-danger fw-bold"name="clientCommencementDate" />
+
+                            </div> 
+
+
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientNumberofhoursperweek" className="form-label">Number of hours per week</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientNumberofhoursperweek" placeholder="Number of hours per week"/>
+                              <Field type="number" className="form-control inputDesign shadow" id="clientNumberofhoursperweek"
+                              name="clientNumberofhoursperweek" placeholder="Number of hours per week"/>
+                              <ErrorMessage name="clientNumberofhoursperweek" component='div' className="text-danger fw-bold"/>
                             </div>            
                             </div>
                               
@@ -318,7 +1056,9 @@ const IncomeExpenses = () => {
                               <div className="col-md-6">
                               <div className="mb-3">
                                 <label htmlFor="clientSalaryExcludingSuper" className="form-label">Salary (Excluding Super)</   label>
-                                <input type="text" className="form-control inputDesign shadow" id="clientSalaryExcludingSuper" placeholder="Salary (Excluding Super)"/>
+                                <Field type="number" name="clientSalaryExcludingSuper" className="form-control inputDesign shadow" id="clientSalaryExcludingSuper" placeholder="Salary (Excluding Super)"/>
+                                <ErrorMessage name="clientSalaryExcludingSuper" component='div' className="text-danger fw-bold"/>
+                             
                               </div>            
                               </div>
                             <div className="col-md-6">
@@ -328,19 +1068,26 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="text" className="form-control inputDesign shadow" id="clientSuperAnnuationGuaranteeNumber"
-                                placeholder="Superannuation Guarantee"/>
+                                <Field type="number" className="form-control inputDesign shadow" id="clientSuperAnnuationGuaranteeNumber"
+                                placeholder="Superannuation Guarantee"
+                                name="clientSuperAnnuationGuaranteeNumber"/>
+                              <ErrorMessage name="clientSuperAnnuationGuaranteeNumber" component='div' className="text-danger fw-bold"/>
+
 
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as='select'
+                                  name="clientSuperAnnuationGuaranteeType"
                                   id="clientSuperAnnuationGuaranteeType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="dollor">$</option>
                                   <option value="percentage">%</option>
-                                </select>
+                                </Field>
+                                <ErrorMessage name="clientSuperAnnuationGuaranteeType" component='div' className="text-danger fw-bold"/>
+
                                   </div>
                                 </div>
                                     </div>
@@ -353,18 +1100,24 @@ const IncomeExpenses = () => {
                             <div className="col-md-6">
                                   <div className="mb-3">
                                 <label  className="form-label">
-                                Do you currently Salary Package?
+                                Does your Employer Offer Choice of Fund?
                                 </label>
 
                                   {/* switch button style */}
                                   <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="currentlyradio" id="currentlyopt1" />
-                                <label htmlFor="currentlyopt1" className="label1">
+                                <input type="radio" name="ChoiceofFundradio" id="ChoiceofFundopt1"
+                               
+                                onChange={handleChange} value="Yes"
+                                checked={values.ChoiceofFundradio==="Yes"} />
+                                <label htmlFor="ChoiceofFundopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="currentlyradio" id="currentlyopt2" />
-                                <label htmlFor="currentlyopt2" className="label2">
+                                <input type="radio" name="ChoiceofFundradio" id="ChoiceofFundopt2"
+                                
+                                onChange={handleChange} value="No"
+                                checked={values.ChoiceofFundradio==="No"} />
+                                <label htmlFor="ChoiceofFundopt2" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -380,24 +1133,31 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="UnusedSickLeaveEntitlementsNumber" placeholder="Unused sick leave entitlements"/>
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="UnusedSickLeaveEntitlementsNumber" 
+                                name="UnusedSickLeaveEntitlementsNumber"
+                                placeholder="Unused sick leave entitlements"/>
+
+                            <ErrorMessage name="UnusedSickLeaveEntitlementsNumber"
+                             component='div' className="text-danger fw-bold"/>
+
 
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="UnusedSickLeaveEntitlementsType"
+                                  name="UnusedSickLeaveEntitlementsType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="days">Days</option>
                                   <option value="hours">Hours</option>
                                   <option value="weeks">Weeks</option>
                                   <option value="months">Months</option>
-                                  
-
-                          
-                                </select>
+                                </Field>
+                                <ErrorMessage name="UnusedSickLeaveEntitlementsType" 
+                                component='div' className="text-danger fw-bold"/>
                                   </div>
                                 </div>
                             
@@ -423,21 +1183,28 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="text" className="form-control inputDesign shadow" id="clientUnusedAnnualleaveentitlementsNumber"
+                                <Field type="number" className="form-control inputDesign shadow"
+                                 id="clientUnusedAnnualleaveentitlementsNumber"
+                                 name="clientUnusedAnnualleaveentitlementsNumber"
                                 placeholder="Unused annual leave entitlements"/>
-
+                                <ErrorMessage name="clientUnusedAnnualleaveentitlementsNumber"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="clientUnusedAnnualleaveentitlementsType"
+                                  name='clientUnusedAnnualleaveentitlementsType'
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="days">Days</option>
                                   <option value="hours">Hours</option>
                                   <option value="weeks">Weeks</option>
                                   <option value="months">Months</option>
-                                </select>
+                                </Field>
+                                <ErrorMessage name="clientUnusedAnnualleaveentitlementsType"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                     </div>
@@ -451,24 +1218,29 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="clientUnusedlongserviceleaveNumber" placeholder="Unused long service leave entitlements"/>
-
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="clientUnusedlongserviceleaveNumber"
+                                name="clientUnusedlongserviceleaveNumber"
+                                 placeholder="Unused long service leave entitlements"/>
+                                
+                                <ErrorMessage name="clientUnusedlongserviceleaveNumber"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as="select"
                                   id="clientUnusedlongserviceleaveType"
+                                  name="clientUnusedlongserviceleaveType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="days">Days</option>
                                   <option value="hours">Hours</option>
                                   <option value="weeks">Weeks</option>
                                   <option value="months">Months</option>
-                                  
-
-                          
-                                </select>
+                                </Field>
+                                <ErrorMessage name="clientUnusedlongserviceleaveType"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                 </div>
                             
@@ -496,11 +1268,18 @@ const IncomeExpenses = () => {
                                   {/* switch button style */}
                                   <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="sacrificeradio" id="sacrificeopt1" />
+                                <input type="radio" name="sacrificeradio" value="Yes" id="sacrificeopt1"
+                                onClick={()=>sacrificeradioHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.sacrificeradio==="Yes"} />
                                 <label htmlFor="sacrificeopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="sacrificeradio" id="sacrificeopt2" />
+                                <input type="radio" name="sacrificeradio"
+                                value="No" id="sacrificeopt2"
+                                   onClick={()=>sacrificeradioHandler("No")} 
+                                   onChange={handleChange}
+                                   checked={values.sacrificeradio==="No"}/>
                                 <label htmlFor="sacrificeopt2" className="label2">
                                   <span>NO</span>
                                 </label>
@@ -519,11 +1298,18 @@ const IncomeExpenses = () => {
                            {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="contributionradio" id="contributionopt1" />
+                                <input type="radio" name="contributionradio" id="contributionopt1" 
+                                onClick={()=>contributionradioHandler("yes")} 
+                                onChange={handleChange} value="Yes"
+                                checked={values.contributionradio==="Yes"}/>
                                 <label htmlFor="contributionopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="contributionradio" id="contributionopt2" />
+                                <input type="radio" name="contributionradio" id="contributionopt2"
+                                value="No"
+                                onClick={()=>contributionradioHandler("No")} 
+                                onChange={handleChange} 
+                                checked={values.contributionradio==="No"} />
                                 <label htmlFor="contributionopt2" className="label2">
                                   <span>NO</span>
                                 </label>
@@ -538,16 +1324,30 @@ const IncomeExpenses = () => {
                           {/* 11 row */}
                             <div className="row">
                             <div className="col-md-6">
+                           {sacrificState && 
                             <div className="mb-3">
                               <label htmlFor="clientAbilitytoSalarySacrificeHM" className="form-label">How Much</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientAbilitytoSalarySacrificeHM" placeholder="How much you have the ability to salary sacrifice?"/>
-                            </div>            
+                              <Field type="number" className="form-control
+                               inputDesign shadow" id="clientAbilitytoSalarySacrificeHM"
+                               name="clientAbilitytoSalarySacrificeHM"
+                              placeholder="How much you have the ability to salary sacrifice?"/>
+                               <ErrorMessage name="clientAbilitytoSalarySacrificeHM"
+                                component="div" className="text-danger fw-bold" />
+                            </div>  }
+                                      
                             </div>
                             <div className="col-md-6">
-                            <div className="mb-3">
+                          { contributionState &&
+                           <div className="mb-3">
                               <label htmlFor="clientTaxContributiontoSuperHM" className="form-label">How Much</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientTaxContributiontoSuperHM" placeholder="How much you make any after tax-contribution to super?"/>
-                            </div>            
+                              <Field type="number" className="form-control inputDesign
+                               shadow" id="clientTaxContributiontoSuperHM"
+                               name="clientTaxContributiontoSuperHM"
+                               placeholder="How much you make any after tax-contribution to super?"/>
+                              <ErrorMessage name="clientTaxContributiontoSuperHM"
+                                component="div" className="text-danger fw-bold" />
+                            </div>  
+                            }        
                             </div>
                               
                             </div>
@@ -564,11 +1364,16 @@ const IncomeExpenses = () => {
                                   {/* switch button style */}
                                   <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="significantlyradio" id="significantlyopt1" />
+                                <input type="radio" name="significantlyradio" id="significantlyopt1"
+                                onChange={handleChange} value="Yes"
+                                checked={values.significantlyradio==="Yes"} />
                                 <label htmlFor="significantlyopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="significantlyradio" id="significantlyopt2" />
+                                <input type="radio" name="significantlyradio" id="significantlyopt2"
+                               
+                                onChange={handleChange} value="No"
+                                checked={values.significantlyradio==="No"} />
                                 <label htmlFor="significantlyopt2" className="label2">
                                   <span>NO</span>
                                 </label>
@@ -578,18 +1383,23 @@ const IncomeExpenses = () => {
                        
                                   </div>
                             </div>
+                            <div className="col-md-6">
+
+                            </div>
                                 
                           </div>
+
                           {/* 12 row */}
                           </div>
                       </div>
 
 
+                   
                     </div>
                   {/* Client Employment Details */}
 
                     {/* Partner Employment Details */}
-                    <div className="row">
+                   <div className="row">
                       <div className="col-md-12">
                         <div className="shadow px-4 py-4">
                           <h3 className="text-center">Income & Expense</h3>
@@ -604,8 +1414,10 @@ const IncomeExpenses = () => {
                             <div className="row">
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="PartnerPrimaryOccupation" className="form-label">Primary Occupation</   label>
-                                <input type="text" className="form-control shadow inputDesign" id="PartnerPrimaryOccupation" placeholder="Primary Occupation"/>
+                                <label htmlFor="clientPrimaryOccupation2" className="form-label">Primary Occupation</   label>
+                                <Field type="text" className="form-control shadow inputDesign"
+                                 id="clientPrimaryOccupation2" name="clientPrimaryOccupation2" placeholder="Primary Occupation"/>
+                                 <ErrorMessage name="clientPrimaryOccupation2" component='div' className="text-danger fw-bold"/>
                               </div>            
                               </div>
                                 <div className="col-md-6">
@@ -614,80 +1426,106 @@ const IncomeExpenses = () => {
                                 Do you currently Salary Package?
                                 </label>
                               {/* switch button style */}
+                               
+
                                 <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="Partnerradio" id="Partneropt1" />
-                                <label htmlFor="Partneropt1" className="label1">
+                                <input type="radio" name="currentlySalaryPackageRadio2"
+                                 id="currentlySalaryPackage12" value="Yes"
+                                  onClick={()=>currentlySalaryPackageHandler2("yes")} 
+                                   onChange={handleChange}
+                                   checked={values.currentlySalaryPackageRadio2==="Yes"}
+                                   />
+                                <label htmlFor="currentlySalaryPackage12" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="Partnerradio" id="Partneropt2" />
-                                <label htmlFor="Partneropt2" className="label2">
+                                <input type="radio" name="currentlySalaryPackageRadio2"  
+                                onClick={()=>currentlySalaryPackageHandler2("No")}
+                                 id="currentlySalaryPackage22" value="No"
+                                onChange={handleChange} 
+                                checked={values.currentlySalaryPackageRadio2==="No"}
+                                />
+                                <label htmlFor="currentlySalaryPackage22" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
                                 </div>
                               {/* switch button style */}
                               </div>
-                              </div>
+                                </div>
                             </div>
                           {/* 1 row */}
 
                           {/* 2 row */}
+                          { currentSaleryState2 &&
                             <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3">
                                 <label htmlFor="clientEmployerFBTStatus2" className="form-label">
                                 Employer FBT Status
                                 </label>
-                                <select
+                                <Field
+                                as="select"
+                                name="clientEmployerFBTStatus2"
                                   id="clientEmployerFBTStatus2"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Fll FBT">Fll FBT</option>
                                   <option value="Rebatable">Rebatable</option>
                                   <option value="Exempt ($17K Cap)">Exempt ($17K Cap)</option>
                                   <option value="Exempt ($30K Cap)">Exempt ($30K Cap)</option>
                           
-                                </select>
+                                </Field>
+                               <ErrorMessage  name="clientEmployerFBTStatus2" component='div' className="text-danger fw-bold"  />
                                 </div>
                             </div>
-
-                               <div className="col-md-6">
+                            <div className="col-md-6">
                               
                               <div>
-                            <label htmlFor="clientEmployerFBTStatus" className="form-label">
+                            <label htmlFor="clientEmployerFBTStatus2" className="form-label">
                                 What do you have?
                                 </label>
                                 </div>
                            
-                                <div class="btn-group " role="group" aria-label="Basic checkbox toggle button group">
+                                <div className="btn-group " role="group" aria-label="Basic checkbox toggle button group">
                             
-  <input type="checkbox" class="btn-check" id="car2" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="car2">Car</label>
+  <Field type="checkbox" className="btn-check" id="car2"
+  name="whatDoYouHave2" value="car"
+  onClick={()=>carStateHandler2()}
 
-  <input type="checkbox" class="btn-check" id="CreditCard2" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="CreditCard2">Credit Card</label>
+   />
+  <label className="btn btn-outline-success"htmlFor="car2">Car</label>
 
-  <input type="checkbox" class="btn-check" id="Mortgage2" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="Mortgage2">Mortgage</label>
+  <Field type="checkbox" className="btn-check" id="CreditCard2"
+  name="whatDoYouHave2" value="CreditCard" 
+  onClick={()=>creditCardStateHandler2()} />
+  <label className="btn btn-outline-success"htmlFor="CreditCard2">Credit Card</label>
 
-  <input type="checkbox" class="btn-check" id="Other2" autocomplete="off"/>
-  <label class="btn btn-outline-success" for="Other2">Other</label>
+  <Field type="checkbox" className="btn-check" id="Mortgage2"
+  name="whatDoYouHave2" value="Mortgage"
+  onClick={()=>creditCardStateHandler2()}  />
+  <label className="btn btn-outline-success"htmlFor="Mortgage2">Mortgage</label>
+  
+ <Field type="checkbox" className="btn-check" id="Other2"
+ name="whatDoYouHave2" value="Other"
+ onClick={()=>creditCardStateHandler2()} />
+  <label className="btn btn-outline-success"htmlFor="Other2">Other</label>
 </div>
-
-                           
-                          
+</div>
                             </div>
-                            </div>
+                            }
                           {/* 2 row */}
 
                           {/* 3 row */}
-                            <div className="row">
+                           {carState2 && <div className="row">
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCostBaseofCar2" className="form-label">Cost Base of Car</   label>
-                              <input type="number" className="form-control shadow inputDesign" id="clientCostBaseofCar2" placeholder="Cost Base of Car"/>
+                              <Field type="number" className="form-control shadow inputDesign"
+                               id="clientCostBaseofCar2" name='clientCostBaseofCar2' placeholder="Cost Base of Car"/>
+                        <ErrorMessage component='div' className="text-danger fw-bold" name="clientCostBaseofCar2"  />
+
                             </div>            
                             </div>
                                 <div className="col-md-6">
@@ -698,36 +1536,69 @@ const IncomeExpenses = () => {
                                 {/* switch button style */}
                                 <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="FBT2radio" id="FBT2opt1" />
-                                <label htmlFor="FBT2opt1" className="label1">
+                                <input type="radio" name="FBTradio2" id="FBTopt12"
+                                onChange={handleChange} value='Yes'
+                                checked={values.FBTradio2==="Yes"}  />
+                                <label htmlFor="FBTopt12" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="FBT2radio" id="FBT2opt2" />
-                                <label htmlFor="FBT2opt2" className="label2">
+                                <input type="radio" name="FBTradio2" id="FBTopt22"
+                                onChange={handleChange} value='No'
+                                checked={values.FBTradio2==="No"} />
+                                <label htmlFor="FBTopt22" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
                                 </div>
                               {/* switch button style */}
 
-                            </div>
+                              {/* <div className="form-check form-switch p-0">
+                              <label htmlFor="clientFBTPaidByEmployer" className="float-start">No</label>
+
+                                <input
+                                  className="form-check-input boxShadow  mx-1"
+                                  type="checkbox"
+                                  id="clientFBTPaidByEmployer"
+                                />
+                                <label htmlFor="clientFBTPaidByEmployer">Yes</label>
+
+                              </div> */}
+                              
+
                                 </div>
-                            </div>
+                                
+                                    
+                                      
+                            
+                                    
+                                </div>
+                            </div>}
                           {/* 3 row */}
 
                           {/* 4 row */}
                             <div className="row">
+                          
                             <div className="col-md-6">
-                            <div className="mb-3">
+                            {carState2 &&   <div className="mb-3">
                               <label htmlFor="clientRunningCostsofCarPackaged2" className="form-label ">Running Costs of Car Packaged?</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientRunningCostsofCarPackaged2" placeholder="Running Costs of Car Packaged"/>
-                            </div>            
+                              <Field type="number" className="form-control inputDesign shadow"
+                              name='clientRunningCostsofCarPackaged2'
+                              id="clientRunningCostsofCarPackaged2" placeholder="Running Costs of Car Packaged"/>
+                         <ErrorMessage component='div' className="text-danger fw-bold" name="clientRunningCostsofCarPackaged2"  />
+
+                            </div>    }        
                             </div>
+
                             <div className="col-md-6">
+                            { creditCardState2&&    
                             <div className="mb-3">
                               <label htmlFor="clientCreditCardMortgageorOther2" className="form-label">Credit Card, Mortgage or Other?</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientCreditCardMortgageorOther2" placeholder="Credit Card, Mortgage or Other"/>
-                            </div>            
+                              <Field type="number" className="form-control inputDesign shadow" 
+                              name='clientCreditCardMortgageorOther2' id="clientCreditCardMortgageorOther2" placeholder="Credit Card, Mortgage or Other"/>
+                         <ErrorMessage component='div' className="text-danger fw-bold" name="clientCreditCardMortgageorOther2"  />
+                           
+                            </div> 
+                            }           
                             </div>
                               
                           </div>
@@ -742,26 +1613,32 @@ const IncomeExpenses = () => {
                                 <label htmlFor="clientEmploymentStatus2" className="form-label">
                                 Employment Status
                                 </label>
-                                <select
+                                <Field
+                                as='select'
                                   id="clientEmploymentStatus2"
                                   className="form-select shadow  inputDesign"
+                                  name="clientEmploymentStatus2"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Full Time">Full Time</option>
                                   <option value="Part Time">Part Time</option>
                                   <option value="Casual">Casual</option>
                                   <option value="Conratct">Conratct</option>
                                   <option value="OnLeave">On Leave</option>
+                                </Field>
+                                <ErrorMessage component='div' className="text-danger fw-bold" name="clientEmploymentStatus2"  />
 
-                          
-                                </select>
                                     </div>
         
                             </div>
                             <div className="col-md-6">
                               <div className="mb-3">
                                 <label htmlFor="clientNameofCompany2" className="form-label">Name of Company</   label>
-                                <input type="text" className="form-control inputDesign shadow" id="clientNameofCompany2" placeholder="Name of Company"/>
+                                <Field type="text" className="form-control inputDesign shadow"
+                                name="clientNameofCompany2"
+                                id="clientNameofCompany2" placeholder="Name of Company"/>
+                              <ErrorMessage component='div' className="text-danger fw-bold" name="clientNameofCompany2"  />
+
                               </div>            
                             </div>
                             
@@ -774,13 +1651,34 @@ const IncomeExpenses = () => {
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCommencementDate2" className="form-label">Commencement Date</   label>
-                              <input type="date" className="form-control inputDesign shadow" id="clientCommencementDate2" placeholder=""/>
-                            </div>            
+                              <div className="input-group ">
+                        <Field
+                          className="form-control inputDesign shadow"
+                          id="clientCommencementDate2"
+                          name='clientCommencementDate2'
+                          // onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
+                          value={values.DoBID}
+                          max="2023-1-31"
+                        />
+                        <div className="input-group-append">
+                          <span className="input-group-text" id="CalenderIcon">
+                            <input className="HiddenDate" name='clientCommencementDate2'
+                             type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("clientCommencementDate2","HiddenDate")}/>
+                          </span>
+                        </div>
+                              </div>
+                      <ErrorMessage component='div' className="text-danger fw-bold"name="clientCommencementDate2" />
+
+                            </div> 
+
+
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientNumberofhoursperweek2" className="form-label">Number of hours per week</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientNumberofhoursperweek2" placeholder="Number of hours per week"/>
+                              <Field type="number" className="form-control inputDesign shadow" id="clientNumberofhoursperweek2"
+                              name="clientNumberofhoursperweek2" placeholder="Number of hours per week"/>
+                              <ErrorMessage name="clientNumberofhoursperweek2" component='div' className="text-danger fw-bold"/>
                             </div>            
                             </div>
                               
@@ -792,7 +1690,9 @@ const IncomeExpenses = () => {
                               <div className="col-md-6">
                               <div className="mb-3">
                                 <label htmlFor="clientSalaryExcludingSuper2" className="form-label">Salary (Excluding Super)</   label>
-                                <input type="text" className="form-control inputDesign shadow" id="clientSalaryExcludingSuper2" placeholder="Salary (Excluding Super)"/>
+                                <Field type="number" name="clientSalaryExcludingSuper2" className="form-control inputDesign shadow" id="clientSalaryExcludingSuper2" placeholder="Salary (Excluding Super)"/>
+                                <ErrorMessage name="clientSalaryExcludingSuper2" component='div' className="text-danger fw-bold"/>
+                             
                               </div>            
                               </div>
                             <div className="col-md-6">
@@ -802,19 +1702,26 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="text" className="form-control inputDesign shadow" id="clientSuperAnnuationGuaranteeNumber2"
-                                placeholder="Superannuation Guarantee"/>
+                                <Field type="number" className="form-control inputDesign shadow" id="clientSuperAnnuationGuaranteeNumber2"
+                                placeholder="Superannuation Guarantee"
+                                name="clientSuperAnnuationGuaranteeNumber2"/>
+                              <ErrorMessage name="clientSuperAnnuationGuaranteeNumber2" component='div' className="text-danger fw-bold"/>
+
 
                                   </div>
                                   <div className="col-4">
-                                  <select
-                                  id="clientSuperAnnuationGuaranteeType"
+                                  <Field
+                                  as='select'
+                                  name="clientSuperAnnuationGuaranteeType2"
+                                  id="clientSuperAnnuationGuaranteeType2"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="dollor">$</option>
                                   <option value="percentage">%</option>
-                                </select>
+                                </Field>
+                                <ErrorMessage name="clientSuperAnnuationGuaranteeType2" component='div' className="text-danger fw-bold"/>
+
                                   </div>
                                 </div>
                                     </div>
@@ -827,18 +1734,24 @@ const IncomeExpenses = () => {
                             <div className="col-md-6">
                                   <div className="mb-3">
                                 <label  className="form-label">
-                                Do you currently Salary Package?
+                                Does your Employer Offer Choice of Fund?
                                 </label>
 
                                   {/* switch button style */}
                                   <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="currently2radio" id="currently2opt1" />
-                                <label htmlFor="currently2opt1" className="label1">
+                                <input type="radio" name="ChoiceofFundradio2" id="ChoiceofFundopt12"
+                               
+                                onChange={handleChange} value="Yes"
+                                checked={values.ChoiceofFundradio2==="Yes"} />
+                                <label htmlFor="ChoiceofFundopt12" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="currently2radio" id="currently2opt2" />
-                                <label htmlFor="currently2opt2" className="label2">
+                                <input type="radio" name="ChoiceofFundradio2" id="ChoiceofFundopt22"
+                                
+                                onChange={handleChange} value="No"
+                                checked={values.ChoiceofFundradio2==="No"} />
+                                <label htmlFor="ChoiceofFundopt22" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -854,24 +1767,31 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="UnusedSickLeaveEntitlementsNumber2" placeholder="Unused sick leave entitlements"/>
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="UnusedSickLeaveEntitlementsNumber2" 
+                                name="UnusedSickLeaveEntitlementsNumber2"
+                                placeholder="Unused sick leave entitlements"/>
+
+                            <ErrorMessage name="UnusedSickLeaveEntitlementsNumber2"
+                             component='div' className="text-danger fw-bold"/>
+
 
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="UnusedSickLeaveEntitlementsType2"
+                                  name="UnusedSickLeaveEntitlementsType2"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="days">Days</option>
                                   <option value="hours">Hours</option>
                                   <option value="weeks">Weeks</option>
                                   <option value="months">Months</option>
-                                  
-
-                          
-                                </select>
+                                </Field>
+                                <ErrorMessage name="UnusedSickLeaveEntitlementsType2" 
+                                component='div' className="text-danger fw-bold"/>
                                   </div>
                                 </div>
                             
@@ -897,21 +1817,28 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="text" className="form-control inputDesign shadow" id="clientUnusedAnnualleaveentitlementsNumber2"
+                                <Field type="number" className="form-control inputDesign shadow"
+                                 id="clientUnusedAnnualleaveentitlementsNumber2"
+                                 name="clientUnusedAnnualleaveentitlementsNumber2"
                                 placeholder="Unused annual leave entitlements"/>
-
+                                <ErrorMessage name="clientUnusedAnnualleaveentitlementsNumber2"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="clientUnusedAnnualleaveentitlementsType2"
                                   className="form-select shadow  inputDesign"
+                                  name="clientUnusedAnnualleaveentitlementsType2"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="days">Days</option>
                                   <option value="hours">Hours</option>
                                   <option value="weeks">Weeks</option>
                                   <option value="months">Months</option>
-                                </select>
+                                </Field>
+                                <ErrorMessage name="clientUnusedAnnualleaveentitlementsType2"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                     </div>
@@ -925,24 +1852,29 @@ const IncomeExpenses = () => {
                                 </label>
                                 <div className="row">
                                   <div className="col-8">
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="clientUnusedlongserviceleaveNumber2" placeholder="Unused long service leave entitlements"/>
-
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="clientUnusedlongserviceleaveNumber2"
+                                name="clientUnusedlongserviceleaveNumber2"
+                                 placeholder="Unused long service leave entitlements"/>
+                                
+                                <ErrorMessage name="clientUnusedlongserviceleaveNumber2"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-4">
-                                  <select
+                                  <Field
+                                  as="select"
                                   id="clientUnusedlongserviceleaveType2"
+                                  name="clientUnusedlongserviceleaveType2"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="days">Days</option>
                                   <option value="hours">Hours</option>
                                   <option value="weeks">Weeks</option>
                                   <option value="months">Months</option>
-                                  
-
-                          
-                                </select>
+                                </Field>
+                                <ErrorMessage name="clientUnusedlongserviceleaveType2"
+                                component="div" className="text-danger fw-bold" />
                                   </div>
                                 </div>
                             
@@ -970,12 +1902,19 @@ const IncomeExpenses = () => {
                                   {/* switch button style */}
                                   <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="sacrifice2radio" id="sacrifice2opt1" />
-                                <label htmlFor="sacrifice2opt1" className="label1">
+                                <input type="radio" name="sacrificeradio2" value="Yes" id="sacrificeopt12"
+                                onClick={()=>sacrificeradioHandler2("Yes")} 
+                                onChange={handleChange}
+                                checked={values.sacrificeradio2==="Yes"} />
+                                <label htmlFor="sacrificeopt12" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="sacrifice2radio" id="sacrifice2opt2" />
-                                <label htmlFor="sacrifice2opt2" className="label2">
+                                <input type="radio" name="sacrificeradio2"
+                                value="No" id="sacrificeopt22"
+                                   onClick={()=>sacrificeradioHandler2("No")} 
+                                   onChange={handleChange}
+                                   checked={values.sacrificeradio2==="No"}/>
+                                <label htmlFor="sacrificeopt22" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -984,7 +1923,7 @@ const IncomeExpenses = () => {
                               
                                   </div>
                             </div>
-                                 <div className="col-md-6">
+                              <div className="col-md-6">
                                   <div className="mb-3">
                                 <label  className="form-label">
                                 Do you make any after tax-contribution to super?
@@ -993,12 +1932,19 @@ const IncomeExpenses = () => {
                            {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="contribution2radio" id="contribution2opt1" />
-                                <label htmlFor="contribution2opt1" className="label1">
+                                <input type="radio" name="contributionradio2" id="contributionopt12" 
+                                onClick={()=>contributionradioHandler2("yes")} 
+                                onChange={handleChange} value="Yes"
+                                checked={values.contributionradio2==="Yes"}/>
+                                <label htmlFor="contributionopt12" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="contribution2radio" id="contribution2opt2" />
-                                <label htmlFor="contribution2opt2" className="label2">
+                                <input type="radio" name="contributionradio2" id="contributionopt22"
+                                value="No"
+                                onClick={()=>contributionradioHandler2("No")} 
+                                onChange={handleChange} 
+                                checked={values.contributionradio2==="No"} />
+                                <label htmlFor="contributionopt22" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -1012,16 +1958,30 @@ const IncomeExpenses = () => {
                           {/* 11 row */}
                             <div className="row">
                             <div className="col-md-6">
+                           {sacrificState2 && 
                             <div className="mb-3">
                               <label htmlFor="clientAbilitytoSalarySacrificeHM2" className="form-label">How Much</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientAbilitytoSalarySacrificeHM2" placeholder="How much you have the ability to salary sacrifice?"/>
-                            </div>            
+                              <Field type="number" className="form-control
+                               inputDesign shadow" id="clientAbilitytoSalarySacrificeHM2"
+                               name="clientAbilitytoSalarySacrificeHM2"
+                              placeholder="How much you have the ability to salary sacrifice?"/>
+                               <ErrorMessage name="clientAbilitytoSalarySacrificeHM2"
+                                component="div" className="text-danger fw-bold" />
+                            </div>  }
+                                      
                             </div>
                             <div className="col-md-6">
-                            <div className="mb-3">
+                          { contributionState2 &&
+                           <div className="mb-3">
                               <label htmlFor="clientTaxContributiontoSuperHM2" className="form-label">How Much</   label>
-                              <input type="text" className="form-control inputDesign shadow" id="clientTaxContributiontoSuperHM2" placeholder="How much you make any after tax-contribution to super?"/>
-                            </div>            
+                              <Field type="number" className="form-control inputDesign
+                               shadow" id="clientTaxContributiontoSuperHM2"
+                               name="clientTaxContributiontoSuperHM2"
+                               placeholder="How much you make any after tax-contribution to super?"/>
+                              <ErrorMessage name="clientTaxContributiontoSuperHM2"
+                                component="div" className="text-danger fw-bold" />
+                            </div>  
+                            }        
                             </div>
                               
                             </div>
@@ -1038,12 +1998,17 @@ const IncomeExpenses = () => {
                                   {/* switch button style */}
                                   <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="significantly2radio" id="significantly2opt1" />
-                                <label htmlFor="significantly2opt1" className="label1">
+                                <input type="radio" name="significantlyradio2" id="significantlyopt12"
+                                onChange={handleChange} value="Yes"
+                                checked={values.significantlyradio2==="Yes"} />
+                                <label htmlFor="significantlyopt12" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="significantly2radio" id="significantly2opt2" />
-                                <label htmlFor="significantly2opt2" className="label2">
+                                <input type="radio" name="significantlyradio2" id="significantlyopt22"
+                               
+                                onChange={handleChange} value="No"
+                                checked={values.significantlyradio2==="No"} />
+                                <label htmlFor="significantlyopt22" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -1052,13 +2017,18 @@ const IncomeExpenses = () => {
                        
                                   </div>
                             </div>
+                            <div className="col-md-6">
+
+                            </div>
                                 
                           </div>
+
                           {/* 12 row */}
                           </div>
                       </div>
 
 
+                   
                     </div>
                   {/* Partner Employment Details */}
 
@@ -1084,11 +2054,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="centerlink1radio" id="centerlink1opt1" />
+                            <input type="radio" name="centerlink1radio" id="centerlink1opt1" 
+                            onChange={handleChange} value="Yes"
+                            checked={values.centerlink1radio==="Yes"}/>
                             <label htmlFor="centerlink1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="centerlink1radio" id="centerlink1opt2" />
+                            <input type="radio" name="centerlink1radio" id="centerlink1opt2" 
+                            onChange={handleChange} value="No"
+                            checked={values.centerlink1radio==="No"}/>
                             <label htmlFor="centerlink1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1101,9 +2075,6 @@ const IncomeExpenses = () => {
                         </div>
                       {/* 1 row */}
 
-                      <Formik initialValues={Client_initialValues}
-                      validationSchema={Client_validationSchema} onSubmit={Client_onSubmit}>
-                        <Form>
                           {/* 2 row */}
                         <div className="row">
                         <div className="col-md-6">
@@ -1160,11 +2131,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="CarerAllowance1radio" id="CarerAllowance1opt1" />
+                            <input type="radio" name="CarerAllowance1radio" id="CarerAllowance1opt1" 
+                            onChange={handleChange} value="Yes"
+                            checked={values.CarerAllowance1radio==="Yes"}/>
                             <label htmlFor="CarerAllowance1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="CarerAllowance1radio" id="CarerAllowance1opt2" />
+                            <input type="radio" name="CarerAllowance1radio" id="CarerAllowance1opt2"  
+                            onChange={handleChange} value="No"
+                            checked={values.CarerAllowance1radio==="No"}/>
                             <label htmlFor="CarerAllowance1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1207,11 +2182,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="currentlyrenting1radio" id="currentlyrenting1opt1" />
+                            <input type="radio" name="currentlyrenting1radio" id="currentlyrenting1opt1"  
+                            onChange={handleChange} value="Yes"
+                            checked={values.currentlyrenting1radio==="Yes"}/>
                             <label htmlFor="currentlyrenting1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="currentlyrenting1radio" id="currentlyrenting1opt2" />
+                            <input type="radio" name="currentlyrenting1radio" id="currentlyrenting1opt2"  
+                            onChange={handleChange} value="No"
+                            checked={values.currentlyrenting1radio==="No"}/>
                             <label htmlFor="currentlyrenting1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1234,11 +2213,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="AssetGifted1radio" id="AssetGifted1opt1" />
+                            <input type="radio" name="AssetGifted1radio" id="AssetGifted1opt1"  
+                            onChange={handleChange} value="Yes"
+                            checked={values.AssetGifted1radio==="Yes"}/>
                             <label htmlFor="AssetGifted1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="AssetGifted1radio" id="AssetGifted1opt2" />
+                            <input type="radio" name="AssetGifted1radio" id="AssetGifted1opt2"   
+                            onChange={handleChange} value="No"
+                            checked={values.AssetGifted1radio==="No"}/>
                             <label htmlFor="AssetGifted1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1308,26 +2291,13 @@ const IncomeExpenses = () => {
 
                         </div>
                       {/* 7 row */}
-
-
-                      <div className="row mt-5 mb-3">
-                        <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
-                        </div>
-                      </div>
-                      
-                      
-                        </Form>
-                      </Formik>
                       </div>
                   </div>
                 </div>
                 {/* Client Centre Link */}
 
-
-                {/* Partner Centre Link  */}
-                <div className="row my-5">
+                 {/* Partner Centre Link  */}
+                 <div className="row my-5">
                 <div className="col-md-12">
                   <div className="shadow px-4 py-4">
                     <h3 className="text-center">Centre Link</h3>
@@ -1348,11 +2318,15 @@ const IncomeExpenses = () => {
                         {/* switch button style */}
                           <div className="form-check form-switch m-0 p-0 ">
                         <div className="radiobutton">
-                          <input type="radio" name="centerlink2radio" id="centerlink2opt1" />
+                          <input type="radio" name="centerlink2radio" id="centerlink2opt1"   
+                            onChange={handleChange} value="Yes"
+                            checked={values.centerlink2radio==="Yes"}/>
                           <label htmlFor="centerlink2opt1" className="label1">
                             <span>YES</span>
                           </label>
-                          <input type="radio" name="centerlink2radio" id="centerlink2opt2" />
+                          <input type="radio" name="centerlink2radio" id="centerlink2opt2"   
+                            onChange={handleChange} value="No"
+                            checked={values.centerlink2radio==="No"}/>
                           <label htmlFor="centerlink2opt2" className="label2">
                             <span>NO</span>
                           </label>
@@ -1365,10 +2339,7 @@ const IncomeExpenses = () => {
                         </div>
                       </div>
                     {/* 1 row */}
-                    
-                    <Formik initialValues={Partner_initialValues}
-                    validationSchema={Partner_validationSchema} onSubmit={Partner_onSubmit}>
-                      <Form>
+
                         {/* 2 row */}
                       <div className="row">
                       <div className="col-md-6">
@@ -1426,11 +2397,15 @@ const IncomeExpenses = () => {
                         {/* switch button style */}
                           <div className="form-check form-switch m-0 p-0 ">
                         <div className="radiobutton">
-                          <input type="radio" name="CarerAllowance2radio" id="CarerAllowance2opt1" />
+                          <input type="radio" name="CarerAllowance2radio" id="CarerAllowance2opt1"   
+                            onChange={handleChange} value="Yes"
+                            checked={values.CarerAllowance2radio==="Yes"}/>
                           <label htmlFor="CarerAllowance2opt1" className="label1">
                             <span>YES</span>
                           </label>
-                          <input type="radio" name="CarerAllowance2radio" id="CarerAllowance2opt2" />
+                          <input type="radio" name="CarerAllowance2radio" id="CarerAllowance2opt2"   
+                            onChange={handleChange} value="No"
+                            checked={values.CarerAllowance2radio==="No"}/>
                           <label htmlFor="CarerAllowance2opt2" className="label2">
                             <span>NO</span>
                           </label>
@@ -1466,22 +2441,8 @@ const IncomeExpenses = () => {
                           </div>
                     {/* 4 row */}
 
-
-                      <div className="row mt-5 mb-3">
-                        <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
-                        </div>
-                      </div>
-                      
-                      
-                        </Form>
-                    </Formik>
-
                   </div>
                 </div>
-
-
                 </div>
                 {/* Partner Centre Link */}
 
@@ -1501,16 +2462,20 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Australian resident for tax purposes
+                            Australian resident for tax purposes client
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="AustralianResident1radio" id="AustralianResident1opt1" />
+                            <input type="radio" name="AustralianResident1radio" id="AustralianResident1opt1"
+                            onChange={handleChange} value="Yes"
+                            checked={values.AustralianResident1radio==="Yes"} />
                             <label htmlFor="AustralianResident1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="AustralianResident1radio" id="AustralianResident1opt2" />
+                            <input type="radio" name="AustralianResident1radio" id="AustralianResident1opt2"
+                            onChange={handleChange} value="No"
+                            checked={values.AustralianResident1radio==="No"}  />
                             <label htmlFor="AustralianResident1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1527,11 +2492,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="PrivateHospital1radio" id="PrivateHospital1opt1" />
+                            <input type="radio" name="PrivateHospital1radio" id="PrivateHospital1opt1"
+                            onChange={handleChange} value="Yes"
+                            checked={values.PrivateHospital1radio==="Yes"} />
                             <label htmlFor="PrivateHospital1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="PrivateHospital1radio" id="PrivateHospital1opt2" />
+                            <input type="radio" name="PrivateHospital1radio" id="PrivateHospital1opt2"
+                            onChange={handleChange} value="No"
+                            checked={values.PrivateHospital1radio==="No"}  />
                             <label htmlFor="PrivateHospital1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1553,11 +2522,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="HECSdebt1radio" id="HECSdebt1opt1" />
+                            <input type="radio" name="HECSdebt1radio" id="HECSdebt1opt1" 
+                            onChange={handleChange} value="Yes"
+                            checked={values.HECSdebt1radio==="Yes"} />
                             <label htmlFor="HECSdebt1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="HECSdebt1radio" id="HECSdebt1opt2" />
+                            <input type="radio" name="HECSdebt1radio" id="HECSdebt1opt2"
+                             onChange={handleChange} value="No"
+                             checked={values.HECSdebt1radio==="No"}  />
                             <label htmlFor="HECSdebt1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1574,11 +2547,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="claimingRebate1radio" id="claimingRebate1opt1" />
+                            <input type="radio" name="claimingRebate1radio" id="claimingRebate1opt1"
+                             onChange={handleChange} value="Yes"
+                             checked={values.claimingRebate1radio==="Yes"}  />
                             <label htmlFor="claimingRebate1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="claimingRebate1radio" id="claimingRebate1opt2" />
+                            <input type="radio" name="claimingRebate1radio" id="claimingRebate1opt2"
+                             onChange={handleChange} value="No"
+                             checked={values.claimingRebate1radio==="No"}  />
                             <label htmlFor="claimingRebate1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1604,11 +2581,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="applicationPAYG1radio" id="applicationPAYG1opt1" />
+                            <input type="radio" name="applicationPAYG1radio" id="applicationPAYG1opt1"
+                             onChange={handleChange} value="Yes"
+                             checked={values.applicationPAYG1radio==="Yes"}  />
                             <label htmlFor="applicationPAYG1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="applicationPAYG1radio" id="applicationPAYG1opt2" />
+                            <input type="radio" name="applicationPAYG1radio" id="applicationPAYG1opt2"
+                             onChange={handleChange} value="No"
+                             checked={values.applicationPAYG1radio==="No"}  />
                             <label htmlFor="applicationPAYG1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1620,7 +2601,11 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="TaxPaymentsOutstanding1" className="form-label">Tax Payments Outstanding</   label>
-                          <input type="number" className="form-control shadow inputDesign" id="TaxPaymentsOutstanding1" placeholder="Tax Payments Outstanding"/>
+                          <Field type="number" className="form-control shadow inputDesign"
+                           id="TaxPaymentsOutstanding1"
+                           name="TaxPaymentsOutstanding1"
+                            placeholder="Tax Payments Outstanding"/>
+                            <ErrorMessage name="TaxPaymentsOutstanding1" component="div" className="text-danger fw-bold"/>
                         </div>            
                         </div>
                       
@@ -1633,16 +2618,22 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Do you have any other taxable income (including overseas pensions)?
+                            Do u have any other taxable income (including overseas pensions)?
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="otherTaxableIncome1radio" id="otherTaxableIncome1opt1" />
+                            <input type="radio" name="otherTaxableIncome1radio" id="otherTaxableIncome1opt1"
+                             onClick={()=>otherTaxableIncomeHandler("Yes")} 
+                             onChange={handleChange} value="Yes"
+                             checked={values.otherTaxableIncome1radio==="Yes"}  />
                             <label htmlFor="otherTaxableIncome1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="otherTaxableIncome1radio" id="otherTaxableIncome1opt2" />
+                            <input type="radio" name="otherTaxableIncome1radio" id="otherTaxableIncome1opt2"
+                            onClick={()=>otherTaxableIncomeHandler("No")} 
+                            onChange={handleChange} value="No"
+                            checked={values.otherTaxableIncome1radio==="No"}   />
                             <label htmlFor="otherTaxableIncome1opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1654,7 +2645,11 @@ const IncomeExpenses = () => {
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="TaxLossesCarriedForward1" className="form-label">Tax losses carried forward</   label>
-                          <input type="number" className="form-control shadow inputDesign" id="TaxLossesCarriedForward1" placeholder="Annual Payment Amount"/>
+                          <Field type="number" className="form-control shadow inputDesign" id="TaxLossesCarriedForward1"
+                          name="TaxLossesCarriedForward1"
+                          placeholder="Annual Payment Amount"/>
+                          <ErrorMessage name="TaxLossesCarriedForward1" component="div"
+                          className="text-danger fw-bold"/>
                         </div>            
                         </div>
                       
@@ -1664,22 +2659,23 @@ const IncomeExpenses = () => {
                       
                         {/* 5 row */}
                         <div className="row">
+
+                       {otherTaxableIncomeState &&
                         <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="AmountofOtherTaxableIncome1" className="form-label">Amount of Other Taxable Income</   label>
-                          <input type="number" className="form-control shadow inputDesign" id="AmountofOtherTaxableIncome1" placeholder="Annual Payment Amount"/>
+                          <Field type="number" className="form-control shadow inputDesign"
+                           id="AmountofOtherTaxableIncome1" name="AmountofOtherTaxableIncome1"
+                            placeholder="Annual Payment Amount"/>
+                            <ErrorMessage component="div"
+                            name="AmountofOtherTaxableIncome1"
+                            className="text-danger fw-bold"/>
                         </div>            
-                        </div>
+                        </div>}
                         </div>
                       {/* 5 row */}
-                    
-
-
-
                     </div>
                   </div>
-
-
                 </div>
                 {/*Client Other taxable income */}
 
@@ -1704,11 +2700,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="AustralianResident2radio" id="AustralianResident2opt1" />
+                            <input type="radio" name="AustralianResident2radio" id="AustralianResident2opt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.AustralianResident2radio==="Yes"}/>
                             <label htmlFor="AustralianResident2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="AustralianResident2radio" id="AustralianResident2opt2" />
+                            <input type="radio" name="AustralianResident2radio" id="AustralianResident2opt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.AustralianResident2radio==="No"}/>
                             <label htmlFor="AustralianResident2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1725,11 +2725,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="PrivateHospital2radio" id="PrivateHospital2opt1" />
+                            <input type="radio" name="PrivateHospital2radio" id="PrivateHospital2opt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.PrivateHospital2radio==="Yes"}/>
                             <label htmlFor="PrivateHospital2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="PrivateHospital2radio" id="PrivateHospital2opt2" />
+                            <input type="radio" name="PrivateHospital2radio" id="PrivateHospital2opt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.PrivateHospital2radio==="No"}/>
                             <label htmlFor="PrivateHospital2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1741,8 +2745,6 @@ const IncomeExpenses = () => {
                         </div>
                       {/* 1 row */}
 
-                      <Formik initialValues={Partner_initialValues} validationSchema={Partner_validationSchema} onSubmit={Partner_onSubmit}>
-                        <Form>
                           {/* 2 row */}
                           <div className="row">
                           <div className="col-md-6">
@@ -1753,11 +2755,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="HECSdebt2radio" id="HECSdebt2opt1" />
+                            <input type="radio" name="HECSdebt2radio" id="HECSdebt2opt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.HECSdebt2radio==="Yes"}/>
                             <label htmlFor="HECSdebt2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="HECSdebt2radio" id="HECSdebt2opt2" />
+                            <input type="radio" name="HECSdebt2radio" id="HECSdebt2opt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.HECSdebt2radio==="No"}/>
                             <label htmlFor="HECSdebt2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1774,11 +2780,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="claimingRebate2radio" id="claimingRebate2opt1" />
+                            <input type="radio" name="claimingRebate2radio" id="claimingRebate2opt1"
+                             onChange={handleChange} value="Yes"
+                             checked={values.claimingRebate2radio==="Yes"}/>
                             <label htmlFor="claimingRebate2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="claimingRebate2radio" id="claimingRebate2opt2" />
+                            <input type="radio" name="claimingRebate2radio" id="claimingRebate2opt2"
+                             onChange={handleChange} value="No"
+                             checked={values.claimingRebate2radio==="No"}/>
                             <label htmlFor="claimingRebate2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1802,11 +2812,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="applicationPAYG2radio" id="applicationPAYG2opt1" />
+                            <input type="radio" name="applicationPAYG2radio" id="applicationPAYG2opt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.applicationPAYG2radio==="Yes"}/>
                             <label htmlFor="applicationPAYG2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="applicationPAYG2radio" id="applicationPAYG2opt2" />
+                            <input type="radio" name="applicationPAYG2radio" id="applicationPAYG2opt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.applicationPAYG2radio==="No"}/>
                             <label htmlFor="applicationPAYG2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1837,11 +2851,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="otherTaxableIncome2radio" id="otherTaxableIncome2opt1" />
+                            <input type="radio" name="otherTaxableIncome2radio" id="otherTaxableIncome2opt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.otherTaxableIncome2radio==="Yes"}/>
                             <label htmlFor="otherTaxableIncome2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="otherTaxableIncome2radio" id="otherTaxableIncome2opt2" />
+                            <input type="radio" name="otherTaxableIncome2radio" id="otherTaxableIncome2opt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.otherTaxableIncome2radio==="No"}/>
                             <label htmlFor="otherTaxableIncome2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -1875,19 +2893,6 @@ const IncomeExpenses = () => {
                         </div>
                       {/* 5 row */}
 
-
-                      <div className="row mt-5 mb-3">
-                        <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
-                        </div>
-                      </div>
-                      
-                      
-                        
-                        </Form>
-                      </Formik>
-
                             
                      </div>
                   </div>
@@ -1896,8 +2901,7 @@ const IncomeExpenses = () => {
                 </div>
                 {/*Partner Other taxable income */}
 
-
-                  {/*Expenses */}
+                {/*Expenses */}
                 <div className="row my-5">
                   <div className="col-md-12">
                     <div className="shadow px-4 py-4">
@@ -1906,9 +2910,6 @@ const IncomeExpenses = () => {
                              <img className="img-fluid" src={dollarBag} alt="" />
 
                               </div></h3>
-
-                              <Formik initialValues={Client_initialValues} validationSchema={Client_validationSchema} onSubmit={Client_onSubmit}>
-                                <Form>
                                   
                        {/* 1 row */}
                         <div className="row">
@@ -1975,7 +2976,17 @@ const IncomeExpenses = () => {
                               
                              </Modal.Title>
                             </Modal.Header>
+                            <Formik 
+                              initialValues={initialValues2}
+                              validationSchema={validationSchema2}
+                              onSubmit={onSubmit2} >
+                                {({values , setFieldValue ,setValues,handleChange,formik})=>
+                           <Form>
+                                
                             <Modal.Body>
+
+                               
+
                             <div className="row text-light bgColorIncome py-2 my-1">
                               <div className="col-md-6">
                                 <label className="form-label mb-0">Total Expense</label>
@@ -2019,7 +3030,7 @@ const IncomeExpenses = () => {
                             <div>
                               
                             </div>
-                            <Collapse Collapse in={open}>
+                            <Collapse in={open}>
 
                               <div className="row">
                                 <div className="col-md-12">
@@ -2035,31 +3046,34 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldrent" className="form-label">
                                   Rent
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldrent" placeholder="Rent"/>
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldrent" placeholder="Rent" name="houseHoldrent"/>
+                               
+                                < ErrorMessage name="houseHoldrent" component="div"
+                               className="text-danger fw-bold" />
     
                                   </div>
                                   <div className="col-5">
                                   <label htmlFor="" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as="select"
                                   id="houseHoldrentType"
                                   className="form-select shadow  inputDesign"
+                                 name="houseHoldrentType"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
-
-                                  
-    
-                          
-                                 </select>
+                                 </Field>
+                                 
+                                 < ErrorMessage name="houseHoldrentType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                   </div>
@@ -2072,31 +3086,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldElectricity" className="form-label">
                                   Electricity
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldElectricity" placeholder="Electricity"/>
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldElectricity" placeholder="Electricity"
+                                name="houseHoldElectricity"/>
+                               < ErrorMessage name="houseHoldElectricity" component="div"
+                               className="text-danger fw-bold" />
     
                                   </div>
                                   <div className="col-5">
                                   <label htmlFor="" className="form-label float-end">
                                 $0 
                                 </label>
-                                <select
+                                <Field
+                                as="select"
                                   id="houseHoldElectricityType"
                                   className="form-select shadow  inputDesign"
+                                  name="houseHoldElectricityType"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
-
-                                  
-    
-                          
-                                 </select>
+                                  </Field>
+                                  < ErrorMessage name="houseHoldElectricityType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 </div>
@@ -2109,25 +3125,29 @@ const IncomeExpenses = () => {
                                   <div className="row  my-3">
                                 
                                 {/* Water Rates*/}
-                                   <div className="col-md-6">
+                                <div className="col-md-6">
                                    <div className="row">
                                   <div className="col-7">
                                   <label htmlFor="houseHoldWaterRates" className="form-label">
                                   Water Rates
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldWaterRates" placeholder="Water Rates"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldWaterRates" placeholder="Water Rates"
+                                name="houseHoldWaterRates"/>
+                                < ErrorMessage name="houseHoldWaterRates" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="houseHoldWaterRateValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as="select"
                                   id="houseHoldWaterRateType"
                                   className="form-select shadow  inputDesign"
+                                  name="houseHoldWaterRateType"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2135,10 +3155,12 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="houseHoldWaterRateType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   </div>
-                                 </div>
+                                </div>
                                 {/* Water Rates */}
     
                                 {/* Gas */}
@@ -2149,26 +3171,32 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldGas" className="form-label">
                                   Gas
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldGas" placeholder="Gas"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldGas" name="houseHoldGas" placeholder="Gas"/>
+                                < ErrorMessage name="houseHoldGas" component="div"
+                                 className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label   id="houseHoldGasValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as="select"
                                   id="houseHoldGasType"
                                   className="form-select shadow  inputDesign"
+                                  name="houseHoldGasType"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="houseHoldGasType" component="div"
+                               className="text-danger fw-bold" />
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2186,19 +3214,24 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldPhone" className="form-label">
                                   Phone
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldPhone" placeholder="Phone"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldPhone" placeholder="Phone"
+                                name="houseHoldPhone"/>
+                                < ErrorMessage name="houseHoldPhone" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="houseHoldPhoneValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as="select"
                                   id="houseHoldPhoneType"
+                                  name="houseHoldPhoneType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2206,7 +3239,9 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="houseHoldPhoneType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   </div>
                                  </div>
@@ -2220,26 +3255,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldCouncilRates" className="form-label">
                                   Council Rates
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldCouncilRates" placeholder="Council Rates"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldCouncilRates"
+                                name="houseHoldCouncilRates"
+                                placeholder="Council Rates"/>
+                                < ErrorMessage name="houseHoldCouncilRates" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label   id="houseHoldCouncilRatesValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as="select"
                                   id="houseHoldCouncilRatesType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="houseHoldCouncilRatesType" component="div"
+                                   className="text-danger fw-bold" />
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2259,26 +3301,36 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldInternet" className="form-label">
                                   Internet
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="houseHoldInternet" placeholder="Internet"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="houseHoldInternet"
+                                name="houseHoldInternet"
+                                placeholder="Internet"/>
+                                
+                                < ErrorMessage name="houseHoldInternet" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label   id="houseHoldInternetValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as="select"
                                   id="houseHoldInternetType"
+                                  name="houseHoldInternetType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="houseHoldInternetType" component="div"
+                               className="text-danger fw-bold" />
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2291,26 +3343,35 @@ const IncomeExpenses = () => {
                                   <label htmlFor="houseHoldOther" className="form-label">
                                   Other
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
+                                <Field name="houseHoldOther"
+                                 type="number" className="form-control inputDesign shadow"
                                 id="houseHoldOther" placeholder="Other"/>
+                                < ErrorMessage name="houseHoldOther" component="div"
+                               className="text-danger fw-bold" />
     
                                   </div>
                                   <div className="col-5">
                                   <label   id="houseHoldOtherValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as="select"
                                   id="houseHoldOtherType"
+                                  name="houseHoldOtherType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="houseHoldOtherType" component="div"
+                                   className="text-danger fw-bold" />
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2356,7 +3417,7 @@ const IncomeExpenses = () => {
                             <div>
                               
                             </div>
-                            <Collapse Collapse in={open2}>
+                            <Collapse in={open2}>
 
                               <div className="row">
                                 <div className="col-md-12">
@@ -2372,31 +3433,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalFood" className="form-label">
                                   Food
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalFood" placeholder="Food"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                name="PersonalFood" id="PersonalFood" placeholder="Food" />
+                                < ErrorMessage name="PersonalFood" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label htmlFor="PersonalFoodValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="PersonalFoodType"
+                                  name="PersonalFoodType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
-
-                                  
-    
-                          
-                                 </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalFoodType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                   </div>
@@ -2409,31 +3472,31 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalClothing" className="form-label">
                                   Clothing
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalClothing" placeholder="Clothing"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="PersonalClothing" name="PersonalClothing" placeholder="Clothing"/>
+                                < ErrorMessage name="PersonalClothing" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="PersonalClothingValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                <select
+                                <Field
+                                 as='select'
+                                  name="PersonalClothingValueType"
                                   id="PersonalClothingValueType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
-
-                                  
-    
-                          
-                                 </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalClothingValueType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 </div>
@@ -2452,19 +3515,23 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalCigarettes" className="form-label">
                                   Cigarettes
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalCigarettes" placeholder="Cigarettes"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                name="PersonalCigarettes" id="PersonalCigarettes" placeholder="Cigarettes"/>
+                                < ErrorMessage name="PersonalCigarettes" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="PersonalCigarettesValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="PersonalCigarettesType"
+                                  name="PersonalCigarettesType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2472,7 +3539,9 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalCigarettesType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   </div>
                                  </div>
@@ -2486,26 +3555,32 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalAlcohol" className="form-label">
                                   Alcohol
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalAlcohol" placeholder="Alcohol"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                name="PersonalAlcohol" id="PersonalAlcohol" placeholder="Alcohol"/>
+                                < ErrorMessage name="PersonalAlcohol" component="div" className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label   id="PersonalAlcoholValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as='select'
                                   id="PersonalAlcoholType"
+                                  name="PersonalAlcoholType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="PersonalAlcoholType" component="div"
+                               className="text-danger fw-bold" />
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2523,19 +3598,24 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalSubscriptionFees" className="form-label">
                                   Subscription Fees
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
+                                <Field
+                                name="PersonalSubscriptionFees" type="number" className="form-control inputDesign shadow"
                                 id="PersonalSubscriptionFees" placeholder="Subscription Fees"/>
-    
+     < ErrorMessage name="PersonalSubscriptionFees" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="PersonalSubscriptionFeesValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field 
+                                  as='select'
                                   id="PersonalSubscriptionFeesType"
+                                  name="PersonalSubscriptionFeesType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2543,7 +3623,10 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalSubscriptionFeesType" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   </div>
                                   </div>
@@ -2557,26 +3640,35 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalMembershipsClubs" className="form-label">
                                   Memberships & Clubs
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalMembershipsClubs" placeholder="Memberships & Clubs"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="PersonalMembershipsClubs"
+                                name="PersonalMembershipsClubs" placeholder="Memberships & Clubs"/>
+    < ErrorMessage name="PersonalMembershipsClubs" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label   id="PersonalMembershipsClubsValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as='select'
                                   id="PersonalMembershipsClubsType"
+                                  name="PersonalMembershipsClubsType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="PersonalMembershipsClubsType" component="div"
+                               className="text-danger fw-bold" />
+
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2594,19 +3686,24 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalOther" className="form-label">
                                   Other
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
+                                <Field name="PersonalOther" type="number" className="form-control inputDesign shadow"
                                 id="PersonalOther" placeholder="Other"/>
-    
+    < ErrorMessage name="PersonalOther" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label id="PersonalOtherValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="PersonalOtherType"
+                                  name="PersonalOtherType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2614,7 +3711,10 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalOtherType" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   </div>
                                  </div>
@@ -2628,26 +3728,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalHolidays" className="form-label">
                                   Holidays
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalHolidays" placeholder="Holidays"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                name="PersonalHolidays" id="PersonalHolidays" placeholder="Holidays"/>
+    < ErrorMessage name="PersonalHolidays" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label   id="PersonalHolidaysValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field as='select'
                                   id="PersonalHolidaysType"
+                                  name="PersonalHolidaysType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="PersonalHolidaysType" component="div"
+                               className="text-danger fw-bold" />
+
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2666,19 +3773,23 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalDiningOut" className="form-label">
                                   Dining Out
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalDiningOut" placeholder="Dining Out"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="PersonalDiningOut" name="PersonalDiningOut" placeholder="Dining Out"/>
+     < ErrorMessage name="PersonalDiningOut" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label id="PersonalDiningOutValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="PersonalDiningOutType"
+                                  name="PersonalDiningOutType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2686,7 +3797,10 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalDiningOutType" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   </div>
                                  </div>
@@ -2700,26 +3814,35 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalMobilePhone" className="form-label">
                                   Mobile Phone
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalMobilePhone" placeholder="Mobile Phone"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="PersonalMobilePhone" name="PersonalMobilePhone" placeholder="Mobile Phone"/>
+     < ErrorMessage name="PersonalMobilePhone" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label   id="PersonalMobilePhoneValue" className="form-label float-end ">
                                   $0
                                 </label>
-                                 <select
+                                 <Field
+                                 as='select'
                                   id="PersonalMobilePhoneType"
+                                  name="PersonalMobilePhoneType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                   </select> </div>
+                                   </Field>
+                                   < ErrorMessage name="PersonalMobilePhoneType" component="div"
+                               className="text-danger fw-bold" />
+
+                                    </div>
                                 </div>
                                  
                                 </div>
@@ -2738,19 +3861,24 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PersonalMedicalExpenses" className="form-label">
                                   Medical Expenses
                                 </label>
-                                <input type="text" className="form-control inputDesign shadow"
-                                id="PersonalMedicalExpenses" placeholder="Medical Expenses"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="PersonalMedicalExpenses"
+                                name="PersonalMedicalExpenses" placeholder="Medical Expenses"/>
+     < ErrorMessage name="PersonalMedicalExpenses" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label id="PersonalMedicalExpensesValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="PersonalMedicalExpensesType"
+                                  name="PersonalMedicalExpensesType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
@@ -2758,7 +3886,10 @@ const IncomeExpenses = () => {
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
                                   
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="PersonalMedicalExpensesType" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   </div>
                                  </div>
@@ -2801,7 +3932,7 @@ const IncomeExpenses = () => {
                             <div>
                               
                             </div>
-                            <Collapse Collapse in={open3}>
+                            <Collapse in={open3}>
 
                               <div className="row">
                                 <div className="col-md-12">
@@ -2819,32 +3950,36 @@ const IncomeExpenses = () => {
                                   <label htmlFor="TransportPetrol" className="form-label">
                                   Petrol
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
+                                <Field type="number" className="form-control inputDesign shadow"
+                                name="TransportPetrol"
                                 id="TransportPetrol" placeholder="Petrol"/>
-    
+     < ErrorMessage name="TransportPetrol" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <br />
                                   <label id="TransportPetrolValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="TransportPetrolType"
+                                  name="TransportPetrolType"
+
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
+                                 </Field>
+                                 < ErrorMessage name="TransportPetrolType" component="div"
+                               className="text-danger fw-bold" />
 
-                                  
-    
-                          
-                                 </select>
                                   </div>
                                 </div>
                                   </div>
@@ -2858,9 +3993,12 @@ const IncomeExpenses = () => {
                                      <label htmlFor="TransportCarRepairs" className="form-label">
                                      Car Repairs & Maintenance
                                    </label>
-                                   <input type="number" className="form-control inputDesign shadow"
-                                   id="TransportCarRepairs" placeholder="Car Repairs & Maintenance"/>
-       
+                                   <Field type="number" className="form-control inputDesign shadow"
+                                   id="TransportCarRepairs"
+                                   name="TransportCarRepairs" placeholder="Car Repairs & Maintenance"/>
+        < ErrorMessage name="TransportCarRepairs" component="div"
+                               className="text-danger fw-bold" />
+
                                      </div>
                                      <div className="col-5">
                                     <br />
@@ -2868,18 +4006,22 @@ const IncomeExpenses = () => {
                                      <label id="TransportCarRepairsValue" className="form-label float-end">
                                    $0 
                                    </label>
-                                     <select
+                                     <Field
+                                     as='select'
                                      id="TransportCarRepairsType"
+                                     name="TransportCarRepairsType"
                                      className="form-select shadow  inputDesign"
                                    >
-                                     <option>Select</option>
+                                     <option value=''>Select</option>
                                      <option value="Weekly">Weekly</option>
                                      <option value="Fortnightly">Fortnightly</option>
                                      <option value="Monthly">Monthly</option>
                                      <option value="Quarterly">Quarterly</option>
                                      <option value="Six-Monthly">Six-Monthly</option>
                                      <option value="Annually">Annually</option>
-                                       </select>
+                                       </Field>
+                                       < ErrorMessage name="TransportCarRepairsType" component="div"
+                               className="text-danger fw-bold" />
                                      </div>
                                    </div>
                                      </div>
@@ -2898,31 +4040,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="TransportCarRegistration" className="form-label">
                                   Car Registration
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="TransportCarRegistration" placeholder="Car Registration"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="TransportCarRegistration"
+                                name="TransportCarRegistration" placeholder="Car Registration"/>
+     < ErrorMessage name="TransportCarRegistration" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label id="TransportCarRegistrationValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="TransportCarRegistrationType"
+                                  name="TransportCarRegistrationType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
-
-                                  
-    
-                          
-                                 </select>
+                                 </Field>
+                                 < ErrorMessage name="TransportCarRegistrationType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                   </div>
@@ -2935,31 +4079,31 @@ const IncomeExpenses = () => {
                                      <label htmlFor="PublicTransport" className="form-label">
                                      Public Transport
                                    </label>
-                                   <input type="number" className="form-control inputDesign shadow"
-                                   id="PublicTransport" placeholder="Public Transport"/>
-       
+                                   <Field type="number" className="form-control inputDesign shadow"
+                                   id="PublicTransport" name="PublicTransport" placeholder="Public Transport"/>
+       < ErrorMessage name="PublicTransport" component="div"
+                               className="text-danger fw-bold" />
                                      </div>
                                      <div className="col-5">
                                      <label id="PublicTransportValue" className="form-label float-end">
                                    $0 
                                    </label>
-                                     <select
+                                     <Field
+                                     as='select'
                                      id="PublicTransportType"
+                                     name="PublicTransportType"
                                      className="form-select shadow  inputDesign"
                                    >
-                                     <option>Select</option>
+                                     <option value=''>Select</option>
                                      <option value="Weekly">Weekly</option>
                                      <option value="Fortnightly">Fortnightly</option>
                                      <option value="Monthly">Monthly</option>
                                      <option value="Quarterly">Quarterly</option>
                                      <option value="Six-Monthly">Six-Monthly</option>
                                      <option value="Annually">Annually</option>
-                                     
-   
-                                     
-       
-                             
-                                    </select>
+                                     </Field>
+                                     < ErrorMessage name="PublicTransportType" component="div"
+                               className="text-danger fw-bold" />
                                      </div>
                                    </div>
                                 </div>
@@ -2978,26 +4122,31 @@ const IncomeExpenses = () => {
                                   <label htmlFor="TransportOther" className="form-label">
                                   Other
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="TransportOther" placeholder="Other"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="TransportOther" name="TransportOther" placeholder="Other"/>
+    < ErrorMessage name="TransportOther" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="TransportOtherValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
+                                  name="TransportOtherType"
                                   id="TransportOtherType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  </select>
+                                  </Field>
+                                  < ErrorMessage name="TransportOtherType" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                   </div>
@@ -3041,7 +4190,7 @@ const IncomeExpenses = () => {
                             <div>
                               
                             </div>
-                            <Collapse Collapse in={open4}>
+                            <Collapse in={open4}>
 
                               <div className="row">
                                 <div className="col-md-12">
@@ -3058,31 +4207,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="PrivateHealth" className="form-label">
                                   Private Health
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
-                                id="PrivateHealth" placeholder="Private Health"/>
-    
+                                <Field type="number" className="form-control inputDesign shadow"
+                                id="PrivateHealth"
+                                name="PrivateHealth" placeholder="Private Health"/>
+    < ErrorMessage name="PrivateHealth" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                   <div className="col-5">
                                   <label id="PrivateHealthValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as='select'
                                   id="PrivateHealthType"
+                                  name="PrivateHealthType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
+                                  </Field>
+                                  < ErrorMessage name="PrivateHealthType" component="div"
+                               className="text-danger fw-bold" />
 
-                                  
-    
-                          
-                                 </select>
                                   </div>
                                 </div>
                                   </div>
@@ -3096,31 +4247,34 @@ const IncomeExpenses = () => {
                                      <label htmlFor="LifeTPDTrauma" className="form-label">
                                      Life/TPD/Trauma
                                    </label>
-                                   <input type="number" className="form-control inputDesign shadow"
-                                   id="LifeTPDTrauma" placeholder="Life/TPD/Trauma"/>
-       
+                                   <Field type="number" className="form-control inputDesign shadow"
+                                   id="LifeTPDTrauma" name="LifeTPDTrauma" placeholder="Life/TPD/Trauma"/>
+        < ErrorMessage name="LifeTPDTrauma" component="div"
+                               className="text-danger fw-bold" />
+
                                      </div>
                                      <div className="col-5">
                                 <label id="LifeTPDTraumaValue" className="form-label float-end">
                                    $0 
                                    </label>
-                                     <select
+                                     <Field
+                                     as="select"
                                      id="LifeTPDTraumaType"
+                                     name="LifeTPDTraumaType"
                                      className="form-select shadow  inputDesign"
                                    >
-                                     <option>Select</option>
+                                     <option value="">Select</option>
                                      <option value="Weekly">Weekly</option>
                                      <option value="Fortnightly">Fortnightly</option>
                                      <option value="Monthly">Monthly</option>
                                      <option value="Quarterly">Quarterly</option>
                                      <option value="Six-Monthly">Six-Monthly</option>
                                      <option value="Annually">Annually</option>
-                                     
-   
-                                     
-       
-                             
-                                    </select>
+                                     </Field>
+
+                                     < ErrorMessage name="LifeTPDTraumaType" component="div"
+                               className="text-danger fw-bold" />
+
                                      </div>
                                    </div>
                                      </div>
@@ -3139,31 +4293,33 @@ const IncomeExpenses = () => {
                                   <label htmlFor="InsuranceIncomeProtection" className="form-label">
                                   Income Protection
                                 </label>
-                                <input type="number" className="form-control inputDesign shadow"
+                                <Field name="InsuranceIncomeProtection"  type="number" className="form-control inputDesign shadow"
                                 id="InsuranceIncomeProtection" placeholder="Income Protection"/>
-    
+     < ErrorMessage name="InsuranceIncomeProtection" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                   <div className="col-5">
                                   <label id="InsuranceIncomeProtectionValue" className="form-label float-end">
                                 $0 
                                 </label>
-                                  <select
+                                  <Field
+                                  as="select"
                                   id="InsuranceIncomeProtectionType"
+                                  name="InsuranceIncomeProtectionType"
                                   className="form-select shadow  inputDesign"
                                 >
-                                  <option>Select</option>
+                                  <option value=''>Select</option>
                                   <option value="Weekly">Weekly</option>
                                   <option value="Fortnightly">Fortnightly</option>
                                   <option value="Monthly">Monthly</option>
                                   <option value="Quarterly">Quarterly</option>
                                   <option value="Six-Monthly">Six-Monthly</option>
                                   <option value="Annually">Annually</option>
-                                  
+                                  </Field>
+                                  < ErrorMessage name="InsuranceIncomeProtectionType" component="div"
+                               className="text-danger fw-bold" />
 
-                                  
-    
-                          
-                                 </select>
                                   </div>
                                 </div>
                                   </div>
@@ -3176,31 +4332,33 @@ const IncomeExpenses = () => {
                                      <label htmlFor="InsuranceCar" className="form-label">
                                      Car
                                    </label>
-                                   <input type="number" className="form-control inputDesign shadow"
-                                   id="InsuranceCar" placeholder="Car"/>
-       
+                                   <Field type="number" className="form-control inputDesign shadow"
+                                   id="InsuranceCar" name="InsuranceCar" placeholder="Car"/>
+        < ErrorMessage name="InsuranceCar" component="div"
+                               className="text-danger fw-bold" />
+
                                      </div>
                                      <div className="col-5">
                                      <label id="InsuranceCarValue" className="form-label float-end">
                                    $0 
                                    </label>
-                                     <select
+                                     <Field
+                                     as="select"
                                      id="InsuranceCarType"
+                                     name="InsuranceCarType"
                                      className="form-select shadow  inputDesign"
                                    >
-                                     <option>Select</option>
+                                     <option value=''>Select</option>
                                      <option value="Weekly">Weekly</option>
                                      <option value="Fortnightly">Fortnightly</option>
                                      <option value="Monthly">Monthly</option>
                                      <option value="Quarterly">Quarterly</option>
                                      <option value="Six-Monthly">Six-Monthly</option>
                                      <option value="Annually">Annually</option>
-                                     
-   
-                                     
-       
-                             
-                                    </select>
+                                     </Field>
+                                     < ErrorMessage name="InsuranceCarType" component="div"
+                               className="text-danger fw-bold" />
+
                                      </div>
                                    </div>
                                 </div>
@@ -3218,26 +4376,34 @@ const IncomeExpenses = () => {
                                       <label htmlFor="InsuranceHomeContents" className="form-label">
                                       Home And Contents
                                     </label>
-                                    <input type="number" className="form-control inputDesign shadow"
-                                    id="InsuranceHomeContents" placeholder="Home And Contents"/>
-        
+                                    <Field  type="number" className="form-control inputDesign shadow"
+                                    id="InsuranceHomeContents"
+                                    name="InsuranceHomeContents" placeholder="Home And Contents"/>
+         < ErrorMessage name="InsuranceHomeContents" component="div"
+                               className="text-danger fw-bold" />
+
                                       </div>
                                       <div className="col-5">
                                       <label id="InsuranceHomeContentsValue" className="form-label float-end">
                                     $0 
                                     </label>
-                                      <select
+                                      <Field
+                                      as="select"
                                       id="InsuranceHomeContentsType"
+                                      name="InsuranceHomeContentsType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option>Select</option>
+                                      <option value=''>Select</option>
                                       <option value="Weekly">Weekly</option>
                                       <option value="Fortnightly">Fortnightly</option>
                                       <option value="Monthly">Monthly</option>
                                       <option value="Quarterly">Quarterly</option>
                                       <option value="Six-Monthly">Six-Monthly</option>
                                       <option value="Annually">Annually</option>
-                                      </select>
+                                      </Field>
+                                      < ErrorMessage name="InsuranceHomeContentsType" component="div"
+                               className="text-danger fw-bold" />
+
                                       </div>
                                     </div>
                                   </div>
@@ -3249,26 +4415,33 @@ const IncomeExpenses = () => {
                                       <label htmlFor="InsuranceOther" className="form-label">
                                       Other
                                     </label>
-                                    <input type="number" className="form-control inputDesign shadow"
-                                    id="InsuranceOther" placeholder="Other"/>
-        
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="InsuranceOther" name="InsuranceOther" placeholder="Other"/>
+                               < ErrorMessage name="InsuranceOther" component="div"
+                               className="text-danger fw-bold" />
+
                                       </div>
                                       <div className="col-5">
                                       <label id="TransInsuranceValue" className="form-label float-end">
                                     $0 
                                     </label>
-                                      <select
+                                      <Field
+                                      as="select"
                                       id="TransInsuranceType"
+                                      name="TransInsuranceType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option>Select</option>
+                                      <option value=''>Select</option>
                                       <option value="Weekly">Weekly</option>
                                       <option value="Fortnightly">Fortnightly</option>
                                       <option value="Monthly">Monthly</option>
                                       <option value="Quarterly">Quarterly</option>
                                       <option value="Six-Monthly">Six-Monthly</option>
                                       <option value="Annually">Annually</option>
-                                      </select>
+                                      </Field>
+                                      < ErrorMessage name="TransInsuranceType" component="div"
+                               className="text-danger fw-bold" />
+
                                       </div>
                                     </div>
                                   </div>
@@ -3290,8 +4463,9 @@ const IncomeExpenses = () => {
                             <Modal.Footer>
                               <div className="col-md-12">
                                 <button
+                                type="submit"
                                   className="float-end btn w-25  bgColor modalBtn"
-                                  onClick={handleClose}
+                                  // onClick={handleClose}
                                 >
                                   Save
                                 </button>
@@ -3303,6 +4477,10 @@ const IncomeExpenses = () => {
                                 </button>
                               </div>
                             </Modal.Footer>
+
+</Form>
+}
+</Formik>
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
@@ -3318,11 +4496,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="lumpsumExpensesradio" id="lumpsumExpensesopt1" />
+                            <input type="radio" name="lumpsumExpensesradio" id="lumpsumExpensesopt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.lumpsumExpensesradio==="Yes"}/>
                             <label htmlFor="lumpsumExpensesopt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="lumpsumExpensesradio" id="lumpsumExpensesopt2" />
+                            <input type="radio" name="lumpsumExpensesradio" id="lumpsumExpensesopt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.lumpsumExpensesradio==="No"}/>
                             <label htmlFor="lumpsumExpensesopt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -3407,11 +4589,15 @@ const IncomeExpenses = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="expectingInheritancesradio" id="expectingInheritancesopt1" />
+                            <input type="radio" name="expectingInheritancesradio" id="expectingInheritancesopt1" 
+                             onChange={handleChange} value="Yes"
+                             checked={values.expectingInheritancesradio==="Yes"}/>
                             <label htmlFor="expectingInheritancesopt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="expectingInheritancesradio" id="expectingInheritancesopt2" />
+                            <input type="radio" name="expectingInheritancesradio" id="expectingInheritancesopt2" 
+                             onChange={handleChange} value="No"
+                             checked={values.expectingInheritancesradio==="No"}/>
                             <label htmlFor="expectingInheritancesopt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -3466,6 +4652,13 @@ const IncomeExpenses = () => {
                       </div>
                     {/* 3 2nd part  row*/}
 
+                
+                
+                    </div>
+                  </div>
+                </div>
+                {/*Expenses */}
+
 
                       <div className="row mt-5 mb-3">
                         <div className="col-md-12">
@@ -3475,16 +4668,12 @@ const IncomeExpenses = () => {
                       </div>
                       
                       
-                        
-                                </Form>
-                              </Formik>                              
-                      
-                {/*Expenses */}
-                
-                </div>
-        </div>
+                        </Form>
+                  }
+                  </Formik>
+                  
       </div>
-      </div></div>
+      </div>
       </div>
     </>
   );

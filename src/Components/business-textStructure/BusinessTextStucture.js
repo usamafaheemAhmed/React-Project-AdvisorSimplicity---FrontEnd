@@ -65,6 +65,7 @@ const BusinessTextStucture = () => {
     privateDirectorsDetail: '',
     privateClientsshareholding: '',
     privatePartnersShareholding: '',
+    dividendsTakenradio: 'No',
     privateClient: '',
     privatePartner: '',
 
@@ -76,6 +77,7 @@ const BusinessTextStucture = () => {
     trustBusinessExpenses: '',
     trustClientShareofDistribution: '',
     trustPartnerShareofDistribution: '',
+    DistributionsTakenradio: 'No',
     trustClient: '',
     trustPartner: ''
   }
@@ -258,7 +260,8 @@ const BusinessTextStucture = () => {
           <div className="col-md-2"></div>
           <div className="col-md-12">
             
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} enableReinitialize>
+            {({values , setFieldValue ,setValues,handleChange,formik})=>
               <Form>
             {/*------------------------------------Sole Trader - Client------------------------------------*/}
                   <div className="row">
@@ -2128,11 +2131,15 @@ const BusinessTextStucture = () => {
                              {/* switch button style */}
                                 <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="dividendsTakenradio" id="dividendsTakenopt1" />
+                                <input type="radio" name="dividendsTakenradio" id="dividendsTakenopt1" 
+                                onChange={handleChange} value="Yes"
+                                checked={values.dividendsTakenradio==="Yes"} />
                                 <label htmlFor="dividendsTakenopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="dividendsTakenradio" id="dividendsTakenopt2" />
+                                <input type="radio" name="dividendsTakenradio" id="dividendsTakenopt2" 
+                                onChange={handleChange} value="No"
+                                checked={values.dividendsTakenradio==="No"} />
                                 <label htmlFor="dividendsTakenopt2" className="label2">
                                   <span>NO</span>
                                 </label>
@@ -2819,11 +2826,15 @@ const BusinessTextStucture = () => {
                         {/* switch button style */}
                         <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="DistributionsTakenradio" id="DistributionsTakenopt1" />
+                                <input type="radio" name="DistributionsTakenradio" id="DistributionsTakenopt1" 
+                                onChange={handleChange} value="Yes"
+                                checked={values.DistributionsTakenradio==="Yes"} />
                                 <label htmlFor="DistributionsTakenopt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="DistributionsTakenradio" id="DistributionsTakenopt2" />
+                                <input type="radio" name="DistributionsTakenradio" id="DistributionsTakenopt2"  
+                                onChange={handleChange} value="No"
+                                checked={values.DistributionsTakenradio==="No"}/>
                                 <label htmlFor="DistributionsTakenopt2" className="label2">
                                   <span>NO</span>
                                 </label>
@@ -2895,6 +2906,7 @@ const BusinessTextStucture = () => {
 
 
             </Form>
+            }
             </Formik>
 
 
