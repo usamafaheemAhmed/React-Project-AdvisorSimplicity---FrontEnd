@@ -15,6 +15,7 @@ import child from "./images/child.svg";
 import male from "./images/male.svg";
 import female from "./images/female.svg";
 import Modal from "react-bootstrap/Modal";
+import axios from "axios";
 
 const PersonalDetail = () => {
   let letters = /^[a-zA-Z ]*$/;
@@ -39,7 +40,7 @@ const PersonalDetail = () => {
 
 
   const handleClose = () => setShow(false);
-   const handleShow = () => setShow(true);
+  const handleShow = () => setShow(true);
 
   let smokerHandler=(elem)=>{
     if(elem=="smoker"){
@@ -125,25 +126,22 @@ const PersonalDetail = () => {
   }
 
   let clientHealthIssueHandler=(e)=>{
-   console.log(e)
-  //  let decRow=document.getElementById("clientDescriptionRow").classList;
+  
+
    if(e==="no"){
-    // decRow.add("d-none")
+   
     setClientDec(false)
-// alert("false no")
+
    }
    else{
-    // decRow.remove("d-none")
+  
     setClientDec(true)
-    // alert("true yes")
-
-
+   
    }
   }
   
   let childrenHandler=(elem,num)=>{
     setcheckNumber(num)
-    // alert(numOfChild)
     let noChildren=document.getElementById("noChildren").classList;
     let oneChildren=document.getElementById("oneChildren").classList;
     let twoChildren=document.getElementById("twoChildren").classList;
@@ -236,10 +234,6 @@ let ageHandler=(Dob,Age)=>{
       }
   }
 
-  // let currentDate = `${day}-${month}-${year}`;
-  // console.log(currentDate)
-  // let  age=(parseFloat(year)-parseFloat(dateinYear));
-  // document.getElementById("employeeAgeID").value=age ||0;
 }
 
 function ChangeDateFormat(CDoB,HDate){
@@ -249,22 +243,50 @@ function ChangeDateFormat(CDoB,HDate){
   let yyyy = CurrentDate.getFullYear();
   let setDate =  dd + '/' + (mm+1) + '/' + yyyy;
   document.getElementById(CDoB).value = setDate;
+
+
 }
+let partnerAgeHandler=(Dob,Age)=>{
+
+  let DOB=document.getElementById(Dob).value;
+  let dateinYear=DOB.split("/");
+  let  DOBDate=dateinYear[0];
+  let  DOBMonth=dateinYear[1];
+  let  DOBYear=dateinYear[2];
 
 
-let partnerAgeHandler=()=>{
-
-  let DOB=document.getElementById("ClientDoBID2").value;
   const date = new Date();
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
-  let currentDate = `${year}-${month}-${day}`;
-  let  age=(parseFloat(currentDate)-parseFloat(DOB));
-  console.log(parseFloat(currentDate))
-  document.getElementById("employeeAgeID2").value=age ||0;
 
+
+  if(DOBMonth > month){
+  let  age=(parseFloat(year)-parseFloat(DOBYear));
+  document.getElementById(Age).value=age-1 ||0;
+  }
+  else{
+  let  age=(parseFloat(year)-parseFloat(DOBYear));
+  document.getElementById(Age).value=age ||0;
+  }
+
+
+  if(DOBMonth==month){
+    if (DOBDate >= day){
+      let  age=(parseFloat(year)-parseFloat(DOBYear));
+      document.getElementById(Age).value=age-1 ||0;
+    }
+    else{
+      let  age=(parseFloat(year)-parseFloat(DOBYear));
+      document.getElementById(Age).value=age ||0;
+      }
+  }
+
+  
 }
+
+
+
 
 const initialValues={
   titleID:'',
@@ -291,61 +313,95 @@ const initialValues={
   DescriptionID:'',
  
   // partner
-  titleID2:'',
   maritalStatus2:'',
   givenNameID2:'',
   employmentStatusID2:'',
   surnameID2:'',
   HealthID2:'',
   preferedNameID2:'',
+  Smoker:'',
+  Gender:'',
   plannedRetirementAgeID2:'',
   ClientDoBID2:'',
-
+  // employeeAgeID2:'',
+  
   workPhoneID2:'',
   mobileID2:'',
   emailID2:'',
 
 }
 const onSubmit= (values,action) => {
-let AddPersonalDetail={
-    titleID:values.titleID,
-    maritalStatus:values.maritalStatus,
-    givenNameID:values.givenNameID,
-    employmentStatusID:values.employmentStatusID,
-    surnameID:values.surnameID,
-    HealthID:values.HealthID,
-    preferedNameID:values.preferedNameID,
-    smoker:clientSmoker,
-    gender:clientGender,
-    expandFamilyradio:values.expandFamilyradio,
-    healthIssuesradio:values.healthIssuesradio,
-    plannedRetirementAgeID:values.plannedRetirementAgeID,
-    ClientDoBID:values.ClientDoBID,
-    employeeAgeID:document.getElementById("employeeAgeID").value ,
+let ClientDetails={
+    Title:values.titleID,
+    GivenName:values.givenNameID,
+    Surname:values.surnameID,
+    PreferredName:values.preferedNameID,
+    Gender:clientGender,
+    DOB:values.ClientDoBID,
+    Age:document.getElementById("employeeAgeID").value,
+    MaritalStatus:values.maritalStatus,
+    EmploymentStatus:values.employmentStatusID,
+    Health:values.HealthID,
+    Smoker:clientSmoker,
+    PlannedRetirementAge:values.plannedRetirementAgeID,
+    HomeAddress:values.homeAddressID,
+    Postcode:values.PostcodeID,
+    HomePhone:values.homePhoneID,
+    WorkPhone:values.workPhoneID,
+    Mobile:values.mobileID,
+    Email:values.emailID,
+    PostalAddress:values.postalAddressID,
+    PostalPostCode:values.postalPostcodeIDSame,
 
-    homeAddressID:values.homeAddressID,
-    homePhoneID:values.homePhoneID,
-    PostcodeID:values.PostcodeID,
-    workPhoneID:values.workPhoneID,
-    emailID:values.emailID,
-    mobileID:values.mobileID,
-    DescriptionID:values.DescriptionID,
-    // SamepostalAddressID:clientPostalAddressCheckBox ? values.homeAddressID : values.postalAddressID,
-    SamepostalAddressID:values.postalAddressID,
-    SamepostalPostcodeIDSame:values.postalPostcodeIDSame
-    
-   
+  
+
+    // childForm rest of data
+    ExpandFamily:values.expandFamilyradio,
+    HealthIssues:values.healthIssuesradio,
+    Description:values.DescriptionID,
+
+
+    // plannedRetirementAgeID:values.plannedRetirementAgeID,
+    // ClientDoBID:values.ClientDoBID,
+    // employeeAgeID:document.getElementById("employeeAgeID").value ,
   }
-console.log(values);
+
+
+ let PartnerDetails={
+    Title:values.titleID2,
+    GivenName:values.givenNameID2,
+    Surname:values.surnameID2,
+    PreferredName:values.preferedNameID2,
+    Gender:clientGender2,
+    DOB:values.ClientDoBID2,
+    Age:document.getElementById("employeeAgeID2").value,
+    MaritalStatus:values.maritalStatus2,
+    EmploymentStatus:values.employmentStatusID2,
+    Health:values.HealthID2,
+    Smoker:clientSmoker2,
+    PlannedRetirementAge:values.plannedRetirementAgeID2,
+    WorkPhone:values.workPhoneID2,
+    Mobile:values.mobileID2,
+    Email:values.emailID2,
+    
+  }
+  axios
+          .post("http://localhost:7000/Client/Add-Client",ClientDetails)
+          .then((res)=> console.log("Client Done"))
+
+// axios
+//   .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
+//   .then((res) => console.log(PartnerDetails))
+
+console.log(PartnerDetails)
+console.log(ClientDetails)
+
 
 }
 const validationSchema = Yup.object({
-          //givenNameID: Yup.string().required('Required') ,
            givenNameID: Yup.string().matches(letters, "only letters").required('Required') ,
-
            maritalStatus: Yup.string().required('Required'),
            preferedNameID: Yup.string().matches(letters, "only letters").required('Required') ,
-
            employmentStatusID: Yup.string().required('Required'),
            titleID: Yup.string().required('Required'),
            surnameID: Yup.string().matches(letters, "only letters").required('Required') ,
@@ -357,6 +413,7 @@ const validationSchema = Yup.object({
              (value) => value > 0
            ),
            ClientDoBID: Yup.string().required('Required'),
+
            homeAddressID:Yup.string().required('Required'),
            homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
            .required('Required'),
@@ -380,14 +437,6 @@ const validationSchema = Yup.object({
             is:(val)=> val && val.length ==3,
             then:Yup.string().required("Required")
              }),
-
-          // DescriptionID:Yup.string().required("Required")
-          
-
-          // employeeAgeID: Yup.number().required("Required").test(
-          //   "Is positive?",
-          //   "age must be greater then 1",
-          //   (value) => value > 0),
 
           // partnerValidation
           titleID2:Yup.string().required("Required"),
@@ -424,7 +473,7 @@ let ageHandler2=()=>{
   let currentDate = `${year}-${month}-${day}`;
   let  age=(parseFloat(currentDate)-parseFloat(DOB));
   document.getElementById("childAge").value=age ||0;
-   console.log(parseFloat(age));
+  
 
 }
  let modalGenderHandler=(elem)=>{
@@ -437,7 +486,6 @@ let ageHandler2=()=>{
 
     }
       else{
-      // alert(elem)
         window.localStorage.setItem("gender",elem)
         document.getElementById("male").classList.add('selectedimage');
         document.getElementById("female").classList.remove('selectedimage');
@@ -464,37 +512,40 @@ const initialValues2={
   childAge:'',
   }
   const onSubmit2= (values,action) => {
-
-
-
+  
     let age=document.getElementById("childAge").value;
     
     let addChildData={
-      childNameID:values.childNameID,
-      childDoBID:values.childDoBID,
-      childRelationship:values.childRelationship,
-      childSupportReceived:values.childSupportReceived,
-      CostofPrimaryEducation:values.CostofPrimaryEducation,
-      CostofSecondaryEducation:values.CostofSecondaryEducation,
-      CostofUniEducation:values.CostofUniEducation,
-      courseYears:values.courseYears,
-       childAge:age,
+      ChildNO: checkNumber,
+      ChildName:values.childNameID,
+      ChildDOB:values.childDoBID,
+      ChildAge:age,
+      ChildGender:childGender,
+      ChildRelation:values.childRelationship,
+      ChildFinancialyDependent:values.AmountPaidReceivedID,
+      ChildDependentAge:values.DependantUntilAge,
+      ChildSupportRecieved:values.childSupportReceived,
+      ChildSignificantCost:values.significantEducationRadio,
+      ChildPrimaryEducationCost:values.CostofPrimaryEducation,
+      ChildSecondaryEducationCost:values.CostofSecondaryEducation,
+      ChildUniversityEducationCost:values.CostofUniEducation,
+      ChildCourseYear:values.courseYears,
+
+    
       // childGender:window.localStorage.getItem("gender"),
-      childGender:childGender
+      
     }
      setListOfChild([...listOfChild,addChildData])
-    console.log(addChildData);
+   
     setChildGender("female")
     //  handleClose ();
     if(numOfChild==checkNumber){
-      // alert("1")
       handleClose ();
       setNumOfChild(1)
       setIsChildTable(true)
     }
     else{
       setNumOfChild(numOfChild+1)
-      // alert(numOfChild)
       handleClose ();
       setIsChildTable(true)
 
@@ -597,8 +648,6 @@ const initialValues2={
 
   let DependantHandler=(e)=>{
     
-    // alert(e)
-
     let decRow=document.getElementById("dependantRow").classList;
     if(e==="no"){
    
@@ -613,8 +662,6 @@ const initialValues2={
 
    let significantCostsHandler=(e)=>{
     
-    // alert(e)
-
     let decRow=document.getElementById("significantCostsofEducationRow").classList;
     if(e==="no"){
    
@@ -673,7 +720,7 @@ const initialValues2={
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="titleID" className="form-label">
-                          Title
+                          clientTitle
                         </label>
                         <Field
                           id="titleID"
@@ -874,7 +921,7 @@ const initialValues2={
                       </div>
                     </div>
                   </div>
-                  {/*Four---------------------------------------------------- row*/}
+                  {/*Four row*/}
 
                   {/* Five row */}
                   <div className="row">
@@ -948,7 +995,7 @@ const initialValues2={
                           id="ClientDoBID"
                           name='ClientDoBID'
                           onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
-                          value={values.DoBID}
+                          // value={values.DoBID}
                           max="2023-1-31"
                         />
                         <div className="input-group-append">
@@ -961,8 +1008,8 @@ const initialValues2={
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="ageID" className="form-label">
-                          Age
+                        <label htmlFor="employeeAgeID" className="form-label">
+                         client Age
                         </label>
                         <Field
                           type="text"
@@ -1012,8 +1059,8 @@ const initialValues2={
                           className="form-select shadow  inputDesign"
                          
                           name="titleID2"
-                          // onChange={(e) => setFieldValue("titleID2", e.target.value)}
-                          // value={values.titleID2}
+                          onChange={(e) => setFieldValue("titleID2", e.target.value)}
+                          value={values.titleID2}
                         >
                           <option value="">Select</option>
                           <option value="Dr">Dr</option>
@@ -1025,8 +1072,7 @@ const initialValues2={
                           <option value="Other">Other</option>
                         </Field>
                         <ErrorMessage className="text-danger fw-bold" component="div"   name="titleID2"  />
-                        {/* <ErrorMessage className="text-danger fw-bold" component="div"   name="titleID" className="text-danger" 
-                        component="span" /> */}
+                       
 
                       </div>
                     </div>
@@ -1262,35 +1308,33 @@ const initialValues2={
 
                   {/* six row */}
                   <div className="row">
-                    <div className="col-md-6">
-                      <div className="mb-3">
+
+                     <div className="col-md-6">
                         <label htmlFor="ClientDoBID2" className="form-label">
-                         Partner Date of Birth
+                        partner Date of Birth
                         </label>
-                         <div className="input-group ">
+                      <div className="input-group ">
                         <Field
                           className="form-control inputDesign shadow"
                           id="ClientDoBID2"
                           name='ClientDoBID2'
-                          onBlur={(e)=>ageHandler("ClientDoBID2","employeeAgeID2")}
+                          onBlur={(e)=>partnerAgeHandler("ClientDoBID2","employeeAgeID2")}
                           // value={values.DoBID}
                           // max="2023-1-31"
                         />
                         <div className="input-group-append">
                           <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='ClientDoBID2' type='date'
-                             id="HiddenDate2" onChange={()=>ChangeDateFormat("ClientDoBID2","HiddenDate2")}/>
+                            <input className="HiddenDate" name='ClientDoBID2' type='date' id="HiddenDate2"
+                             onChange={()=>ChangeDateFormat("ClientDoBID2","HiddenDate2")}/>
                           </span>
                         </div>
-                         </div>
-                        <ErrorMessage className="text-danger fw-bold" component="div"   name="ClientDoBID2" />
-
                       </div>
+                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID2" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="employeeAgeID2" className="form-label">
-                          Age
+                         partner Age
                         </label>
                         <Field
                           type="text"
@@ -1603,7 +1647,7 @@ const initialValues2={
                 <div className="row">
                   <div className="col-md-6">
                     <div className="mb-3">
-                      <label htmlFor="emailID" className="form-label">
+                      <label htmlFor="emailID2" className="form-label">
                         Email
                       </label>
                       <Field
@@ -2312,7 +2356,7 @@ const initialValues2={
             
           {/*  table  */}
           { isChildTable &&
-         <div   className='table-responsive my-3' id="childTable">
+         <div   className='table-responsive my-3 d-none' id="childTable">
          <table className="table table-bordered table-hover text-center">
   <thead className="text-light" id="tableHead">
   <tr>

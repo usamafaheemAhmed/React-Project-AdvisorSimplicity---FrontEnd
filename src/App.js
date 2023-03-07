@@ -1,14 +1,14 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import PersonalDetail from './Components/personalDetail/PersonalDetail';
-import BusinessTextStucture from './Components/business-textStructure/BusinessTextStucture';
-import IncomeExpenses from './Components/incomeAndExpenses/IncomeExpenses';
-import ProfessionalAdvisers from './Components/professionalAdvisers/ProfessionalAdvisers';
-import SideBarrr from './Components/SideBar/SideBarrr';
-import Topbar from './Components/Topbar/Topbar';
-import AssetsLiabilities from './Components/Assets&Liabilities/AssetsLiabilities';
-import Investments from './Components/Investments/Investments';
+import PersonalDetail from './components/personalDetail/PersonalDetail';
+import BusinessTextStucture from './components/business-textStructure/BusinessTextStucture';
+import IncomeExpenses from './components/incomeAndExpenses/IncomeExpenses';
+import ProfessionalAdvisers from './components/professionalAdvisers/ProfessionalAdvisers';
+import SideBarrr from './components/SideBar/SideBarrr';
+import Topbar from './components/Topbar/Topbar';
+import AssetsLiabilities from './components/Assets&Liabilities/AssetsLiabilities';
+import Investments from './components/Investments/Investments';
 
 function App() {
   return (
@@ -19,13 +19,13 @@ function App() {
 
       <div className="col-md-10 m-0 p-0"> 
       <Topbar />  
-      {/* 
+       
         <PersonalDetail/>
-        <BusinessTextStucture/>
-        <IncomeExpenses/> 
-        <ProfessionalAdvisers/> */}
+        {/* <BusinessTextStucture/> */}
+        {/* <IncomeExpenses/>  */}
         {/* <ProfessionalAdvisers/> */}
-        <AssetsLiabilities/>
+        {/* <ProfessionalAdvisers/> */}
+        {/* <AssetsLiabilities/> */}
         {/* <Investments /> */}
       </div>
     </div>

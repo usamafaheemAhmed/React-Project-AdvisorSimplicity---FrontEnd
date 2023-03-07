@@ -241,1843 +241,1843 @@ function Investments() {
   }
 
   return (
-    <div className='container'>
-    
-    <div className='row my-5'>
-    <div className='col-md-12 text-center'>
-    <h3>Investments</h3>
-    </div>
-    </div>
-    
-    <div className='row my-3'>
-    <div className='col-md-12'>
-    <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize>
-      {({ values, handleChange })=>
-      <Form>
-                      {/* Bank Account Details */}
-                      <div className='mb-5'>
-                      <h3 className="">Bank Accounts</h3>
-
-                           {/* 1 row */}
-                           <div className="row">
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you have any Bank Accounts?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="BankAccountRadio"
-                             id="ProfessionalAdvisors1opt1" value="Yes"
-                             onClick={()=>BankAccountHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.BankAccountRadio==="Yes"}
-                             />
-                            <label htmlFor="ProfessionalAdvisors1opt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="BankAccountRadio"
-                             id="ProfessionalAdvisors1opt2" value="No"
-                             onClick={()=>BankAccountHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.BankAccountRadio==="No"}
-                           />
-                            <label htmlFor="ProfessionalAdvisors1opt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {BankAccount && <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please enter the details of your Bank Accounts
-                            </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={BankhandleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 1 row */}
-                           
-                           {/* --------------------------------------------- */}
-
-                           <Modal
-                            show={Bankshow}
-                            onHide={BankhandleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                              Bank Account Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
-                            onSubmit={Client_onSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Professional Advisor Detail Form */}
-                                
-                                {/* Solicitor */}
-                        <div className=' '>
-                        <h3 className=''>
-                        <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div>
-                            Bank #1
-                        
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="BankCurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="BankCurrentValue" name='BankCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='BankCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="BankFinancialInstitution" className="form-label">Financial Institution</   label>
-                          <Field type="text" className="form-control shadow inputDesign"
-                           id="BankFinancialInstitution" name='BankFinancialInstitution' placeholder="Financial Institution"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='BankFinancialInstitution' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="BankIncomePA" className="form-label">Income P.A.</   label>
-                        <div className='row'>
-                        <div className='col-md-8'>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="BankIncomePA" name='BankIncomePA' placeholder="Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='BankIncomePA' />
-                        </div>
-                        <div className='col-md-4'>
-                        <Field
-                                  as='select'
-                                  name="BankIncomePAType"
-                                  id="BankIncomePAType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="dollor">$</option>
-                                  <option value="percentage">%</option>
-                                </Field>
-                                <ErrorMessage name="BankIncomePAType" component='div' className="text-danger fw-bold"/>
-                        </div>
-                        </div>  
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="BankIncomePAType" className="form-label">Income in $</   label>
-                          <Field type="text" className="form-control shadow inputDesign" 
-                          id="BankIncomeinDollars" name='BankIncomeinDollars' placeholder="Income in $"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='BankIncomeinDollars' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="BankFinancialInstitution" className="form-label">Regular Savings</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="BankRegularSavings" name='BankRegularSavings' placeholder="Regular Savings"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='BankRegularSavings' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Reinvestment Income
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="BankReinvestedIncome"
-                             id="BankReinvestedOpt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.BankReinvestedIncome==="Yes"}
-                             />
-                            <label htmlFor="BankReinvestedOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="BankReinvestedIncome"
-                             id="BankReinvestedOpt2" value="No"
-                             onChange={handleChange}
-                             checked={values.BankReinvestedIncome==="No"}
-                           />
-                            <label htmlFor="BankReinvestedOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-
-                        </div>
-                        
-                        </div>
-                        {/* Solicitor */}
-
-                        {/* Solicitor */}
-                        <div className='my-4'>
-                        <h3 className=''>
-                        <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div>
-                            Bank #2
-                        
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="Bank2CurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="Bank2CurrentValue" name='Bank2CurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2CurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="Bank2FinancialInstitution" className="form-label">Financial Institution</   label>
-                          <Field type="text" className="form-control shadow inputDesign"
-                           id="Bank2FinancialInstitution" name='Bank2FinancialInstitution' placeholder="Financial Institution"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2FinancialInstitution' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="Bank2IncomePA" className="form-label">Income P.A.</   label>
-                        <div className='row'>
-                        <div className='col-md-8'>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="Bank2IncomePA" name='Bank2IncomePA' placeholder="Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2IncomePA' />
-                        </div>
-                        <div className='col-md-4'>
-                        <Field
-                                  as='select'
-                                  name="Bank2IncomePAType"
-                                  id="Bank2IncomePAType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="dollor">$</option>
-                                  <option value="percentage">%</option>
-                                </Field>
-                                <ErrorMessage name="Bank2IncomePAType" component='div' className="text-danger fw-bold"/>
-                        </div>
-                        </div>  
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="Bank2IncomePAType" className="form-label">Income in $</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="Bank2IncomeinDollars" name='Bank2IncomeinDollars' placeholder="Income in $"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2IncomeinDollars' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="Bank2FinancialInstitution" className="form-label">Regular Savings</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="Bank2RegularSavings" name='Bank2RegularSavings' placeholder="Regular Savings"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2RegularSavings' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Reinvestment Income
-                            </label>
-                          {/* switch button style */}
-                          <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="Bank2ReinvestedIncome"
-                             id="Bank2ReinvestedOpt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.Bank2ReinvestedIncome==="Yes"}
-                             />
-                            <label htmlFor="Bank2ReinvestedOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="Bank2ReinvestedIncome"
-                             id="Bank2ReinvestedOpt2" value="No"
-                             onChange={handleChange}
-                             checked={values.Bank2ReinvestedIncome==="No"}
-                           />
-                            <label htmlFor="Bank2ReinvestedOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-
-                        </div>
-                        
-                        </div>
-                        {/* Solicitor */}
-
-                         {/* Bank Account Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={BankhandleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={BankhandleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                           {/* ---------------------------------------------------- */}
-                      </div>
-                      {/* Bank Account Details */}
-
-
-
-                      {/* Term Deposit Details */}
-                      <div className='mb-5'>
-                      <h3 className="">Term Deposit</h3>
-
-                           {/* 1 row */}
-                           <div className="row">
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you have any Term Deposit?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="TermDepositRadio"
-                             id="TermDepositOpt1" value="Yes"
-                             onClick={()=>TermDepositHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.TermDepositRadio==="Yes"}
-                             />
-                            <label htmlFor="TermDepositOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="TermDepositRadio"
-                             id="TermDepositOpt2" value="No"
-                             onClick={()=>TermDepositHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.TermDepositRadio==="No"}
-                           />
-                            <label htmlFor="TermDepositOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {TermDeposit && <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please enter the details of your TermDeposit Accounts
-                            </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={TermDeposithandleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 1 row */}
-                           
-                           {/* --------------------------------------------- */}
-
-                           <Modal
-                            show={TermDepositshow}
-                            onHide={TermDeposithandleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                              TermDeposit Account Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
-                            onSubmit={Client_onSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Professional Advisor Detail Form */}
-                                
-                                {/* Solicitor */}
-                        <div className=' '>
-                        <h3 className=''>
-                        <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div>
-                            TermDeposit #1
-                        
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositCurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="TermDepositCurrentValue" name='TermDepositCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Financial Institution</   label>
-                          <Field type="text" className="form-control shadow inputDesign"
-                           id="TermDepositFinancialInstitution" name='TermDepositFinancialInstitution' placeholder="Financial Institution"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositFinancialInstitution' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="TermDepositIncomePA" className="form-label">Income P.A.</   label>
-                        <div className='row'>
-                        <div className='col-md-8'>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="TermDepositIncomePA" name='TermDepositIncomePA' placeholder="Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositIncomePA' />
-                        </div>
-                        <div className='col-md-4'>
-                        <Field
-                                  as='select'
-                                  name="TermDepositIncomePAType"
-                                  id="TermDepositIncomePAType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="dollor">$</option>
-                                  <option value="percentage">%</option>
-                                </Field>
-                                <ErrorMessage name="TermDepositIncomePAType" component='div' className="text-danger fw-bold"/>
-                        </div>
-                        </div>  
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositIncomePAType" className="form-label">Income in $</   label>
-                          <Field type="text" className="form-control shadow inputDesign" 
-                          id="TermDepositIncomeinDollars" name='TermDepositIncomeinDollars' placeholder="Income in $"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositIncomeinDollars' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Regular Savings</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="TermDepositRegularSavings" name='TermDepositRegularSavings' placeholder="Regular Savings"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositRegularSavings' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Reinvestment Income
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="TermDepositReinvestedIncome"
-                             id="TermDepositReinvestedOpt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.TermDepositReinvestedIncome==="Yes"}
-                             />
-                            <label htmlFor="TermDepositReinvestedOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="TermDepositReinvestedIncome"
-                             id="TermDepositReinvestedOpt2" value="No"
-                             onChange={handleChange}
-                             checked={values.TermDepositReinvestedIncome==="No"}
-                           />
-                            <label htmlFor="TermDepositReinvestedOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-
-                        </div>
-                        
-                        </div>
-                        {/* Solicitor */}
-
-                        {/* Solicitor */}
-                        <div className='my-4'>
-                        <h3 className=''>
-                        <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div>
-                            TermDeposit #2
-                        
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDeposit2CurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="TermDeposit2CurrentValue" name='TermDeposit2CurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2CurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Financial Institution</   label>
-                          <Field type="text" className="form-control shadow inputDesign"
-                           id="TermDeposit2FinancialInstitution" name='TermDeposit2FinancialInstitution' placeholder="Financial Institution"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2FinancialInstitution' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="TermDeposit2IncomePA" className="form-label">Income P.A.</   label>
-                        <div className='row'>
-                        <div className='col-md-8'>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="TermDeposit2IncomePA" name='TermDeposit2IncomePA' placeholder="Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2IncomePA' />
-                        </div>
-                        <div className='col-md-4'>
-                        <Field
-                                  as='select'
-                                  name="TermDeposit2IncomePAType"
-                                  id="TermDeposit2IncomePAType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="dollor">$</option>
-                                  <option value="percentage">%</option>
-                                </Field>
-                                <ErrorMessage name="TermDeposit2IncomePAType" component='div' className="text-danger fw-bold"/>
-                        </div>
-                        </div>  
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDeposit2IncomePAType" className="form-label">Income in $</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="TermDeposit2IncomeinDollars" name='TermDeposit2IncomeinDollars' placeholder="Income in $"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2IncomeinDollars' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Regular Savings</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="TermDeposit2RegularSavings" name='TermDeposit2RegularSavings' placeholder="Regular Savings"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2RegularSavings' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Reinvestment Income
-                            </label>
-                          {/* switch button style */}
-                          <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="TermDeposit2ReinvestedIncome"
-                             id="TermDeposit2ReinvestedOpt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.TermDeposit2ReinvestedIncome==="Yes"}
-                             />
-                            <label htmlFor="TermDeposit2ReinvestedOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="TermDeposit2ReinvestedIncome"
-                             id="TermDeposit2ReinvestedOpt2" value="No"
-                             onChange={handleChange}
-                             checked={values.TermDeposit2ReinvestedIncome==="No"}
-                           />
-                            <label htmlFor="TermDeposit2ReinvestedOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-
-                        </div>
-                        
-                        </div>
-                        {/* Solicitor */}
-
-                         {/* TermDeposit Account Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={TermDeposithandleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={TermDeposithandleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                           {/* ---------------------------------------------------- */}
-                      </div>
-                      {/* Term Deposit Details */}
-
-
-
-                      {/* Australian Share Market Details */}
-                      <div className='mb-5'>
-                      <h3 className="">Australian Share Market</h3>
-
-                      {/* --------------------------------------------- */}     
-                          {/* 1 row */}
-                           <div className="row mb-3">
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you have any Australian Share?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="AustralianShareMarketRadio"
-                             id="AustralianShareMarketOpt1" value="Yes"
-                             onClick={()=>AustralianShareMarketHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.AustralianShareMarketRadio==="Yes"}
-                             />
-                            <label htmlFor="AustralianShareMarketOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="AustralianShareMarketRadio"
-                             id="AustralianShareMarketOpt2" value="No"
-                             onClick={()=>AustralianShareMarketHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.AustralianShareMarketRadio==="No"}
-                           />
-                            <label htmlFor="AustralianShareMarketOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {AustralianShareMarket && <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please enter the details of your Australian Market Share
-                            </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={AustralianShareMarkethandleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 1 row */}
-                           
-                           <Modal
-                            show={AustralianShareMarketshow}
-                            onHide={AustralianShareMarkethandleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                            Australian Market Share Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
-                            onSubmit={Client_onSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Australian Share Market Form */}
-                                
-                                {/* Solicitor */}
-                        <div className=' '>
-                        <h3 className=''>
-                        <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div>
-                            Australian Market Share                        
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
-                          <Field
-                                  as='select'
-                                  name="AustralianMarketInvestmentName"
-                                  id="AustralianMarketInvestmentName"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="1AL">1AL</option>
-                                  <option value="3PL">3PL</option>
-                                  <option value="88E">88E</option>
-                                  <option value="A2M">A2M</option>
-                                </Field>
-                                <ErrorMessage name="AustralianMarketInvestmentName" component='div' className="text-danger fw-bold"/>
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="AustralianMarketNumberOfShares" className="form-label">No. of Shares</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketNumberOfShares" name='AustralianMarketNumberOfShares' placeholder="No. of shares"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketNumberOfShares' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="TermDepositIncomePA" className="form-label">Current Share Price</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketSharePrice" name='AustralianMarketSharePrice' placeholder="Share Price"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketSharePrice' />
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositIncomePAType" className="form-label">Total Share Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="AustralianMarketTotalShareValue" name='AustralianMarketTotalShareValue' placeholder="Income in $"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketTotalShareValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Cost Base</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketCostBase" name='AustralianMarketCostBase' placeholder="Cost Base"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketCostBase' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
-                          <Field type="date" className="form-control shadow inputDesign"
-                           id="AustralianMarketPurchaseDate" name='AustralianMarketPurchaseDate'/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketPurchaseDate' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="AustralianMarketIncomePA" className="form-label">Income P.A.</   label>
-                        <div className='row'>
-                        <div className='col-md-8'>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketIncomePA" name='AustralianMarketIncomePA' placeholder="Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketIncomePA' />
-                        </div>
-                        <div className='col-md-4'>
-                        <Field
-                                  as='select'
-                                  name="AustralianMarketIncomePAType"
-                                  id="AustralianMarketIncomePAType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="dollor">$</option>
-                                  <option value="percentage">%</option>
-                                </Field>
-                                <ErrorMessage name="AustralianMarketIncomePAType" component='div' className="text-danger fw-bold"/>
-                        </div>
-                        </div>  
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketTotalIncomePA" name='AustralianMarketTotalIncomePA' placeholder="Total Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketTotalIncomePA' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Franked Amount %</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketFrankedAmount" name='AustralianMarketFrankedAmount' placeholder="Total Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketFrankedAmount' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Reinvestment Income
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="AustralianMarketReinvestedIncome"
-                             id="AustralianMarketReinvestedOpt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.TermDepositReinvestedIncome==="Yes"}
-                             />
-                            <label htmlFor="AustralianMarketReinvestedOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="AustralianMarketReinvestedIncome"
-                             id="AustralianMarketReinvestedOpt2" value="No"
-                             onChange={handleChange}
-                             checked={values.TermDepositReinvestedIncome==="No"}
-                           />
-                            <label htmlFor="AustralianMarketReinvestedOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="AustralianMarketRegInvestments" name='AustralianMarketRegInvestments' placeholder="Reg Investments P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketRegInvestments' />
-                        </div>            
-                        </div>
-
-                        </div>
-                        
-                        </div>
-                        {/* Solicitor */}
-
-                         {/*Australian Share Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={AustralianShareMarkethandleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={AustralianShareMarkethandleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                      {/* ---------------------------------------------------- */}
-                      
-                      
-                      {/* --------------------------------------------- */}
-                           {/* 2 row */}
-                           <div className="row mb-3">
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Does your share portfolio have any loans associated with them?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="AustralianSharePortfolioRadio"
-                             id="AustralianSharePortfolioOpt1" value="Yes"
-                             onClick={()=>AustralianSharePortfolioHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.AustralianSharePortfolioRadio==="Yes"}
-                             />
-                            <label htmlFor="AustralianSharePortfolioOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="AustralianSharePortfolioRadio"
-                             id="AustralianSharePortfolioOpt2" value="No"
-                             onClick={()=>AustralianSharePortfolioHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.AustralianSharePortfolioRadio==="No"}
-                           />
-                            <label htmlFor="AustralianSharePortfolioOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {AustralianSharePortfolio && <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please enter the details of your Portfolio
-                            </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={AustralianSharePortfoliohandleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 2 row */}
-
-                           <Modal
-                            show={AustralianSharePortfolioshow}
-                            onHide={AustralianSharePortfoliohandleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                              Associated Loan Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
-                            onSubmit={Client_onSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Australian Share Market Form */}
-                                
-                                {/* Solicitor */}
-                                <div className=' '>
-                                <h3 className=''>
-                                <div className="iconContainerLg mx-1">
-                                    <img className="img-fluid" src={lawyer} alt="" />
-
-                                    </div>
-                                    Portfolio Details                       
-                                    </h3>
-                                <div className="row">
-                              <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
-                                  <Field
-                                          as='select'
-                                          name="AustralianPortfolioLoanType"
-                                          id="AustralianPortfolioLoanType"
-                                          className="form-select shadow  inputDesign"
-                                        >
-                                          <option value=''>Select</option>
-                                          <option value="Investment Loan">Investment Loan</option>
-                                          <option value="Margin Loan">Margin Loan</option>
-                                        </Field>
-                                        <ErrorMessage name="AustralianPortfolioLoanType" component='div' className="text-danger fw-bold"/>
-                                </div>            
-                                </div>
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
-                                  <Field type="number" className="form-control shadow inputDesign"
-                                  id="AustralianPortfolioCurrentBalance" name='AustralianPortfolioCurrentBalance' placeholder="Current Balance"/>
-                                  <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioCurrentBalance' />
-                                </div>            
-                                </div>
-
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
-                                  <Field type="text" className="form-control shadow inputDesign"
-                                  id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
-                                  <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
-                                </div>            
-                                </div>
-
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
-                                  <Field type="number" className="form-control shadow inputDesign" 
-                                  id="AustralianInterestRatePA" name='AustralianInterestRatePA' placeholder="Interest Rate P.A."/>
-                                  <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianInterestRatePA' />
-                                </div>            
-                                </div>
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
-                                  <Field
-                                          as='select'
-                                          name="AustralianPortfolioLoanTerm"
-                                          id="AustralianPortfolioLoanTerm"
-                                          className="form-select shadow  inputDesign"
-                                        >
-                                          <option value=''>Select</option>
-                                          <option value="1">1</option>
-                                          <option value="2">2</option>
-                                          <option value="3">3</option>
-                                          <option value="4">4</option>
-                                          <option value="5">5</option>
-                                          <option value="6">6</option>
-                                          <option value="7">7</option>
-                                          <option value="8">8</option>
-                                          <option value="9">9</option>
-                                          <option value="10">10</option>
-                                          <option value="11">11</option>
-                                          <option value="12">12</option>
-                                          <option value="13">13</option>
-                                          <option value="14">14</option>
-                                          <option value="15">15</option>
-                                          <option value="16">16</option>
-                                          <option value="17">17</option>
-                                          <option value="18">18</option>
-                                          <option value="19">19</option>
-                                          <option value="20">20</option>
-                                          <option value="21">21</option>
-                                          <option value="22">22</option>
-                                          <option value="23">23</option>
-                                          <option value="24">24</option>
-                                          <option value="25">25</option>
-                                          <option value="26">26</option>
-                                          <option value="27">27</option>
-                                          <option value="28">28</option>
-                                          <option value="29">29</option>
-                                          <option value="30">30</option>
-                                        </Field>
-                                        <ErrorMessage name="AustralianPortfolioLoanTerm" component='div' className="text-danger fw-bold"/>
-                                </div>            
-                                </div>
-                                <div className="col-md-6">
+    <div className='container-fluid'>
+      <div className='shadow px-4 mx-4'>
+        <div className='row my-5'>
+      <div className='col-md-12 text-center'>
+      <h3 className='mt-3'>Investments</h3>
+      </div>
+        </div>
+      
+        <div className='row my-3'>
+        <div className='col-md-12'>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize>
+          {({ values, handleChange })=>
+          <Form>
+                          {/* Bank Account Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Bank Accounts</h3>
+
+                              {/* 1 row */}
+                              <div className="row">
+                            <div className="col-md-6">
                                   <div className="mb-3">
-                                    <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
-                                    <Field
-                                            as='select'
-                                            name="AustralianPortfolioLoanType2"
-                                            id="AustralianPortfolioLoanType2"
-                                            className="form-select shadow  inputDesign"
-                                          >
-                                            <option value=''>Select</option>
-                                            <option value="I/Only">I/Only</option>
-                                            <option value="P & I">P & I</option>
-                                          </Field>
-                                          <ErrorMessage name="AustralianPortfolioLoanType2" component='div' className="text-danger fw-bold"/>
-                                  </div>            
-                                  </div>
-                                  <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
-                                    <Field name="AustralianPortfolioDeductibleLoanAmount" 
-                                    placeholder='Deductible Loan Amount'
-                                    id="AustralianPortfolioDeductibleLoanAmount"
-                                    className="form-control shadow  inputDesign">
+                                <label  className="form-label">
+                                Do you have any Bank Accounts?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="BankAccountRadio"
+                                id="ProfessionalAdvisors1opt1" value="Yes"
+                                onClick={()=>BankAccountHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.BankAccountRadio==="Yes"}
+                                />
+                                <label htmlFor="ProfessionalAdvisors1opt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="BankAccountRadio"
+                                id="ProfessionalAdvisors1opt2" value="No"
+                                onClick={()=>BankAccountHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.BankAccountRadio==="No"}
+                              />
+                                <label htmlFor="ProfessionalAdvisors1opt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {BankAccount && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Bank Accounts
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={BankhandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              {/* --------------------------------------------- */}
+
+                              <Modal
+                                show={Bankshow}
+                                onHide={BankhandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Bank Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Bank #1
+                            
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="BankCurrentValue" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="BankCurrentValue" name='BankCurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='BankCurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="BankFinancialInstitution" className="form-label">Financial Institution</   label>
+                              <Field type="text" className="form-control shadow inputDesign"
+                              id="BankFinancialInstitution" name='BankFinancialInstitution' placeholder="Financial Institution"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='BankFinancialInstitution' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="BankIncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="BankIncomePA" name='BankIncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='BankIncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="BankIncomePAType"
+                                      id="BankIncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
                                     </Field>
-                                          <ErrorMessage name="AustralianPortfolioDeductibleLoanAmount" component='div' className="text-danger fw-bold"/>
-                                  </div>            
+                                    <ErrorMessage name="BankIncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="BankIncomePAType" className="form-label">Income in $</   label>
+                              <Field type="text" className="form-control shadow inputDesign" 
+                              id="BankIncomeinDollars" name='BankIncomeinDollars' placeholder="Income in $"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='BankIncomeinDollars' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="BankFinancialInstitution" className="form-label">Regular Savings</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="BankRegularSavings" name='BankRegularSavings' placeholder="Regular Savings"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='BankRegularSavings' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="BankReinvestedIncome"
+                                id="BankReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.BankReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="BankReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="BankReinvestedIncome"
+                                id="BankReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.BankReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="BankReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/* Solicitor */}
+                            <div className='my-4'>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Bank #2
+                            
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="Bank2CurrentValue" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="Bank2CurrentValue" name='Bank2CurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2CurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="Bank2FinancialInstitution" className="form-label">Financial Institution</   label>
+                              <Field type="text" className="form-control shadow inputDesign"
+                              id="Bank2FinancialInstitution" name='Bank2FinancialInstitution' placeholder="Financial Institution"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2FinancialInstitution' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="Bank2IncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="Bank2IncomePA" name='Bank2IncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2IncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="Bank2IncomePAType"
+                                      id="Bank2IncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
+                                    </Field>
+                                    <ErrorMessage name="Bank2IncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="Bank2IncomePAType" className="form-label">Income in $</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="Bank2IncomeinDollars" name='Bank2IncomeinDollars' placeholder="Income in $"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2IncomeinDollars' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="Bank2FinancialInstitution" className="form-label">Regular Savings</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="Bank2RegularSavings" name='Bank2RegularSavings' placeholder="Regular Savings"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2RegularSavings' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                              <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="Bank2ReinvestedIncome"
+                                id="Bank2ReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.Bank2ReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="Bank2ReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="Bank2ReinvestedIncome"
+                                id="Bank2ReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.Bank2ReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="Bank2ReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/* Bank Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={BankhandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={BankhandleClose}
+                                    >
+                                      Cancel
+                                    </button>
                                   </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              {/* ---------------------------------------------------- */}
+                          </div>
+                          {/* Bank Account Details */}
+
+
+
+                          {/* Term Deposit Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Term Deposit</h3>
+
+                              {/* 1 row */}
+                              <div className="row">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Term Deposit?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="TermDepositRadio"
+                                id="TermDepositOpt1" value="Yes"
+                                onClick={()=>TermDepositHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.TermDepositRadio==="Yes"}
+                                />
+                                <label htmlFor="TermDepositOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="TermDepositRadio"
+                                id="TermDepositOpt2" value="No"
+                                onClick={()=>TermDepositHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.TermDepositRadio==="No"}
+                              />
+                                <label htmlFor="TermDepositOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {TermDeposit && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your TermDeposit Accounts
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={TermDeposithandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              {/* --------------------------------------------- */}
+
+                              <Modal
+                                show={TermDepositshow}
+                                onHide={TermDeposithandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  TermDeposit Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                TermDeposit #1
+                            
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="TermDepositCurrentValue" name='TermDepositCurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositCurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Financial Institution</   label>
+                              <Field type="text" className="form-control shadow inputDesign"
+                              id="TermDepositFinancialInstitution" name='TermDepositFinancialInstitution' placeholder="Financial Institution"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositFinancialInstitution' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="TermDepositIncomePA" name='TermDepositIncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositIncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="TermDepositIncomePAType"
+                                      id="TermDepositIncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
+                                    </Field>
+                                    <ErrorMessage name="TermDepositIncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Income in $</   label>
+                              <Field type="text" className="form-control shadow inputDesign" 
+                              id="TermDepositIncomeinDollars" name='TermDepositIncomeinDollars' placeholder="Income in $"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositIncomeinDollars' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Regular Savings</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="TermDepositRegularSavings" name='TermDepositRegularSavings' placeholder="Regular Savings"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositRegularSavings' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="TermDepositReinvestedIncome"
+                                id="TermDepositReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.TermDepositReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="TermDepositReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="TermDepositReinvestedIncome"
+                                id="TermDepositReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.TermDepositReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="TermDepositReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/* Solicitor */}
+                            <div className='my-4'>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                TermDeposit #2
+                            
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDeposit2CurrentValue" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="TermDeposit2CurrentValue" name='TermDeposit2CurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2CurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Financial Institution</   label>
+                              <Field type="text" className="form-control shadow inputDesign"
+                              id="TermDeposit2FinancialInstitution" name='TermDeposit2FinancialInstitution' placeholder="Financial Institution"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2FinancialInstitution' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="TermDeposit2IncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="TermDeposit2IncomePA" name='TermDeposit2IncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2IncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="TermDeposit2IncomePAType"
+                                      id="TermDeposit2IncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
+                                    </Field>
+                                    <ErrorMessage name="TermDeposit2IncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDeposit2IncomePAType" className="form-label">Income in $</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="TermDeposit2IncomeinDollars" name='TermDeposit2IncomeinDollars' placeholder="Income in $"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2IncomeinDollars' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Regular Savings</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="TermDeposit2RegularSavings" name='TermDeposit2RegularSavings' placeholder="Regular Savings"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2RegularSavings' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                              <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="TermDeposit2ReinvestedIncome"
+                                id="TermDeposit2ReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.TermDeposit2ReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="TermDeposit2ReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="TermDeposit2ReinvestedIncome"
+                                id="TermDeposit2ReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.TermDeposit2ReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="TermDeposit2ReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/* TermDeposit Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={TermDeposithandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={TermDeposithandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              {/* ---------------------------------------------------- */}
+                          </div>
+                          {/* Term Deposit Details */}
+
+
+
+                          {/* Australian Share Market Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Australian Share Market</h3>
+
+                          {/* --------------------------------------------- */}     
+                              {/* 1 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Australian Share?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="AustralianShareMarketRadio"
+                                id="AustralianShareMarketOpt1" value="Yes"
+                                onClick={()=>AustralianShareMarketHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.AustralianShareMarketRadio==="Yes"}
+                                />
+                                <label htmlFor="AustralianShareMarketOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="AustralianShareMarketRadio"
+                                id="AustralianShareMarketOpt2" value="No"
+                                onClick={()=>AustralianShareMarketHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.AustralianShareMarketRadio==="No"}
+                              />
+                                <label htmlFor="AustralianShareMarketOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {AustralianShareMarket && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Australian Market Share
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={AustralianShareMarkethandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              <Modal
+                                show={AustralianShareMarketshow}
+                                onHide={AustralianShareMarkethandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                Australian Market Share Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Australian Market Share                        
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
+                              <Field
+                                      as='select'
+                                      name="AustralianMarketInvestmentName"
+                                      id="AustralianMarketInvestmentName"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="1AL">1AL</option>
+                                      <option value="3PL">3PL</option>
+                                      <option value="88E">88E</option>
+                                      <option value="A2M">A2M</option>
+                                    </Field>
+                                    <ErrorMessage name="AustralianMarketInvestmentName" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="AustralianMarketNumberOfShares" className="form-label">No. of Shares</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketNumberOfShares" name='AustralianMarketNumberOfShares' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketNumberOfShares' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share Price</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketSharePrice" name='AustralianMarketSharePrice' placeholder="Share Price"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketSharePrice' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Total Share Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="AustralianMarketTotalShareValue" name='AustralianMarketTotalShareValue' placeholder="Income in $"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketTotalShareValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Cost Base</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketCostBase" name='AustralianMarketCostBase' placeholder="Cost Base"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketCostBase' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
+                              <Field type="date" className="form-control shadow inputDesign"
+                              id="AustralianMarketPurchaseDate" name='AustralianMarketPurchaseDate'/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketPurchaseDate' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="AustralianMarketIncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketIncomePA" name='AustralianMarketIncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketIncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="AustralianMarketIncomePAType"
+                                      id="AustralianMarketIncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
+                                    </Field>
+                                    <ErrorMessage name="AustralianMarketIncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketTotalIncomePA" name='AustralianMarketTotalIncomePA' placeholder="Total Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketTotalIncomePA' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Franked Amount %</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketFrankedAmount" name='AustralianMarketFrankedAmount' placeholder="Total Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketFrankedAmount' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="AustralianMarketReinvestedIncome"
+                                id="AustralianMarketReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.TermDepositReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="AustralianMarketReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="AustralianMarketReinvestedIncome"
+                                id="AustralianMarketReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.TermDepositReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="AustralianMarketReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="AustralianMarketRegInvestments" name='AustralianMarketRegInvestments' placeholder="Reg Investments P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketRegInvestments' />
+                            </div>            
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={AustralianShareMarkethandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={AustralianShareMarkethandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+                          
+                          
+                          {/* --------------------------------------------- */}
+                              {/* 2 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Does your share portfolio have any loans associated with them?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="AustralianSharePortfolioRadio"
+                                id="AustralianSharePortfolioOpt1" value="Yes"
+                                onClick={()=>AustralianSharePortfolioHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.AustralianSharePortfolioRadio==="Yes"}
+                                />
+                                <label htmlFor="AustralianSharePortfolioOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="AustralianSharePortfolioRadio"
+                                id="AustralianSharePortfolioOpt2" value="No"
+                                onClick={()=>AustralianSharePortfolioHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.AustralianSharePortfolioRadio==="No"}
+                              />
+                                <label htmlFor="AustralianSharePortfolioOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {AustralianSharePortfolio && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Portfolio
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={AustralianSharePortfoliohandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 2 row */}
+
+                              <Modal
+                                show={AustralianSharePortfolioshow}
+                                onHide={AustralianSharePortfoliohandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Associated Loan Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Portfolio Details                       
+                                        </h3>
+                                    <div className="row">
                                   <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
                                       <Field
                                               as='select'
-                                              name="AustralianPortfolioYearRemaining"
-                                              id="AustralianPortfolioYearRemaining"
+                                              name="AustralianPortfolioLoanType"
+                                              id="AustralianPortfolioLoanType"
                                               className="form-select shadow  inputDesign"
                                             >
-                                            <option value=''>Select</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                            <option value="13">13</option>
-                                            <option value="14">14</option>
-                                            <option value="15">15</option>
-                                            <option value="16">16</option>
-                                            <option value="17">17</option>
-                                            <option value="18">18</option>
-                                            <option value="19">19</option>
-                                            <option value="20">20</option>
-                                            <option value="21">21</option>
-                                            <option value="22">22</option>
-                                            <option value="23">23</option>
-                                            <option value="24">24</option>
-                                            <option value="25">25</option>
-                                            <option value="26">26</option>
-                                            <option value="27">27</option>
-                                            <option value="28">28</option>
-                                            <option value="29">29</option>
-                                            <option value="30">30</option>
+                                              <option value=''>Select</option>
+                                              <option value="Investment Loan">Investment Loan</option>
+                                              <option value="Margin Loan">Margin Loan</option>
                                             </Field>
-                                            <ErrorMessage name="AustralianPortfolioYearRemaining" component='div' className="text-danger fw-bold"/>
+                                            <ErrorMessage name="AustralianPortfolioLoanType" component='div' className="text-danger fw-bold"/>
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="AustralianPortfolioCurrentBalance" name='AustralianPortfolioCurrentBalance' placeholder="Current Balance"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioCurrentBalance' />
                                     </div>            
                                     </div>
 
-                                </div>
-                                
-                                </div>
-                                {/* Solicitor */}
-
-                         {/*Australian Share Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={AustralianSharePortfoliohandleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={AustralianSharePortfoliohandleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                      {/* ---------------------------------------------------- */}
-
-                      </div>
-                      {/* Australian Share Details */} 
-
-
-
-                      {/* Managed Funds Details */}
-                      <div className='mb-5'>
-                      <h3 className="">Managed Funds</h3>
-
-                      {/* --------------------------------------------- */}     
-                          {/* 1 row */}
-                           <div className="row mb-3">
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you have any Funds?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="ManagedFundsRadio"
-                             id="ManagedFundsOpt1" value="Yes"
-                             onClick={()=>ManagedFundsHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.ManagedFundsRadio==="Yes"}
-                             />
-                            <label htmlFor="ManagedFundsOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="ManagedFundsRadio"
-                             id="ManagedFundsOpt2" value="No"
-                             onClick={()=>ManagedFundsHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.ManagedFundsRadio==="No"}
-                           />
-                            <label htmlFor="ManagedFundsOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {ManagedFunds && <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please enter the details of your Managed Funds
-                            </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={ManagedFundshandleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 1 row */}
-                           
-                           <Modal
-                            show={ManagedFundsshow}
-                            onHide={ManagedFundshandleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                            Managed Funds Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
-                            onSubmit={Client_onSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Australian Share Market Form */}
-                                
-                                {/* Solicitor */}
-                        <div className=' '>
-                        <h3 className=''>
-                        <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div>
-                            Managed Funds                       
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</   label>
-                          <Field
-                                  as='select'
-                                  name="ManagedFundsPlatformName"
-                                  id="ManagedFundsPlatformName"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="1AL">1AL</option>
-                                  <option value="3PL">3PL</option>
-                                  <option value="88E">88E</option>
-                                  <option value="A2M">A2M</option>
-                                </Field>
-                                <ErrorMessage name="ManagedFundsPlatformName" component='div' className="text-danger fw-bold"/>
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                         <div className="mb-3">
-                           <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
-                           <Field
-                                   as='select'
-                                   name="ManagedFundsInvestmentName"
-                                   id="ManagedFundsInvestmentName"
-                                   className="form-select shadow  inputDesign"
-                                 >
-                                   <option value=''>Select</option>
-                                   <option value="1AL">1AL</option>
-                                   <option value="3PL">3PL</option>
-                                   <option value="88E">88E</option>
-                                   <option value="A2M">A2M</option>
-                                 </Field>
-                                 <ErrorMessage name="ManagedFundsInvestmentName" component='div' className="text-danger fw-bold"/>
-                         </div>            
-                         </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="ManagedFundsNumberOfShares" className="form-label">No. of Unit/Shares</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="ManagedFundsNumberOfShares" name='ManagedFundsNumberOfShares' placeholder="No. of shares"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsNumberOfShares' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="ManagedFundsSharePrice" name='ManagedFundsSharePrice' placeholder="Share Price"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsSharePrice' />
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="ManagedFundsCurrentValue" name='ManagedFundsCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="ManagedFundsOriginalInvestment" name='ManagedFundsOriginalInvestment' placeholder="Original Investments"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsOriginalInvestment' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
-                          <Field type="date" className="form-control shadow inputDesign"
-                           id="ManagedFundsPurchaseDate" name='ManagedFundsPurchaseDate'/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPurchaseDate' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                        <label htmlFor="ManagedFundsIncomePA" className="form-label">Income P.A.</   label>
-                        <div className='row'>
-                        <div className='col-md-8'>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="ManagedFundsIncomePA" name='ManagedFundsIncomePA' placeholder="Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsIncomePA' />
-                        </div>
-                        <div className='col-md-4'>
-                        <Field
-                                  as='select'
-                                  name="ManagedFundsIncomePAType"
-                                  id="ManagedFundsIncomePAType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="dollor">$</option>
-                                  <option value="percentage">%</option>
-                                </Field>
-                                <ErrorMessage name="ManagedFundsIncomePAType" component='div' className="text-danger fw-bold"/>
-                        </div>
-                        </div>  
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="ManagedFundsTotalIncomePA" name='ManagedFundsTotalIncomePA' placeholder="Total Income P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsTotalIncomePA' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Reinvestment Income
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="ManagedFundsReinvestedIncome"
-                             id="ManagedFundsReinvestedOpt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.ManagedFundsReinvestedIncome==="Yes"}
-                             />
-                            <label htmlFor="ManagedFundsReinvestedOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="ManagedFundsReinvestedIncome"
-                             id="ManagedFundsReinvestedOpt2" value="No"
-                             onChange={handleChange}
-                             checked={values.ManagedFundsReinvestedIncome==="No"}
-                           />
-                            <label htmlFor="ManagedFundsReinvestedOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="ManagedFundsRegInvestments" name='ManagedFundsRegInvestments' placeholder="Reg Investments P.A."/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsRegInvestments' />
-                        </div>            
-                        </div>
-
-                        </div>
-                        
-                        </div>
-                        {/* Solicitor */}
-
-                         {/*Australian Share Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={ManagedFundshandleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={ManagedFundshandleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                      {/* ---------------------------------------------------- */}
-                      
-                      
-                      {/* --------------------------------------------- */}
-                           {/* 2 row */}
-                           <div className="row mb-3">
-                        <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Does your share portfolio have any loans associated with them?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="AustralianSharePortfolioRadio"
-                             id="AustralianSharePortfolioOpt1" value="Yes"
-                             onClick={()=>AustralianSharePortfolioHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.AustralianSharePortfolioRadio==="Yes"}
-                             />
-                            <label htmlFor="AustralianSharePortfolioOpt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="AustralianSharePortfolioRadio"
-                             id="AustralianSharePortfolioOpt2" value="No"
-                             onClick={()=>AustralianSharePortfolioHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.AustralianSharePortfolioRadio==="No"}
-                           />
-                            <label htmlFor="AustralianSharePortfolioOpt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {AustralianSharePortfolio && <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please enter the details of your Portfolio
-                            </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={AustralianSharePortfoliohandleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 2 row */}
-
-                           <Modal
-                            show={AustralianSharePortfolioshow}
-                            onHide={AustralianSharePortfoliohandleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                              Associated Loan Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
-                            onSubmit={Client_onSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Australian Share Market Form */}
-                                
-                                {/* Solicitor */}
-                                <div className=' '>
-                                <h3 className=''>
-                                <div className="iconContainerLg mx-1">
-                                    <img className="img-fluid" src={lawyer} alt="" />
-
-                                    </div>
-                                    Portfolio Details                       
-                                    </h3>
-                                <div className="row">
-                              <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
-                                  <Field
-                                          as='select'
-                                          name="AustralianPortfolioLoanType"
-                                          id="AustralianPortfolioLoanType"
-                                          className="form-select shadow  inputDesign"
-                                        >
-                                          <option value=''>Select</option>
-                                          <option value="Investment Loan">Investment Loan</option>
-                                          <option value="Margin Loan">Margin Loan</option>
-                                        </Field>
-                                        <ErrorMessage name="AustralianPortfolioLoanType" component='div' className="text-danger fw-bold"/>
-                                </div>            
-                                </div>
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
-                                  <Field type="number" className="form-control shadow inputDesign"
-                                  id="AustralianPortfolioCurrentBalance" name='AustralianPortfolioCurrentBalance' placeholder="Current Balance"/>
-                                  <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioCurrentBalance' />
-                                </div>            
-                                </div>
-
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
-                                  <Field type="text" className="form-control shadow inputDesign"
-                                  id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
-                                  <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
-                                </div>            
-                                </div>
-
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
-                                  <Field type="number" className="form-control shadow inputDesign" 
-                                  id="AustralianInterestRatePA" name='AustralianInterestRatePA' placeholder="Interest Rate P.A."/>
-                                  <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianInterestRatePA' />
-                                </div>            
-                                </div>
-                                <div className="col-md-6">
-                                <div className="mb-3">
-                                  <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
-                                  <Field
-                                          as='select'
-                                          name="AustralianPortfolioLoanTerm"
-                                          id="AustralianPortfolioLoanTerm"
-                                          className="form-select shadow  inputDesign"
-                                        >
-                                          <option value=''>Select</option>
-                                          <option value="1">1</option>
-                                          <option value="2">2</option>
-                                          <option value="3">3</option>
-                                          <option value="4">4</option>
-                                          <option value="5">5</option>
-                                          <option value="6">6</option>
-                                          <option value="7">7</option>
-                                          <option value="8">8</option>
-                                          <option value="9">9</option>
-                                          <option value="10">10</option>
-                                          <option value="11">11</option>
-                                          <option value="12">12</option>
-                                          <option value="13">13</option>
-                                          <option value="14">14</option>
-                                          <option value="15">15</option>
-                                          <option value="16">16</option>
-                                          <option value="17">17</option>
-                                          <option value="18">18</option>
-                                          <option value="19">19</option>
-                                          <option value="20">20</option>
-                                          <option value="21">21</option>
-                                          <option value="22">22</option>
-                                          <option value="23">23</option>
-                                          <option value="24">24</option>
-                                          <option value="25">25</option>
-                                          <option value="26">26</option>
-                                          <option value="27">27</option>
-                                          <option value="28">28</option>
-                                          <option value="29">29</option>
-                                          <option value="30">30</option>
-                                        </Field>
-                                        <ErrorMessage name="AustralianPortfolioLoanTerm" component='div' className="text-danger fw-bold"/>
-                                </div>            
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
-                                    <Field
-                                            as='select'
-                                            name="AustralianPortfolioLoanType2"
-                                            id="AustralianPortfolioLoanType2"
-                                            className="form-select shadow  inputDesign"
-                                          >
-                                            <option value=''>Select</option>
-                                            <option value="I/Only">I/Only</option>
-                                            <option value="P & I">P & I</option>
-                                          </Field>
-                                          <ErrorMessage name="AustralianPortfolioLoanType2" component='div' className="text-danger fw-bold"/>
-                                  </div>            
-                                  </div>
-                                  <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
-                                    <Field name="AustralianPortfolioDeductibleLoanAmount" 
-                                    placeholder='Deductible Loan Amount'
-                                    id="AustralianPortfolioDeductibleLoanAmount"
-                                    className="form-control shadow  inputDesign">
-                                    </Field>
-                                          <ErrorMessage name="AustralianPortfolioDeductibleLoanAmount" component='div' className="text-danger fw-bold"/>
-                                  </div>            
-                                  </div>
-                                  <div className="col-md-6">
+                                    <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
-                                      <Field
-                                              as='select'
-                                              name="AustralianPortfolioYearRemaining"
-                                              id="AustralianPortfolioYearRemaining"
-                                              className="form-select shadow  inputDesign"
-                                            >
-                                            <option value=''>Select</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                            <option value="13">13</option>
-                                            <option value="14">14</option>
-                                            <option value="15">15</option>
-                                            <option value="16">16</option>
-                                            <option value="17">17</option>
-                                            <option value="18">18</option>
-                                            <option value="19">19</option>
-                                            <option value="20">20</option>
-                                            <option value="21">21</option>
-                                            <option value="22">22</option>
-                                            <option value="23">23</option>
-                                            <option value="24">24</option>
-                                            <option value="25">25</option>
-                                            <option value="26">26</option>
-                                            <option value="27">27</option>
-                                            <option value="28">28</option>
-                                            <option value="29">29</option>
-                                            <option value="30">30</option>
-                                            </Field>
-                                            <ErrorMessage name="AustralianPortfolioYearRemaining" component='div' className="text-danger fw-bold"/>
+                                    <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
+                                      <Field type="text" className="form-control shadow inputDesign"
+                                      id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
                                     </div>            
                                     </div>
 
-                                </div>
-                                
-                                </div>
-                                {/* Solicitor */}
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign" 
+                                      id="AustralianInterestRatePA" name='AustralianInterestRatePA' placeholder="Interest Rate P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianInterestRatePA' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
+                                      <Field
+                                              as='select'
+                                              name="AustralianPortfolioLoanTerm"
+                                              id="AustralianPortfolioLoanTerm"
+                                              className="form-select shadow  inputDesign"
+                                            >
+                                              <option value=''>Select</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                              <option value="11">11</option>
+                                              <option value="12">12</option>
+                                              <option value="13">13</option>
+                                              <option value="14">14</option>
+                                              <option value="15">15</option>
+                                              <option value="16">16</option>
+                                              <option value="17">17</option>
+                                              <option value="18">18</option>
+                                              <option value="19">19</option>
+                                              <option value="20">20</option>
+                                              <option value="21">21</option>
+                                              <option value="22">22</option>
+                                              <option value="23">23</option>
+                                              <option value="24">24</option>
+                                              <option value="25">25</option>
+                                              <option value="26">26</option>
+                                              <option value="27">27</option>
+                                              <option value="28">28</option>
+                                              <option value="29">29</option>
+                                              <option value="30">30</option>
+                                            </Field>
+                                            <ErrorMessage name="AustralianPortfolioLoanTerm" component='div' className="text-danger fw-bold"/>
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
+                                        <Field
+                                                as='select'
+                                                name="AustralianPortfolioLoanType2"
+                                                id="AustralianPortfolioLoanType2"
+                                                className="form-select shadow  inputDesign"
+                                              >
+                                                <option value=''>Select</option>
+                                                <option value="I/Only">I/Only</option>
+                                                <option value="P & I">P & I</option>
+                                              </Field>
+                                              <ErrorMessage name="AustralianPortfolioLoanType2" component='div' className="text-danger fw-bold"/>
+                                      </div>            
+                                      </div>
+                                      <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
+                                        <Field name="AustralianPortfolioDeductibleLoanAmount" 
+                                        placeholder='Deductible Loan Amount'
+                                        id="AustralianPortfolioDeductibleLoanAmount"
+                                        className="form-control shadow  inputDesign">
+                                        </Field>
+                                              <ErrorMessage name="AustralianPortfolioDeductibleLoanAmount" component='div' className="text-danger fw-bold"/>
+                                      </div>            
+                                      </div>
+                                      <div className="col-md-6">
+                                        <div className="mb-3">
+                                          <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
+                                          <Field
+                                                  as='select'
+                                                  name="AustralianPortfolioYearRemaining"
+                                                  id="AustralianPortfolioYearRemaining"
+                                                  className="form-select shadow  inputDesign"
+                                                >
+                                                <option value=''>Select</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                </Field>
+                                                <ErrorMessage name="AustralianPortfolioYearRemaining" component='div' className="text-danger fw-bold"/>
+                                        </div>            
+                                        </div>
 
-                         {/*Australian Share Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={AustralianSharePortfoliohandleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={AustralianSharePortfoliohandleClose}
-                                >
-                                  Cancel
-                                </button>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={AustralianSharePortfoliohandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={AustralianSharePortfoliohandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+
+                          </div>
+                          {/* Australian Share Details */} 
+
+
+
+                          {/* Managed Funds Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Managed Funds</h3>
+
+                          {/* --------------------------------------------- */}     
+                              {/* 1 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Funds?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="ManagedFundsRadio"
+                                id="ManagedFundsOpt1" value="Yes"
+                                onClick={()=>ManagedFundsHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.ManagedFundsRadio==="Yes"}
+                                />
+                                <label htmlFor="ManagedFundsOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="ManagedFundsRadio"
+                                id="ManagedFundsOpt2" value="No"
+                                onClick={()=>ManagedFundsHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.ManagedFundsRadio==="No"}
+                              />
+                                <label htmlFor="ManagedFundsOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
                               </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                      {/* ---------------------------------------------------- */}
 
-                      </div>
-                      {/* Managed Funds Details */}    
-                      
-                      
-                     
-                      <div className="row mt-5 mb-3">
-                        <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
-                        </div>
-                      </div>
-                      </Form>
-}
-</Formik>    
-    </div>
-    </div>
 
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {ManagedFunds && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Managed Funds
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={ManagedFundshandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              <Modal
+                                show={ManagedFundsshow}
+                                onHide={ManagedFundshandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                Managed Funds Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Managed Funds                       
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</   label>
+                              <Field
+                                      as='select'
+                                      name="ManagedFundsPlatformName"
+                                      id="ManagedFundsPlatformName"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="1AL">1AL</option>
+                                      <option value="3PL">3PL</option>
+                                      <option value="88E">88E</option>
+                                      <option value="A2M">A2M</option>
+                                    </Field>
+                                    <ErrorMessage name="ManagedFundsPlatformName" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
+                              <Field
+                                      as='select'
+                                      name="ManagedFundsInvestmentName"
+                                      id="ManagedFundsInvestmentName"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="1AL">1AL</option>
+                                      <option value="3PL">3PL</option>
+                                      <option value="88E">88E</option>
+                                      <option value="A2M">A2M</option>
+                                    </Field>
+                                    <ErrorMessage name="ManagedFundsInvestmentName" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="ManagedFundsNumberOfShares" className="form-label">No. of Unit/Shares</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="ManagedFundsNumberOfShares" name='ManagedFundsNumberOfShares' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsNumberOfShares' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="ManagedFundsSharePrice" name='ManagedFundsSharePrice' placeholder="Share Price"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsSharePrice' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="ManagedFundsCurrentValue" name='ManagedFundsCurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsCurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="ManagedFundsOriginalInvestment" name='ManagedFundsOriginalInvestment' placeholder="Original Investments"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsOriginalInvestment' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
+                              <Field type="date" className="form-control shadow inputDesign"
+                              id="ManagedFundsPurchaseDate" name='ManagedFundsPurchaseDate'/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPurchaseDate' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="ManagedFundsIncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="ManagedFundsIncomePA" name='ManagedFundsIncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsIncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="ManagedFundsIncomePAType"
+                                      id="ManagedFundsIncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
+                                    </Field>
+                                    <ErrorMessage name="ManagedFundsIncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="ManagedFundsTotalIncomePA" name='ManagedFundsTotalIncomePA' placeholder="Total Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsTotalIncomePA' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="ManagedFundsReinvestedIncome"
+                                id="ManagedFundsReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.ManagedFundsReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="ManagedFundsReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="ManagedFundsReinvestedIncome"
+                                id="ManagedFundsReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.ManagedFundsReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="ManagedFundsReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="ManagedFundsRegInvestments" name='ManagedFundsRegInvestments' placeholder="Reg Investments P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsRegInvestments' />
+                            </div>            
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={ManagedFundshandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={ManagedFundshandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+                          
+                          
+                          {/* --------------------------------------------- */}
+                              {/* 2 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Does your share portfolio have any loans associated with them?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="AustralianSharePortfolioRadio"
+                                id="AustralianSharePortfolioOpt1" value="Yes"
+                                onClick={()=>AustralianSharePortfolioHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.AustralianSharePortfolioRadio==="Yes"}
+                                />
+                                <label htmlFor="AustralianSharePortfolioOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="AustralianSharePortfolioRadio"
+                                id="AustralianSharePortfolioOpt2" value="No"
+                                onClick={()=>AustralianSharePortfolioHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.AustralianSharePortfolioRadio==="No"}
+                              />
+                                <label htmlFor="AustralianSharePortfolioOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {AustralianSharePortfolio && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Portfolio
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={AustralianSharePortfoliohandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 2 row */}
+
+                              <Modal
+                                show={AustralianSharePortfolioshow}
+                                onHide={AustralianSharePortfoliohandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Associated Loan Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Portfolio Details                       
+                                        </h3>
+                                    <div className="row">
+                                  <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
+                                      <Field
+                                              as='select'
+                                              name="AustralianPortfolioLoanType"
+                                              id="AustralianPortfolioLoanType"
+                                              className="form-select shadow  inputDesign"
+                                            >
+                                              <option value=''>Select</option>
+                                              <option value="Investment Loan">Investment Loan</option>
+                                              <option value="Margin Loan">Margin Loan</option>
+                                            </Field>
+                                            <ErrorMessage name="AustralianPortfolioLoanType" component='div' className="text-danger fw-bold"/>
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="AustralianPortfolioCurrentBalance" name='AustralianPortfolioCurrentBalance' placeholder="Current Balance"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioCurrentBalance' />
+                                    </div>            
+                                    </div>
+
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
+                                      <Field type="text" className="form-control shadow inputDesign"
+                                      id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
+                                    </div>            
+                                    </div>
+
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign" 
+                                      id="AustralianInterestRatePA" name='AustralianInterestRatePA' placeholder="Interest Rate P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianInterestRatePA' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
+                                      <Field
+                                              as='select'
+                                              name="AustralianPortfolioLoanTerm"
+                                              id="AustralianPortfolioLoanTerm"
+                                              className="form-select shadow  inputDesign"
+                                            >
+                                              <option value=''>Select</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                              <option value="11">11</option>
+                                              <option value="12">12</option>
+                                              <option value="13">13</option>
+                                              <option value="14">14</option>
+                                              <option value="15">15</option>
+                                              <option value="16">16</option>
+                                              <option value="17">17</option>
+                                              <option value="18">18</option>
+                                              <option value="19">19</option>
+                                              <option value="20">20</option>
+                                              <option value="21">21</option>
+                                              <option value="22">22</option>
+                                              <option value="23">23</option>
+                                              <option value="24">24</option>
+                                              <option value="25">25</option>
+                                              <option value="26">26</option>
+                                              <option value="27">27</option>
+                                              <option value="28">28</option>
+                                              <option value="29">29</option>
+                                              <option value="30">30</option>
+                                            </Field>
+                                            <ErrorMessage name="AustralianPortfolioLoanTerm" component='div' className="text-danger fw-bold"/>
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
+                                        <Field
+                                                as='select'
+                                                name="AustralianPortfolioLoanType2"
+                                                id="AustralianPortfolioLoanType2"
+                                                className="form-select shadow  inputDesign"
+                                              >
+                                                <option value=''>Select</option>
+                                                <option value="I/Only">I/Only</option>
+                                                <option value="P & I">P & I</option>
+                                              </Field>
+                                              <ErrorMessage name="AustralianPortfolioLoanType2" component='div' className="text-danger fw-bold"/>
+                                      </div>            
+                                      </div>
+                                      <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
+                                        <Field name="AustralianPortfolioDeductibleLoanAmount" 
+                                        placeholder='Deductible Loan Amount'
+                                        id="AustralianPortfolioDeductibleLoanAmount"
+                                        className="form-control shadow  inputDesign">
+                                        </Field>
+                                              <ErrorMessage name="AustralianPortfolioDeductibleLoanAmount" component='div' className="text-danger fw-bold"/>
+                                      </div>            
+                                      </div>
+                                      <div className="col-md-6">
+                                        <div className="mb-3">
+                                          <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
+                                          <Field
+                                                  as='select'
+                                                  name="AustralianPortfolioYearRemaining"
+                                                  id="AustralianPortfolioYearRemaining"
+                                                  className="form-select shadow  inputDesign"
+                                                >
+                                                <option value=''>Select</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                </Field>
+                                                <ErrorMessage name="AustralianPortfolioYearRemaining" component='div' className="text-danger fw-bold"/>
+                                        </div>            
+                                        </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={AustralianSharePortfoliohandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={AustralianSharePortfoliohandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+
+                          </div>
+                          {/* Managed Funds Details */}    
+                          
+                          
+                        
+                          <div className="row mt-5 mb-3">
+                            <div className="col-md-12">
+                              <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                              <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                            </div>
+                          </div>
+                          </Form>
+    }
+    </Formik>    
+        </div>
+        </div>
+      </div>
     </div>
   )
 }
