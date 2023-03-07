@@ -29,13 +29,73 @@ const IncomeExpenses = () => {
   const [sacrificState, setSacrificState] = useState(false);
   const [contributionState, setContributionState] = useState(false);
   const [otherTaxableIncomeState, setotherTaxableIncomeState] = useState(false)
+  const [otherTaxableIncomeState2, setotherTaxableIncomeState2] = useState(false)
+
   const [currentSaleryState2, setCurrentSaleryState2] = useState(false);
   const [carState2, setCarState2] = useState(false);
   const [creditCardState2, seTcreditCardState2] = useState(false)
   const [sacrificState2, setSacrificState2] = useState(false);
   const [contributionState2, setContributionState2] = useState(false);
   let letters = /^[a-zA-Z ]*$/;
+  
+const [centerlinkPaymentState, setCenterlinkPaymentState] = useState(false)
+const [centerlinkPaymentState2, setCenterlinkPaymentState2] = useState(false)
 
+const [giftedAssetState, setGiftedAssetState] = useState(false)
+const [lumpsumExpensesState, setlumpsumExpensesState] = useState(false)
+const [expectingState, setExpectingState] = useState(false)
+
+
+let expectingInheritancesHandler=(elem)=>{
+  if (elem==="No"){
+    setExpectingState(false)
+  
+  }
+  else{
+    setExpectingState(true)
+  }
+  }
+
+let lumpsumExpensesHandler=(elem)=>{
+  if (elem==="No"){
+    setlumpsumExpensesState(false)
+  
+  }
+  else{
+    setlumpsumExpensesState(true)
+  }
+  }
+
+let giftedAssetHandler=(elem)=>{
+  if (elem==="No"){
+    setGiftedAssetState(false)
+  
+  }
+  else{
+    setGiftedAssetState(true)
+  }
+  }
+
+
+
+  let centerlinkPaymentsHandler=(elem)=>{
+  if (elem==="No"){
+    setCenterlinkPaymentState(false)
+  
+  }
+  else{
+    setCenterlinkPaymentState(true)
+  }
+  }
+  let centerlinkPaymentsHandler2=(elem)=>{
+  if (elem==="No"){
+    setCenterlinkPaymentState2(false)
+  
+  }
+  else{
+    setCenterlinkPaymentState2(true)
+  }
+  }
    
 let currentlySalaryPackageHandler2=(elem)=>{
   if (elem==="No"){
@@ -203,6 +263,18 @@ let currentlySalaryPackageHandler2=(elem)=>{
     
     }
 
+    let otherTaxableIncomeHandler2=(elem)=>{
+      if (elem==="No"){
+        setotherTaxableIncomeState2(false)
+      
+      }
+      else{
+        setotherTaxableIncomeState2(true)
+      
+      }
+      
+      }
+
   const initialValues={
 
     //Client employment details
@@ -324,11 +396,12 @@ let currentlySalaryPackageHandler2=(elem)=>{
   }
 
   const onSubmit= (values,action) => {
+ 
   console.log(values)
   }
   
   const validationSchema = Yup.object({
-    clientPrimaryOccupation: Yup.string().matches(letters, "only letters").required('Required') ,
+    clientPrimaryOccupation: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientEmployerFBTStatus:Yup.string().required( "Required"),
     clientCostBaseofCar:Yup.number()
     .when('whatDoYouHave',{
@@ -359,7 +432,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
       (value) => value > 0
     ),
     clientEmploymentStatus:Yup.string().required( "Required"),
-    clientNameofCompany: Yup.string().matches(letters, "only letters").required('Required') ,
+    clientNameofCompany: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientCommencementDate:Yup.string().required( "Required"),
     clientNumberofhoursperweek:Yup.number().required("Required")
     .test(
@@ -426,7 +499,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
     
 
         // partner employeement Details
-        clientPrimaryOccupation2: Yup.string().matches(letters, "only letters").required('Required') ,
+        clientPrimaryOccupation2: Yup.string().matches(letters, "Only letters").required('Required') ,
         clientEmployerFBTStatus2:Yup.string().required( "Required"),
         clientCostBaseofCar2:Yup.number()
         .when('whatDoYouHave2',{
@@ -440,7 +513,6 @@ let currentlySalaryPackageHandler2=(elem)=>{
           otherwise: Yup.number().notRequired()
         }),
         clientRunningCostsofCarPackaged2:Yup.number().required("Required")
-        
           .test(
             "Is positive?",
             "Must be a positive number",
@@ -454,7 +526,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
           (value) => value > 0
         ),
         clientEmploymentStatus2:Yup.string().required( "Required"),
-        clientNameofCompany2: Yup.string().matches(letters, "only letters").required('Required') ,
+        clientNameofCompany2: Yup.string().matches(letters, "Only letters").required('Required') ,
         clientCommencementDate2:Yup.string().required( "Required"),
         clientNumberofhoursperweek2:Yup.number().required("Required")
         .test(
@@ -535,21 +607,110 @@ let currentlySalaryPackageHandler2=(elem)=>{
     // partner employeement Details
 
     //Client Centre Link
-    centrelinkPayments1: Yup.string().required('Required'),
-    PaymentAmountFortnightly1: Yup.number().required('Required'),
-    AnnualPaymentAmount1: Yup.string().required('Required'),
-    FamilyTaxBenefit1: Yup.string().required('Required'),
-    AssetBeenGiftedHM1: Yup.string().required('Required'),
-    AssetBeenGiftedYears1: Yup.string().required('Required'),
-    ActualDateofyear1: Yup.string().required('Required'),
+    centrelinkPayments1: Yup.string()
+    .when("centerlink1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+
+    PaymentAmountFortnightly1: Yup.number()
+    .when('centerlink1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+    AnnualPaymentAmount1: Yup.number()
+    .when('centerlink1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    FamilyTaxBenefit1:  Yup.string()
+    .when("centerlink1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    AssetBeenGiftedHM1: Yup.number()
+    .when('AssetGifted1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    AssetBeenGiftedYears1: Yup.string()
+    .when("AssetGifted1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ActualDateofyear1: Yup.string()
+    .when("AssetGifted1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
 
     //Partner Centre Link
-    centrelinkPayments2: Yup.string().required('Required'),
-    PaymentAmountFortnightly2: Yup.number().required('Required'),
-    AnnualPaymentAmount2: Yup.string().required('Required'),
-    FamilyTaxBenefit2: Yup.string().required('Required'),
+    centrelinkPayments2:  Yup.string()
+    .when("centerlink2radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    PaymentAmountFortnightly2: Yup.number()
+    .when('centerlink2radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
 
-    //Client other taxable income
+    AnnualPaymentAmount2: Yup.number()
+    .when('centerlink2radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    FamilyTaxBenefit2: Yup.string()
+    .when("centerlink2radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+
+    // //Client other taxable income
     TaxPaymentsOutstanding1:Yup.number().required("Required")
     .test(
       "Is positive?",
@@ -574,21 +735,96 @@ let currentlySalaryPackageHandler2=(elem)=>{
       otherwise: Yup.number().notRequired()
     }),
 
-    //Partner Other Taxable Income
-    TaxPaymentsOutstanding2: Yup.string().required('Required'),
-    TaxLossesCarriedForward2: Yup.string().required('Required'),
-    AmountofOtherTaxableIncome2: Yup.string().required('Required'),
+    // //Partner Other Taxable Income
+    TaxPaymentsOutstanding2: Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    TaxLossesCarriedForward2: Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    AmountofOtherTaxableIncome2: Yup.number()
+    .when('otherTaxableIncome2radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
 
     //Expenses
-    totalGeneralLivingCosts: Yup.number().required('Required'),
-    incomeInRetirement: Yup.number().required('Required'),
-    lumpsumExpensesopt1: Yup.string().required('Required'),
-    lumpSumExpenseDescription: Yup.string().required('Required'),
-    lumpSumExpenseYear: Yup.string().required('Required'),
-    lumpSumExpenseAmount: Yup.number().required('Required'),
-    expectingInheritancesDescription: Yup.string().required('Required'),
-    expectingInheritancesYear: Yup.string().required('Required'),
-    expectingInheritancesAmount: Yup.number().required('Required'),
+    totalGeneralLivingCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    incomeInRetirement: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    
+    lumpSumExpenseDescription: Yup.string()
+    .when("lumpsumExpensesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    lumpSumExpenseYear: Yup.string()
+    .when("lumpsumExpensesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    lumpSumExpenseAmount:Yup.number()
+    .when('lumpsumExpensesradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+
+    expectingInheritancesDescription:Yup.string()
+    .when("expectingInheritancesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().matches(letters, "Only letters").required('Required')
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+
+    expectingInheritancesYear: Yup.string()
+    .when("expectingInheritancesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    expectingInheritancesAmount:Yup.number()
+    .when('expectingInheritancesradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
   })
 
   const initialValues2={
@@ -670,79 +906,230 @@ TransInsuranceType:'',
 
   const onSubmit2=(values)=>{
     console.log(values)
-
+    handleClose();
+    
   }
 
   const validationSchema2=Yup.object({
-    houseHoldrent:Yup.number().required("Required"),
-    houseHoldElectricity:Yup.number().required("Required"),
+    houseHoldrent:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    houseHoldElectricity:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     houseHoldrentType:Yup.string().required("Required"),
     houseHoldElectricityType:Yup.string().required("Required"),
     houseHoldWaterRateType:Yup.string().required("Required"),
-    houseHoldWaterRates:Yup.string().required("Required"),
-    houseHoldGas:Yup.string().required("Required"),
+    houseHoldWaterRates:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    houseHoldGas:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     houseHoldGasType:Yup.string().required("Required"),
-    houseHoldPhone:Yup.string().required("Required"),
+    houseHoldPhone:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     houseHoldPhoneType:Yup.string().required("Required"),
-    houseHoldCouncilRates:Yup.string().required("Required"),
+    houseHoldCouncilRates:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     houseHoldCouncilRatesType:Yup.string().required("Required"),
 
-    houseHoldInternet:Yup.string().required("Required"),
+    houseHoldInternet:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     houseHoldInternetType:Yup.string().required("Required"),
-    houseHoldOther:Yup.string().required("Required"),
+    houseHoldOther:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     houseHoldOtherType:Yup.string().required("Required"),
 
-    PersonalFood:Yup.string().required("Required"),
+    PersonalFood:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalFoodType:Yup.string().required("Required"),
-    PersonalClothing:Yup.string().required("Required"),
+    PersonalClothing:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalClothingValueType:Yup.string().required("Required"),
 
-    PersonalCigarettes:Yup.string().required("Required"),
+    PersonalCigarettes:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalCigarettesType:Yup.string().required("Required"),
-    PersonalAlcohol:Yup.string().required("Required"),
+    PersonalAlcohol:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalAlcoholType:Yup.string().required("Required"),
 
-    PersonalSubscriptionFees:Yup.string().required("Required"),
+    PersonalSubscriptionFees:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalSubscriptionFeesType:Yup.string().required("Required"),
-    PersonalMembershipsClubs:Yup.string().required("Required"),
+    PersonalMembershipsClubs:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalMembershipsClubsType:Yup.string().required("Required"),
 
-    PersonalOther:Yup.string().required("Required"),
+    PersonalOther:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalOtherType:Yup.string().required("Required"),
-    PersonalHolidays:Yup.string().required("Required"),
+    PersonalHolidays:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalHolidaysType:Yup.string().required("Required"),
 
-    PersonalDiningOut:Yup.string().required("Required"),
+    PersonalDiningOut:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalDiningOutType:Yup.string().required("Required"),
-    PersonalMobilePhone:Yup.string().required("Required"),
+    PersonalMobilePhone:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalMobilePhoneType:Yup.string().required("Required"),
-    PersonalMedicalExpenses:Yup.string().required("Required"),
+    PersonalMedicalExpenses:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PersonalMedicalExpensesType:Yup.string().required("Required"),
 
-    TransportPetrol:Yup.string().required("Required"),
+    TransportPetrol:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     TransportPetrolType:Yup.string().required("Required"),
-    TransportCarRepairs:Yup.string().required("Required"),
+    TransportCarRepairs:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     TransportCarRepairsType:Yup.string().required("Required"),
 
-    TransportCarRegistration:Yup.string().required("Required"),
+    TransportCarRegistration:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     TransportCarRegistrationType:Yup.string().required("Required"),
-    PublicTransport:Yup.string().required("Required"),
+    PublicTransport:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PublicTransportType:Yup.string().required("Required"),
-    TransportOther:Yup.string().required("Required"),
+    TransportOther:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     TransportOtherType:Yup.string().required("Required"),
 
-    PrivateHealth:Yup.string().required("Required"),
+    PrivateHealth:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     PrivateHealthType:Yup.string().required("Required"),
-    LifeTPDTrauma:Yup.string().required("Required"),
+    LifeTPDTrauma:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     LifeTPDTraumaType:Yup.string().required("Required"),
 
-    InsuranceIncomeProtection:Yup.string().required("Required"),
+    InsuranceIncomeProtection:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     InsuranceIncomeProtectionType:Yup.string().required("Required"),
-    InsuranceCar:Yup.string().required("Required"),
+    InsuranceCar:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     InsuranceCarType:Yup.string().required("Required"),
-    InsuranceHomeContents:Yup.string().required("Required"),
+    InsuranceHomeContents:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     InsuranceHomeContentsType:Yup.string().required("Required"),
-    InsuranceOther:Yup.string().required("Required"),
+    InsuranceOther:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     TransInsuranceType:Yup.string().required("Required"),
   })
   
@@ -2056,12 +2443,15 @@ TransInsuranceType:'',
                           <div className="radiobutton">
                             <input type="radio" name="centerlink1radio" id="centerlink1opt1" 
                             onChange={handleChange} value="Yes"
+                            onClick={()=>centerlinkPaymentsHandler("Yes")} 
+
                             checked={values.centerlink1radio==="Yes"}/>
                             <label htmlFor="centerlink1opt1" className="label1">
                               <span>YES</span>
                             </label>
                             <input type="radio" name="centerlink1radio" id="centerlink1opt2" 
                             onChange={handleChange} value="No"
+                            onClick={()=>centerlinkPaymentsHandler("No")} 
                             checked={values.centerlink1radio==="No"}/>
                             <label htmlFor="centerlink1opt2" className="label2">
                               <span>NO</span>
@@ -2074,7 +2464,8 @@ TransInsuranceType:'',
                            </div>
                         </div>
                       {/* 1 row */}
-
+                    {centerlinkPaymentState &&  
+                      <div>
                           {/* 2 row */}
                         <div className="row">
                         <div className="col-md-6">
@@ -2215,12 +2606,14 @@ TransInsuranceType:'',
                           <div className="radiobutton">
                             <input type="radio" name="AssetGifted1radio" id="AssetGifted1opt1"  
                             onChange={handleChange} value="Yes"
+                            onClick={()=>giftedAssetHandler("Yes")} 
                             checked={values.AssetGifted1radio==="Yes"}/>
                             <label htmlFor="AssetGifted1opt1" className="label1">
                               <span>YES</span>
                             </label>
                             <input type="radio" name="AssetGifted1radio" id="AssetGifted1opt2"   
                             onChange={handleChange} value="No"
+                            onClick={()=>giftedAssetHandler("No")} 
                             checked={values.AssetGifted1radio==="No"}/>
                             <label htmlFor="AssetGifted1opt2" className="label2">
                               <span>NO</span>
@@ -2236,6 +2629,7 @@ TransInsuranceType:'',
                           {/* 5 row */}
 
                         {/* 6 row */}
+                    {giftedAssetState &&
                         <div className="row">
 
                         <div className="col-md-6">
@@ -2275,22 +2669,43 @@ TransInsuranceType:'',
                         </div>
 
                         </div>
-                      {/* 6 row */}
-
-                        {/* 7 row */}
-                        <div className="row">
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="ActualDateofyear1" className="form-label">Actual Date of year</   label>
-                          <Field type="date" className="form-control shadow inputDesign" 
-                          id="ActualDateofyear1" name="ActualDateofyear1" />
-                          <ErrorMessage component='div' className='text-danger fw-bold' name="ActualDateofyear1" />
-                        </div>            
-                        </div>
-
-                        </div>
+}
                       {/* 7 row */}
+
+                      {giftedAssetState &&
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="ActualDateofyear1" className="form-label">Commencement Date</   label>
+                              <div className="input-group ">
+                        <Field
+                          className="form-control inputDesign shadow"
+                          id="ActualDateofyear1"
+                          name='ActualDateofyear1'
+                          // onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
+                          value={values.DoBID}
+                          max="2023-1-31"
+                        />
+                        <div className="input-group-append">
+                          <span className="input-group-text" id="CalenderIcon">
+                            <input className="HiddenDate" name='ActualDateofyear1'
+                             type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("ActualDateofyear1","HiddenDate")}/>
+                          </span>
+                        </div>
+                              </div>
+                      <ErrorMessage component='div' className="text-danger fw-bold"name="ActualDateofyear1" />
+
+                            </div> 
+
+
+                            </div>
+
+                        </div>
+                      }
+                      {/* 7 row */}
+
+                      </div>
+                      }
                       </div>
                   </div>
                 </div>
@@ -2320,12 +2735,14 @@ TransInsuranceType:'',
                         <div className="radiobutton">
                           <input type="radio" name="centerlink2radio" id="centerlink2opt1"   
                             onChange={handleChange} value="Yes"
+                            onClick={()=>centerlinkPaymentsHandler2("Yes")} 
                             checked={values.centerlink2radio==="Yes"}/>
                           <label htmlFor="centerlink2opt1" className="label1">
                             <span>YES</span>
                           </label>
                           <input type="radio" name="centerlink2radio" id="centerlink2opt2"   
                             onChange={handleChange} value="No"
+                            onClick={()=>centerlinkPaymentsHandler2("No")} 
                             checked={values.centerlink2radio==="No"}/>
                           <label htmlFor="centerlink2opt2" className="label2">
                             <span>NO</span>
@@ -2339,7 +2756,7 @@ TransInsuranceType:'',
                         </div>
                       </div>
                     {/* 1 row */}
-
+{centerlinkPaymentState2 && <div>
                         {/* 2 row */}
                       <div className="row">
                       <div className="col-md-6">
@@ -2440,7 +2857,7 @@ TransInsuranceType:'',
                             </div>
                           </div>
                     {/* 4 row */}
-
+                    </div>}
                   </div>
                 </div>
                 </div>
@@ -2618,7 +3035,7 @@ TransInsuranceType:'',
                         <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
-                            Do u have any other taxable income (including overseas pensions)?
+                            Do you have any other taxable income (including overseas pensions)?
                             </label>
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
@@ -2852,12 +3269,15 @@ TransInsuranceType:'',
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
                             <input type="radio" name="otherTaxableIncome2radio" id="otherTaxableIncome2opt1" 
+                             onClick={()=>otherTaxableIncomeHandler2("Yes")} 
                              onChange={handleChange} value="Yes"
                              checked={values.otherTaxableIncome2radio==="Yes"}/>
                             <label htmlFor="otherTaxableIncome2opt1" className="label1">
                               <span>YES</span>
                             </label>
                             <input type="radio" name="otherTaxableIncome2radio" id="otherTaxableIncome2opt2" 
+                             onClick={()=>otherTaxableIncomeHandler2("No")} 
+                             
                              onChange={handleChange} value="No"
                              checked={values.otherTaxableIncome2radio==="No"}/>
                             <label htmlFor="otherTaxableIncome2opt2" className="label2">
@@ -2882,14 +3302,15 @@ TransInsuranceType:'',
                       
                         {/* 5 row */}
                         <div className="row">
-                        <div className="col-md-6">
+                      {otherTaxableIncomeState2 &&
+                      <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="AmountofOtherTaxableIncome2" className="form-label">Amount of Other Taxable Income</   label>
                           <Field type="number" className="form-control shadow inputDesign" 
                           id="AmountofOtherTaxableIncome2" name="AmountofOtherTaxableIncome2" placeholder="Annual Payment Amount"/>
                           <ErrorMessage component='div' className='text-danger fw-bold' name="AmountofOtherTaxableIncome2" />
                         </div>            
-                        </div>
+                        </div>}
                         </div>
                       {/* 5 row */}
 
@@ -2941,8 +3362,8 @@ TransInsuranceType:'',
                           Use Business Expense Schedule
                         </label>
                         <div>
-                          <button
-                            className=" btn 
+                          <span
+                            className=" btn w-50
                             btn-outline-success "
                             onClick={handleShow}
                           >
@@ -2951,7 +3372,7 @@ TransInsuranceType:'',
 
                             </div>
                             Use Budget Planner
-                          </button>
+                          </span>
                         </div>
 
                         {/* --------------------------------------------------------------- */}
@@ -2980,1417 +3401,340 @@ TransInsuranceType:'',
                               initialValues={initialValues2}
                               validationSchema={validationSchema2}
                               onSubmit={onSubmit2} >
-                                {({values , setFieldValue ,setValues,handleChange,formik})=>
-                           <Form>
                                 
-                            <Modal.Body>
-
-                               
-
-                            <div className="row text-light bgColorIncome py-2 my-1">
-                              <div className="col-md-6">
-                                <label className="form-label mb-0">Total Expense</label>
-                              </div>
-                              <div className="col-md-6">
-                              <label id="HouseholdTotalValue" 
-                              className="float-end form-label mb-0">
-                                 $ 2500
-                                 <div className="iconContainer mx-1">
-                             <img className="img-fluid" src={moneyBag} alt="" />
-
-                              </div>
-                                 </label>
-                              </div>
-                              </div>
-
-                              {/* houseHold */}
-                              <div className="row ">
-                            <div 
-                             onClick={() => setOpen(!open)}
-                             aria-controls=""
-                             aria-expanded={open}
-                             className="bgColorIncome   py-2 text-light"
-                             >
-                              <div className="row">
-                              <div className="col-md-6">
-                                <label className="form-label mb-0">Household</label>
-                              </div>
-                              <div className="col-md-6">
-                              <label id="HouseholdTotalValue" className="float-end form-label mb-0">$0
-                              <div className="iconContainer mx-1">
-                             <img className="img-fluid" src={down} alt="" />
-
-                              </div>
-                              </label>
-                              </div>
-                              </div>
-                              
-
-                            </div>
-                            <div>
-                              
-                            </div>
-                            <Collapse in={open}>
-
-                              <div className="row">
-                                <div className="col-md-12">
-
-                                  {/* houseHold row 1 */}
-                                  <div className="row  my-3">
-                                
-                                {/* Rent */}
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldrent" className="form-label">
-                                  Rent
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldrent" placeholder="Rent" name="houseHoldrent"/>
-                               
-                                < ErrorMessage name="houseHoldrent" component="div"
-                               className="text-danger fw-bold" />
-    
-                                  </div>
-                                  <div className="col-5">
-                                  <label htmlFor="" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as="select"
-                                  id="houseHoldrentType"
-                                  className="form-select shadow  inputDesign"
-                                 name="houseHoldrentType"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                 </Field>
-                                 
-                                 < ErrorMessage name="houseHoldrentType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                </div>
-                                  </div>
-                                {/* Rent */}
-    
-                                {/* Electricity */}
-                                <div className="col-md-6">
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldElectricity" className="form-label">
-                                  Electricity
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldElectricity" placeholder="Electricity"
-                                name="houseHoldElectricity"/>
-                               < ErrorMessage name="houseHoldElectricity" component="div"
-                               className="text-danger fw-bold" />
-    
-                                  </div>
-                                  <div className="col-5">
-                                  <label htmlFor="" className="form-label float-end">
-                                $0 
-                                </label>
-                                <Field
-                                as="select"
-                                  id="houseHoldElectricityType"
-                                  className="form-select shadow  inputDesign"
-                                  name="houseHoldElectricityType"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  </Field>
-                                  < ErrorMessage name="houseHoldElectricityType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                </div>
-                                </div>
-                                {/* Electricity */}
-    
-                                  </div>
-                                  {/* houseHold row 1 */}
-
-                                  {/* houseHold row 2 */}
-                                  <div className="row  my-3">
-                                
-                                {/* Water Rates*/}
-                                <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldWaterRates" className="form-label">
-                                  Water Rates
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldWaterRates" placeholder="Water Rates"
-                                name="houseHoldWaterRates"/>
-                                < ErrorMessage name="houseHoldWaterRates" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="houseHoldWaterRateValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as="select"
-                                  id="houseHoldWaterRateType"
-                                  className="form-select shadow  inputDesign"
-                                  name="houseHoldWaterRateType"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="houseHoldWaterRateType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  </div>
-                                </div>
-                                {/* Water Rates */}
-    
-                                {/* Gas */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldGas" className="form-label">
-                                  Gas
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldGas" name="houseHoldGas" placeholder="Gas"/>
-                                < ErrorMessage name="houseHoldGas" component="div"
-                                 className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="houseHoldGasValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as="select"
-                                  id="houseHoldGasType"
-                                  className="form-select shadow  inputDesign"
-                                  name="houseHoldGasType"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="houseHoldGasType" component="div"
-                               className="text-danger fw-bold" />
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Gas */}
-                                </div>
-                                  {/* houseHold row 2 */}
-
-                                    {/* houseHold row 3 */}
-                                    <div className="row  my-3">
-                                
-                                {/* Phone*/}
-                                   <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldPhone" className="form-label">
-                                  Phone
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldPhone" placeholder="Phone"
-                                name="houseHoldPhone"/>
-                                < ErrorMessage name="houseHoldPhone" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="houseHoldPhoneValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as="select"
-                                  id="houseHoldPhoneType"
-                                  name="houseHoldPhoneType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="houseHoldPhoneType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  </div>
-                                 </div>
-                                {/* Phone */}
-    
-                                {/* Council Rates */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldCouncilRates" className="form-label">
-                                  Council Rates
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldCouncilRates"
-                                name="houseHoldCouncilRates"
-                                placeholder="Council Rates"/>
-                                < ErrorMessage name="houseHoldCouncilRates" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="houseHoldCouncilRatesValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as="select"
-                                  id="houseHoldCouncilRatesType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="houseHoldCouncilRatesType" component="div"
-                                   className="text-danger fw-bold" />
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Council Rates */}
-                                    </div>
-                                    {/* houseHold row 3 */}
-
-
-                                      {/* houseHold row 4 */}
-                                      <div className="row  my-3">
-                                
-                                {/* Internet */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldInternet" className="form-label">
-                                  Internet
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="houseHoldInternet"
-                                name="houseHoldInternet"
-                                placeholder="Internet"/>
-                                
-                                < ErrorMessage name="houseHoldInternet" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="houseHoldInternetValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as="select"
-                                  id="houseHoldInternetType"
-                                  name="houseHoldInternetType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="houseHoldInternetType" component="div"
-                               className="text-danger fw-bold" />
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Internet*/}
-                                  {/* Other */}
+                              <Form>  
+                                <Modal.Body>
+                                <div className="row text-light bgColorIncome py-2 my-1">
                                   <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="houseHoldOther" className="form-label">
-                                  Other
-                                </label>
-                                <Field name="houseHoldOther"
-                                 type="number" className="form-control inputDesign shadow"
-                                id="houseHoldOther" placeholder="Other"/>
-                                < ErrorMessage name="houseHoldOther" component="div"
-                               className="text-danger fw-bold" />
-    
+                                    <label className="form-label mb-0">Total Expense</label>
                                   </div>
-                                  <div className="col-5">
-                                  <label   id="houseHoldOtherValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as="select"
-                                  id="houseHoldOtherType"
-                                  name="houseHoldOtherType"
+                                  <div className="col-md-6">
+                                  <label id="HouseholdTotalValue" 
+                                  className="float-end form-label mb-0">
+                                    $ 2500
+                                    <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={moneyBag} alt="" />
 
-                                  className="form-select shadow  inputDesign"
+                                  </div>
+                                    </label>
+                                  </div>
+                                  </div>
+
+                                  {/* houseHold */}
+                                  <div className="row ">
+                                <div 
+                                onClick={() => setOpen(!open)}
+                                aria-controls=""
+                                aria-expanded={open}
+                                className="bgColorIncome   py-2 text-light"
                                 >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="houseHoldOtherType" component="div"
-                                   className="text-danger fw-bold" />
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Internet*/}
+                                  <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label mb-0">Household</label>
+                                  </div>
+                                  <div className="col-md-6">
+                                  <label id="HouseholdTotalValue" className="float-end form-label mb-0">$0
+                                  <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={down} alt="" />
 
-                                
-                                     </div>
-                                    {/* houseHold row 4 */}
+                                  </div>
+                                  </label>
+                                  </div>
+                                  </div>
                                   
+
+                                </div>
+                                <div>
                                   
-                                   </div>
-                              </div>
-                            
-                             
-                           
-                            </Collapse>
-                              </div>
-                               {/* houseHold*/}
-
-                                {/* Personal   */}
-                              <div className="row my-1">
-                            <div 
-                             onClick={() => setOpen2(!open2)}
-                             aria-controls=""
-                             aria-expanded={open2}
-                             className="bgColorIncome   py-2 text-light"
-                             >
-                              <div className="row ">
-                              <div className="col-md-6">
-                                <label className="form-label mb-0">Personal</label>
-                              </div>
-                              <div className="col-md-6">
-                              <label className="float-end mb-0">$0
-                              <div className="iconContainer mx-1">
-                             <img className="img-fluid" src={down} alt="" />
-
-                              </div></label>
-                              </div>
-                              </div>
-                              
-
-                            </div>
-                            <div>
-                              
-                            </div>
-                            <Collapse in={open2}>
-
-                              <div className="row">
-                                <div className="col-md-12">
-
-                                  {/* Personal    row 1 */}
-                                  <div className="row  my-3">
-                                
-                                {/* Food */}
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalFood" className="form-label">
-                                  Food
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                name="PersonalFood" id="PersonalFood" placeholder="Food" />
-                                < ErrorMessage name="PersonalFood" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label htmlFor="PersonalFoodValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="PersonalFoodType"
-                                  name="PersonalFoodType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  </Field>
-                                  < ErrorMessage name="PersonalFoodType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
                                 </div>
-                                  </div>
-                                {/* Food */}
-    
-                                {/* Clothing */}
-                                <div className="col-md-6">
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalClothing" className="form-label">
-                                  Clothing
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="PersonalClothing" name="PersonalClothing" placeholder="Clothing"/>
-                                < ErrorMessage name="PersonalClothing" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PersonalClothingValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                <Field
-                                 as='select'
-                                  name="PersonalClothingValueType"
-                                  id="PersonalClothingValueType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  </Field>
-                                  < ErrorMessage name="PersonalClothingValueType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                </div>
-                                </div>
-                                {/* Clothing */}
-    
-                                  </div>
-                                  {/* Personal    row 1 */}
+                                <Collapse in={open}>
 
-                                  {/* Personal row 2 */}
-                                  <div className="row  my-3">
-                                
-                                {/* Cigarettes*/}
-                                   <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalCigarettes" className="form-label">
-                                  Cigarettes
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                name="PersonalCigarettes" id="PersonalCigarettes" placeholder="Cigarettes"/>
-                                < ErrorMessage name="PersonalCigarettes" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PersonalCigarettesValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="PersonalCigarettesType"
-                                  name="PersonalCigarettesType"
+                                  <div className="row">
+                                    <div className="col-md-12">
 
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="PersonalCigarettesType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  </div>
-                                 </div>
-                                {/* Cigarettes */}
-    
-                                {/* Alcohol */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalAlcohol" className="form-label">
-                                  Alcohol
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                name="PersonalAlcohol" id="PersonalAlcohol" placeholder="Alcohol"/>
-                                < ErrorMessage name="PersonalAlcohol" component="div" className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="PersonalAlcoholValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as='select'
-                                  id="PersonalAlcoholType"
-                                  name="PersonalAlcoholType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="PersonalAlcoholType" component="div"
-                               className="text-danger fw-bold" />
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Alcohol */}
-                                  </div>
-                                  {/* Personal row 2 */}
-
-                                    {/* Personal row 3 */}
-                                    <div className="row  my-3">
-                                
-                                {/* Subscription Fees*/}
-                                   <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalSubscriptionFees" className="form-label">
-                                  Subscription Fees
-                                </label>
-                                <Field
-                                name="PersonalSubscriptionFees" type="number" className="form-control inputDesign shadow"
-                                id="PersonalSubscriptionFees" placeholder="Subscription Fees"/>
-     < ErrorMessage name="PersonalSubscriptionFees" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PersonalSubscriptionFeesValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field 
-                                  as='select'
-                                  id="PersonalSubscriptionFeesType"
-                                  name="PersonalSubscriptionFeesType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="PersonalSubscriptionFeesType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  </div>
-                                  </div>
-                                {/* Subscription Fees */}
-    
-                                {/* Memberships & Clubs */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalMembershipsClubs" className="form-label">
-                                  Memberships & Clubs
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="PersonalMembershipsClubs"
-                                name="PersonalMembershipsClubs" placeholder="Memberships & Clubs"/>
-    < ErrorMessage name="PersonalMembershipsClubs" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="PersonalMembershipsClubsValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as='select'
-                                  id="PersonalMembershipsClubsType"
-                                  name="PersonalMembershipsClubsType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="PersonalMembershipsClubsType" component="div"
-                               className="text-danger fw-bold" />
-
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Memberships & Clubs */}
-                                   </div>
-                                    {/* Personal row 3 */}
-
-                                    {/* Personal row 4 */}
-                                  <div className="row  my-3">
-                                
-                                {/* Other*/}
-                                   <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalOther" className="form-label">
-                                  Other
-                                </label>
-                                <Field name="PersonalOther" type="number" className="form-control inputDesign shadow"
-                                id="PersonalOther" placeholder="Other"/>
-    < ErrorMessage name="PersonalOther" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PersonalOtherValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="PersonalOtherType"
-                                  name="PersonalOtherType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="PersonalOtherType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  </div>
-                                 </div>
-                                {/* Other */}
-    
-                                {/* Holidays */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalHolidays" className="form-label">
-                                  Holidays
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                name="PersonalHolidays" id="PersonalHolidays" placeholder="Holidays"/>
-    < ErrorMessage name="PersonalHolidays" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="PersonalHolidaysValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field as='select'
-                                  id="PersonalHolidaysType"
-                                  name="PersonalHolidaysType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="PersonalHolidaysType" component="div"
-                               className="text-danger fw-bold" />
-
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Alcohol */}
-                                  </div>
-                                  {/* Personal row 4 */}
-
-                                  
-                                    {/* Personal row 5 */}
-                                    <div className="row  my-3">
-                                
-                                {/* Dining Out*/}
-                                   <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalDiningOut" className="form-label">
-                                  Dining Out
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="PersonalDiningOut" name="PersonalDiningOut" placeholder="Dining Out"/>
-     < ErrorMessage name="PersonalDiningOut" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PersonalDiningOutValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="PersonalDiningOutType"
-                                  name="PersonalDiningOutType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="PersonalDiningOutType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  </div>
-                                 </div>
-                                {/* Dining Out */}
-    
-                                {/* Mobile Phone */}
-                                <div className="col-md-6">
-                                
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalMobilePhone" className="form-label">
-                                  Mobile Phone
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="PersonalMobilePhone" name="PersonalMobilePhone" placeholder="Mobile Phone"/>
-     < ErrorMessage name="PersonalMobilePhone" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label   id="PersonalMobilePhoneValue" className="form-label float-end ">
-                                  $0
-                                </label>
-                                 <Field
-                                 as='select'
-                                  id="PersonalMobilePhoneType"
-                                  name="PersonalMobilePhoneType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                   </Field>
-                                   < ErrorMessage name="PersonalMobilePhoneType" component="div"
-                               className="text-danger fw-bold" />
-
-                                    </div>
-                                </div>
-                                 
-                                </div>
-                                {/* Mobile Phone */}
-                                    </div>
-                                    {/* Personal row 5 */}
-
-
-                                    {/* Personal row 5 */}
-                                    <div className="row  my-3">
-                                
-                                {/* Dining Out*/}
-                                   <div className="col-md-6">
-                                   <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="PersonalMedicalExpenses" className="form-label">
-                                  Medical Expenses
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="PersonalMedicalExpenses"
-                                name="PersonalMedicalExpenses" placeholder="Medical Expenses"/>
-     < ErrorMessage name="PersonalMedicalExpenses" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PersonalMedicalExpensesValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="PersonalMedicalExpensesType"
-                                  name="PersonalMedicalExpensesType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  
-                                  </Field>
-                                  < ErrorMessage name="PersonalMedicalExpensesType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  </div>
-                                 </div>
-                                {/* Medical Expenses */}
-    
-                              
-                                    </div>
-                                    {/* Personal row 6 */}
-                                    
-                                    
-                                     </div>
-                              </div>
-                             </Collapse>
-                              </div>
-                               {/* Personal*/}
-
-                                 {/* Transport */}
-                              <div className="row my-1 ">
-                            <div 
-                             onClick={() => setOpen3(!open3)}
-                             aria-controls=""
-                             aria-expanded={open3}
-                             className="bgColorIncome   py-2 text-light"
-                             >
-                              <div className="row">
-                              <div className="col-md-6">
-                                <label className="form-label mb-0">Transport</label>
-                              </div>
-                              <div className="col-md-6">
-                              <label id="TransportTotalValue" className="float-end form-label mb-0">$0
-                              <div className="iconContainer mx-1">
-                             <img className="img-fluid" src={down} alt="" />
-
-                              </div></label>
-                              </div>
-                              </div>
-                              
-
-                            </div>
-                            <div>
-                              
-                            </div>
-                            <Collapse in={open3}>
-
-                              <div className="row">
-                                <div className="col-md-12">
-
-                                  {/* TransportPetrol   row 1 */}
-                                  <div className="row  my-3">
-                                {/* Petrol */}
-
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  
-                                  <div className="col-7">
-                                    <br />
-                                  <label htmlFor="TransportPetrol" className="form-label">
-                                  Petrol
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                name="TransportPetrol"
-                                id="TransportPetrol" placeholder="Petrol"/>
-     < ErrorMessage name="TransportPetrol" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <br />
-                                  <label id="TransportPetrolValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="TransportPetrolType"
-                                  name="TransportPetrolType"
-
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                 </Field>
-                                 < ErrorMessage name="TransportPetrolType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                </div>
-                                  </div>
-                                {/* Petrol */}
-    
-                                {/* Car Repairs & Maintenance */}
-                                <div className="col-md-6">
-
-                                 <div className="row">
-                                     <div className="col-7">
-                                     <label htmlFor="TransportCarRepairs" className="form-label">
-                                     Car Repairs & Maintenance
-                                   </label>
-                                   <Field type="number" className="form-control inputDesign shadow"
-                                   id="TransportCarRepairs"
-                                   name="TransportCarRepairs" placeholder="Car Repairs & Maintenance"/>
-        < ErrorMessage name="TransportCarRepairs" component="div"
-                               className="text-danger fw-bold" />
-
-                                     </div>
-                                     <div className="col-5">
-                                    <br />
-
-                                     <label id="TransportCarRepairsValue" className="form-label float-end">
-                                   $0 
-                                   </label>
-                                     <Field
-                                     as='select'
-                                     id="TransportCarRepairsType"
-                                     name="TransportCarRepairsType"
-                                     className="form-select shadow  inputDesign"
-                                   >
-                                     <option value=''>Select</option>
-                                     <option value="Weekly">Weekly</option>
-                                     <option value="Fortnightly">Fortnightly</option>
-                                     <option value="Monthly">Monthly</option>
-                                     <option value="Quarterly">Quarterly</option>
-                                     <option value="Six-Monthly">Six-Monthly</option>
-                                     <option value="Annually">Annually</option>
-                                       </Field>
-                                       < ErrorMessage name="TransportCarRepairsType" component="div"
-                               className="text-danger fw-bold" />
-                                     </div>
-                                   </div>
-                                     </div>
-                                {/* Electricity */}
-    
-                                  </div>
-                                  {/* Transport   row 1 */}
-
-                                    {/* Transport  row 2 */}
-                                    <div className="row  my-3">
-                                {/* Car Registration */}
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="TransportCarRegistration" className="form-label">
-                                  Car Registration
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="TransportCarRegistration"
-                                name="TransportCarRegistration" placeholder="Car Registration"/>
-     < ErrorMessage name="TransportCarRegistration" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="TransportCarRegistrationValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="TransportCarRegistrationType"
-                                  name="TransportCarRegistrationType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                 </Field>
-                                 < ErrorMessage name="TransportCarRegistrationType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                </div>
-                                  </div>
-                                {/* Car Registration */}
-    
-                                {/* Public Transport */}
-                                <div className="col-md-6">
-                                   <div className="row">
-                                     <div className="col-7">
-                                     <label htmlFor="PublicTransport" className="form-label">
-                                     Public Transport
-                                   </label>
-                                   <Field type="number" className="form-control inputDesign shadow"
-                                   id="PublicTransport" name="PublicTransport" placeholder="Public Transport"/>
-       < ErrorMessage name="PublicTransport" component="div"
-                               className="text-danger fw-bold" />
-                                     </div>
-                                     <div className="col-5">
-                                     <label id="PublicTransportValue" className="form-label float-end">
-                                   $0 
-                                   </label>
-                                     <Field
-                                     as='select'
-                                     id="PublicTransportType"
-                                     name="PublicTransportType"
-                                     className="form-select shadow  inputDesign"
-                                   >
-                                     <option value=''>Select</option>
-                                     <option value="Weekly">Weekly</option>
-                                     <option value="Fortnightly">Fortnightly</option>
-                                     <option value="Monthly">Monthly</option>
-                                     <option value="Quarterly">Quarterly</option>
-                                     <option value="Six-Monthly">Six-Monthly</option>
-                                     <option value="Annually">Annually</option>
-                                     </Field>
-                                     < ErrorMessage name="PublicTransportType" component="div"
-                               className="text-danger fw-bold" />
-                                     </div>
-                                   </div>
-                                </div>
-                                {/* Public Transport */}
-    
-                                    </div>
-                                    {/* Transport   row 2 */}
-
-                                      {/* Transport  row 3 */}
+                                      {/* houseHold row 1 */}
                                       <div className="row  my-3">
-                                  {/* Other*/}
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="TransportOther" className="form-label">
-                                  Other
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="TransportOther" name="TransportOther" placeholder="Other"/>
-    < ErrorMessage name="TransportOther" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="TransportOtherValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  name="TransportOtherType"
-                                  id="TransportOtherType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  </Field>
-                                  < ErrorMessage name="TransportOtherType" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                </div>
-                                  </div>
-                                {/* Car Registration */}
-    
-                              </div>
-                                    {/* Transport   row 3 */}
-
-                              </div>
-                              </div>
-                            
-                             
-                           
-                            </Collapse>
-                              </div>
-                               {/* Transport   */}
-
-                                  {/* Insurance */}
-                              <div className="row my-1">
-                            <div 
-                             onClick={() => setOpen4(!open4)}
-                             aria-controls=""
-                             aria-expanded={open4}
-                             className="bgColorIncome   py-2 text-light"
-                             >
-                              <div className="row">
-                              <div className="col-md-6">
-                                <label className="form-label mb-0">Insurance</label>
-                              </div>
-                              <div className="col-md-6">
-                              <label id="InsuranceTotalValue" className="float-end form-label mb-0">$0
-                              <div className="iconContainer mx-1">
-                             <img className="img-fluid" src={down} alt="" />
-
-                              </div></label>
-                              </div>
-                              </div>
-                              
-
-                            </div>
-                            <div>
-                              
-                            </div>
-                            <Collapse in={open4}>
-
-                              <div className="row">
-                                <div className="col-md-12">
-
-                                  {/* Insurance   row 1 */}
-                                  <div className="row  my-3">
-                                {/* Private Health */}
-
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  
-                                  <div className="col-7">
-                                  <label htmlFor="PrivateHealth" className="form-label">
-                                  Private Health
-                                </label>
-                                <Field type="number" className="form-control inputDesign shadow"
-                                id="PrivateHealth"
-                                name="PrivateHealth" placeholder="Private Health"/>
-    < ErrorMessage name="PrivateHealth" component="div"
-                               className="text-danger fw-bold" />
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="PrivateHealthValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as='select'
-                                  id="PrivateHealthType"
-                                  name="PrivateHealthType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  </Field>
-                                  < ErrorMessage name="PrivateHealthType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                </div>
-                                  </div>
-                                {/* Private Health */}
-    
-                                {/* Life/TPD/Trauma */}
-                                <div className="col-md-6">
-
-                                 <div className="row">
-                                     <div className="col-7">
-                                     <label htmlFor="LifeTPDTrauma" className="form-label">
-                                     Life/TPD/Trauma
-                                   </label>
-                                   <Field type="number" className="form-control inputDesign shadow"
-                                   id="LifeTPDTrauma" name="LifeTPDTrauma" placeholder="Life/TPD/Trauma"/>
-        < ErrorMessage name="LifeTPDTrauma" component="div"
-                               className="text-danger fw-bold" />
-
-                                     </div>
-                                     <div className="col-5">
-                                <label id="LifeTPDTraumaValue" className="form-label float-end">
-                                   $0 
-                                   </label>
-                                     <Field
-                                     as="select"
-                                     id="LifeTPDTraumaType"
-                                     name="LifeTPDTraumaType"
-                                     className="form-select shadow  inputDesign"
-                                   >
-                                     <option value="">Select</option>
-                                     <option value="Weekly">Weekly</option>
-                                     <option value="Fortnightly">Fortnightly</option>
-                                     <option value="Monthly">Monthly</option>
-                                     <option value="Quarterly">Quarterly</option>
-                                     <option value="Six-Monthly">Six-Monthly</option>
-                                     <option value="Annually">Annually</option>
-                                     </Field>
-
-                                     < ErrorMessage name="LifeTPDTraumaType" component="div"
-                               className="text-danger fw-bold" />
-
-                                     </div>
-                                   </div>
-                                     </div>
-                                {/* Life/TPD/Trauma */}
-    
-                                  </div>
-                                  {/* Insurance   row 1 */}
-
-                                    {/* Transport  row 2 */}
-                                    <div className="row  my-3">
-                                {/* Income Protection */}
-                                   <div className="col-md-6">
-                                   
-                                <div className="row">
-                                  <div className="col-7">
-                                  <label htmlFor="InsuranceIncomeProtection" className="form-label">
-                                  Income Protection
-                                </label>
-                                <Field name="InsuranceIncomeProtection"  type="number" className="form-control inputDesign shadow"
-                                id="InsuranceIncomeProtection" placeholder="Income Protection"/>
-     < ErrorMessage name="InsuranceIncomeProtection" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                  <div className="col-5">
-                                  <label id="InsuranceIncomeProtectionValue" className="form-label float-end">
-                                $0 
-                                </label>
-                                  <Field
-                                  as="select"
-                                  id="InsuranceIncomeProtectionType"
-                                  name="InsuranceIncomeProtectionType"
-                                  className="form-select shadow  inputDesign"
-                                >
-                                  <option value=''>Select</option>
-                                  <option value="Weekly">Weekly</option>
-                                  <option value="Fortnightly">Fortnightly</option>
-                                  <option value="Monthly">Monthly</option>
-                                  <option value="Quarterly">Quarterly</option>
-                                  <option value="Six-Monthly">Six-Monthly</option>
-                                  <option value="Annually">Annually</option>
-                                  </Field>
-                                  < ErrorMessage name="InsuranceIncomeProtectionType" component="div"
-                               className="text-danger fw-bold" />
-
-                                  </div>
-                                </div>
-                                  </div>
-                                {/* Income Protection */}
-    
-                                {/* Car*/}
-                                <div className="col-md-6">
-                                   <div className="row">
-                                     <div className="col-7">
-                                     <label htmlFor="InsuranceCar" className="form-label">
-                                     Car
-                                   </label>
-                                   <Field type="number" className="form-control inputDesign shadow"
-                                   id="InsuranceCar" name="InsuranceCar" placeholder="Car"/>
-        < ErrorMessage name="InsuranceCar" component="div"
-                               className="text-danger fw-bold" />
-
-                                     </div>
-                                     <div className="col-5">
-                                     <label id="InsuranceCarValue" className="form-label float-end">
-                                   $0 
-                                   </label>
-                                     <Field
-                                     as="select"
-                                     id="InsuranceCarType"
-                                     name="InsuranceCarType"
-                                     className="form-select shadow  inputDesign"
-                                   >
-                                     <option value=''>Select</option>
-                                     <option value="Weekly">Weekly</option>
-                                     <option value="Fortnightly">Fortnightly</option>
-                                     <option value="Monthly">Monthly</option>
-                                     <option value="Quarterly">Quarterly</option>
-                                     <option value="Six-Monthly">Six-Monthly</option>
-                                     <option value="Annually">Annually</option>
-                                     </Field>
-                                     < ErrorMessage name="InsuranceCarType" component="div"
-                               className="text-danger fw-bold" />
-
-                                     </div>
-                                   </div>
-                                </div>
-                                {/* Car */}
-    
-                                    </div>
-                                    {/* Insurance row 2 */}
-
-                                      {/* Insurance row 3 */}
-                                      <div className="row  my-3">
-                                         {/* Other*/}
-                                   <div className="col-md-6">
+                                    
+                                    {/* Rent */}
+                                      <div className="col-md-6">
+                                      
                                     <div className="row">
                                       <div className="col-7">
-                                      <label htmlFor="InsuranceHomeContents" className="form-label">
-                                      Home And Contents
+                                      <label htmlFor="houseHoldrent" className="form-label">
+                                      Rent
                                     </label>
-                                    <Field  type="number" className="form-control inputDesign shadow"
-                                    id="InsuranceHomeContents"
-                                    name="InsuranceHomeContents" placeholder="Home And Contents"/>
-         < ErrorMessage name="InsuranceHomeContents" component="div"
-                               className="text-danger fw-bold" />
-
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldrent" placeholder="Rent" name="houseHoldrent"/>
+                                  
+                                    < ErrorMessage name="houseHoldrent" component="div"
+                                  className="text-danger fw-bold" />
+        
                                       </div>
                                       <div className="col-5">
-                                      <label id="InsuranceHomeContentsValue" className="form-label float-end">
+                                      <label htmlFor="" className="form-label float-end">
                                     $0 
                                     </label>
                                       <Field
                                       as="select"
-                                      id="InsuranceHomeContentsType"
-                                      name="InsuranceHomeContentsType"
+                                      id="houseHoldrentType"
+                                      className="form-select shadow  inputDesign"
+                                    name="houseHoldrentType"
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                    </Field>
+                                    
+                                    < ErrorMessage name="houseHoldrentType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                    </div>
+                                      </div>
+                                    {/* Rent */}
+        
+                                    {/* Electricity */}
+                                    <div className="col-md-6">
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldElectricity" className="form-label">
+                                      Electricity
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldElectricity" placeholder="Electricity"
+                                    name="houseHoldElectricity"/>
+                                  < ErrorMessage name="houseHoldElectricity" component="div"
+                                  className="text-danger fw-bold" />
+        
+                                      </div>
+                                      <div className="col-5">
+                                      <label htmlFor="" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                    <Field
+                                    as="select"
+                                      id="houseHoldElectricityType"
+                                      className="form-select shadow  inputDesign"
+                                      name="houseHoldElectricityType"
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="houseHoldElectricityType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                    </div>
+                                    </div>
+                                    {/* Electricity */}
+        
+                                      </div>
+                                      {/* houseHold row 1 */}
+
+                                      {/* houseHold row 2 */}
+                                      <div className="row  my-3">
+                                    
+                                    {/* Water Rates*/}
+                                    <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldWaterRates" className="form-label">
+                                      Water Rates
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldWaterRates" placeholder="Water Rates"
+                                    name="houseHoldWaterRates"/>
+                                    < ErrorMessage name="houseHoldWaterRates" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="houseHoldWaterRateValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as="select"
+                                      id="houseHoldWaterRateType"
+                                      className="form-select shadow  inputDesign"
+                                      name="houseHoldWaterRateType"
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="houseHoldWaterRateType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      </div>
+                                    </div>
+                                    {/* Water Rates */}
+        
+                                    {/* Gas */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldGas" className="form-label">
+                                      Gas
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldGas" name="houseHoldGas" placeholder="Gas"/>
+                                    < ErrorMessage name="houseHoldGas" component="div"
+                                    className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="houseHoldGasValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as="select"
+                                      id="houseHoldGasType"
+                                      className="form-select shadow  inputDesign"
+                                      name="houseHoldGasType"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="houseHoldGasType" component="div"
+                                  className="text-danger fw-bold" />
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Gas */}
+                                    </div>
+                                      {/* houseHold row 2 */}
+
+                                        {/* houseHold row 3 */}
+                                        <div className="row  my-3">
+                                    
+                                    {/* Phone*/}
+                                      <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldPhone" className="form-label">
+                                      Phone
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldPhone" placeholder="Phone"
+                                    name="houseHoldPhone"/>
+                                    < ErrorMessage name="houseHoldPhone" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="houseHoldPhoneValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as="select"
+                                      id="houseHoldPhoneType"
+                                      name="houseHoldPhoneType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="houseHoldPhoneType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      </div>
+                                    </div>
+                                    {/* Phone */}
+        
+                                    {/* Council Rates */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldCouncilRates" className="form-label">
+                                      Council Rates
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldCouncilRates"
+                                    name="houseHoldCouncilRates"
+                                    placeholder="Council Rates"/>
+                                    < ErrorMessage name="houseHoldCouncilRates" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="houseHoldCouncilRatesValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as="select"
+                                      id="houseHoldCouncilRatesType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="houseHoldCouncilRatesType" component="div"
+                                      className="text-danger fw-bold" />
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Council Rates */}
+                                        </div>
+                                        {/* houseHold row 3 */}
+
+
+                                          {/* houseHold row 4 */}
+                                          <div className="row  my-3">
+                                    
+                                    {/* Internet */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldInternet" className="form-label">
+                                      Internet
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldInternet"
+                                    name="houseHoldInternet"
+                                    placeholder="Internet"/>
+                                    
+                                    < ErrorMessage name="houseHoldInternet" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="houseHoldInternetValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as="select"
+                                      id="houseHoldInternetType"
+                                      name="houseHoldInternetType"
+
                                       className="form-select shadow  inputDesign"
                                     >
                                       <option value=''>Select</option>
@@ -4401,34 +3745,813 @@ TransInsuranceType:'',
                                       <option value="Six-Monthly">Six-Monthly</option>
                                       <option value="Annually">Annually</option>
                                       </Field>
-                                      < ErrorMessage name="InsuranceHomeContentsType" component="div"
-                               className="text-danger fw-bold" />
+                                      < ErrorMessage name="houseHoldInternetType" component="div"
+                                  className="text-danger fw-bold" />
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Internet*/}
+                                      {/* Other */}
+                                      <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="houseHoldOther" className="form-label">
+                                      Other
+                                    </label>
+                                    <Field name="houseHoldOther"
+                                    type="number" className="form-control inputDesign shadow"
+                                    id="houseHoldOther" placeholder="Other"/>
+                                    < ErrorMessage name="houseHoldOther" component="div"
+                                  className="text-danger fw-bold" />
+        
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="houseHoldOtherValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as="select"
+                                      id="houseHoldOtherType"
+                                      name="houseHoldOtherType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="houseHoldOtherType" component="div"
+                                      className="text-danger fw-bold" />
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Internet*/}
+
+                                    
+                                        </div>
+                                        {/* houseHold row 4 */}
+                                      
+                                      
+                                      </div>
+                                  </div>
+                                
+                                
+                              
+                                </Collapse>
+                                  </div>
+                                  {/* houseHold*/}
+
+                                    {/* Personal   */}
+                                  <div className="row my-1">
+                                <div 
+                                onClick={() => setOpen2(!open2)}
+                                aria-controls=""
+                                aria-expanded={open2}
+                                className="bgColorIncome   py-2 text-light"
+                                >
+                                  <div className="row ">
+                                  <div className="col-md-6">
+                                    <label className="form-label mb-0">Personal</label>
+                                  </div>
+                                  <div className="col-md-6">
+                                  <label className="float-end mb-0">$0
+                                  <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={down} alt="" />
+
+                                  </div></label>
+                                  </div>
+                                  </div>
+                                  
+
+                                </div>
+                                <div>
+                                  
+                                </div>
+                                <Collapse in={open2}>
+
+                                  <div className="row">
+                                    <div className="col-md-12">
+
+                                      {/* Personal    row 1 */}
+                                      <div className="row  my-3">
+                                    
+                                    {/* Food */}
+                                      <div className="col-md-6">
+                                      
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalFood" className="form-label">
+                                      Food
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    name="PersonalFood" id="PersonalFood" placeholder="Food" />
+                                    < ErrorMessage name="PersonalFood" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label htmlFor="PersonalFoodValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="PersonalFoodType"
+                                      name="PersonalFoodType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PersonalFoodType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                    </div>
+                                      </div>
+                                    {/* Food */}
+        
+                                    {/* Clothing */}
+                                    <div className="col-md-6">
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalClothing" className="form-label">
+                                      Clothing
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="PersonalClothing" name="PersonalClothing" placeholder="Clothing"/>
+                                    < ErrorMessage name="PersonalClothing" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PersonalClothingValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                    <Field
+                                    as='select'
+                                      name="PersonalClothingValueType"
+                                      id="PersonalClothingValueType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PersonalClothingValueType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                    </div>
+                                    </div>
+                                    {/* Clothing */}
+        
+                                      </div>
+                                      {/* Personal    row 1 */}
+
+                                      {/* Personal row 2 */}
+                                      <div className="row  my-3">
+                                    
+                                    {/* Cigarettes*/}
+                                      <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalCigarettes" className="form-label">
+                                      Cigarettes
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    name="PersonalCigarettes" id="PersonalCigarettes" placeholder="Cigarettes"/>
+                                    < ErrorMessage name="PersonalCigarettes" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PersonalCigarettesValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="PersonalCigarettesType"
+                                      name="PersonalCigarettesType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="PersonalCigarettesType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      </div>
+                                    </div>
+                                    {/* Cigarettes */}
+        
+                                    {/* Alcohol */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalAlcohol" className="form-label">
+                                      Alcohol
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    name="PersonalAlcohol" id="PersonalAlcohol" placeholder="Alcohol"/>
+                                    < ErrorMessage name="PersonalAlcohol" component="div" className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="PersonalAlcoholValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as='select'
+                                      id="PersonalAlcoholType"
+                                      name="PersonalAlcoholType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PersonalAlcoholType" component="div"
+                                  className="text-danger fw-bold" />
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Alcohol */}
+                                      </div>
+                                      {/* Personal row 2 */}
+
+                                        {/* Personal row 3 */}
+                                        <div className="row  my-3">
+                                    
+                                    {/* Subscription Fees*/}
+                                      <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalSubscriptionFees" className="form-label">
+                                      Subscription Fees
+                                    </label>
+                                    <Field
+                                    name="PersonalSubscriptionFees" type="number" className="form-control inputDesign shadow"
+                                    id="PersonalSubscriptionFees" placeholder="Subscription Fees"/>
+        < ErrorMessage name="PersonalSubscriptionFees" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PersonalSubscriptionFeesValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field 
+                                      as='select'
+                                      id="PersonalSubscriptionFeesType"
+                                      name="PersonalSubscriptionFeesType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="PersonalSubscriptionFeesType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      </div>
+                                      </div>
+                                    {/* Subscription Fees */}
+        
+                                    {/* Memberships & Clubs */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalMembershipsClubs" className="form-label">
+                                      Memberships & Clubs
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="PersonalMembershipsClubs"
+                                    name="PersonalMembershipsClubs" placeholder="Memberships & Clubs"/>
+        < ErrorMessage name="PersonalMembershipsClubs" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="PersonalMembershipsClubsValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as='select'
+                                      id="PersonalMembershipsClubsType"
+                                      name="PersonalMembershipsClubsType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PersonalMembershipsClubsType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Memberships & Clubs */}
+                                      </div>
+                                        {/* Personal row 3 */}
+
+                                        {/* Personal row 4 */}
+                                      <div className="row  my-3">
+                                    
+                                    {/* Other*/}
+                                      <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalOther" className="form-label">
+                                      Other
+                                    </label>
+                                    <Field name="PersonalOther" type="number" className="form-control inputDesign shadow"
+                                    id="PersonalOther" placeholder="Other"/>
+        < ErrorMessage name="PersonalOther" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PersonalOtherValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="PersonalOtherType"
+                                      name="PersonalOtherType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="PersonalOtherType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      </div>
+                                    </div>
+                                    {/* Other */}
+        
+                                    {/* Holidays */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalHolidays" className="form-label">
+                                      Holidays
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    name="PersonalHolidays" id="PersonalHolidays" placeholder="Holidays"/>
+        < ErrorMessage name="PersonalHolidays" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="PersonalHolidaysValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field as='select'
+                                      id="PersonalHolidaysType"
+                                      name="PersonalHolidaysType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PersonalHolidaysType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Alcohol */}
+                                      </div>
+                                      {/* Personal row 4 */}
+
+                                      
+                                        {/* Personal row 5 */}
+                                        <div className="row  my-3">
+                                    
+                                    {/* Dining Out*/}
+                                      <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalDiningOut" className="form-label">
+                                      Dining Out
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="PersonalDiningOut" name="PersonalDiningOut" placeholder="Dining Out"/>
+        < ErrorMessage name="PersonalDiningOut" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PersonalDiningOutValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="PersonalDiningOutType"
+                                      name="PersonalDiningOutType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="PersonalDiningOutType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      </div>
+                                    </div>
+                                    {/* Dining Out */}
+        
+                                    {/* Mobile Phone */}
+                                    <div className="col-md-6">
+                                    
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalMobilePhone" className="form-label">
+                                      Mobile Phone
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="PersonalMobilePhone" name="PersonalMobilePhone" placeholder="Mobile Phone"/>
+        < ErrorMessage name="PersonalMobilePhone" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label   id="PersonalMobilePhoneValue" className="form-label float-end ">
+                                      $0
+                                    </label>
+                                    <Field
+                                    as='select'
+                                      id="PersonalMobilePhoneType"
+                                      name="PersonalMobilePhoneType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PersonalMobilePhoneType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Mobile Phone */}
+                                        </div>
+                                        {/* Personal row 5 */}
+
+
+                                        {/* Personal row 5 */}
+                                        <div className="row  my-3">
+                                    
+                                    {/* Dining Out*/}
+                                      <div className="col-md-6">
+                                      <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="PersonalMedicalExpenses" className="form-label">
+                                      Medical Expenses
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="PersonalMedicalExpenses"
+                                    name="PersonalMedicalExpenses" placeholder="Medical Expenses"/>
+        < ErrorMessage name="PersonalMedicalExpenses" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PersonalMedicalExpensesValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="PersonalMedicalExpensesType"
+                                      name="PersonalMedicalExpensesType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      
+                                      </Field>
+                                      < ErrorMessage name="PersonalMedicalExpensesType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      </div>
+                                    </div>
+                                    {/* Medical Expenses */}
+        
+                                  
+                                        </div>
+                                        {/* Personal row 6 */}
+                                        
+                                        
+                                        </div>
+                                  </div>
+                                </Collapse>
+                                  </div>
+                                  {/* Personal*/}
+
+                                    {/* Transport */}
+                                  <div className="row my-1 ">
+                                <div 
+                                onClick={() => setOpen3(!open3)}
+                                aria-controls=""
+                                aria-expanded={open3}
+                                className="bgColorIncome   py-2 text-light"
+                                >
+                                  <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label mb-0">Transport</label>
+                                  </div>
+                                  <div className="col-md-6">
+                                  <label id="TransportTotalValue" className="float-end form-label mb-0">$0
+                                  <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={down} alt="" />
+
+                                  </div></label>
+                                  </div>
+                                  </div>
+                                  
+
+                                </div>
+                                <div>
+                                  
+                                </div>
+                                <Collapse in={open3}>
+
+                                  <div className="row">
+                                    <div className="col-md-12">
+
+                                      {/* TransportPetrol   row 1 */}
+                                      <div className="row  my-3">
+                                    {/* Petrol */}
+
+                                      <div className="col-md-6">
+                                      
+                                    <div className="row">
+                                      
+                                      <div className="col-7">
+                                        <br />
+                                      <label htmlFor="TransportPetrol" className="form-label">
+                                      Petrol
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    name="TransportPetrol"
+                                    id="TransportPetrol" placeholder="Petrol"/>
+        < ErrorMessage name="TransportPetrol" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <br />
+                                      <label id="TransportPetrolValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="TransportPetrolType"
+                                      name="TransportPetrolType"
+
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                    </Field>
+                                    < ErrorMessage name="TransportPetrolType" component="div"
+                                  className="text-danger fw-bold" />
 
                                       </div>
                                     </div>
-                                  </div>
-                                {/* Home And Contents */}
-                                  {/* Other*/}
-                                   <div className="col-md-6">
+                                      </div>
+                                    {/* Petrol */}
+        
+                                    {/* Car Repairs & Maintenance */}
+                                    <div className="col-md-6">
+
+                                    <div className="row">
+                                        <div className="col-7">
+                                        <label htmlFor="TransportCarRepairs" className="form-label">
+                                        Car Repairs & Maintenance
+                                      </label>
+                                      <Field type="number" className="form-control inputDesign shadow"
+                                      id="TransportCarRepairs"
+                                      name="TransportCarRepairs" placeholder="Car Repairs & Maintenance"/>
+            < ErrorMessage name="TransportCarRepairs" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                        <div className="col-5">
+                                        <br />
+
+                                        <label id="TransportCarRepairsValue" className="form-label float-end">
+                                      $0 
+                                      </label>
+                                        <Field
+                                        as='select'
+                                        id="TransportCarRepairsType"
+                                        name="TransportCarRepairsType"
+                                        className="form-select shadow  inputDesign"
+                                      >
+                                        <option value=''>Select</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Fortnightly">Fortnightly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Six-Monthly">Six-Monthly</option>
+                                        <option value="Annually">Annually</option>
+                                          </Field>
+                                          < ErrorMessage name="TransportCarRepairsType" component="div"
+                                  className="text-danger fw-bold" />
+                                        </div>
+                                      </div>
+                                        </div>
+                                    {/* Electricity */}
+        
+                                      </div>
+                                      {/* Transport   row 1 */}
+
+                                        {/* Transport  row 2 */}
+                                        <div className="row  my-3">
+                                    {/* Car Registration */}
+                                      <div className="col-md-6">
+                                      
                                     <div className="row">
                                       <div className="col-7">
-                                      <label htmlFor="InsuranceOther" className="form-label">
+                                      <label htmlFor="TransportCarRegistration" className="form-label">
+                                      Car Registration
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="TransportCarRegistration"
+                                    name="TransportCarRegistration" placeholder="Car Registration"/>
+        < ErrorMessage name="TransportCarRegistration" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="TransportCarRegistrationValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="TransportCarRegistrationType"
+                                      name="TransportCarRegistrationType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                    </Field>
+                                    < ErrorMessage name="TransportCarRegistrationType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                    </div>
+                                      </div>
+                                    {/* Car Registration */}
+        
+                                    {/* Public Transport */}
+                                    <div className="col-md-6">
+                                      <div className="row">
+                                        <div className="col-7">
+                                        <label htmlFor="PublicTransport" className="form-label">
+                                        Public Transport
+                                      </label>
+                                      <Field type="number" className="form-control inputDesign shadow"
+                                      id="PublicTransport" name="PublicTransport" placeholder="Public Transport"/>
+          < ErrorMessage name="PublicTransport" component="div"
+                                  className="text-danger fw-bold" />
+                                        </div>
+                                        <div className="col-5">
+                                        <label id="PublicTransportValue" className="form-label float-end">
+                                      $0 
+                                      </label>
+                                        <Field
+                                        as='select'
+                                        id="PublicTransportType"
+                                        name="PublicTransportType"
+                                        className="form-select shadow  inputDesign"
+                                      >
+                                        <option value=''>Select</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Fortnightly">Fortnightly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Six-Monthly">Six-Monthly</option>
+                                        <option value="Annually">Annually</option>
+                                        </Field>
+                                        < ErrorMessage name="PublicTransportType" component="div"
+                                  className="text-danger fw-bold" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/* Public Transport */}
+        
+                                        </div>
+                                        {/* Transport   row 2 */}
+
+                                          {/* Transport  row 3 */}
+                                          <div className="row  my-3">
+                                      {/* Other*/}
+                                      <div className="col-md-6">
+                                      
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="TransportOther" className="form-label">
                                       Other
                                     </label>
                                     <Field type="number" className="form-control inputDesign shadow"
-                                    id="InsuranceOther" name="InsuranceOther" placeholder="Other"/>
-                               < ErrorMessage name="InsuranceOther" component="div"
-                               className="text-danger fw-bold" />
-
+                                    id="TransportOther" name="TransportOther" placeholder="Other"/>
+        < ErrorMessage name="TransportOther" component="div"
+                                  className="text-danger fw-bold" />
                                       </div>
                                       <div className="col-5">
-                                      <label id="TransInsuranceValue" className="form-label float-end">
+                                      <label id="TransportOtherValue" className="form-label float-end">
                                     $0 
                                     </label>
                                       <Field
-                                      as="select"
-                                      id="TransInsuranceType"
-                                      name="TransInsuranceType"
+                                      as='select'
+                                      name="TransportOtherType"
+                                      id="TransportOtherType"
                                       className="form-select shadow  inputDesign"
                                     >
                                       <option value=''>Select</option>
@@ -4439,48 +4562,342 @@ TransInsuranceType:'',
                                       <option value="Six-Monthly">Six-Monthly</option>
                                       <option value="Annually">Annually</option>
                                       </Field>
-                                      < ErrorMessage name="TransInsuranceType" component="div"
-                               className="text-danger fw-bold" />
+                                      < ErrorMessage name="TransportOtherType" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                    </div>
+                                      </div>
+                                    {/* Car Registration */}
+        
+                                  </div>
+                                        {/* Transport   row 3 */}
+
+                                  </div>
+                                  </div>
+                                
+                                
+                              
+                                </Collapse>
+                                  </div>
+                                  {/* Transport   */}
+
+                                      {/* Insurance */}
+                                  <div className="row my-1">
+                                <div 
+                                onClick={() => setOpen4(!open4)}
+                                aria-controls=""
+                                aria-expanded={open4}
+                                className="bgColorIncome   py-2 text-light"
+                                >
+                                  <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label mb-0">Insurance</label>
+                                  </div>
+                                  <div className="col-md-6">
+                                  <label id="InsuranceTotalValue" className="float-end form-label mb-0">$0
+                                  <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={down} alt="" />
+
+                                  </div></label>
+                                  </div>
+                                  </div>
+                                  
+
+                                </div>
+                                <div>
+                                  
+                                </div>
+                                <Collapse in={open4}>
+
+                                  <div className="row">
+                                    <div className="col-md-12">
+
+                                      {/* Insurance   row 1 */}
+                                      <div className="row  my-3">
+                                    {/* Private Health */}
+
+                                      <div className="col-md-6">
+                                      
+                                    <div className="row">
+                                      
+                                      <div className="col-7">
+                                      <label htmlFor="PrivateHealth" className="form-label">
+                                      Private Health
+                                    </label>
+                                    <Field type="number" className="form-control inputDesign shadow"
+                                    id="PrivateHealth"
+                                    name="PrivateHealth" placeholder="Private Health"/>
+        < ErrorMessage name="PrivateHealth" component="div"
+                                  className="text-danger fw-bold" />
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="PrivateHealthValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as='select'
+                                      id="PrivateHealthType"
+                                      name="PrivateHealthType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="PrivateHealthType" component="div"
+                                  className="text-danger fw-bold" />
 
                                       </div>
                                     </div>
+                                      </div>
+                                    {/* Private Health */}
+        
+                                    {/* Life/TPD/Trauma */}
+                                    <div className="col-md-6">
+
+                                    <div className="row">
+                                        <div className="col-7">
+                                        <label htmlFor="LifeTPDTrauma" className="form-label">
+                                        Life/TPD/Trauma
+                                      </label>
+                                      <Field type="number" className="form-control inputDesign shadow"
+                                      id="LifeTPDTrauma" name="LifeTPDTrauma" placeholder="Life/TPD/Trauma"/>
+            < ErrorMessage name="LifeTPDTrauma" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                        <div className="col-5">
+                                    <label id="LifeTPDTraumaValue" className="form-label float-end">
+                                      $0 
+                                      </label>
+                                        <Field
+                                        as="select"
+                                        id="LifeTPDTraumaType"
+                                        name="LifeTPDTraumaType"
+                                        className="form-select shadow  inputDesign"
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Fortnightly">Fortnightly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Six-Monthly">Six-Monthly</option>
+                                        <option value="Annually">Annually</option>
+                                        </Field>
+
+                                        < ErrorMessage name="LifeTPDTraumaType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                      </div>
+                                        </div>
+                                    {/* Life/TPD/Trauma */}
+        
+                                      </div>
+                                      {/* Insurance   row 1 */}
+
+                                        {/* Transport  row 2 */}
+                                        <div className="row  my-3">
+                                    {/* Income Protection */}
+                                      <div className="col-md-6">
+                                      
+                                    <div className="row">
+                                      <div className="col-7">
+                                      <label htmlFor="InsuranceIncomeProtection" className="form-label">
+                                      Income Protection
+                                    </label>
+                                    <Field name="InsuranceIncomeProtection"  type="number" className="form-control inputDesign shadow"
+                                    id="InsuranceIncomeProtection" placeholder="Income Protection"/>
+        < ErrorMessage name="InsuranceIncomeProtection" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                      <div className="col-5">
+                                      <label id="InsuranceIncomeProtectionValue" className="form-label float-end">
+                                    $0 
+                                    </label>
+                                      <Field
+                                      as="select"
+                                      id="InsuranceIncomeProtectionType"
+                                      name="InsuranceIncomeProtectionType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Fortnightly">Fortnightly</option>
+                                      <option value="Monthly">Monthly</option>
+                                      <option value="Quarterly">Quarterly</option>
+                                      <option value="Six-Monthly">Six-Monthly</option>
+                                      <option value="Annually">Annually</option>
+                                      </Field>
+                                      < ErrorMessage name="InsuranceIncomeProtectionType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                      </div>
+                                    </div>
+                                      </div>
+                                    {/* Income Protection */}
+        
+                                    {/* Car*/}
+                                    <div className="col-md-6">
+                                      <div className="row">
+                                        <div className="col-7">
+                                        <label htmlFor="InsuranceCar" className="form-label">
+                                        Car
+                                      </label>
+                                      <Field type="number" className="form-control inputDesign shadow"
+                                      id="InsuranceCar" name="InsuranceCar" placeholder="Car"/>
+            < ErrorMessage name="InsuranceCar" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                        <div className="col-5">
+                                        <label id="InsuranceCarValue" className="form-label float-end">
+                                      $0 
+                                      </label>
+                                        <Field
+                                        as="select"
+                                        id="InsuranceCarType"
+                                        name="InsuranceCarType"
+                                        className="form-select shadow  inputDesign"
+                                      >
+                                        <option value=''>Select</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Fortnightly">Fortnightly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Six-Monthly">Six-Monthly</option>
+                                        <option value="Annually">Annually</option>
+                                        </Field>
+                                        < ErrorMessage name="InsuranceCarType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/* Car */}
+        
+                                        </div>
+                                        {/* Insurance row 2 */}
+
+                                          {/* Insurance row 3 */}
+                                          <div className="row  my-3">
+                                            {/* Other*/}
+                                      <div className="col-md-6">
+                                        <div className="row">
+                                          <div className="col-7">
+                                          <label htmlFor="InsuranceHomeContents" className="form-label">
+                                          Home And Contents
+                                        </label>
+                                        <Field  type="number" className="form-control inputDesign shadow"
+                                        id="InsuranceHomeContents"
+                                        name="InsuranceHomeContents" placeholder="Home And Contents"/>
+            < ErrorMessage name="InsuranceHomeContents" component="div"
+                                  className="text-danger fw-bold" />
+
+                                          </div>
+                                          <div className="col-5">
+                                          <label id="InsuranceHomeContentsValue" className="form-label float-end">
+                                        $0 
+                                        </label>
+                                          <Field
+                                          as="select"
+                                          id="InsuranceHomeContentsType"
+                                          name="InsuranceHomeContentsType"
+                                          className="form-select shadow  inputDesign"
+                                        >
+                                          <option value=''>Select</option>
+                                          <option value="Weekly">Weekly</option>
+                                          <option value="Fortnightly">Fortnightly</option>
+                                          <option value="Monthly">Monthly</option>
+                                          <option value="Quarterly">Quarterly</option>
+                                          <option value="Six-Monthly">Six-Monthly</option>
+                                          <option value="Annually">Annually</option>
+                                          </Field>
+                                          < ErrorMessage name="InsuranceHomeContentsType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {/* Home And Contents */}
+                                      {/* Other*/}
+                                      <div className="col-md-6">
+                                        <div className="row">
+                                          <div className="col-7">
+                                          <label htmlFor="InsuranceOther" className="form-label">
+                                          Other
+                                        </label>
+                                        <Field type="number" className="form-control inputDesign shadow"
+                                        id="InsuranceOther" name="InsuranceOther" placeholder="Other"/>
+                                  < ErrorMessage name="InsuranceOther" component="div"
+                                  className="text-danger fw-bold" />
+
+                                          </div>
+                                          <div className="col-5">
+                                          <label id="TransInsuranceValue" className="form-label float-end">
+                                        $0 
+                                        </label>
+                                          <Field
+                                          as="select"
+                                          id="TransInsuranceType"
+                                          name="TransInsuranceType"
+                                          className="form-select shadow  inputDesign"
+                                        >
+                                          <option value=''>Select</option>
+                                          <option value="Weekly">Weekly</option>
+                                          <option value="Fortnightly">Fortnightly</option>
+                                          <option value="Monthly">Monthly</option>
+                                          <option value="Quarterly">Quarterly</option>
+                                          <option value="Six-Monthly">Six-Monthly</option>
+                                          <option value="Annually">Annually</option>
+                                          </Field>
+                                          < ErrorMessage name="TransInsuranceType" component="div"
+                                  className="text-danger fw-bold" />
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {/* Other */}
+        
                                   </div>
-                                {/* Other */}
-    
-                              </div>
-                                    {/* Insurance  row 3 */}
+                                        {/* Insurance  row 3 */}
 
-                              </div>
-                              </div>
-                            
-                             
-                           
-                            </Collapse>
-                              </div>
-                               {/* Insurance    */}
-                            
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                type="submit"
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={handleClose}
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={handleClose}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
+                                  </div>
+                                  </div>
+                                
+                                
+                              
+                                </Collapse>
+                                  </div>
+                                  {/* Insurance    */}
+                                
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                    type="submit"
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={handleClose}
+                                    >
+                                      Savee
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={handleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
 
-</Form>
-}
-</Formik>
+                              </Form>
+                              
+                            </Formik>
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
@@ -4498,12 +4915,14 @@ TransInsuranceType:'',
                           <div className="radiobutton">
                             <input type="radio" name="lumpsumExpensesradio" id="lumpsumExpensesopt1" 
                              onChange={handleChange} value="Yes"
+                             onClick={()=>lumpsumExpensesHandler("Yes")} 
                              checked={values.lumpsumExpensesradio==="Yes"}/>
                             <label htmlFor="lumpsumExpensesopt1" className="label1">
                               <span>YES</span>
                             </label>
                             <input type="radio" name="lumpsumExpensesradio" id="lumpsumExpensesopt2" 
                              onChange={handleChange} value="No"
+                             onClick={()=>lumpsumExpensesHandler("No")} 
                              checked={values.lumpsumExpensesradio==="No"}/>
                             <label htmlFor="lumpsumExpensesopt2" className="label2">
                               <span>NO</span>
@@ -4516,6 +4935,7 @@ TransInsuranceType:'',
                       {/* 2 row */}
 
                        {/* 2 2nd part  row */}
+                       {lumpsumExpensesState && <div> 
                        <div className="row">
 
                        <div className="col-md-4">
@@ -4575,6 +4995,7 @@ TransInsuranceType:'',
                         </div>
                        
                        </div>
+                       </div>}
                        {/* 2 2nd part  row */}
 
 
@@ -4591,12 +5012,14 @@ TransInsuranceType:'',
                           <div className="radiobutton">
                             <input type="radio" name="expectingInheritancesradio" id="expectingInheritancesopt1" 
                              onChange={handleChange} value="Yes"
+                             onClick={()=>expectingInheritancesHandler("Yes")} 
                              checked={values.expectingInheritancesradio==="Yes"}/>
                             <label htmlFor="expectingInheritancesopt1" className="label1">
                               <span>YES</span>
                             </label>
                             <input type="radio" name="expectingInheritancesradio" id="expectingInheritancesopt2" 
                              onChange={handleChange} value="No"
+                             onClick={()=>expectingInheritancesHandler("No")} 
                              checked={values.expectingInheritancesradio==="No"}/>
                             <label htmlFor="expectingInheritancesopt2" className="label2">
                               <span>NO</span>
@@ -4609,13 +5032,14 @@ TransInsuranceType:'',
                          {/* 3 row */}
 
                         {/*3 2nd part  row*/}
+                        {expectingState && <div> 
                         <div className="row">
 
                         <div className="col-md-4">
                         <div className="mb-3">
                           <label htmlFor="expectingInheritancesDescription" className="form-label">Description</   label>
                           <Field type="text" className="form-control shadow inputDesign" 
-                          id="expectingInheritancesDescription" name='expectingInheritancesDescription' placeholder="Amount"/>
+                          id="expectingInheritancesDescription" name='expectingInheritancesDescription' placeholder="Description"/>
                           <ErrorMessage component='div' className='text-danger fw-bold' name="expectingInheritancesDescription" />
                         </div>            
                         </div>
@@ -4649,9 +5073,15 @@ TransInsuranceType:'',
                         </div>            
                         </div>
 
-                      </div>
+                        </div>
+                        </div>}
                     {/* 3 2nd part  row*/}
-
+                    <div className="row mt-5 mb-3">
+                        <div className="col-md-12">
+                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                        </div>
+                      </div>
                 
                 
                     </div>
@@ -4660,12 +5090,7 @@ TransInsuranceType:'',
                 {/*Expenses */}
 
 
-                      <div className="row mt-5 mb-3">
-                        <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
-                        </div>
-                      </div>
+                     
                       
                       
                         </Form>

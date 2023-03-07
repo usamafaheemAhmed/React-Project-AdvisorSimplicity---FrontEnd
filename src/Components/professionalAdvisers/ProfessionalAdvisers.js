@@ -9,9 +9,15 @@ import businessman from './images/businessman.svg'
 import notebook from './images/notebook.svg';
 
 import * as Yup from 'yup';
+import 'yup-phone';
+
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 
 const ProfessionalAdvisors = () => {
+  let letters = /^[a-zA-Z ]*$/;
+  let phonePattern=/^[1-9][0-9]{9}$/;
+
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -19,6 +25,31 @@ const ProfessionalAdvisors = () => {
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
+
+  const [advisorState, setAdvisorState] = useState(false);
+  const [advisorState2, setAdvisorState2] = useState(false);
+
+
+  let advisorHandler=(elem)=>{
+    if (elem==="No"){
+      setAdvisorState(false)
+    }
+    else{
+      setAdvisorState(true)
+    }
+    
+    }
+
+    let advisorHandler2=(elem)=>{
+      if (elem==="No"){
+        setAdvisorState2(false)
+      }
+      else{
+        setAdvisorState2(true)
+      }
+      
+      }
+
 
   let Client_initialValues={
     solicitorName: '',
@@ -48,34 +79,39 @@ const ProfessionalAdvisors = () => {
   }
 
   let Client_validationSchema = Yup.object({
-    solicitorName: Yup.string("Can't contain letters").required('Required'),
-    solicitorCompany: Yup.string("Can't contain letters").required('Required'),
-    solicitorPhone: Yup.string("Can't contain letters").required('Required'),
-    solicitorEmail: Yup.string("Can't contain letters").required('Required'),
+    solicitorName:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    solicitorCompany:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    solicitorPhone: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    solicitorEmail: Yup.string().email("Invalid email format").required("Required"),
 
-    accountantName: Yup.string("Can't contain letters").required('Required'),
-    accountantCompany: Yup.string("Can't contain letters").required('Required'),
-    accountantPhone: Yup.string("Can't contain letters").required('Required'),
-    accountantEmail: Yup.string("Can't contain letters").required('Required'),
+    accountantName:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    accountantCompany:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    accountantPhone: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    accountantEmail: Yup.string().email("Invalid email format").required("Required"),
 
-    insuranceAdvisorName: Yup.string("Can't contain letters").required('Required'),
-    insuranceAdvisorCompany: Yup.string("Can't contain letters").required('Required'),
-    insuranceAdvisorPhone: Yup.string("Can't contain letters").required('Required'),
-    insuranceAdvisorEmail: Yup.string("Can't contain letters").required('Required'),
+    insuranceAdvisorName:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    insuranceAdvisorCompany:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    insuranceAdvisorPhone: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    insuranceAdvisorEmail: Yup.string().email("Invalid email format").required("Required"),
 
-    doctorName: Yup.string("Can't contain letters").required('Required'),
-    doctorCompany: Yup.string("Can't contain letters").required('Required'),
-    doctorPhone: Yup.string("Can't contain letters").required('Required'),
-    doctorEmail: Yup.string("Can't contain letters").required('Required'),
+    doctorName:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    doctorCompany:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    doctorPhone: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    doctorEmail: Yup.string().email("Invalid email format").required("Required"),
 
-    otherName: Yup.string("Can't contain letters").required('Required'),
-    otherCompany: Yup.string("Can't contain letters").required('Required'),
-    otherPhone: Yup.string("Can't contain letters").required('Required'),
-    otherEmail: Yup.string("Can't contain letters").required('Required'),
+    otherName:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    otherCompany:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    otherPhone: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    otherEmail: Yup.string().email("Invalid email format").required("Required"),
   })
 
   let Client_onSubmit = (Values) => {
-
+console.log(Values)
   }
 
   let Partner_initialValues={
@@ -106,34 +142,47 @@ const ProfessionalAdvisors = () => {
   }
 
   let Partner_validationSchema = Yup.object({
-    solicitorName2: Yup.string("Can't contain letters").required('Required'),
-    solicitorCompany2: Yup.string("Can't contain letters").required('Required'),
-    solicitorPhone2: Yup.string("Can't contain letters").required('Required'),
-    solicitorEmail2: Yup.string("Can't contain letters").required('Required'),
+    solicitorName2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    solicitorCompany2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    solicitorPhone2: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    solicitorEmail2: Yup.string().email("Invalid email format").required("Required"),
 
-    accountantName2: Yup.string("Can't contain letters").required('Required'),
-    accountantCompany2: Yup.string("Can't contain letters").required('Required'),
-    accountantPhone2: Yup.string("Can't contain letters").required('Required'),
-    accountantEmail2: Yup.string("Can't contain letters").required('Required'),
+    accountantName2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    accountantCompany2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    accountantPhone2: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    accountantEmail2: Yup.string().email("Invalid email format").required("Required"),
 
-    insuranceAdvisorName2: Yup.string("Can't contain letters").required('Required'),
-    insuranceAdvisorCompany2: Yup.string("Can't contain letters").required('Required'),
-    insuranceAdvisorPhone2: Yup.string("Can't contain letters").required('Required'),
-    insuranceAdvisorEmail2: Yup.string("Can't contain letters").required('Required'),
+    insuranceAdvisorName2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    insuranceAdvisorCompany2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    insuranceAdvisorPhone2: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    insuranceAdvisorEmail2: Yup.string().email("Invalid email format").required("Required"),
 
-    doctorName2: Yup.string("Can't contain letters").required('Required'),
-    doctorCompany2: Yup.string("Can't contain letters").required('Required'),
-    doctorPhone2: Yup.string("Can't contain letters").required('Required'),
-    doctorEmail2: Yup.string("Can't contain letters").required('Required'),
+    doctorName2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    doctorCompany2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    doctorPhone2: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    doctorEmail2: Yup.string().email("Invalid email format").required("Required"),
 
-    otherName2: Yup.string("Can't contain letters").required('Required'),
-    otherCompany2: Yup.string("Can't contain letters").required('Required'),
-    otherPhone2: Yup.string("Can't contain letters").required('Required'),
-    otherEmail2: Yup.string("Can't contain letters").required('Required'),
+    otherName2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    otherCompany2:  Yup.string().matches(letters, "Only letters").required('Required') ,
+    otherPhone2: Yup.string().matches(phonePattern, "invalid phone number")
+    .required('Required'),
+    otherEmail2: Yup.string().email("Invalid email format").required("Required"),
   })
 
   let Partner_onSubmit = (Values) => {
 
+  }
+
+  let initialValues={
+    ProfessionalAdvisors1radio:'No',
+    ProfessionalAdvisors2radio:'No'
+  }
+  let onSubmit=(values)=>{
+  console.log(values)
   }
 
 
@@ -149,6 +198,14 @@ const ProfessionalAdvisors = () => {
                   <div className="col-md-12">
                     <div className="shadow px-4 py-4">
                       <h3 className="text-center">Professional Advisors</h3>
+<Formik
+initialValues={initialValues}
+onSubmit={onSubmit}
+enableReinitialize
+>
+  {({values,handleChange})=>
+<Form>
+
 
                       {/* Client Professional Advisors */}
                       <div>
@@ -164,26 +221,40 @@ const ProfessionalAdvisors = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="ProfessionalAdvisors1radio" id="ProfessionalAdvisors1opt1" />
+                            <input type="radio" name="ProfessionalAdvisors1radio"
+                             id="ProfessionalAdvisors1opt1" value="Yes"
+                             onClick={()=>advisorHandler("Yes")} 
+                             onChange={handleChange}
+                             checked={values.ProfessionalAdvisors1radio==="Yes"}
+                             />
                             <label htmlFor="ProfessionalAdvisors1opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="ProfessionalAdvisors1radio" id="ProfessionalAdvisors1opt2" />
+                            <input type="radio" name="ProfessionalAdvisors1radio"
+                             id="ProfessionalAdvisors1opt2" value="No"
+                             onClick={()=>advisorHandler("No")} 
+                             onChange={handleChange}
+                             checked={values.ProfessionalAdvisors1radio==="No"}
+                           />
                             <label htmlFor="ProfessionalAdvisors1opt2" className="label2">
                               <span>NO</span>
                             </label>
                           </div>
+
+
+
+                              
                             </div>
                               </div>    
                         </div>
-                        <div className='col-md-6'>
+                        {advisorState && <div className='col-md-6'>
                         <label  className="form-label">
                         Please enter the details of your professional Advisors
                             </label>
                             <br />
                           
-                          <button
-                            className=" btn 
+                          <span
+                            className=" btn h-50 w-50
                             btn-outline-success "
                             onClick={handleShow}
                           >
@@ -192,8 +263,8 @@ const ProfessionalAdvisors = () => {
 
                             </div>
                             Enter Details
-                          </button>
-                          </div>
+                          </span>
+                        </div>}
                            </div>
                            {/* 1 row */}
                            
@@ -218,7 +289,11 @@ const ProfessionalAdvisors = () => {
                             </div>
                               </Modal.Title>
                             </Modal.Header>
-                           <Formik initialValues={Client_initialValues} validationSchema={Client_validationSchema} onSubmit={Client_onSubmit}>
+                           <Formik
+                            initialValues={Client_initialValues}
+                            validationSchema={Client_validationSchema}
+                            onSubmit={Client_onSubmit}>
+                          {({values , setFieldValue ,setValues,handleChange,formik})=>
                             <Form>
                             <Modal.Body>
                                 {/* Professional Advisor Detail Form */}
@@ -475,6 +550,7 @@ const ProfessionalAdvisors = () => {
                               </div>
                             </Modal.Footer>
                             </Form>
+                            }
                            </Formik>
                           </Modal>
                            {/* ---------------------------------------------------- */}
@@ -496,11 +572,19 @@ const ProfessionalAdvisors = () => {
                           {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
                           <div className="radiobutton">
-                            <input type="radio" name="ProfessionalAdvisors2radio" id="ProfessionalAdvisors2opt1" />
+                            <input type="radio" name="ProfessionalAdvisors2radio" id="ProfessionalAdvisors2opt1"
+                             onClick={()=>advisorHandler2("Yes")} 
+                            value="Yes"
+                             onChange={handleChange} 
+                             checked={values.ProfessionalAdvisors2radio==="Yes"} />
                             <label htmlFor="ProfessionalAdvisors2opt1" className="label1">
                               <span>YES</span>
                             </label>
-                            <input type="radio" name="ProfessionalAdvisors2radio" id="ProfessionalAdvisors2opt2" />
+                            <input type="radio" name="ProfessionalAdvisors2radio" id="ProfessionalAdvisors2opt2"
+                             onClick={()=>advisorHandler2("No")} 
+                             value="No"
+                             onChange={handleChange}
+                             checked={values.ProfessionalAdvisors2radio==="No"} />
                             <label htmlFor="ProfessionalAdvisors2opt2" className="label2">
                               <span>NO</span>
                             </label>
@@ -508,14 +592,14 @@ const ProfessionalAdvisors = () => {
                             </div>
                               </div>    
                         </div>
-                        <div className='col-md-6'>
+                        {advisorState2 &&  <div className='col-md-6'>
                         <label  className="form-label">
                         Please enter the details of your professional Advisors
                             </label>
                             <br />
                           
-                          <button
-                            className=" btn 
+                          <span
+                            className=" btn h-50 w-50
                             btn-outline-success "
                             onClick={handleShow2}
                           >
@@ -524,8 +608,8 @@ const ProfessionalAdvisors = () => {
 
                             </div>
                             Enter Details
-                          </button>
-                          </div>
+                          </span>
+                          </div>}
                            </div>
                            {/* 1 row */}
                            
@@ -818,7 +902,16 @@ const ProfessionalAdvisors = () => {
                            {/* ---------------------------------------------------- */}
                        </div>
                       {/* Partner Professional Advisors */}
-
+                     
+                      <div className="row mt-5 mb-3">
+                        <div className="col-md-12">
+                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                        </div>
+                      </div>
+                      </Form>
+}
+</Formik>
                      </div>
                   </div>
              

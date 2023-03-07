@@ -1699,12 +1699,11 @@ const initialValues2={
                            initialValues={initialValues2}
                            validationSchema={validationSchema2}
                            onSubmit={onSubmit2}
-                           enableReinitialize
+                           
                            >
                              {({values , setFieldValue ,setValues})=>
 
                           <Form>
-
                             <Modal.Body>
                             {/*  first row*/}
                             <div className="row">

@@ -15,8 +15,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 
 const BusinessTextStucture = () => {
-  const [show, setShow] = useState(false);
+  let letters = /^[a-zA-Z ]*$/;
 
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -36,6 +37,31 @@ const BusinessTextStucture = () => {
   const [showTrust, setShowTrust] = useState(false);
   const handleCloseTrust = () => setShowTrust(false);
   const handleShowTrust = () => setShowTrust(true);
+
+  const [DistributionsTakenState, setDistributionsTakenState] = useState(false);
+  const [dividendsTakenAsCash, setDividendsTakenAsCash] = useState(false)
+
+
+  let DistributionsTakenHandler=(elem)=>{
+    if (elem==="No"){
+      setDistributionsTakenState(false)
+    }
+    else{
+      setDistributionsTakenState(true)
+    }
+    
+    }
+
+
+    let dividendsTakenAsCashHandler=(elem)=>{
+      if (elem==="No"){
+        setDividendsTakenAsCash(false)
+      }
+      else{
+        setDividendsTakenAsCash(true)
+      }
+      
+      }
 
   let initialValues =  {
     soleBusinessName: '',
@@ -83,47 +109,165 @@ const BusinessTextStucture = () => {
   }
 
   let validationSchema = Yup.object({
-    soleBusinessName: Yup.string().required('Required'),
-    soleBusinessType: Yup.string().required('Required'),
-    soleIncomeGenerated: Yup.string().required('Required'),
-    soleBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
+    soleBusinessName: Yup.string().matches(letters, "Only letters").required('Required') ,
+    soleBusinessType: Yup.string().matches(letters, "Only letters").required('Required') ,
+    soleIncomeGenerated:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleBusinessExpenses:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
     soleNetBusinessIncome: Yup.number(),
     
-    solePartnerBusinessName: Yup.string().required('Required'),
-    solePartnerBusinessType: Yup.string().required('Required'),
-    solePartnerIncomeGenerated: Yup.string().required('Required'),
-    solePartnerBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
-    solePartnerNetBusinessIncome: Yup.number(),
+    solePartnerBusinessName:Yup.string().matches(letters, "Only letters").required('Required'),
+    solePartnerBusinessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    solePartnerIncomeGenerated:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    // solePartnerBusinessExpenses: Yup.number().required("Required").test(
+    //   "Is positive?",
+    //   "Must be a positive number",
+    //   (value)=> value >0
+    // ),
+    solePartnerNetBusinessIncome: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
 
-    clientsShareofPartnership: Yup.number('Can only be numbers').required('Required'),
-    partnersShareofPartnership: Yup.number('Can only be numbers').required('Required'),
-    partnershipName: Yup.string().required('Required'),
-    businessType: Yup.string().required('Required'),
-    incomeGenerated: Yup.number('Can only be numbers').required('Required'),
-    businessExpenses: Yup.number('Can only be numbers').required('Required'),
+    clientsShareofPartnership:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnersShareofPartnership:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipName: Yup.string().matches(letters, "Only letters").required('Required'),
+    businessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    incomeGenerated: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    businessExpenses:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
 
-    privateNameOfCompany: Yup.string().required('Required'),
-    privateNetAssetValueofCompany: Yup.number('Can only be numbers').required('Required'),
-    privateTradingName: Yup.string().required('Required'),
-    privateTotalRevenue: Yup.number('Can only be numbers').required('Required'),
-    privateBusinessType: Yup.string().required('Required'),
-    PrivatebusinessExpenses: Yup.number('Can only be numbers').required('Required'),
+    privateNameOfCompany: Yup.string().matches(letters, "Only letters").required('Required'),
+    privateNetAssetValueofCompany: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateTradingName: Yup.string().matches(letters, "Only letters").required('Required'),
+    privateTotalRevenue: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateBusinessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    PrivatebusinessExpenses: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
     privateDirectorsDetail: Yup.string().required('Required'),
-    privateClientsshareholding: Yup.number('Can only be numbers').required('Required'),
-    privatePartnersShareholding: Yup.number('Can only be numbers').required('Required'),
-    privateClient: Yup.number('Can only be numbers').required('Required'),
-    privatePartner: Yup.number('Can only be numbers').required('Required'),
+    privateClientsshareholding: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privatePartnersShareholding: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateClient:Yup.number()
+    .when('dividendsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    privatePartner:Yup.number()
+    .when('dividendsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
 
-    NameofTrust: Yup.string().required('Required'),
-    netAssetValueofBusinessTrust: Yup.number('Can only be numbers').required('Required'),
-    trustTradingName: Yup.string().required('Required'),
-    trustTotalRevenue: Yup.number('Can only be numbers').required('Required'),
-    trustBusinessType: Yup.string().required('Required'),
-    trustBusinessExpenses: Yup.number('Can only be numbers').required('Required'),
-    trustClientShareofDistribution: Yup.number('Can only be numbers').required('Required'),
-    trustPartnerShareofDistribution: Yup.number('Can only be numbers').required('Required'),
-    trustClient: Yup.number('Can only be numbers').required('Required'),
-    trustPartner: Yup.number('Can only be numbers').required('Required'),
+    NameofTrust:Yup.string().matches(letters, "Only letters").required('Required'),
+    netAssetValueofBusinessTrust: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustTradingName: Yup.string().matches(letters, "Only letters").required('Required'),
+    trustTotalRevenue: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustBusinessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    trustBusinessExpenses: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustClientShareofDistribution: Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Age must be a positive number",
+      (value) => value > 0
+    ),
+    trustPartnerShareofDistribution:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustClient:Yup.number()
+    .when('DistributionsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    trustPartner: Yup.number()
+    .when('DistributionsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
   })
 
   let onSubmit = (Values) => {
@@ -144,23 +288,56 @@ const BusinessTextStucture = () => {
 
   let ClientModal_validationSchema = Yup.object({
     soleBusinessExpenses: Yup.number(),
-    soleRent: Yup.number().required('Required'),
-    soleLeaseCosts: Yup.number().required('Required'),
-    soleInsurances: Yup.number().required('Required'),
-    soleStaffCosts: Yup.number().required('Required'),
-    soleRunningCosts: Yup.number().required('Required'),
-    soleTelephoneAndInternet: Yup.number().required('Required'),
-    soleProfessionalFees: Yup.number().required('Required'),
-    soleAllOther: Yup.number().required('Required')
+    soleRent: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleLeaseCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleInsurances: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleStaffCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleRunningCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleTelephoneAndInternet: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleProfessionalFees: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleAllOther:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
   })
 
   let ClientModal_onSubmit = (Values) => {
-
+console.log(Values);
+handleClose();
   }
 
 
   let PartnerModal_initialValues = {
-    solePartnerBusinessExpenses: '',
+    solePartnerBusinessExpenses2: '',
     solePartnerRent: '',
     soleLeaseCosts: '',
     solePartnerInsurances: '',
@@ -172,19 +349,51 @@ const BusinessTextStucture = () => {
   }
 
   let PartnerModal_validationSchema = Yup.object({
-    solePartnerBusinessExpenses: Yup.number().required('Required'),
-    solePartnerRent: Yup.number().required('Required'),
-    soleLeaseCosts: Yup.number().required('Required'),
-    solePartnerInsurances: Yup.number().required('Required'),
-    solePartnerStaffCosts: Yup.number().required('Required'),
-    solePartnerRunningCosts: Yup.number().required('Required'),
-    solePartnerTelephoneAndInternet: Yup.number().required('Required'),
-    solePartnerProfessionalFees: Yup.number().required('Required'),
-    solePartnerAllOther: Yup.number().required('Required'),
+    solePartnerRent:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleLeaseCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    solePartnerInsurances: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    solePartnerStaffCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    solePartnerRunningCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    solePartnerTelephoneAndInternet: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    solePartnerProfessionalFees: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    solePartnerAllOther: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
   })
 
   let PartnerModal_onSubmit = (Values) => {
-
+console.log(Values)
+handleClosePartner();
   }
 
   let Partnership_initialValues = {
@@ -201,23 +410,65 @@ const BusinessTextStucture = () => {
   }
 
   let Partnership_validationSchema = Yup.object({
-    partnershipRent: Yup.number().required('Required'),
-    partnershipLeaseCosts: Yup.number().required('Required'),
-    partnershipInsurances: Yup.number().required('Required'),
-    partnershipStaffCostWages: Yup.number().required('Required'),
-    partnershipWageTakingByClient: Yup.number().required('Required'),
-    partnerWageTakenByPartner: Yup.number().required('Required'),
-    partnershipRunningCosts: Yup.number().required('Required'),
-    partnershipTelephoneAndInternet: Yup.number().required('Required'),
-    partnershipProfessionalFees: Yup.number().required('Required'),
-    partnershipAllOther: Yup.number().required('Required'),
+    partnershipRent: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipLeaseCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipInsurances: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipStaffCostWages: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipWageTakingByClient:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnerWageTakenByPartner: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipRunningCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipTelephoneAndInternet: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipProfessionalFees: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipAllOther: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
   })
 
   let Partnership_onSubmit = (Values) => {
-
+console.log(Values)
+handleClosePartnership();
   }
 
   let BusinessExpense_initialValues = {
+    trustBusinessExpenses5:'',
     trustRent: '',
     trustLeaseCosts: '',
     trustInsurances: '',
@@ -234,23 +485,164 @@ const BusinessTextStucture = () => {
   }
 
   let BusinessExpense_validationSchema = Yup.object({
-    trustRent: Yup.number().required('Required'),
-    trustLeaseCosts: Yup.number().required('Required'),
-    trustInsurances: Yup.number().required('Required'),
-    trustRunningCosts: Yup.number().required('Required'),
-    trustStaffCostWages: Yup.number().required('Required'),
-    trustWageTakingByClient: Yup.number().required('Required'),
-    trustSuperForClient: Yup.number().required('Required'),
-    trustWageTakenByPartner: Yup.number().required('Required'),
-    trustSuperForPartner: Yup.number().required('Required'),
-    trustTelephoneAndInternet: Yup.number().required('Required'),
-    trustProfessionalFees: Yup.number().required('Required'),
-    trustAllOther: Yup.number().required('Required'),
-    trustLoanRepayments: Yup.number().required('Required')
+    trustRent: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustLeaseCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustInsurances: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustRunningCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustStaffCostWages: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustWageTakingByClient: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustSuperForClient: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustWageTakenByPartner: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustSuperForPartner: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustTelephoneAndInternet: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustProfessionalFees: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustAllOther: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustLoanRepayments:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
   })
 
   let BusinessExpense_onSubmit = (Values) => {
-    
+   console.log(Values) 
+   handleCloseTrust();
+  }
+
+
+  let initialValuesPrivate={
+    privateRent:'',
+    privateLeaseCosts:'',
+    privateInsurances:'',
+    privateRunningCosts:'',
+    privateStaffCostWages:'',
+    privateWageTakingByClient:'',
+    privateSuperForClient:'',
+    privateWageTakenByPartner:'',
+    privateSuperForPartner:'',
+    privateTelephoneAndInternet:'',
+    privateProfessionalFees:'',
+    privateAllOther:'',
+  }
+  let validationSchemaPrivate=Yup.object({
+    privateRent:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateLeaseCosts:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateInsurances:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateRunningCosts:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateStaffCostWages:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateWageTakingByClient:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateSuperForClient:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateWageTakenByPartner:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateSuperForPartner:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateTelephoneAndInternet:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateProfessionalFees:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateAllOther:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateLoanRepayments:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+  })
+
+  let onSubmitPrivate=(values)=>{
+console.log(values)
+handleClosePrivate();
   }
 
   return (
@@ -370,6 +762,7 @@ const BusinessTextStucture = () => {
                               <span
                                 className=" btn w-50 h-50
                                 btn-outline-success "
+                                
                                 onClick={handleShow}
                               >
                                 <div className="iconContainer mx-1">
@@ -378,6 +771,8 @@ const BusinessTextStucture = () => {
                                 </div>
                                 Use Business Schedule
                               </span>
+
+                              
                             </div>
 
                             {/* --------------------------------------------------------------- */}
@@ -405,7 +800,8 @@ const BusinessTextStucture = () => {
                                 
                                   <Formik initialValues={ClientModal_initialValues} 
                                   validationSchema={ClientModal_validationSchema} 
-                                  onSubmit={ClientModal_onSubmit} enableReinitialize>
+                                  onSubmit={ClientModal_onSubmit} 
+                                  enableReinitialize>
                                   <Form>
                                   <Modal.Body>
                                   {/*  first row*/}
@@ -441,7 +837,7 @@ const BusinessTextStucture = () => {
                                           Rent
                                         </label>
                                         <Field
-                                          type="text"
+                                          type="number"
                                           className="form-control inputDesign  shadow"
                                           id="soleRent"
                                           name='soleRent'
@@ -822,14 +1218,14 @@ const BusinessTextStucture = () => {
                                 <div className="col-md-6">
                                   <div className="mb-3">
                                     <label
-                                      htmlFor="solePartnerBusinessExpenses"
+                                      htmlFor="solePartnerBusinessExpenses2"
                                       className="form-label"
                                     >
                                       Business Expenses
                                     </label>
                                     <Field
-                                      id="solePartnerBusinessExpenses"
-                                      name='solePartnerBusinessExpenses'
+                                      id="solePartnerBusinessExpenses2"
+                                      name='solePartnerBusinessExpenses2'
                                       readOnly
                                       className="form-control inputDesign shadow"
                                       type="number"
@@ -848,7 +1244,7 @@ const BusinessTextStucture = () => {
                                       Rent
                                     </label>
                                     <Field
-                                      type="text"
+                                      type="number"
                                       className="form-control inputDesign  shadow"
                                       id="solePartnerRent"
                                       name='solePartnerRent'
@@ -1096,7 +1492,7 @@ const BusinessTextStucture = () => {
                           Client’s Share of Partnership
                         </label>
                         <Field
-                          type="text"
+                          type="number"
                           className="form-control inputDesign shadow inputDesign"
                           id="clientsShareofPartnership"
                           name='clientsShareofPartnership'
@@ -1115,7 +1511,7 @@ const BusinessTextStucture = () => {
                           Partner’s Share of Partnership
                         </label>
                         <Field
-                          type="text"
+                          type="number"
                           className="form-control inputDesign shadow"
                           id="partnersShareofPartnership"
                           name='partnersShareofPartnership'
@@ -1135,7 +1531,7 @@ const BusinessTextStucture = () => {
                           Partnership Name
                         </label>
                         <Field
-                          type="number"
+                          type="text"
                           className="form-control inputDesign shadow"
                           id="partnershipName"
                           name='partnershipName'
@@ -1151,7 +1547,7 @@ const BusinessTextStucture = () => {
                           Business Type
                         </label>
                         <Field
-                          type="number"
+                          type="text"
                           className="form-control inputDesign shadow"
                           id="businessType"
                           name='businessType'
@@ -1278,7 +1674,7 @@ const BusinessTextStucture = () => {
                                       Rent
                                     </label>
                                     <Field
-                                      type="text"
+                                      type="number"
                                       className="form-control inputDesign  shadow"
                                       id="partnershipRent"
                                       name='partnershipRent'
@@ -1592,7 +1988,7 @@ const BusinessTextStucture = () => {
                           Net Asset Value of Company
                         </label>
                         <Field
-                          type="text"
+                          type="number"
                           className="form-control inputDesign shadow"
                           id="privateNetAssetValueofCompany"
                           name='privateNetAssetValueofCompany'
@@ -1752,6 +2148,12 @@ const BusinessTextStucture = () => {
                             </div>
                               </Modal.Title>
                             </Modal.Header>
+                            <Formik 
+                            initialValues={initialValuesPrivate}
+                            validationSchema={validationSchemaPrivate}
+                            onSubmit={onSubmitPrivate}
+                            >
+                                <Form>
                             <Modal.Body>
                               {/*  first row*/}
                               <div className="row">
@@ -1783,12 +2185,16 @@ const BusinessTextStucture = () => {
                                     >
                                       Rent
                                     </label>
-                                    <input
-                                      type="text"
+                                    <Field
+                                      type="number"
                                       className="form-control inputDesign  shadow"
                                       id="privateRent"
+                                      name="privateRent"
                                       placeholder="Rent"
                                     />
+                                      < ErrorMessage name="privateRent" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                 </div>
                                 {/* soleRent*/}
@@ -1805,12 +2211,16 @@ const BusinessTextStucture = () => {
                                     >
                                       Lease Costs
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateLeaseCosts"
+                                      name="privateLeaseCosts"
                                       placeholder="Lease Costs"
                                     />
+                                    < ErrorMessage name="privateLeaseCosts" component="div"
+                                    className="text-danger fw-bold" />
+
                                   </div>
                                 </div>
                                 {/* Lease Costs */}
@@ -1824,12 +2234,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Insurances
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateInsurances"
+                                      name="privateInsurances"
                                       placeholder="Insurances"
                                     />
+                                    < ErrorMessage name="privateInsurances" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Insurances */}
@@ -1849,12 +2262,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Running Costs(Utilities)
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateRunningCosts"
-                                      placeholder="Running Costs(Utilities)"
+                                      name="privateRunningCosts"
+                                      placeholder="Running Costs(Utilities) "
                                     />
+                                    < ErrorMessage name="privateRunningCosts" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Running Costs(Utilities) */}
@@ -1867,12 +2283,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Staff Costs(Wages and Super)
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateStaffCostWages"
+                                      name="privateStaffCostWages"
                                       placeholder="Staff Costs "
                                     />
+                                    < ErrorMessage name="privateStaffCostWages" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Staff Costs(Wages and Super)  */}
@@ -1894,12 +2313,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Wage taking by Client
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateWageTakingByClient"
+                                      name="privateWageTakingByClient"
                                       placeholder="Wage taking by Client"
                                     />
+                                    < ErrorMessage name="privateWageTakingByClient" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/*Wage taking by Client*/}
@@ -1913,12 +2335,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Super For Client
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateSuperForClient"
+                                      name="privateSuperForClient"
                                       placeholder="Super For Client"
                                     />
+                                    < ErrorMessage name="privateSuperForClient" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Super For Client*/}
@@ -1936,12 +2361,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Wage taken by Partner
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateWageTakenByPartner"
+                                      name="privateWageTakenByPartner"
                                       placeholder="Wage taken by Partner"
                                     />
+                                    < ErrorMessage name="privateWageTakenByPartner" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Wage taken by Partner*/}
@@ -1955,12 +2383,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Super For Partner
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateSuperForPartner"
+                                      name="privateSuperForPartner"
                                       placeholder="Super For Partner"
                                     />
+                                    < ErrorMessage name="privateSuperForPartner" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Super For Partner*/}
@@ -1978,12 +2409,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Telephone and Internet
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateTelephoneAndInternet"
+                                      name="privateTelephoneAndInternet"
                                       placeholder="Telephone and Internet "
                                     />
+                                    < ErrorMessage name="privateTelephoneAndInternet" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Telephone and Internet */}
@@ -1997,12 +2431,15 @@ const BusinessTextStucture = () => {
                                     >
                                       Professional fees
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateProfessionalFees"
+                                      name="privateProfessionalFees"
                                       placeholder="Professional Fees"
                                     />
+                                    < ErrorMessage name="privateProfessionalFees" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* Professional fees (Accounting or Other) */}
@@ -2020,12 +2457,15 @@ const BusinessTextStucture = () => {
                                     >
                                       All Other
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateAllOther"
+                                      name="privateAllOther"
                                       placeholder="All Other"
                                     />
+                                    < ErrorMessage name="privateAllOther" component="div"
+                               className="text-danger fw-bold" />
                                   </div>
                                 </div>
                                 {/* All Other */}
@@ -2039,17 +2479,23 @@ const BusinessTextStucture = () => {
                                     >
                                       Loan Repayments
                                     </label>
-                                    <input
+                                    <Field
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="privateLoanRepayments"
+                                      name="privateLoanRepayments"
                                       placeholder="Loan Repayments"
                                     />
+                                    < ErrorMessage name="privateLoanRepayments" component="div"
+                               className="text-danger fw-bold" />
+
                                   </div>
                                 </div>
                                 {/* Loan Repayments*/}
                               </div>
                               {/* row 7*/}
+
+
                             </Modal.Body>
                             <Modal.Footer>
                               <div className="col-md-12">
@@ -2068,6 +2514,8 @@ const BusinessTextStucture = () => {
                                 </button>
                               </div>
                             </Modal.Footer>
+                            </Form>
+                              </Formik>
                           </Modal>
                           {/* Business Expense Schedule */}
                         </div>
@@ -2129,22 +2577,25 @@ const BusinessTextStucture = () => {
                       </label>
                      
                              {/* switch button style */}
-                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
                                 <input type="radio" name="dividendsTakenradio" id="dividendsTakenopt1" 
+                                
                                 onChange={handleChange} value="Yes"
+                                onClick={()=>dividendsTakenAsCashHandler("Yes")}
                                 checked={values.dividendsTakenradio==="Yes"} />
                                 <label htmlFor="dividendsTakenopt1" className="label1">
                                   <span>YES</span>
                                 </label>
                                 <input type="radio" name="dividendsTakenradio" id="dividendsTakenopt2" 
                                 onChange={handleChange} value="No"
+                                onClick={()=>dividendsTakenAsCashHandler("No")}
                                 checked={values.dividendsTakenradio==="No"} />
                                 <label htmlFor="dividendsTakenopt2" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
-                                </div>
+                              </div>
                               {/* switch button style */}
                       
 
@@ -2172,6 +2623,7 @@ const BusinessTextStucture = () => {
                 {/*  row 6*/}
 
                  {/* 7 row */}
+                {dividendsTakenAsCash &&
                  <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -2210,7 +2662,7 @@ const BusinessTextStucture = () => {
                         <ErrorMessage component='div' className='text-danger fw-bold' name="privatePartner" />
                       </div>
                     </div>
-                  </div>
+                  </div>}
                   {/*7 row*/}
                 </div>
               </div>
@@ -2259,7 +2711,7 @@ const BusinessTextStucture = () => {
                           Net Asset Value of Business Trust
                         </label>
                         <Field
-                          type="text"
+                          type="number"
                           className="form-control inputDesign shadow"
                           id="netAssetValueofBusinessTrust"
                           name='netAssetValueofBusinessTrust'
@@ -2382,8 +2834,8 @@ const BusinessTextStucture = () => {
                           Use Business Expense Schedule
                         </label>
                         <div>
-                          <button
-                            className=" btn 
+                          <span
+                            className=" btn h-50 w-50 
                             btn-outline-success"
                             onClick={handleShowTrust}
                           >
@@ -2392,7 +2844,7 @@ const BusinessTextStucture = () => {
 
                             </div>
                             Use Business Schedule
-                          </button>
+                          </span>
                         </div>
 
                         {/* -----------------------------Model------------------------------ */}
@@ -2426,13 +2878,14 @@ const BusinessTextStucture = () => {
                                 <div className="col-md-6">
                                   <div className="mb-3">
                                     <label
-                                      htmlFor="trustBusinessExpenses"
+                                      htmlFor="trustBusinessExpenses5"
                                       className="form-label"
                                     >
                                       Business Expenses
                                     </label>
-                                    <input
-                                      id="trustBusinessExpenses"
+                                    <Field
+                                      id="trustBusinessExpenses5"
+                                      name="trustBusinessExpenses5"
                                       readOnly
                                       className="form-control inputDesign shadow"
                                       type="number"
@@ -2451,7 +2904,7 @@ const BusinessTextStucture = () => {
                                       Rent
                                     </label>
                                     <Field
-                                      type="text"
+                                      type="number"
                                       className="form-control inputDesign  shadow"
                                       id="trustRent"
                                       name='trustRent'
@@ -2618,7 +3071,7 @@ const BusinessTextStucture = () => {
                                       type="number"
                                       className="form-control inputDesign shadow"
                                       id="trustWageTakenByPartner"
-                                      name=''trustWageTakenByPartner
+                                      name='trustWageTakenByPartner'
                                       placeholder="Wage taken by Partner"
                                     />
                                     <ErrorMessage component='div' className="text-danger fw-bold" name="trustWageTakenByPartner" />
@@ -2821,19 +3274,19 @@ const BusinessTextStucture = () => {
                       <label  className="form-label">
                       Distributions taken as cash?
                       </label>
-                     
-
                         {/* switch button style */}
                         <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
                                 <input type="radio" name="DistributionsTakenradio" id="DistributionsTakenopt1" 
                                 onChange={handleChange} value="Yes"
+                                onClick={()=>DistributionsTakenHandler("Yes")} 
                                 checked={values.DistributionsTakenradio==="Yes"} />
                                 <label htmlFor="DistributionsTakenopt1" className="label1">
                                   <span>YES</span>
                                 </label>
                                 <input type="radio" name="DistributionsTakenradio" id="DistributionsTakenopt2"  
                                 onChange={handleChange} value="No"
+                                onClick={()=>DistributionsTakenHandler("No")} 
                                 checked={values.DistributionsTakenradio==="No"}/>
                                 <label htmlFor="DistributionsTakenopt2" className="label2">
                                   <span>NO</span>
@@ -2851,6 +3304,7 @@ const BusinessTextStucture = () => {
                 {/*  row 6*/}
 
                  {/* 7 row */}
+                {DistributionsTakenState &&
                  <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -2889,7 +3343,7 @@ const BusinessTextStucture = () => {
                         <ErrorMessage component='div' className="text-danger fw-bold" name="trustPartner" />
                       </div>
                     </div>
-                  </div>
+                  </div>}
                   {/*7 row*/}
 
                   <div className="row my-3">
