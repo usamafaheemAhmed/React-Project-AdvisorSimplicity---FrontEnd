@@ -385,13 +385,13 @@ let ClientDetails={
     Email:values.emailID2,
     
   }
-  axios
-          .post("http://localhost:7000/Client/Add-Client",ClientDetails)
-          .then((res)=> console.log("Client Done"))
+  // axios
+  // .post('http://localhost:7000/Client/Add-Client',ClientDetails)
+  // .then((res) => console.log(ClientDetails))
 
 // axios
-//   .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
-//   .then((res) => console.log(PartnerDetails))
+  // .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
+  // .then((res) => console.log(PartnerDetails))
 
 console.log(PartnerDetails)
 console.log(ClientDetails)
@@ -437,6 +437,7 @@ const validationSchema = Yup.object({
             is:(val)=> val && val.length ==3,
             then:Yup.string().required("Required")
              }),
+
 
           // partnerValidation
           titleID2:Yup.string().required("Required"),
@@ -535,6 +536,7 @@ const initialValues2={
       // childGender:window.localStorage.getItem("gender"),
       
     }
+    console.log(addChildData)
      setListOfChild([...listOfChild,addChildData])
    
     setChildGender("female")
@@ -720,7 +722,7 @@ const initialValues2={
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="titleID" className="form-label">
-                          clientTitle
+                          Title
                         </label>
                         <Field
                           id="titleID"
@@ -987,7 +989,7 @@ const initialValues2={
                   <div className="row">
                     <div className="col-md-6">
                         <label htmlFor="DoBID" className="form-label">
-                        Client Date of Birth
+                        Date of Birth
                         </label>
                       <div className="input-group ">
                         <Field
@@ -1009,7 +1011,7 @@ const initialValues2={
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="employeeAgeID" className="form-label">
-                         client Age
+                         Age
                         </label>
                         <Field
                           type="text"
@@ -1311,7 +1313,7 @@ const initialValues2={
 
                      <div className="col-md-6">
                         <label htmlFor="ClientDoBID2" className="form-label">
-                        partner Date of Birth
+                        Date of Birth
                         </label>
                       <div className="input-group ">
                         <Field
@@ -1334,7 +1336,7 @@ const initialValues2={
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="employeeAgeID2" className="form-label">
-                         partner Age
+                         Age
                         </label>
                         <Field
                           type="text"
