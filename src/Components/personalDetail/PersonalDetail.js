@@ -338,7 +338,7 @@ let ClientDetails={
     PreferredName:values.preferedNameID,
     Gender:clientGender,
     DOB:values.ClientDoBID,
-    Age:document.getElementById("employeeAgeID").value,
+    Age:parseFloat(document.getElementById("employeeAgeID").value),
     MaritalStatus:values.maritalStatus,
     EmploymentStatus:values.employmentStatusID,
     Health:values.HealthID,
@@ -346,24 +346,15 @@ let ClientDetails={
     PlannedRetirementAge:values.plannedRetirementAgeID,
     HomeAddress:values.homeAddressID,
     Postcode:values.PostcodeID,
-    HomePhone:values.homePhoneID,
-    WorkPhone:values.workPhoneID,
-    Mobile:values.mobileID,
+    HomePhone:parseFloat(values.homePhoneID),
+    WorkPhone:parseFloat(values.workPhoneID),
+    Mobile:parseFloat(values.mobileID),
     Email:values.emailID,
     PostalAddress:values.postalAddressID,
     PostalPostCode:values.postalPostcodeIDSame,
-
-  
-
-    // childForm rest of data
     ExpandFamily:values.expandFamilyradio,
     HealthIssues:values.healthIssuesradio,
     Description:values.DescriptionID,
-
-
-    // plannedRetirementAgeID:values.plannedRetirementAgeID,
-    // ClientDoBID:values.ClientDoBID,
-    // employeeAgeID:document.getElementById("employeeAgeID").value ,
   }
 
 
@@ -374,24 +365,24 @@ let ClientDetails={
     PreferredName:values.preferedNameID2,
     Gender:clientGender2,
     DOB:values.ClientDoBID2,
-    Age:document.getElementById("employeeAgeID2").value,
+    Age:parseFloat(document.getElementById("employeeAgeID2").value),
     MaritalStatus:values.maritalStatus2,
     EmploymentStatus:values.employmentStatusID2,
     Health:values.HealthID2,
     Smoker:clientSmoker2,
     PlannedRetirementAge:values.plannedRetirementAgeID2,
-    WorkPhone:values.workPhoneID2,
-    Mobile:values.mobileID2,
+    WorkPhone:parseFloat(values.workPhoneID2),
+    Mobile:parseFloat(values.mobileID2),
     Email:values.emailID2,
     
   }
   // axios
   // .post('http://localhost:7000/Client/Add-Client',ClientDetails)
-  // .then((res) => console.log(ClientDetails))
+  // .then((res) => console.log("Client Successfully Added!"))
 
-// axios
+  // axios
   // .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
-  // .then((res) => console.log(PartnerDetails))
+  // .then((res) => console.log("Partner Successfully Added!"))
 
 console.log(PartnerDetails)
 console.log(ClientDetails)
@@ -516,28 +507,29 @@ const initialValues2={
   
     let age=document.getElementById("childAge").value;
     
-    let addChildData={
-      ChildNO: checkNumber,
+    let ChildDetails={
+      ChildNO: parseFloat(checkNumber),
       ChildName:values.childNameID,
       ChildDOB:values.childDoBID,
-      ChildAge:age,
+      ChildAge:parseFloat(age),
       ChildGender:childGender,
       ChildRelation:values.childRelationship,
-      ChildFinancialyDependent:values.AmountPaidReceivedID,
-      ChildDependentAge:values.DependantUntilAge,
+      ChildFinancialyDependent:values.childDependentradio,
+      ChildDependentAge:parseFloat(values.DependantUntilAge),
       ChildSupportRecieved:values.childSupportReceived,
-      ChildSignificantCost:values.significantEducationRadio,
-      ChildPrimaryEducationCost:values.CostofPrimaryEducation,
-      ChildSecondaryEducationCost:values.CostofSecondaryEducation,
-      ChildUniversityEducationCost:values.CostofUniEducation,
-      ChildCourseYear:values.courseYears,
-
-    
-      // childGender:window.localStorage.getItem("gender"),
-      
+      ChildAmountRecieved:parseFloat(values.AmountPaidReceivedID),
+      ChildSignificantEducationCost:values.significantEducationRadio,
+      ChildPrimaryEducationCost:parseFloat(values.CostofPrimaryEducation),
+      ChildSecondaryEducationCost:parseFloat(values.CostofSecondaryEducation),
+      ChildUniversityEducationCost:parseFloat(values.CostofUniEducation),
+      ChildCourseYear:parseFloat(values.courseYears)      
     }
-    console.log(addChildData)
-     setListOfChild([...listOfChild,addChildData])
+    console.log(ChildDetails)
+
+    axios
+  .post('http://localhost:7000/Child/Add-Child', ChildDetails)
+  .then((res) => console.log("Child Successfully Added!"))
+     setListOfChild([...listOfChild, ChildDetails])
    
     setChildGender("female")
     //  handleClose ();
@@ -1945,7 +1937,7 @@ const initialValues2={
                                     htmlFor="emailID"
                                     className="form-label"
                                   >
-                                    Dependant
+                                    Is your child dependant?
                                   </label>
                                      {/* switch button style */}
                                 <div className="form-check form-switch m-0 p-0 ">
@@ -1988,7 +1980,7 @@ const initialValues2={
                                     type="number"
                                     className="form-control inputDesign shadow"
                                     id="DependantUntilAge"
-                                    placeholder="Cost of primary education"
+                                    placeholder="Dependant Until Age"
                                     onChange={(e) => setFieldValue("DependantUntilAge", e.target.value)}
                                     value={values.DependantUntilAge}
                                   />
@@ -2040,7 +2032,7 @@ const initialValues2={
                                     type="number"
                                     className="form-control inputDesign shadow"
                                     id="AmountPaidReceivedID"
-                                    placeholder="Cost of primary education"
+                                    placeholder="Amount Paid/Receieved"
                                     onChange={(e) => setFieldValue("AmountPaidReceivedID", e.target.value)}
                                     value={values.AmountPaidReceivedID}
                                   />
