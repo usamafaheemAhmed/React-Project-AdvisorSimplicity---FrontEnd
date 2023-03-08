@@ -9,24 +9,30 @@ import SideBarrr from './components/SideBar/SideBarrr';
 import Topbar from './components/Topbar/Topbar';
 import AssetsLiabilities from './components/Assets&Liabilities/AssetsLiabilities';
 import Investments from './components/Investments/Investments';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Options from './components/Options';
 
 function App() {
   return (
-    <div className="row mx-1" id="Shapaik">
+    <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
         <SideBarrr/>
       </div>
 
       <div className="col-md-10 m-0 p-0"> 
       <Topbar />  
-       
-        <PersonalDetail/>
-        {/* <BusinessTextStucture/> */}
-        {/* <IncomeExpenses/>  */}
-        {/* <ProfessionalAdvisers/> */}
-        {/* <ProfessionalAdvisers/> */}
-        {/* <AssetsLiabilities/> */}
-        {/* <Investments /> */}
+      <Options />
+      
+      <BrowserRouter>
+      <Routes>
+        <Route path='/Personal-Details' element={<PersonalDetail/>} />
+        <Route path='/Business-Tax-Structure' element={<BusinessTextStucture/>} />
+        <Route path='/Income-And-Expenses' element={<IncomeExpenses/>} />
+        <Route path='/Professional-Advisors' element={<ProfessionalAdvisers/>} />
+        <Route path='/Assets-And-Liabilities' element={<AssetsLiabilities/>} />
+        <Route path='/Investments' element={<Investments/>} />
+      </Routes>
+      </BrowserRouter>
       </div>
     </div>
   );

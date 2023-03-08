@@ -8,6 +8,7 @@ import "./assets.css";
 
 
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 const AssetsLiabilities = () => {
   let postCodePattern=/^\d{4}$/;
     const [ownFamily, setOwnFamily] = useState(false)
@@ -74,8 +75,14 @@ const AssetsLiabilities = () => {
         }
         let validationSchema = Yup.object({})
         
+        let Navigate = useNavigate();
+
+        function BackFunction(){
+          Navigate('/Professional-Advisors')
+        }
         let onSubmit = (Values) => {
         console.log(Values)
+        Navigate('/Investments')
         
         }
 
@@ -2404,7 +2411,7 @@ onSubmit={onSubmit}>
                           <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
                         </div>
                       </div>
                         </Form>

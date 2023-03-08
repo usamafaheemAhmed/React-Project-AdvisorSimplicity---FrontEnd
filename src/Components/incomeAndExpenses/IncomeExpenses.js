@@ -11,6 +11,7 @@ import dollarBag from "./images/dollarBag.svg"
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from'yup';
+import { useNavigate } from "react-router-dom";
 
 
 const IncomeExpenses = () => {
@@ -395,8 +396,12 @@ let currentlySalaryPackageHandler2=(elem)=>{
     expectingInheritancesAmount: '',
   }
 
+  let Navigate = useNavigate();
+  function BackFunction(){
+    Navigate('/Business-Tax-Structure')
+  }
   const onSubmit= (values,action) => {
- 
+    Navigate('/Professional-Advisors')
   console.log(values)
   }
   
@@ -5079,7 +5084,7 @@ TransInsuranceType:'',
                     <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
                         </div>
                       </div>
                 

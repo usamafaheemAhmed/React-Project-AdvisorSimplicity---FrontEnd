@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import 'yup-phone';
 
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 
 const ProfessionalAdvisors = () => {
   let letters = /^[a-zA-Z ]*$/;
@@ -181,7 +182,15 @@ console.log(Values)
     ProfessionalAdvisors1radio:'No',
     ProfessionalAdvisors2radio:'No'
   }
+  
+  let Navigate = useNavigate();
+
+  function BackFunction(){
+    Navigate('/Income-And-Expenses')
+  }
+
   let onSubmit=(values)=>{
+  Navigate('/Assets-And-Liabilities')
   console.log(values)
   }
 
@@ -906,7 +915,7 @@ enableReinitialize
                       <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
                         </div>
                       </div>
                       </Form>

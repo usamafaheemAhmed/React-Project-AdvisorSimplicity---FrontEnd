@@ -13,6 +13,7 @@ import notebook from "./images/notebook.svg"
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
 
 const BusinessTextStucture = () => {
   let letters = /^[a-zA-Z ]*$/;
@@ -270,7 +271,13 @@ const BusinessTextStucture = () => {
     }),
   })
 
+  let Navigate = useNavigate();
+
+  function BackFunction(){
+    Navigate('/Personal-Details')
+  }
   let onSubmit = (Values) => {
+    Navigate('/Income-And-Expenses')
     console.log(Values)
   }
 
@@ -652,7 +659,9 @@ handleClosePrivate();
           <div className="col-md-2"></div>
           <div className="col-md-12">
             
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} enableReinitialize>
+            <Formik initialValues={initialValues} 
+            validationSchema={validationSchema} 
+            onSubmit={onSubmit} enableReinitialize>
             {({values , setFieldValue ,setValues,handleChange,formik})=>
               <Form>
             {/*------------------------------------Sole Trader - Client------------------------------------*/}
@@ -3349,7 +3358,7 @@ handleClosePrivate();
                   <div className="row my-3">
                     <div className="col-md-12">
                       <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                      <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                      <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
                     </div>
                   </div>
 

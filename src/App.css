@@ -17,3 +17,8 @@ input[type=number]
 {
   -moz-appearance: textfield;
 }
+
+
+#Options{
+  color: #04AA6D;
+}

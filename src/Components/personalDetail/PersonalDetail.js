@@ -17,6 +17,10 @@ import female from "./images/female.svg";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { NavLink, useNavigate } from "react-router-dom";
+
 const PersonalDetail = () => {
   let letters = /^[a-zA-Z ]*$/;
   let phonePattern=/^[1-9][0-9]{9}$/;
@@ -297,7 +301,7 @@ const initialValues={
   HealthID:'',
   preferedNameID:'',
   plannedRetirementAgeID:'',
-  ClientDoBID:'',
+  ClientDoBID:null,
   clientPostalAddressCheckBoxID:false,
   expandFamilyradio:'No',
   healthIssuesradio:'Yes',
@@ -330,14 +334,19 @@ const initialValues={
   emailID2:'',
 
 }
+let Navigate = useNavigate();
+
 const onSubmit= (values,action) => {
+
+  Navigate('/Business-Tax-Structure');
+
 let ClientDetails={
     Title:values.titleID,
     GivenName:values.givenNameID,
     Surname:values.surnameID,
     PreferredName:values.preferedNameID,
     Gender:clientGender,
-    DOB:values.ClientDoBID,
+    DOB: values.ClientDoBID,
     Age:parseFloat(document.getElementById("employeeAgeID").value),
     MaritalStatus:values.maritalStatus,
     EmploymentStatus:values.employmentStatusID,
@@ -356,8 +365,6 @@ let ClientDetails={
     HealthIssues:values.healthIssuesradio,
     Description:values.DescriptionID,
   }
-
-
  let PartnerDetails={
     Title:values.titleID2,
     GivenName:values.givenNameID2,
@@ -376,9 +383,12 @@ let ClientDetails={
     Email:values.emailID2,
     
   }
-  // axios
-  // .post('http://localhost:7000/Client/Add-Client',ClientDetails)
-  // .then((res) => console.log("Client Successfully Added!"))
+  axios
+  .post('http://localhost:7000/Client/Add-Client',ClientDetails)
+  .then((res) => {
+    console.log("Client Successfully Added!");
+    
+  })
 
   // axios
   // .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
@@ -389,7 +399,7 @@ console.log(ClientDetails)
 
 
 }
-const validationSchema = Yup.object({
+        const validationSchema = Yup.object({
            givenNameID: Yup.string().matches(letters, "only letters").required('Required') ,
            maritalStatus: Yup.string().required('Required'),
            preferedNameID: Yup.string().matches(letters, "only letters").required('Required') ,
@@ -403,7 +413,7 @@ const validationSchema = Yup.object({
              "Age must be a positive number",
              (value) => value > 0
            ),
-           ClientDoBID: Yup.string().required('Required'),
+           ClientDoBID: Yup.date().required('Date of birth is required').nullable(),
 
            homeAddressID:Yup.string().required('Required'),
            homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
@@ -430,7 +440,7 @@ const validationSchema = Yup.object({
              }),
 
 
-          // partnerValidation
+        
           titleID2:Yup.string().required("Required"),
           maritalStatus2:Yup.string().required("Required"),
           givenNameID2: Yup.string().matches(letters, "only letters").required('Required') ,
@@ -686,7 +696,7 @@ const initialValues2={
                     onSubmit={onSubmit}
                     enableReinitialize
                     >
-                      {({values , setFieldValue ,setValues,handleChange,formik})=>
+                      {({values, setFieldValue, handleChange, errors, touched})=>
                       <Form>
       <div className="container-fluid mt-4">
         <div className="row m-0 p-0 ">
@@ -983,22 +993,24 @@ const initialValues2={
                         <label htmlFor="DoBID" className="form-label">
                         Date of Birth
                         </label>
-                      <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
+                        <div>
+                          <DatePicker
+                          showIcon
                           id="ClientDoBID"
-                          name='ClientDoBID'
+                          name="ClientDoBID"
+                          selected={values.ClientDoBID}
+                          onChange={date => setFieldValue('ClientDoBID', date)}
                           onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
-                          // value={values.DoBID}
-                          max="2023-1-31"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='ClientDoBID' type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("ClientDoBID","HiddenDate")}/>
-                          </span>
+                          dateFormat="dd/MM/yyyy"
+                          placeholderText="dd/mm/yyyy"
+                          maxDate={new Date()}
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select" />
+                          {errors.ClientDoBID && touched.ClientDoBID && (
+                          <div component="div" className='text-danger'>{errors.ClientDoBID}</div>
+                          )}
                         </div>
-                      </div>
-                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
