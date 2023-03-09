@@ -404,7 +404,22 @@ const BusinessTextStucture = () => {
   })
 
   let ClientModal_onSubmit = (Values) => {
-console.log(Values);
+     let Client_SoleTraderDetails={
+      Sole_ExpenseNumber:5000,
+      Sole_Rent:Values.soleRent,
+      Sole_LeaseCost:Values.soleLeaseCosts,
+      Sole_Insurance: Values.soleInsurances,
+      Sole_StaffCost:Values.soleStaffCosts,
+      Sole_RunningCost: Values.soleRunningCosts,
+      Sole_TelephoneInternet: Values.soleTelephoneAndInternet,
+      Sole_ProfessionalFees:Values.soleProfessionalFees,
+      Sole_AllOther: Values.soleAllOther
+    }
+    console.log(Client_SoleTraderDetails);
+
+    axios
+    .post('http://localhost:7000/Client-SoleTrader-Business/Add-Client-SoleTrader', Client_SoleTraderDetails)
+    .then((res) => console.log("Client SoleTrader Added Successfully!"))
 handleClose();
   }
 
@@ -465,7 +480,22 @@ handleClose();
   })
 
   let PartnerModal_onSubmit = (Values) => {
-console.log(Values)
+    let Partner_SoleTraderDetails={
+      Sole_ExpenseNumber:5000,
+      Sole_Rent:Values.solePartnerRent,
+      Sole_LeaseCost:Values.soleLeaseCosts,
+      Sole_Insurance: Values.solePartnerInsurances,
+      Sole_StaffCost:Values.solePartnerStaffCosts,
+      Sole_RunningCost: Values.solePartnerRunningCosts,
+      Sole_TelephoneInternet: Values.solePartnerTelephoneAndInternet,
+      Sole_ProfessionalFees:Values.solePartnerProfessionalFees,
+      Sole_AllOther: Values.solePartnerAllOther
+    }
+    console.log(Partner_SoleTraderDetails);
+
+    axios
+    .post('http://localhost:7000/Partner-SoleTrader-Business/Add-Partner-SoleTrader', Partner_SoleTraderDetails)
+    .then((res) => console.log("Partner SoleTrader Added Successfully!"))
 handleClosePartner();
   }
 
@@ -536,7 +566,23 @@ handleClosePartner();
   })
 
   let Partnership_onSubmit = (Values) => {
-console.log(Values)
+    let Client_PartnershipDetails = {
+    Partnership_ExpenseNumber:5000,
+    Partnership_Rent: Values.partnershipRent,
+    Partnership_LeaseCost: Values.partnershipLeaseCosts,
+    Partnership_Insurance:Values.partnershipInsurances,
+    Partnership_StaffCost:Values. partnershipStaffCostWages,
+    Partnership_ClientWage:Values.partnershipWageTakingByClient,
+    Partnership_PartnerWage:  Values.partnerWageTakenByPartner,
+    Partnership_RunningCost: Values.partnershipRunningCosts,
+    Partnership_TelephoneInternet: Values.partnershipTelephoneAndInternet,
+    Partnership_ProfessionalFees:Values.partnershipProfessionalFees ,
+    Partnership_AllOther:Values.partnershipAllOther,
+  }
+  console.log(Values)
+  axios
+  .post('http://localhost:7000/Client-Partnership-Business/Add-Client-Partnership', Client_PartnershipDetails)
+  .then((res) => console.log("Partnership Added Successfully!"))
 handleClosePartnership();
   }
 
@@ -626,7 +672,26 @@ handleClosePartnership();
   })
 
   let BusinessExpense_onSubmit = (Values) => {
-   console.log(Values) 
+    let BusinessTrustDetails={BusinessTrust_ExpenseNumber:5000,
+      BusinessTrust_Rent:Values.trustRent,
+      BusinessTrust_LeaseCost:Values.trustLeaseCosts,
+      BusinessTrust_Insurance:Values.trustInsurances,
+      BusinessTrust_StaffCost:Values.trustStaffCostWages,
+      BusinessTrust_ClientWage:Values.trustWageTakingByClient,
+      BusinessTrust_ClientSuper:Values.trustSuperForClient,
+      BusinessTrust_PartnerWage:Values.trustWageTakenByPartner,
+      BusinessTrust_PartnerSuper:Values.trustSuperForPartner,
+      BusinessTrust_RunningCost:Values.trustRunningCosts,
+      BusinessTrust_TelephoneInternet:Values.trustTelephoneAndInternet,
+      BusinessTrust_ProfessionalFees: Values.trustProfessionalFees,
+      BusinessTrust_AllOther:Values.trustAllOther,
+      BusinessTrust_LoanRepayments:Values.trustLoanRepayments,}
+  
+     console.log(BusinessTrustDetails)
+
+     axios
+     .post('http://localhost:7000/Client-BusinessTrust-Business/Add-Client-BusinessTrust', BusinessTrustDetails)
+     .then((res) => console.log("Business Trust Added Successfully!"))
    handleCloseTrust();
   }
 
@@ -714,8 +779,30 @@ handleClosePartnership();
   })
 
   let onSubmitPrivate=(values)=>{
-console.log(values)
-handleClosePrivate();
+    let PrivateCompanyDetails={
+      PrivateCompany_ExpenseNumber: 5000, //  we will get value later of id  "privateBusinessExpenses"
+      PrivateCompany_Rent:values.privateRent,
+      PrivateCompany_LeaseCost:values.privateLeaseCosts,
+      PrivateCompany_Insurance:values.privateInsurances,
+      PrivateCompany_StaffCost:values.privateStaffCostWages,
+      PrivateCompany_ClientWage:values.privateWageTakingByClient,
+      PrivateCompany_ClientSuper:values.privateSuperForClient,
+      PrivateCompany_PartnerWage:values.privateWageTakenByPartner,
+      PrivateCompany_PartnerSuper: values.privateSuperForPartner,
+      PrivateCompany_RunningCost:values.privateRunningCosts,
+      PrivateCompany_TelephoneInternet:values.privateTelephoneAndInternet,
+      PrivateCompany_ProfessionalFees:values.privateProfessionalFees,
+      PrivateCompany_AllOther:values.privateAllOther,
+      PrivateCompany_LoanRepayments:values.privateLoanRepayments,
+    }
+
+    console.log(PrivateCompanyDetails);
+
+    axios
+    .post('http://localhost:7000/Client-PrivateCompany-Business/Add-Client-PrivateCompany', PrivateCompanyDetails)
+    .then((res) => console.log("Private Company Added Successfully!"))
+
+    handleClosePrivate();
   }
 
   return (
@@ -2944,7 +3031,8 @@ handleClosePrivate();
                             </div>
                               </Modal.Title>
                             </Modal.Header>
-                           <Formik initialValues={BusinessExpense_initialValues} validationSchema={BusinessExpense_validationSchema} onSubmit={BusinessExpense_onSubmit}>
+                           <Formik initialValues={BusinessExpense_initialValues} 
+                           validationSchema={BusinessExpense_validationSchema} onSubmit={BusinessExpense_onSubmit}>
                             <Form>
                             <Modal.Body>
                               {/*  first row*/}

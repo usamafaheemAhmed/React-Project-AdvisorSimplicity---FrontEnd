@@ -27,6 +27,26 @@ function Options() {
                                 <h5 ><b><a id="Options" href='/Investments'>Investments</a></b></h5>
                             </div>
                         </div>
+                        <div className='row px-4 py-5'>
+                            <div className='col-md-2 text-center'>
+                                <h5 ><b><a id="Options" href='/Estate-Planning'>Estate Planning</a></b></h5>
+                            </div>
+                            <div className='col-md-2 text-center'>
+                                <h5 ><b><a id="Options" href='/Super-And-Retirment'>Super & Retirment</a></b></h5>
+                            </div>
+                            <div className='col-md-2 text-center'>
+                                <h5 ><b><a id="Options" href='/SMSF'>SMSF</a></b></h5>
+                            </div>
+                            <div className='col-md-2 text-center'>
+                                <h5 ><b><a id="Options" href='/Investement-Trust'>Investement Trust</a></b></h5>
+                            </div>
+                            <div className='col-md-2 text-center'>
+                                <h5 ><b><a id="Options" href='/Personal-Insurance'>Personal Insurance</a></b></h5>
+                            </div>
+                            <div className='col-md-2 text-center'>
+                                <h5 ><b><a id="Options" href='/Client-Declaration'>Client Declaration</a></b></h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
