@@ -25,7 +25,7 @@ function App() {
       
       <BrowserRouter>
       <Routes>
-        <Route path='/Personal-Details' element={<PersonalDetail/>} />
+        <Route path='/' element={<PersonalDetail/>} />
         <Route path='/Business-Tax-Structure' element={<BusinessTextStucture/>} />
         <Route path='/Income-And-Expenses' element={<IncomeExpenses/>} />
         <Route path='/Professional-Advisors' element={<ProfessionalAdvisers/>} />

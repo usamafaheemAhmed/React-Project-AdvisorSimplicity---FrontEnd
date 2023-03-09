@@ -244,7 +244,7 @@ function Investments() {
   }
   let onSubmit=(values)=>{
   console.log(values)
-  Navigate('/Personal-Details')
+  Navigate('/')
   }
 
   return (

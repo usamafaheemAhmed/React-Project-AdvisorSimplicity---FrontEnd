@@ -338,7 +338,7 @@ let Navigate = useNavigate();
 
 const onSubmit= (values,action) => {
 
-  Navigate('/Business-Tax-Structure');
+  // Navigate('/Business-Tax-Structure');
 
 let ClientDetails={
     Title:values.titleID,
@@ -390,9 +390,9 @@ let ClientDetails={
     
   })
 
-  // axios
-  // .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
-  // .then((res) => console.log("Partner Successfully Added!"))
+  axios
+  .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
+  .then((res) => console.log("Partner Successfully Added!"))
 
 console.log(PartnerDetails)
 console.log(ClientDetails)
@@ -413,7 +413,7 @@ console.log(ClientDetails)
              "Age must be a positive number",
              (value) => value > 0
            ),
-           ClientDoBID: Yup.date().required('Date of birth is required').nullable(),
+           ClientDoBID: Yup.string().required('Required'),
 
            homeAddressID:Yup.string().required('Required'),
            homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
@@ -989,28 +989,27 @@ const initialValues2={
 
                   {/* six row */}
                   <div className="row">
-                    <div className="col-md-6">
-                        <label htmlFor="DoBID" className="form-label">
+                  <div className="col-md-6">
+                        <label htmlFor="ClientDoBID" className="form-label">
                         Date of Birth
                         </label>
-                        <div>
-                          <DatePicker
-                          showIcon
+                      <div className="input-group ">
+                        <Field
+                          className="form-control inputDesign shadow"
                           id="ClientDoBID"
-                          name="ClientDoBID"
-                          selected={values.ClientDoBID}
-                          onChange={date => setFieldValue('ClientDoBID', date)}
+                          name='ClientDoBID'
                           onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
-                          dateFormat="dd/MM/yyyy"
-                          placeholderText="dd/mm/yyyy"
-                          maxDate={new Date()}
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select" />
-                          {errors.ClientDoBID && touched.ClientDoBID && (
-                          <div component="div" className='text-danger'>{errors.ClientDoBID}</div>
-                          )}
+                          // value={values.DoBID}
+                          // max="2023-1-31"
+                        />
+                        <div className="input-group-append">
+                          <span className="input-group-text" id="CalenderIcon">
+                            <input className="HiddenDate" name='ClientDoBID' type='date' id="HiddenDate"
+                             onChange={()=>ChangeDateFormat("ClientDoBID","HiddenDate")}/>
+                          </span>
                         </div>
+                      </div>
+                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID2" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">

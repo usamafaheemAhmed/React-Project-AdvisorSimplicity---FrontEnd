@@ -14,6 +14,7 @@ import notebook from "./images/notebook.svg"
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const BusinessTextStucture = () => {
   let letters = /^[a-zA-Z ]*$/;
@@ -123,7 +124,7 @@ const BusinessTextStucture = () => {
       "Must be a positive number",
       (value) => value > 0
     ),
-    soleNetBusinessIncome: Yup.number(),
+    // soleNetBusinessIncome: Yup.number(),
     
     solePartnerBusinessName:Yup.string().matches(letters, "Only letters").required('Required'),
     solePartnerBusinessType: Yup.string().matches(letters, "Only letters").required('Required'),
@@ -137,11 +138,11 @@ const BusinessTextStucture = () => {
     //   "Must be a positive number",
     //   (value)=> value >0
     // ),
-    solePartnerNetBusinessIncome: Yup.number().required("Required").test(
-      "Is positive?",
-      "Must be a positive number",
-      (value)=> value >0
-    ),
+    // solePartnerNetBusinessIncome: Yup.number().required("Required").test(
+    //   "Is positive?",
+    //   "Must be a positive number",
+    //   (value)=> value >0
+    // ),
 
     clientsShareofPartnership:Yup.number().required("Required").test(
       "Is positive?",
@@ -274,11 +275,76 @@ const BusinessTextStucture = () => {
   let Navigate = useNavigate();
 
   function BackFunction(){
-    Navigate('/Personal-Details')
+    Navigate('/')
   }
-  let onSubmit = (Values) => {
-    Navigate('/Income-And-Expenses')
-    console.log(Values)
+  let onSubmit = (values) => {
+    let ClientBusinessDetails={
+      Sole_BusinessName:values.soleBusinessName,
+      Sole_BusinessType:values.soleBusinessType,
+      Sole_IncomeGenerated:values.soleIncomeGenerated,
+      Sole_BusinessExpenses:values.soleBusinessExpenses,
+      Sole_NetBusinessIncome:5000,
+      
+      // **** PARTNERSHIP ****
+  
+      Partnership_OwnPercentage:values.clientsShareofPartnership,
+      Partnership_PartnerPercentage:values.partnersShareofPartnership,
+      Partnership_BusinessName:values.partnershipName,
+      Partnership_BusinessType:values.businessType,
+      Partnership_IncomeGenerated:values.incomeGenerated,
+      Partnership_BusinessExpenses:values.businessExpenses,
+      Partnership_NetBusinessIncome:5000,
+  
+      // ** PRIVATE COMPANY ***
+  
+      PrivateCompany_Name:values.privateNameOfCompany,
+      PrivateCompany_TradingName:values.privateTradingName,
+      PrivateCompany_BusinessType: values.privateBusinessType,
+      PrivateCompany_DirectorDetails: values.privateDirectorsDetail,
+      PrivateCompany_ClientShare: values.privateClientsshareholding,
+      PrivateCompany_PartnerShare:values.privatePartnersShareholding,
+      PrivateCompany_DividendCash: values.dividendsTakenradio,
+      PrivateCompany_ClientPercentage: values.privateClient,
+      PrivateCompany_PartnerPercentage: values.privatePartner,
+      PrivateCompany_NetAssetValue: values.privateNetAssetValueofCompany,
+      PrivateCompany_TotalRevenue: values.privateTotalRevenue,
+      PrivateCompany_Expense: values.PrivatebusinessExpenses,
+      PrivateCompany_NetProfit_AfterTax: 5000, //will get value after calculation
+     
+      // **** BUSINESS TRUST ***
+  
+      BusinessTrust_Name: values.NameofTrust,
+      BusinessTrust_TradingName:values.trustTradingName,
+      BusinessTrust_BusinessType: values.trustBusinessType,
+      BusinessTrust_ClientShare:values.trustClientShareofDistribution,
+      BusinessTrust_PartnerShare:values.trustPartnerShareofDistribution,
+      BusinessTrust_DistributionCash:values.DistributionsTakenradio, // radio
+      BusinessTrust_NetAssetValue:values.netAssetValueofBusinessTrust,
+      BusinessTrust_TotalRevenue:values.trustTotalRevenue,
+      BusinessTrust_Expense: values.trustBusinessExpenses,
+      BusinessTrust_NetProfit_AfterTax:5000, // to be added
+      BusinessTrust_ClientPercentage:values.trustClient,
+      BusinessTrust_PartnerPercentage:values.trustPartner,
+  
+      }
+
+      axios
+      .post('http://localhost:7000/Client-Business/Add-Client-Business', ClientBusinessDetails)
+      .then((res) => console.log("Client Business Added Successfully!"))
+    // Navigate('/Income-And-Expenses')
+
+    let PartnerBusinessDetails={
+      Sole_BusinessName:values.solePartnerBusinessName,
+      Sole_BusinessType:values.solePartnerBusinessType,
+      Sole_IncomeGenerated:values.solePartnerIncomeGenerated,
+      Sole_BusinessExpenses:values.solePartnerBusinessExpenses,
+      Sole_NetBusinessIncome:5000, //to be added
+    }
+    axios
+    .post('http://localhost:7000/Partner-Business/Add-Partner-Business', PartnerBusinessDetails)
+    .then((res) => console.log("Partner Business Added Successfully!"))
+    console.log(ClientBusinessDetails)
+    console.log(PartnerBusinessDetails)
   }
 
   let ClientModal_initialValues = {
@@ -2546,7 +2612,7 @@ handleClosePrivate();
                           Client’s shareholding %
                         </label>
                         <Field
-                          type="text"
+                          type="number"
                           className="form-control inputDesign shadow"
                           id="privateClientsshareholding"
                           name='privateClientsshareholding'
