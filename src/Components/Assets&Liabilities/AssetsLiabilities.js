@@ -9,6 +9,7 @@ import "./assets.css";
 
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const AssetsLiabilities = () => {
   let postCodePattern=/^\d{4}$/;
     const [ownFamily, setOwnFamily] = useState(false)
@@ -81,16 +82,27 @@ const AssetsLiabilities = () => {
           Navigate('/Professional-Advisors')
         }
         let onSubmit = (Values) => {
-        console.log(Values)
-        Navigate('/Investments')
+
+          let AssetsDetails = {
+            FamilyHome: Values.ownFamilyradio,
+            PersonalAssets: Values.personalAssetsradio,
+            PersonalDebts: Values.personalLoansradio
+          }
+
+          axios
+          .post('http://localhost:7000/Client-Assets/Add-Client-Assets', AssetsDetails)
+          .then((res) => console.log("Assets Details Added Successfully!"));
+
+        console.log(AssetsDetails)
+        // Navigate('/Investments');
         
         }
 
         let own_initialValues={
-            home:'',
+            home:1,
             currentValue:'',
-            clientPercentage:'50',
-            partnerPercentage:'50',
+            clientPercentage:50,
+            partnerPercentage:50,
             costBasePurchasePrice:'',
             address:'',
             postcodeSuburb:'',
@@ -110,7 +122,7 @@ const AssetsLiabilities = () => {
             
         }
         let own_validationSchema = Yup.object({
-            home:Yup.string().required('Required') ,
+            // home:Yup.number().required('Required') ,
             currentValue:Yup.number().required("Required")
            .test(
              "Is positive?",
@@ -255,7 +267,36 @@ const AssetsLiabilities = () => {
         })
         
         let own_onSubmit = (Values) => {
-        console.log(Values)
+
+          let ClientFamilyHomeDetails={
+            HomeNO:  parseFloat(Values.home),
+            CurrentValue:  Values.currentValue,
+            ClientOwnership: Values.clientPercentage,
+            PartnerOwnership: Values.partnerPercentage,
+            CostBase:  Values.costBasePurchasePrice,
+            Address: Values.address,
+            Postcode: Values.postcodeSuburb,
+            AmountAssessed: Values.AmountAssessedForCentrelink,
+
+            PropertyLoan: Values.propertyLoanradio,
+            ClientBorrowingPercentage: Values.clientPercentageofBorrowing,
+            PartnerBorrowingPercentage: Values.partnerPercentageofBorrowing,
+            CurrentBalance: Values.currentBalance,
+            RepaymentAmounts: Values.repaymentsAmount,
+            Frequency: Values.frequency,
+            AnnualRepayments: 5000,
+            InterestRate: Values.interestRatePA,
+            LoanTerm: Values.loanTerm,
+            LoanType: Values.loanType,
+            YearsRemaining: Values.yearsRemaining,
+            
+          }
+
+          axios
+          .post('http://localhost:7000/Client-FamilyHome/Add-Client-FamilyHome', ClientFamilyHomeDetails)
+          .then((res) => console.log("Family Home Added Successfully!"))
+          
+          console.log(ClientFamilyHomeDetails)
         handleClose();
         }
 
@@ -357,7 +398,37 @@ const AssetsLiabilities = () => {
         })
         
         let personalAssetsOnSubmit = (Values) => {
-        console.log(Values)
+        
+          let ClientPersonalAssets={
+            Contents_CurrentValue:  Values.contentCurrentValue,
+            Contents_CentreLinkValue:  Values.contentCentrelinkValue,
+            Contents_Security:  Values.contentradio,
+
+            MotorVehicle1_CurrentValue: Values.motor1CurrentValue,
+            MotorVehicle1_CentreLinkValue: Values.motor1CentrelinkValue,
+            MotorVehicle1_Security:  Values.motor1radio,
+
+            MotorVehicle2_CurrentValue: Values.motor2CurrentValue,
+            MotorVehicle2_CentreLinkValue: Values.motor2CentrelinkValue,
+            MotorVehicle2_Security:  Values.motor2radio,
+
+            Boat_CurrentValue: Values.boatCurrentValue,
+            Boat_CentreLinkValue: Values.boatCentrelinkValue,
+            Boat_Security: Values.boatradio,
+            Caravan_CurrentValue:  Values.carvanCurrentValue,
+            Caravan_CentreLinkValue:  Values.carvanCentrelinkValue,
+            Caravan_Security: Values.carvanradio,
+            Other_CurrentValue: Values.otherCurrentValue,
+            Other_CentreLinkValue:  Values.otherCentrelinkValue,
+            Other_Security: Values.otherradio,
+            
+        }
+
+        axios
+        .post('http://localhost:7000/Client-PersonalAssets/Add-Client-PersonalAssets', ClientPersonalAssets)
+        .then((res) => console.log("Personal Assets Added Successfully!"))
+
+          console.log(ClientPersonalAssets)
         handleClose2();
 
         }
@@ -511,7 +582,56 @@ debtInterestRate4:Yup.number().required("Required")
 
 
   let personalLoansonSubmit = (Values) => {
-    console.log(Values)
+
+    let ClientPersonalDebts={
+      CreditCard1_CurrentBalance:Values. debtCurrentBalance1,
+      CreditCard1_RepaymentAmount:Values. debtRepaymentAmount1,
+      CreditCard1_Frequency:Values. DebtFrequency1,
+      CreditCard1_AnnualRepayment: 5000,
+      CreditCard1_InterestRate: Values.debtInterestRate1,
+      CreditCard1_LoanTerm: Values.debtLoanTerm1,
+      CreditCard1_LoanType: Values.debtloanType1,
+      CreditCard1_YearRemaining: Values.debtYearRemaining1,
+      
+      
+      // // 2
+      CreditCard2_CurrentBalance: Values.debtCurrentBalance2,
+      CreditCard2_RepaymentAmount: Values.debtRepaymentAmount2,
+      CreditCard2_Frequency: Values.DebtFrequency2,
+      CreditCard2_AnnualRepayment:5000,
+      CreditCard2_InterestRate: Values.debtInterestRate2,
+      CreditCard2_LoanTerm: Values.debtLoanTerm2,
+      CreditCard2_LoanType: Values.debtloanType2,
+      CreditCard2_YearRemaining: Values.debtYearRemaining2,
+      
+      
+      // // 3
+      PersonalLoan1_CurrentBalance: Values.debtCurrentBalance3,
+      PersonalLoan1_RepaymentAmount: Values.debtRepaymentAmount3,
+      PersonalLoan1_Frequency: Values.DebtFrequency3,
+      PersonalLoan1_AnnualRepayment: 5000,
+      PersonalLoan1_InterestRate: Values.debtInterestRate3,
+      PersonalLoan1_LoanTerm: Values.debtLoanTerm3,
+      PersonalLoan1_LoanType: Values.debtloanType3,
+      PersonalLoan1_YearRemaining: Values.debtYearRemaining3,
+      
+      // // 4
+      PersonalLoan2_CurrentBalance: Values.debtCurrentBalance4,
+      PersonalLoan2_RepaymentAmount: Values.debtRepaymentAmount4,
+      PersonalLoan2_Frequency: Values.DebtFrequency4,
+      PersonalLoan2_AnnualRepayment: 5000,
+      PersonalLoan2_InterestRate: Values.debtInterestRate4,
+      PersonalLoan2_LoanTerm: Values.debtLoanTerm4,
+      PersonalLoan2_LoanType: Values.debtloanType4,
+      PersonalLoan2_YearRemaining: Values.debtYearRemaining4,
+      
+        }
+
+    axios
+    .post('http://localhost:7000/Client-PersonalDebts/Add-Client-PersonalDebts', ClientPersonalDebts)
+    .then((res) => console.log("Personal Debts Added Successfully!"))
+
+    console.log(ClientPersonalDebts)
     handleClose3();
 
   }
@@ -626,8 +746,8 @@ onSubmit={onSubmit}>
                        <div className="col-md-6">
                         <div className="mb-3">
                           <label htmlFor="home" className="form-label">Home</label>
-                          <Field type="text" className="form-control shadow inputDesign" 
-                          id="home" name='home' placeholder="Home"/>
+                          <Field type="number" className="form-control shadow inputDesign" 
+                          id="home" name='home' placeholder="Home" readOnly/>
                           <ErrorMessage component='div' className='text-danger fw-bold' name='home' />
                         </div>            
                         </div>

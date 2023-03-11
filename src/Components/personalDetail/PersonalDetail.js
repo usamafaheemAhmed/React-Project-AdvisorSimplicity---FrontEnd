@@ -338,7 +338,7 @@ let Navigate = useNavigate();
 
 const onSubmit= (values,action) => {
 
-  // Navigate('/Business-Tax-Structure');
+  Navigate('/Business-Tax-Structure');
 
 let ClientDetails={
     Title:values.titleID,
@@ -411,6 +411,7 @@ console.log(ClientDetails)
            .test(
              "Is positive?",
              "Age must be a positive number",
+
              (value) => value > 0
            ),
            ClientDoBID: Yup.string().required('Required'),

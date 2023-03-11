@@ -13,6 +13,7 @@ import 'yup-phone';
 
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ProfessionalAdvisors = () => {
   let letters = /^[a-zA-Z ]*$/;
@@ -111,8 +112,40 @@ const ProfessionalAdvisors = () => {
     otherEmail: Yup.string().email("Invalid email format").required("Required"),
   })
 
-  let Client_onSubmit = (Values) => {
-console.log(Values)
+  let Client_onSubmit = (values) => {
+
+    let ClientModalDetails={
+      Solicitor_Name: values.solicitorName,
+      Solicitor_Company: values.solicitorCompany,
+      Solicitor_Phone: values.solicitorPhone,
+      Solicitor_Email: values.solicitorEmail,
+  
+      Accountant_Name: values.accountantName,
+      Accountant_Company: values.accountantCompany,
+      Accountant_Phone: values.accountantPhone,
+      Accountant_Email: values.accountantEmail,
+  
+      InsuranceAdvisor_Name: values.insuranceAdvisorName,
+      InsuranceAdvisor_Company: values.insuranceAdvisorCompany,
+      InsuranceAdvisor_Phone: values.insuranceAdvisorPhone,
+      InsuranceAdvisor_Email: values.insuranceAdvisorEmail,
+  
+      Doctor_Name: values.doctorName,
+      Doctor_Company: values.doctorCompany,
+      Doctor_Phone: values.doctorPhone,
+      Doctor_Email: values.doctorEmail,
+  
+      Other_Name: values.otherName,
+      Other_Company: values.otherCompany,
+      Other_Phone: values.otherPhone,
+      Other_Email: values.otherEmail,
+    }
+
+    axios
+  .post('http://localhost:7000/Client-ProfessionalAdvisor-Modal/Add-Client-AdvisorModal', ClientModalDetails)
+  .then((res) => console.log("Client Advisor Modal Added Successfully!"))
+    
+console.log(ClientModalDetails)
   }
 
   let Partner_initialValues={
@@ -174,8 +207,38 @@ console.log(Values)
     otherEmail2: Yup.string().email("Invalid email format").required("Required"),
   })
 
-  let Partner_onSubmit = (Values) => {
-
+  let Partner_onSubmit = (values) => {
+    let PartnerModalDetails={
+      Solicitor_Name: values.solicitorName2,
+      Solicitor_Company: values.solicitorCompany2,
+      Solicitor_Phone: values.solicitorPhone2,
+      Solicitor_Email: values.solicitorEmail2,
+  
+      Accountant_Name: values.accountantName2,
+      Accountant_Company: values.accountantCompany2,
+      Accountant_Phone: values.accountantPhone2,
+      Accountant_Email: values.accountantEmail2,
+  
+      InsuranceAdvisor_Name: values.insuranceAdvisorName2,
+      InsuranceAdvisor_Company: values.insuranceAdvisorCompany2,
+      InsuranceAdvisor_Phone: values.insuranceAdvisorPhone2,
+      InsuranceAdvisor_Email: values.insuranceAdvisorEmail2,
+  
+      Doctor_Name: values.doctorName2,
+      Doctor_Company: values.doctorCompany2,
+      Doctor_Phone: values.doctorPhone2,
+      Doctor_Email: values.doctorEmail2,
+  
+      Other_Name: values.otherName2,
+      Other_Company: values.otherCompany2,
+      Other_Phone: values.otherPhone2,
+      Other_Email: values.otherEmai2,
+    }
+    axios
+  .post('http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Add-Partner-AdvisorModal', PartnerModalDetails)
+  .then((res) => console.log("Partner Advisor Modal Added Successfully!"))
+    
+console.log(PartnerModalDetails)
   }
 
   let initialValues={
@@ -186,11 +249,24 @@ console.log(Values)
   let Navigate = useNavigate();
 
   function BackFunction(){
-    Navigate('/Income-And-Expenses')
+    Navigate('/Income-And-Expenses');
   }
 
   let onSubmit=(values)=>{
   Navigate('/Assets-And-Liabilities')
+  let ProfessionalAdvisor={
+    ProfessionalAdvisor: values.ProfessionalAdvisors1radio
+  }
+  axios
+  .post('http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor', ProfessionalAdvisor)
+  .then((res) => console.log("Client Advisor Added Successfully!"))
+
+  let ProfessionalAdvisor2={
+    ProfessionalAdvisor: values.ProfessionalAdvisors2radio
+  }
+axios
+.post('http://localhost:7000/Partner-ProfessionalAdvisor/Add-PartnerAdvisor', ProfessionalAdvisor2)
+.then((res) => console.log("Partner Advisor Added Successfully!"))
   console.log(values)
   }
 

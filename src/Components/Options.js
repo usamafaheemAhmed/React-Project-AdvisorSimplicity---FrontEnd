@@ -9,7 +9,7 @@ function Options() {
                     <div className='col-md-12'>
                         <div className='row px-4 py-5'>
                             <div className='col-md-2 text-center'>
-                                <h5 ><b><a id="Options" href='/'>Professional Details</a></b></h5>
+                                <h5 ><b><a id="Options" href='/'>Personal Details</a></b></h5>
                             </div>
                             <div className='col-md-2 text-center'>
                                 <h5 ><b><a id="Options" href='/Business-Tax-Structure'>Business Tax Structure</a></b></h5>

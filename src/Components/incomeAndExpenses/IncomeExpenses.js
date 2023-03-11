@@ -12,6 +12,7 @@ import dollarBag from "./images/dollarBag.svg"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from'yup';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const IncomeExpenses = () => {
@@ -306,7 +307,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
     clientTaxContributiontoSuperHM:'',
     significantlyradio:"No",
     ChoiceofFundradio:'No',
-    whatDoYouHave:[],
+    whatDoYouHave:'',
 
     // partner employeement Detaails
     clientPrimaryOccupation2:'',
@@ -396,15 +397,147 @@ let currentlySalaryPackageHandler2=(elem)=>{
     expectingInheritancesAmount: '',
   }
 
+
+
   let Navigate = useNavigate();
   function BackFunction(){
     Navigate('/Business-Tax-Structure')
   }
   const onSubmit= (values,action) => {
-    Navigate('/Professional-Advisors')
-  console.log(values)
+    let Client_IncomeExpenseDetais={
+      Client_PrimaryOccupation:values.clientPrimaryOccupation,
+      Client_EmploymentStatus:values.clientEmploymentStatus,
+      Client_CompanyName:values.clientNameofCompany,
+      Client_CommencementDate:values.clientCommencementDate,
+      Client_HoursPerWeek:values.clientNumberofhoursperweek,
+      Client_Salary:values.clientSalaryExcludingSuper,
+      Client_Superannuation:values.clientSuperAnnuationGuaranteeNumber,
+      Client_Superannuation_Type:values.clientSuperAnnuationGuaranteeType,
+      Client_FundChoice:values.ChoiceofFundradio,
+      Client_Sacririfce:values.sacrificeradio,
+      Client_SacririfceAbility:values.clientAbilitytoSalarySacrificeHM,
+      Client_TaxContribution:values.contributionradio,
+      Client_TaxContributionAbility:values.clientTaxContributiontoSuperHM,
+      Client_SalaryPackage:values.currentlySalaryPackageRadio,
+      Client_FBT_Status:values.clientEmployerFBTStatus,
+      Client_FBT_Options:values.whatDoYouHave,
+      Client_FBT_CarCostBase :values.clientCostBaseofCar,
+      Client_FBT_Paid:values.FBTradio,
+      Client_FBT_CarRunningAmount:values.clientRunningCostsofCarPackaged,
+      Client_FBT_CardMortage:values.clientCreditCardMortgageorOther,
+      Client_IncomeVaries:values.significantlyradio,
+      Client_SickLeaves_Number:values.UnusedSickLeaveEntitlementsNumber,
+      Client_SickLeaves_Type:values.UnusedSickLeaveEntitlementsType,
+      Client_AnnualLeaves_Number:values.clientUnusedAnnualleaveentitlementsNumber,
+      Client_AnnualLeaves_Type:values.clientUnusedAnnualleaveentitlementsType,
+      Client_LongServiceLeaves_Number:values.clientUnusedlongserviceleaveNumber,
+      Client_LongServiceLeaves_Type:values.clientUnusedlongserviceleaveType,
+
+  //Client Centre Link
+  Client_Recieve_CentreLinkPayments: values.centerlink1radio,
+  Client_CentreLinkPayments: values.centrelinkPayments1,
+  Client_PaymentAmount: values.PaymentAmountFortnightly1,
+  Client_AnnualPaymentAmount: values.AnnualPaymentAmount1,
+  Client_CareerAllowance: values.CarerAllowance1radio,
+  Client_FamilyTax: values.FamilyTaxBenefit1,
+  Client_CurrentlyRenting: values.currentlyrenting1radio,
+  Client_AssetGifted: values.AssetGifted1radio,
+  Client_AssetNumbers: values.AssetBeenGiftedHM1,
+  Client_Years: values.AssetBeenGiftedYears1,
+  Client_ActualDate: values.ActualDateofyear1,
+
+  //Client Other Taxable Income
+  Client_TaxableIncome: values.otherTaxableIncome1radio,
+  Client_TaxableAmount:values.AmountofOtherTaxableIncome1,
+  Client_AustralianResident: values.AustralianResident1radio,
+  Client_HECS_Debt: values.HECSdebt1radio,
+  Client_PrivateHospital: values.PrivateHospital1radio,
+  Client_ClaimingRebate: values.claimingRebate1radio,
+  Client_PAYG_Application:values.applicationPAYG1radio,
+  Client_Outstanding_TaxPayments: values.TaxPaymentsOutstanding1,
+  Client_TaxLosses: values.TaxLossesCarriedForward1,
+
+  // Expenses
+  GeneralLivingCost: values.totalGeneralLivingCosts,
+  IncomeAtRetirement: values.incomeInRetirement,
+  LumpsumExpenses: values.lumpsumExpensesradio,
+  Lumpsum_Description:values.lumpSumExpenseDescription,
+  Lumpsum_Year: values.lumpSumExpenseYear,
+  Lumpsum_Amount: values.lumpSumExpenseAmount,
+  Inheritance:  values.expectingInheritancesradio,
+  Inheritance_Description: values.expectingInheritancesDescription,
+  Inheritance_Year:  values.expectingInheritancesYear,
+  Inheritance_Amount: values.expectingInheritancesAmount,
+
+    }
+  console.log(Client_IncomeExpenseDetais)
+  axios
+  .post('http://localhost:7000/Client-ExpenseIncome/Add-Client-ExpenseIncome', Client_IncomeExpenseDetais)
+  .then((res) => console.log("Client Income Expense Added Successfully!"))
+
+
+  let Partner_IncomeExpenseDetais={
+    Partner_PrimaryOccupation:values.clientPrimaryOccupation2,
+    Partner_EmploymentStatus:values.clientEmploymentStatus2,
+    Partner_CompanyName:values.clientNameofCompany2,
+    Partner_CommencementDate:values.clientCommencementDate2,
+    Partner_HoursPerWeek:values.clientNumberofhoursperweek2,
+    Partner_Salary:values.clientSalaryExcludingSuper2,
+    Partner_Superannuation:values.clientSuperAnnuationGuaranteeNumber2,
+    Partner_Superannuation_Type:values.clientSuperAnnuationGuaranteeType2,
+    Partner_FundChoice:values.ChoiceofFundradio2,
+    Partner_Sacririfce:values.sacrificeradio2,
+    Partner_SacririfceAbility:values.clientAbilitytoSalarySacrificeHM2,
+    Partner_TaxContribution:values.contributionradio2,
+    Partner_TaxContributionAbility:values.clientTaxContributiontoSuperHM2,
+    Partner_SalaryPackage:values.currentlySalaryPackageRadio2,
+    Partner_FBT_Status:values.clientEmployerFBTStatus2,
+    Partner_FBT_Options:values.whatDoYouHave2,
+    Partner_FBT_CarCostBase :values.clientCostBaseofCar2,
+    Partner_FBT_Paid:values.FBTradio2,
+    Partner_FBT_CarRunningAmount:values.clientRunningCostsofCarPackaged2,
+    Partner_FBT_CardMortage:values.clientCreditCardMortgageorOther2,
+    Partner_IncomeVaries:values.significantlyradio2,
+    Partner_SickLeaves_Number:values.UnusedSickLeaveEntitlementsNumber2,
+    Partner_SickLeaves_Type:values.UnusedSickLeaveEntitlementsType2,
+    Partner_AnnualLeaves_Number:values.clientUnusedAnnualleaveentitlementsNumber2,
+    Partner_AnnualLeaves_Type:values.clientUnusedAnnualleaveentitlementsType2,
+    Partner_LongServiceLeaves_Number:values.clientUnusedlongserviceleaveNumber2,
+    Partner_LongServiceLeaves_Type:values.clientUnusedlongserviceleaveType2,
+
+//partner Centre Link
+
+Partner_Recieve_CentreLinkPayments: values. centerlink2radio,
+Partner_CentreLinkPayments: values.centrelinkPayments2,
+Partner_PaymentAmount: values.PaymentAmountFortnightly2,
+Partner_AnnualPaymentAmount: values.AnnualPaymentAmount2,
+Partner_CareerAllowance: values.CarerAllowance2radio,
+Partner_FamilyTax: values.FamilyTaxBenefit2,
+
+
+//partner Other Taxable Income
+Partner_TaxableIncome: values.otherTaxableIncome2radio,
+Partner_TaxableAmount:values.AmountofOtherTaxableIncome2,
+Partner_AustralianResident: values.AustralianResident2radio,
+Partner_HECS_Debt: values.HECSdebt2radio,
+Partner_PrivateHospital: values.PrivateHospital2radio,
+Partner_ClaimingRebate: values.claimingRebate2radio,
+Partner_PAYG_Application:values.applicationPAYG2radio,
+Partner_Outstanding_TaxPayments: values.TaxPaymentsOutstanding2,
+Partner_TaxLosses: values.TaxLossesCarriedForward2,
+
+  }
+  console.log(Partner_IncomeExpenseDetais)
+  axios
+  .post('http://localhost:7000/Partner-ExpenseIncome/Add-Partner-ExpenseIncome', Partner_IncomeExpenseDetais)
+  .then((res) => console.log("Partner Income Expense Added Successfully!"))
+
+
+   Navigate('/Professional-Advisors')
   }
   
+
+
   const validationSchema = Yup.object({
     clientPrimaryOccupation: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientEmployerFBTStatus:Yup.string().required( "Required"),
@@ -910,8 +1043,87 @@ TransInsuranceType:'',
   }
 
   const onSubmit2=(values)=>{
-    console.log(values)
-    handleClose();
+    
+    let ExpensesModal = {
+  //********************** Household Expense **********************
+      Household_Rent: values.houseHoldrent,
+      Household_RentType: values.houseHoldrentType,
+      Household_Electricity: values.houseHoldElectricity,
+      Household_ElectricityType: values.houseHoldElectricityType,
+      Household_WaterRates: values.houseHoldWaterRates,
+      Household_WaterRatesType: values.houseHoldWaterRateType,
+      Household_Gas: values.houseHoldGas,
+      Household_GasType: values.houseHoldGasType,
+      Household_Phone: values.houseHoldPhone,
+      Household_PhoneType: values.houseHoldPhoneType,
+      Household_CouncilRate: values.houseHoldCouncilRates,
+      Household_CouncilRateType: values.houseHoldCouncilRatesType,
+      Household_Internet: values.houseHoldInternet,
+      Household_InternetType: values.houseHoldInternetType,
+      Household_Others: values.houseHoldOther,
+      Household_OthersType: values.houseHoldOtherType,
+  //********************** End of Household Expense **********************
+
+  //********************** Personal Expense **********************
+      Personal_Food: values.PersonalFood,
+      Personal_FoodType: values.PersonalFoodType,
+      Personal_Clothing: values.PersonalClothing,
+      Personal_ClothingType: values.PersonalClothingValueType,
+      Personal_Cigarattes: values.PersonalCigarettes,
+      Personal_CigarattesType: values.PersonalCigarettesType,
+      Personal_Alcohol: values.PersonalAlcohol,
+      Personal_AlcoholType: values.PersonalAlcoholType,
+      Personal_SubscriptionFees: values.PersonalSubscriptionFees,
+      Personal_SubscriptionFeesType: values.PersonalSubscriptionFeesType,
+      Personal_ClubMemberships: values.PersonalMembershipsClubs,
+      Personal_ClubMembershipsType: values.PersonalMembershipsClubsType,
+      Personal_Others: values.PersonalOther,
+      Personal_OthersType: values.PersonalOtherType,
+      Personal_Holidays: values.PersonalHolidays,
+      Personal_HolidaysType: values.PersonalHolidaysType,
+      Personal_DiningOut: values.PersonalDiningOut,
+      Personal_DiningOutType: values.PersonalDiningOutType,
+      Personal_MobilePhone: values.PersonalMobilePhone,
+      Personal_MobilePhoneType: values.PersonalMobilePhoneType,
+      Personal_MedicalExpenses: values.PersonalMedicalExpenses,
+      Personal_MedicalExpensesType: values.PersonalMedicalExpensesType,
+  //********************** End of Personal Expense **********************
+
+  //********************** Transport Expense **********************
+      Transport_Petrol: values.TransportPetrol,
+      Transport_PetrolType: values.TransportPetrolType,
+      Transport_CarRepair: values.TransportCarRepairs,
+      Transport_CarRepairType: values.TransportCarRepairsType,
+      Transport_CarRegistration: values.TransportCarRegistration,
+      Transport_CarRegistrationType: values.TransportCarRegistrationType,
+      Transport_PublicTransport: values.PublicTransport,
+      Transport_PublicTransportType: values.PublicTransportType,
+      Transport_Others: values.TransportOther,
+      Transport_OthersType: values.TransportOtherType,
+  //********************** End of Transport Expense **********************
+
+  //********************** Insurance Expense **********************
+      Insurance_PrivateHealth: values.PrivateHealth,
+      Insurance_PrivateHealthType: values.PrivateHealthType,
+      Insurance_Life: values.LifeTPDTrauma,
+      Insurance_LifeType: values.LifeTPDTraumaType,
+      Insurance_IncomeProtection: values.InsuranceIncomeProtection,
+      Insurance_IncomeProtectionType: values.InsuranceIncomeProtectionType,
+      Insurance_Car: values.InsuranceCar,
+      Insurance_CarType: values.InsuranceCarType,
+      Insurance_HomeContents: values.InsuranceHomeContents,
+      Insurance_HomeContentsType: values.InsuranceHomeContentsType,
+      Insurance_Others: values.InsuranceOther,
+      Insurance_OthersType: values.TransInsuranceType,
+  //********************** End of Insurance Expense **********************
+    }
+    
+    console.log(ExpensesModal)
+
+    axios
+    .post('http://localhost:7000/Client-ExpensesModal/Add-Client-ExpensesModal', ExpensesModal)
+    .then((res) => console.log("Expenses Modal Added Succesfully!"))
+    // handleClose();
     
   }
 
@@ -1147,7 +1359,7 @@ TransInsuranceType:'',
 
           <Formik
               initialValues={initialValues}
-              validationSchema={validationSchema}
+              // validationSchema={validationSchema}
               onSubmit={onSubmit}
               enableReinitialize>
                   {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -1475,7 +1687,7 @@ TransInsuranceType:'',
                                   className="form-select shadow  inputDesign"
                                 >
                                   <option value=''>Select</option>
-                                  <option value="dollor">$</option>
+                                  <option value="$">$</option>
                                   <option value="percentage">%</option>
                                 </Field>
                                 <ErrorMessage name="clientSuperAnnuationGuaranteeType" component='div' className="text-danger fw-bold"/>
@@ -2109,7 +2321,7 @@ TransInsuranceType:'',
                                   className="form-select shadow  inputDesign"
                                 >
                                   <option value=''>Select</option>
-                                  <option value="dollor">$</option>
+                                  <option value="$">$</option>
                                   <option value="percentage">%</option>
                                 </Field>
                                 <ErrorMessage name="clientSuperAnnuationGuaranteeType2" component='div' className="text-danger fw-bold"/>
@@ -3404,7 +3616,7 @@ TransInsuranceType:'',
                             </Modal.Header>
                             <Formik 
                               initialValues={initialValues2}
-                              validationSchema={validationSchema2}
+                              // validationSchema={validationSchema2}
                               onSubmit={onSubmit2} >
                                 
                               <Form>  
@@ -3692,6 +3904,7 @@ TransInsuranceType:'',
                                     as="select"
                                       id="houseHoldCouncilRatesType"
                                       className="form-select shadow  inputDesign"
+                                      name="houseHoldCouncilRatesType"
                                     >
                                       <option value="">Select</option>
                                       <option value="Weekly">Weekly</option>
@@ -4889,7 +5102,7 @@ TransInsuranceType:'',
                                       className="float-end btn w-25  bgColor modalBtn"
                                       // onClick={handleClose}
                                     >
-                                      Savee
+                                      Save
                                     </button>
                                     <button
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
