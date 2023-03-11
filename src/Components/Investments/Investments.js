@@ -84,6 +84,45 @@ function Investments() {
     }
   }
 
+  const [ManagedFundsPortfolio, setManagedFundsPortfolio] = useState(false);
+  const [ManagedFundsPortfolioshow, setManagedFundsPortfolioShow] = useState(false);
+  const ManagedFundsPortfoliohandleClose = () => setManagedFundsPortfolioShow(false);
+  const ManagedFundsPortfoliohandleShow = () => setManagedFundsPortfolioShow(true);
+  let ManagedFundsPortfolioHandler=(elem)=>{
+    if (elem==="No"){
+      setManagedFundsPortfolio(false)
+    }
+    else{
+      setManagedFundsPortfolio(true)
+    }
+  }
+
+  const [InvestmentBonds, setInvestmentBonds] = useState(false);
+  const [InvestmentBondsshow, setInvestmentBondsShow] = useState(false);
+  const InvestmentBondshandleClose = () => setInvestmentBondsShow(false);
+  const InvestmentBondshandleShow = () => setInvestmentBondsShow(true);
+  let InvestmentBondsHandler=(elem)=>{
+    if (elem==="No"){
+      setInvestmentBonds(false)
+    }
+    else{
+      setInvestmentBonds(true)
+    }
+  }
+
+  const [Others, setOthers] = useState(false);
+  const [Othersshow, setOthersShow] = useState(false);
+  const OthershandleClose = () => setOthersShow(false);
+  const OthershandleShow = () => setOthersShow(true);
+  let OthersHandler=(elem)=>{
+    if (elem==="No"){
+      setOthers(false)
+    }
+    else{
+      setOthers(true)
+    }
+  }
+
   let phonePattern=/^[1-9][0-9]{9}$/;
   let letters = /^[a-zA-Z ]*$/;
 
@@ -155,58 +194,102 @@ function Investments() {
     ManagedFundsIncomePAType: '',
     ManagedFundsTotalIncomePA: '',
     ManagedFundsReinvestedIncome: 'No',
-    ManagedFundsRegInvestments: ''
+    ManagedFundsRegInvestments: '',
+
+    ManagedFundsPortfolioLoanType: '',
+    ManagedFundsPortfolioCurrentBalance: '',
+    ManagedFundsPortfolioLender: '',
+    ManagedFundsPortfolioInterestRatePA: '',
+    ManagedFundsPortfolioLoanTerm: '',
+    ManagedFundsPortfolioLoanType2: '',
+    ManagedFundsPortfolioDeductibleLoanAmount: '',
+    ManagedFundsPortfolioYearRemaining: '',
+
+    InvestmentBondsPlatformName: '',
+    InvestmentBondsInvestmentName: '',
+    InvestmentBondsNumberOfShares: '',
+    InvestmentBondsSharePrice: '',
+    InvestmentBondsCurrentValue: '',
+    InvestmentBondsOriginalInvestment: '',
+    InvestmentBondsPurchaseDate: '',
+    InvestmentBondsIncomePA: '',
+    InvestmentBondsIncomePAType: '',
+    InvestmentBondsTotalIncomePA: '',
+    InvestmentBondsReinvestedIncome: 'No',
+    InvestmentBondsRegInvestments: '',
+
+    OtherInvestmentName: '',
+    OtherCurrentValue: '',
+    OtherCostBase: '',
+    OtherPurchaseDate: '',
+    OtherIncomePA: '',
+    OtherIncomePAType: '',
+    OtherTotalIncomePA: '',
+    OtherIncomePAType: '',
+    OtherReinvestedIncome: 'No',
+    OtherRegularInvestmentsPA: '',
+
+    OtherInvestmentName2: '',
+    OtherCurrentValue2: '',
+    OtherCostBase2: '',
+    OtherPurchaseDate2: '',
+    OtherIncomePA2: '',
+    OtherIncomePAType2: '',
+    OtherTotalIncomePA2: '',
+    OtherIncomePAType2: '',
+    OtherReinvestedIncome2: 'No',
+    OtherRegularInvestmentsPA2: '',
   }
 
   let Client_validationSchema = Yup.object({
-    BankCurrentValue: Yup.number().required('Required') ,
+    BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
     BankFinancialInstitution: Yup.string().required('Required') ,
-    BankIncomePA: Yup.number().required('Required'),
+    BankIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
     BankIncomePAType: Yup.string().required("Required"),
-    BankIncomeinDollars: Yup.number().required('Required') ,
-    BankRegularSavings: Yup.number().required('Required') ,
+    BankIncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankRegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
-    Bank2CurrentValue: Yup.number().required('Required') ,
+    Bank2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
     Bank2FinancialInstitution: Yup.string().required('Required') ,
-    Bank2IncomePA: Yup.number().required('Required'),
+    Bank2IncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
     Bank2IncomePAType: Yup.string().required("Required"),
-    Bank2IncomeinDollars: Yup.number().required('Required') ,
-    Bank2RegularSavings: Yup.number().required('Required') ,
+    Bank2IncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2RegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
 
 
-    TermDepositCurrentValue: Yup.number().required('Required') ,
+    TermDepositCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
     TermDepositFinancialInstitution: Yup.string().required('Required') ,
-    TermDepositIncomePA: Yup.number().required('Required'),
+    TermDepositIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
     TermDepositIncomePAType: Yup.string().required("Required"),
-    TermDepositIncomeinDollars: Yup.number().required('Required') ,
-    TermDepositRegularSavings: Yup.number().required('Required') ,
+    TermDepositIncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositRegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
-    TermDeposit2CurrentValue: Yup.number().required('Required') ,
+    TermDeposit2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
     TermDeposit2FinancialInstitution: Yup.string().required('Required') ,
-    TermDeposit2IncomePA: Yup.number().required('Required'),
+    TermDeposit2IncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
     TermDeposit2IncomePAType: Yup.string().required("Required"),
-    TermDeposit2IncomeinDollars: Yup.number().required('Required') ,
-    TermDeposit2RegularSavings: Yup.number().required('Required') ,
+    TermDeposit2IncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2RegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
 
 
     AustralianMarketInvestmentName: Yup.string().required('Required'),
-    AustralianMarketNumberOfShares: Yup.number().required('Required'),
-    AustralianMarketSharePrice: Yup.number().required('Required'),
-    AustralianMarketTotalShareValue: Yup.number().required('Required'),
-    AustralianMarketCostBase: Yup.number().required('Required'),
-    AustralianMarketPurchaseDate: Yup.number().required('Required'),
-    AustralianMarketIncomePA: Yup.number().required('Required'),
+    AustralianMarketNumberOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketSharePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketTotalShareValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketPurchaseDate: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianMarketIncomePAType: Yup.string().required('Required'),
-    AustralianMarketTotalIncomePA: Yup.number().required('Required'),
-    AustralianMarketFrankedAmount: Yup.number().required('Required'),
-    AustralianMarketRegInvestments: Yup.number().required('Required'),
+    AustralianMarketTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketFrankedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketRegInvestments: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0),
 
     AustralianPortfolioLoanType: Yup.string().required("Required"),
-    AustralianPortfolioCurrentBalance: Yup.number().required("Required"),
+    AustralianPortfolioCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianPortfolioLender: Yup.string().required("Required"),
-    AustralianInterestRatePA: Yup.number().required("Required"),
+    AustralianInterestRatePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianPortfolioLoanTerm: Yup.string().required("Required"),
     AustralianPortfolioLoanType2: Yup.string().required("Required"),
     AustralianPortfolioDeductibleLoanAmount: Yup.string().required("Required"),
@@ -214,15 +297,62 @@ function Investments() {
 
     ManagedFundsPlatformName: Yup.string().required("Required"),
     ManagedFundsInvestmentName: Yup.string().required("Required"),
-    ManagedFundsNumberOfShares: Yup.number().required("Required"),
-    ManagedFundsSharePrice: Yup.number().required("Required"),
-    ManagedFundsCurrentValue: Yup.number().required("Required"),
-    ManagedFundsOriginalInvestment: Yup.number().required("Required"),
+    ManagedFundsNumberOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsSharePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsPurchaseDate: Yup.string().required("Required"),
-    ManagedFundsIncomePA: Yup.number().required("Required"),
+    ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsIncomePAType: Yup.string().required("Required"),
-    ManagedFundsTotalIncomePA: Yup.number().required("Required"),
-    ManagedFundsRegInvestments: Yup.number().required("Required"),
+    ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsRegInvestments: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    ManagedFundsPortfolioLoanType: Yup.string().required("Required"),
+    ManagedFundsPortfolioCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLender: Yup.string().required("Required"),
+    ManagedFundsPortfolioInterestRatePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLoanTerm: Yup.string().required("Required"),
+    ManagedFundsPortfolioLoanType2: Yup.string().required("Required"),
+    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string().required("Required"),
+    ManagedFundsPortfolioYearRemaining: Yup.string().required("Required"),
+
+    InvestmentBondsPlatformName: Yup.string().required("Required"),
+    InvestmentBondsInvestmentName: Yup.string().required("Required"),
+    InvestmentBondsNumberOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsSharePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsPurchaseDate: Yup.string().required("Required"),
+    InvestmentBondsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsIncomePAType: Yup.string().required("Required"),
+    InvestmentBondsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsRegInvestments: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    OtherInvestmentName: Yup.string().required("Required"),
+    OtherCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherPurchaseDate: Yup.string().required("Required"),
+    OtherIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType: Yup.string().required("Required"),
+    // OtherTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType: Yup.string().required("Required"),
+    OtherRegularInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    OtherInvestmentName2: Yup.string().required("Required"),
+    OtherCurrentValue2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherCostBase2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0)
+    .test(
+      "Is positive?",
+      "Cost Base must be a positive value",
+
+      (value) => value > 0
+    ),
+    OtherPurchaseDate2: Yup.string().required("Required"),
+    OtherIncomePA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType2: Yup.string().required("Required"),
+    // OtherTotalIncomePA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType2: Yup.string().required("Required"),
+    OtherRegularInvestmentsPA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   })
 
   let Client_onSubmit = (Values) => {
@@ -235,7 +365,10 @@ function Investments() {
     TermDepositRadio:'No',
     AustralianShareMarketRadio: 'No',
     AustralianSharePortfolioRadio: 'No',
-    ManagedFundsRadio: 'No'
+    ManagedFundsRadio: 'No',
+    ManagedFundsPortfolioRadio: 'No',
+    InvestmentBondsRadio: 'No',
+    OthersRadio: 'No'
   }
 
   let Navigate = useNavigate();
@@ -1794,22 +1927,22 @@ function Investments() {
                               {/* switch button style */}
                                 <div className="form-check form-switch m-0 p-0 ">
                               <div className="radiobutton">
-                                <input type="radio" name="AustralianSharePortfolioRadio"
-                                id="AustralianSharePortfolioOpt1" value="Yes"
-                                onClick={()=>AustralianSharePortfolioHandler("Yes")} 
+                                <input type="radio" name="ManagedFundsPortfolioRadio"
+                                id="ManagedFundsPortfolioOpt1" value="Yes"
+                                onClick={()=>ManagedFundsPortfolioHandler("Yes")} 
                                 onChange={handleChange}
-                                checked={values.AustralianSharePortfolioRadio==="Yes"}
+                                checked={values.ManagedFundsPortfolioRadio==="Yes"}
                                 />
-                                <label htmlFor="AustralianSharePortfolioOpt1" className="label1">
+                                <label htmlFor="ManagedFundsPortfolioOpt1" className="label1">
                                   <span>YES</span>
                                 </label>
-                                <input type="radio" name="AustralianSharePortfolioRadio"
-                                id="AustralianSharePortfolioOpt2" value="No"
-                                onClick={()=>AustralianSharePortfolioHandler("No")} 
+                                <input type="radio" name="ManagedFundsPortfolioRadio"
+                                id="ManagedFundsPortfolioOpt2" value="No"
+                                onClick={()=>ManagedFundsPortfolioHandler("No")} 
                                 onChange={handleChange}
-                                checked={values.AustralianSharePortfolioRadio==="No"}
+                                checked={values.ManagedFundsPortfolioRadio==="No"}
                               />
-                                <label htmlFor="AustralianSharePortfolioOpt2" className="label2">
+                                <label htmlFor="ManagedFundsPortfolioOpt2" className="label2">
                                   <span>NO</span>
                                 </label>
                               </div>
@@ -1820,7 +1953,7 @@ function Investments() {
                                 </div>
                                   </div>    
                             </div>
-                            {AustralianSharePortfolio && <div className='col-md-6'>
+                            {ManagedFundsPortfolio && <div className='col-md-6'>
                             <label  className="form-label">
                             Please enter the details of your Portfolio
                                 </label>
@@ -1829,7 +1962,7 @@ function Investments() {
                               <span
                                 className=" btn h-50 w-50
                                 btn-outline-success "
-                                onClick={AustralianSharePortfoliohandleShow}
+                                onClick={ManagedFundsPortfoliohandleShow}
                               >
                                 <div className="iconContainer mx-1">
                                 <img className="img-fluid" src={plus} alt="" />
@@ -1842,8 +1975,8 @@ function Investments() {
                               {/* 2 row */}
 
                               <Modal
-                                show={AustralianSharePortfolioshow}
-                                onHide={AustralianSharePortfoliohandleClose}
+                                show={ManagedFundsPortfolioshow}
+                                onHide={ManagedFundsPortfoliohandleClose}
                                 backdrop="static"
                                 className="modal-lg"
                                 keyboard={false}
@@ -1884,23 +2017,23 @@ function Investments() {
                                       <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
                                       <Field
                                               as='select'
-                                              name="AustralianPortfolioLoanType"
-                                              id="AustralianPortfolioLoanType"
+                                              name="ManagedFundsPortfolioLoanType"
+                                              id="ManagedFundsPortfolioLoanType"
                                               className="form-select shadow  inputDesign"
                                             >
                                               <option value=''>Select</option>
                                               <option value="Investment Loan">Investment Loan</option>
                                               <option value="Margin Loan">Margin Loan</option>
                                             </Field>
-                                            <ErrorMessage name="AustralianPortfolioLoanType" component='div' className="text-danger fw-bold"/>
+                                            <ErrorMessage name="ManagedFundsPortfolioLoanType" component='div' className="text-danger fw-bold"/>
                                     </div>            
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
+                                      <label htmlFor="ManagedFundsPortfolioCurrentBalance" className="form-label">Current Balance</   label>
                                       <Field type="number" className="form-control shadow inputDesign"
-                                      id="AustralianPortfolioCurrentBalance" name='AustralianPortfolioCurrentBalance' placeholder="Current Balance"/>
-                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioCurrentBalance' />
+                                      id="ManagedFundsPortfolioCurrentBalance" name='ManagedFundsPortfolioCurrentBalance' placeholder="Current Balance"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPortfolioCurrentBalance' />
                                     </div>            
                                     </div>
 
@@ -1908,8 +2041,8 @@ function Investments() {
                                     <div className="mb-3">
                                     <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
                                       <Field type="text" className="form-control shadow inputDesign"
-                                      id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
-                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
+                                      id="ManagedFundsPortfolioLender" name='ManagedFundsPortfolioLender' placeholder="Lender"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPortfolioLender' />
                                     </div>            
                                     </div>
 
@@ -1917,8 +2050,8 @@ function Investments() {
                                     <div className="mb-3">
                                       <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
                                       <Field type="number" className="form-control shadow inputDesign" 
-                                      id="AustralianInterestRatePA" name='AustralianInterestRatePA' placeholder="Interest Rate P.A."/>
-                                      <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianInterestRatePA' />
+                                      id="ManagedFundsPortfolioInterestRatePA" name='ManagedFundsPortfolioInterestRatePA' placeholder="Interest Rate P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPortfolioInterestRatePA' />
                                     </div>            
                                     </div>
                                     <div className="col-md-6">
@@ -1926,8 +2059,8 @@ function Investments() {
                                       <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
                                       <Field
                                               as='select'
-                                              name="AustralianPortfolioLoanTerm"
-                                              id="AustralianPortfolioLoanTerm"
+                                              name="ManagedFundsPortfolioLoanTerm"
+                                              id="ManagedFundsPortfolioLoanTerm"
                                               className="form-select shadow  inputDesign"
                                             >
                                               <option value=''>Select</option>
@@ -1962,7 +2095,7 @@ function Investments() {
                                               <option value="29">29</option>
                                               <option value="30">30</option>
                                             </Field>
-                                            <ErrorMessage name="AustralianPortfolioLoanTerm" component='div' className="text-danger fw-bold"/>
+                                            <ErrorMessage name="ManagedFundsPortfolioLoanTerm" component='div' className="text-danger fw-bold"/>
                                     </div>            
                                     </div>
                                     <div className="col-md-6">
@@ -1970,26 +2103,26 @@ function Investments() {
                                         <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
                                         <Field
                                                 as='select'
-                                                name="AustralianPortfolioLoanType2"
-                                                id="AustralianPortfolioLoanType2"
+                                                name="ManagedFundsPortfolioLoanType2"
+                                                id="ManagedFundsPortfolioLoanType2"
                                                 className="form-select shadow  inputDesign"
                                               >
                                                 <option value=''>Select</option>
                                                 <option value="I/Only">I/Only</option>
                                                 <option value="P & I">P & I</option>
                                               </Field>
-                                              <ErrorMessage name="AustralianPortfolioLoanType2" component='div' className="text-danger fw-bold"/>
+                                              <ErrorMessage name="ManagedFundsPortfolioLoanType2" component='div' className="text-danger fw-bold"/>
                                       </div>            
                                       </div>
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
-                                        <Field name="AustralianPortfolioDeductibleLoanAmount" 
+                                        <Field name="ManagedFundsPortfolioDeductibleLoanAmount" 
                                         placeholder='Deductible Loan Amount'
-                                        id="AustralianPortfolioDeductibleLoanAmount"
+                                        id="ManagedFundsPortfolioDeductibleLoanAmount"
                                         className="form-control shadow  inputDesign">
                                         </Field>
-                                              <ErrorMessage name="AustralianPortfolioDeductibleLoanAmount" component='div' className="text-danger fw-bold"/>
+                                              <ErrorMessage name="ManagedFundsPortfolioDeductibleLoanAmount" component='div' className="text-danger fw-bold"/>
                                       </div>            
                                       </div>
                                       <div className="col-md-6">
@@ -1997,8 +2130,8 @@ function Investments() {
                                           <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
                                           <Field
                                                   as='select'
-                                                  name="AustralianPortfolioYearRemaining"
-                                                  id="AustralianPortfolioYearRemaining"
+                                                  name="ManagedFundsPortfolioYearRemaining"
+                                                  id="ManagedFundsPortfolioYearRemaining"
                                                   className="form-select shadow  inputDesign"
                                                 >
                                                 <option value=''>Select</option>
@@ -2033,7 +2166,7 @@ function Investments() {
                                                 <option value="29">29</option>
                                                 <option value="30">30</option>
                                                 </Field>
-                                                <ErrorMessage name="AustralianPortfolioYearRemaining" component='div' className="text-danger fw-bold"/>
+                                                <ErrorMessage name="ManagedFundsPortfolioYearRemaining" component='div' className="text-danger fw-bold"/>
                                         </div>            
                                         </div>
 
@@ -2049,14 +2182,14 @@ function Investments() {
                                   <div className="col-md-12">
                                     <button
                                       className="float-end btn w-25  bgColor modalBtn"
-                                      // onClick={AustralianSharePortfoliohandleClose}
+                                      // onClick={ManagedFundsPortfoliohandleClose}
                                       type='submit'
                                     >
                                       Save
                                     </button>
                                     <button
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                      onClick={AustralianSharePortfoliohandleClose}
+                                      onClick={ManagedFundsPortfoliohandleClose}
                                     >
                                       Cancel
                                     </button>
@@ -2069,10 +2202,651 @@ function Investments() {
                           {/* ---------------------------------------------------- */}
 
                           </div>
-                          {/* Managed Funds Details */}    
-                          
+                          {/* Managed Funds Details */}                          
                           
                         
+                          {/* Investment Bonds Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Investment Bonds</h3>
+
+                          {/* --------------------------------------------- */}     
+                              {/* 1 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Bonds?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="InvestmentBondsRadio"
+                                id="InvestmentBondsOpt1" value="Yes"
+                                onClick={()=>InvestmentBondsHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.InvestmentBondsRadio==="Yes"}
+                                />
+                                <label htmlFor="InvestmentBondsOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="InvestmentBondsRadio"
+                                id="InvestmentBondsOpt2" value="No"
+                                onClick={()=>InvestmentBondsHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.InvestmentBondsRadio==="No"}
+                              />
+                                <label htmlFor="InvestmentBondsOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {InvestmentBonds && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Investment Bonds
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={InvestmentBondshandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              <Modal
+                                show={InvestmentBondsshow}
+                                onHide={InvestmentBondshandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                Investment Bonds Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Investment Bonds                       
+                                </h3>
+                            <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentBondsPlatformName"
+                                      id="InvestmentBondsPlatformName"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="1AL">1AL</option>
+                                      <option value="3PL">3PL</option>
+                                      <option value="88E">88E</option>
+                                      <option value="A2M">A2M</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentBondsPlatformName" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentBondsInvestmentName"
+                                      id="InvestmentBondsInvestmentName"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="1AL">1AL</option>
+                                      <option value="3PL">3PL</option>
+                                      <option value="88E">88E</option>
+                                      <option value="A2M">A2M</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentBondsInvestmentName" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentBondsNumberOfShares" className="form-label">No. of Unit/Shares</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentBondsNumberOfShares" name='InvestmentBondsNumberOfShares' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsNumberOfShares' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentBondsSharePrice" name='InvestmentBondsSharePrice' placeholder="Share Price"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsSharePrice' />
+                            </div>            
+                            </div>
+
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign" 
+                              id="InvestmentBondsCurrentValue" name='InvestmentBondsCurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsCurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentBondsOriginalInvestment" name='InvestmentBondsOriginalInvestment' placeholder="Original Investments"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsOriginalInvestment' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
+                              <Field type="date" className="form-control shadow inputDesign"
+                              id="InvestmentBondsPurchaseDate" name='InvestmentBondsPurchaseDate'/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsPurchaseDate' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                            <label htmlFor="InvestmentBondsIncomePA" className="form-label">Income P.A.</   label>
+                            <div className='row'>
+                            <div className='col-md-8'>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentBondsIncomePA" name='InvestmentBondsIncomePA' placeholder="Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsIncomePA' />
+                            </div>
+                            <div className='col-md-4'>
+                            <Field
+                                      as='select'
+                                      name="InvestmentBondsIncomePAType"
+                                      id="InvestmentBondsIncomePAType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="dollor">$</option>
+                                      <option value="percentage">%</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentBondsIncomePAType" component='div' className="text-danger fw-bold"/>
+                            </div>
+                            </div>  
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentBondsTotalIncomePA" name='InvestmentBondsTotalIncomePA' placeholder="Total Income P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsTotalIncomePA' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Reinvestment Income
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="InvestmentBondsReinvestedIncome"
+                                id="InvestmentBondsReinvestedOpt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.InvestmentBondsReinvestedIncome==="Yes"}
+                                />
+                                <label htmlFor="InvestmentBondsReinvestedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="InvestmentBondsReinvestedIncome"
+                                id="InvestmentBondsReinvestedOpt2" value="No"
+                                onChange={handleChange}
+                                checked={values.InvestmentBondsReinvestedIncome==="No"}
+                              />
+                                <label htmlFor="InvestmentBondsReinvestedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentBondsRegInvestments" name='InvestmentBondsRegInvestments' placeholder="Reg Investments P.A."/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsRegInvestments' />
+                            </div>            
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={InvestmentBondshandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={InvestmentBondshandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+                          </div>
+                          {/* Investment Bonds Details */}
+
+                          {/* Others Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Other Funds</h3>
+
+                          {/* --------------------------------------------- */}     
+                              {/* 1 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Funds?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="OthersRadio"
+                                id="OthersOpt1" value="Yes"
+                                onClick={()=>OthersHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.OthersRadio==="Yes"}
+                                />
+                                <label htmlFor="OthersOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="OthersRadio"
+                                id="OthersOpt2" value="No"
+                                onClick={()=>OthersHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.OthersRadio==="No"}
+                              />
+                                <label htmlFor="OthersOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {Others && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Other Funds
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={OthershandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              <Modal
+                                show={Othersshow}
+                                onHide={OthershandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Other Funds
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Other #1
+                                    
+                                        </h3>
+                                    <div className="row">
+                                  <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherInvestmentName" className="form-label">Name of Investment</   label>
+                                      <Field type="text" className="form-control shadow inputDesign" 
+                                      id="OtherInvestmentName" name='OtherInvestmentName' placeholder="Name of Investment"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherInvestmentName' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherCurrentValue" className="form-label">Current Value</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherCurrentValue" name='OtherCurrentValue' placeholder="Current Value"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCurrentValue' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherCostBase" className="form-label">Cost Base</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherCostBase" name='OtherCostBase' placeholder="Cost Base"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCostBase' />
+                                    </div>            
+                                    </div>                            
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherPurchaseDate" className="form-label">Purchase Date</   label>
+                                      <Field type="date" className="form-control shadow inputDesign"
+                                      id="OtherPurchaseDate" name='OtherPurchaseDate' />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate' />
+                                    </div>            
+                                    </div>
+
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="OtherIncomePA" className="form-label">Income P.A.</   label>
+                                    <div className='row'>
+                                    <div className='col-md-8'>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherIncomePA" name='OtherIncomePA' placeholder="Income P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherIncomePA' />
+                                    </div>
+                                    <div className='col-md-4'>
+                                    <Field
+                                              as='select'
+                                              name="OtherIncomePAType"
+                                              id="OtherIncomePAType"
+                                              className="form-select shadow  inputDesign"
+                                            >
+                                              <option value=''>Select</option>
+                                              <option value="dollor">$</option>
+                                              <option value="percentage">%</option>
+                                            </Field>
+                                            <ErrorMessage name="OtherIncomePAType" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>  
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherTotalIncomePA" className="form-label">Total Income P.A.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherTotalIncomePA" name='OtherTotalIncomePA' readOnly/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherTotalIncomePA' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                          <div className="mb-3">
+                                        <label  className="form-label">
+                                        Reinvestment Income
+                                        </label>
+                                      {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                      <div className="radiobutton">
+                                        <input type="radio" name="OtherReinvestedIncome"
+                                        id="OtherReinvestedOpt1" value="Yes"
+                                        onChange={handleChange}
+                                        checked={values.OtherReinvestedIncome==="Yes"}
+                                        />
+                                        <label htmlFor="OtherReinvestedOpt1" className="label1">
+                                          <span>YES</span>
+                                        </label>
+                                        <input type="radio" name="OtherReinvestedIncome"
+                                        id="OtherReinvestedOpt2" value="No"
+                                        onChange={handleChange}
+                                        checked={values.OtherReinvestedIncome==="No"}
+                                      />
+                                        <label htmlFor="OtherReinvestedOpt2" className="label2">
+                                          <span>NO</span>
+                                        </label>
+                                      </div>                                  
+                                        </div>
+                                          </div>    
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherRegularInvestmentsPA" className="form-label">Regular Investments P.A.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherRegularInvestmentsPA" name='OtherRegularInvestmentsPA' placeholder="Regular Investments P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherRegularInvestmentsPA' />
+                                    </div>            
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Other #2
+                                    
+                                        </h3>
+                                    <div className="row">
+                                  <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherInvestmentName2" className="form-label">Name of Investment</   label>
+                                      <Field type="text" className="form-control shadow inputDesign" 
+                                      id="OtherInvestmentName2" name='OtherInvestmentName2' placeholder="Name of Investment"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherInvestmentName2' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherCurrentValue2" className="form-label">Current Value</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherCurrentValue2" name='OtherCurrentValue2' placeholder="Current Value"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCurrentValue2' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherCostBase2" className="form-label">Cost Base</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherCostBase2" name='OtherCostBase2' placeholder="Cost Base"/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCostBase2' />
+                                    </div>            
+                                    </div>                            
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherPurchaseDate2" className="form-label">Purchase Date</   label>
+                                      <Field type="date" className="form-control shadow inputDesign"
+                                      id="OtherPurchaseDate2" name='OtherPurchaseDate2' />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate2' />
+                                    </div>            
+                                    </div>
+
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="OtherIncomePA2" className="form-label">Income P.A.</   label>
+                                    <div className='row'>
+                                    <div className='col-md-8'>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherIncomePA2" name='OtherIncomePA2' placeholder="Income P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherIncomePA2' />
+                                    </div>
+                                    <div className='col-md-4'>
+                                    <Field
+                                              as='select'
+                                              name="OtherIncomePAType2"
+                                              id="OtherIncomePAType2"
+                                              className="form-select shadow  inputDesign"
+                                            >
+                                              <option value=''>Select</option>
+                                              <option value="dollor">$</option>
+                                              <option value="percentage">%</option>
+                                            </Field>
+                                            <ErrorMessage name="OtherIncomePAType2" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>  
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherTotalIncomePA2" className="form-label">Total Income P.A.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherTotalIncomePA2" name='OtherTotalIncomePA2' readOnly/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherTotalIncomePA22' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                          <div className="mb-3">
+                                        <label  className="form-label">
+                                        Reinvestment Income
+                                        </label>
+                                      {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                      <div className="radiobutton">
+                                        <input type="radio" name="OtherReinvestedIncome2"
+                                        id="OtherReinvested2Opt1" value="Yes"
+                                        onChange={handleChange}
+                                        checked={values.OtherReinvestedIncome2==="Yes"}
+                                        />
+                                        <label htmlFor="OtherReinvested2Opt1" className="label1">
+                                          <span>YES</span>
+                                        </label>
+                                        <input type="radio" name="OtherReinvestedIncome2"
+                                        id="OtherReinvested2Opt2" value="No"
+                                        onChange={handleChange}
+                                        checked={values.OtherReinvestedIncome2==="No"}
+                                      />
+                                        <label htmlFor="OtherReinvested2Opt2" className="label2">
+                                          <span>NO</span>
+                                        </label>
+                                      </div>                                  
+                                        </div>
+                                          </div>    
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherRegularInvestmentsPA2" className="form-label">Regular Investments P.A.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                      id="OtherRegularInvestmentsPA2" name='OtherRegularInvestmentsPA2' placeholder="Regular Investments P.A."/>
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherRegularInvestmentsPA2' />
+                                    </div>            
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                                    {/* TermDeposit Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={TermDeposithandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={OthershandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+
+                          </div>
+                          {/* Others Details */} 
+
                           <div className="row mt-5 mb-3">
                             <div className="col-md-12">
                               <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
