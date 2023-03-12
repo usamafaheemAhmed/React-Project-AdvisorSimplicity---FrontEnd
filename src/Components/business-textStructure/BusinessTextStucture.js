@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 
 
@@ -17,6 +17,24 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const BusinessTextStucture = () => {
+
+ let partner= window.localStorage.getItem("partner");
+ const [isPartnered, setIsPartnered] = useState()
+
+ useEffect(() => {
+if(partner=="true"){
+  setIsPartnered(true)
+  // document.getElementById("soleTraderPartner").classList.remove("d-none")
+}
+else{
+  setIsPartnered(false)
+
+  
+  // document.getElementById("soleTraderPartner").classList.add("d-none")
+}
+
+ }, [])
+ 
   let letters = /^[a-zA-Z ]*$/;
 
   const [show, setShow] = useState(false);
@@ -133,17 +151,157 @@ const BusinessTextStucture = () => {
       "Must be a positive number",
       (value)=> value >0
     ),
-    // solePartnerBusinessExpenses: Yup.number().required("Required").test(
-    //   "Is positive?",
-    //   "Must be a positive number",
-    //   (value)=> value >0
-    // ),
-    // solePartnerNetBusinessIncome: Yup.number().required("Required").test(
-    //   "Is positive?",
-    //   "Must be a positive number",
-    //   (value)=> value >0
-    // ),
+    solePartnerBusinessExpenses: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    
 
+    clientsShareofPartnership:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnersShareofPartnership:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    partnershipName: Yup.string().matches(letters, "Only letters").required('Required'),
+    businessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    incomeGenerated: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    businessExpenses:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+
+    privateNameOfCompany: Yup.string().matches(letters, "Only letters").required('Required'),
+    privateNetAssetValueofCompany: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateTradingName: Yup.string().matches(letters, "Only letters").required('Required'),
+    privateTotalRevenue: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateBusinessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    PrivatebusinessExpenses: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateDirectorsDetail: Yup.string().required('Required'),
+    privateClientsshareholding: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privatePartnersShareholding: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    privateClient:Yup.number()
+    .when('dividendsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    privatePartner:Yup.number()
+    .when('dividendsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+    NameofTrust:Yup.string().matches(letters, "Only letters").required('Required'),
+    netAssetValueofBusinessTrust: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustTradingName: Yup.string().matches(letters, "Only letters").required('Required'),
+    trustTotalRevenue: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustBusinessType: Yup.string().matches(letters, "Only letters").required('Required'),
+    trustBusinessExpenses: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustClientShareofDistribution: Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Age must be a positive number",
+      (value) => value > 0
+    ),
+    trustPartnerShareofDistribution:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    trustClient:Yup.number()
+    .when('DistributionsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    trustPartner: Yup.number()
+    .when('DistributionsTakenradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+  })
+  let singlevalidationSchema = Yup.object({
+    soleBusinessName: Yup.string().matches(letters, "Only letters").required('Required') ,
+    soleBusinessType: Yup.string().matches(letters, "Only letters").required('Required') ,
+    soleIncomeGenerated:Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    soleBusinessExpenses:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    // soleNetBusinessIncome: Yup.number(),
+    
+    
     clientsShareofPartnership:Yup.number().required("Required").test(
       "Is positive?",
       "Must be a positive number",
@@ -327,24 +485,42 @@ const BusinessTextStucture = () => {
       BusinessTrust_PartnerPercentage:values.trustPartner,
   
       }
+      let PartnerBusinessDetails={
+        Sole_BusinessName:values.solePartnerBusinessName,
+        Sole_BusinessType:values.solePartnerBusinessType,
+        Sole_IncomeGenerated:values.solePartnerIncomeGenerated,
+        Sole_BusinessExpenses:values.solePartnerBusinessExpenses,
+        Sole_NetBusinessIncome:5000, //to be added
+      }
+  
 
-      axios
+      if(isPartnered===true){
+         axios
       .post('http://localhost:7000/Client-Business/Add-Client-Business', ClientBusinessDetails)
       .then((res) => console.log("Client Business Added Successfully!"))
-    // Navigate('/Income-And-Expenses')
+       Navigate('/Income-And-Expenses')
 
-    let PartnerBusinessDetails={
-      Sole_BusinessName:values.solePartnerBusinessName,
-      Sole_BusinessType:values.solePartnerBusinessType,
-      Sole_IncomeGenerated:values.solePartnerIncomeGenerated,
-      Sole_BusinessExpenses:values.solePartnerBusinessExpenses,
-      Sole_NetBusinessIncome:5000, //to be added
-    }
+
+   
     axios
     .post('http://localhost:7000/Partner-Business/Add-Partner-Business', PartnerBusinessDetails)
     .then((res) => console.log("Partner Business Added Successfully!"))
+
     console.log(ClientBusinessDetails)
     console.log(PartnerBusinessDetails)
+      }
+      else{
+       axios
+      .post('http://localhost:7000/Client-Business/Add-Client-Business', ClientBusinessDetails)
+      .then((res) => console.log("Client Business Added Successfully!"))
+       Navigate('/Income-And-Expenses')
+        
+      console.log(ClientBusinessDetails)
+
+      }
+
+     
+    
   }
 
   let ClientModal_initialValues = {
@@ -813,7 +989,7 @@ handleClosePartnership();
           <div className="col-md-12">
             
             <Formik initialValues={initialValues} 
-            validationSchema={validationSchema} 
+            validationSchema={isPartnered ? validationSchema : singlevalidationSchema} 
             onSubmit={onSubmit} enableReinitialize>
             {({values , setFieldValue ,setValues,handleChange,formik})=>
               <Form>
@@ -1232,7 +1408,9 @@ handleClosePartnership();
 
 
             {/*------------------------------------Sole Trader - Partner------------------------------------*/}
-            <div className="row my-5">
+           {
+           isPartnered &&
+           <div className="row my-5" id="soleTraderPartner">
               <div className="col-md-12">
                 <div className=" shadow px-4 py-4">
                   <h3 className="heading">Sole Trader - Partner
@@ -1629,7 +1807,7 @@ handleClosePartnership();
                   {/*Third row*/}
                 </div>
               </div>
-            </div>
+            </div>}
             {/*------------------------------------Sole Trader - Partner------------------------------------*/}
 
 

@@ -123,6 +123,32 @@ function Investments() {
     }
   }
 
+  const [InvestmentProperties, setInvestmentProperties] = useState(false);
+  const [InvestmentPropertiesshow, setInvestmentPropertiesShow] = useState(false);
+  const InvestmentPropertieshandleClose = () => setInvestmentPropertiesShow(false);
+  const InvestmentPropertieshandleShow = () => setInvestmentPropertiesShow(true);
+  let InvestmentPropertiesHandler=(elem)=>{
+    if (elem==="No"){
+      setInvestmentProperties(false)
+    }
+    else{
+      setInvestmentProperties(true)
+    }
+  }
+
+  const [InvestmentProperties2, setInvestmentProperties2] = useState(false);
+  const [InvestmentProperties2show, setInvestmentProperties2Show] = useState(false);
+  const InvestmentProperties2handleClose = () => setInvestmentProperties2Show(false);
+  const InvestmentProperties2handleShow = () => setInvestmentProperties2Show(true);
+  let InvestmentProperties2Handler=(elem)=>{
+    if (elem==="No"){
+      setInvestmentProperties2(false)
+    }
+    else{
+      setInvestmentProperties2(true)
+    }
+  }
+
   let phonePattern=/^[1-9][0-9]{9}$/;
   let letters = /^[a-zA-Z ]*$/;
 
@@ -239,6 +265,28 @@ function Investments() {
     OtherIncomePAType2: '',
     OtherReinvestedIncome2: 'No',
     OtherRegularInvestmentsPA2: '',
+
+    InvestmentPropertiesCurrentValue: '',
+    InvestmentPropertiesClientOwnership: '',
+    InvestmentPropertiesCostBase: '',
+    InvestmentPropertiesAddress: '',
+    InvestmentPropertiesPostcode: '',
+    InvestmentPropertiesRentalIncome: '',
+    InvestmentPropertiesFrequency: '',
+    InvestmentPropertiesTotalAnnualIncome: '',
+    InvestmentPropertiesExpensesPA: '',
+    InvestmentPropertiesLoanAttached: 'No',
+    InvestmentPropertiesCurrentBalance: '',
+    InvestmentPropertiesClientBorrowing: '',
+    InvestmentPropertiesLender: '',
+    InvestmentPropertiesRepaymentAmount: '',
+    InvestmentPropertiesFrequency2: '',
+    InvestmentPropertiesAnnualRepayment: '',
+    InvestmentPropertiesInterestRatePA: '',
+    InvestmentPropertiesLoanTerm: '',
+    InvestmentPropertiesLoanType: '',
+    InvestmentPropertiesDebtLoanAmount: '',
+    InvestmentPropertiesYearsRemaining: ''
   }
 
   let Client_validationSchema = Yup.object({
@@ -353,11 +401,110 @@ function Investments() {
     // OtherTotalIncomePA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     OtherIncomePAType2: Yup.string().required("Required"),
     OtherRegularInvestmentsPA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    InvestmentPropertiesCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesClientOwnership: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesAddress: Yup.string().required("Required"),
+    InvestmentPropertiesPostcode: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesRentalIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesFrequency: Yup.string().required("Required"),
+    InvestmentPropertiesTotalAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesExpensesPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesCurrentBalance: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesClientBorrowing: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesLender: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesRepaymentAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesFrequency2: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesAnnualRepayment: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesInterestRatePA: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesLoanTerm: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesLoanType: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesDebtLoanAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesYearsRemaining: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    })
   })
 
   let Client_onSubmit = (Values) => {
     console.log(Values)
   }
+
+  let InvestmentModal_initialValues = {
+    // InvestmentModalTotalExpense: '',
+    InvestmentModalCorporateFees: '',
+    InvestmentModalCouncilRates: '',
+    InvestmentModalLawnMoving: '',
+    InvestmentModalInsurance: '',
+    InvestmentModalLandTax: '',
+    InvestmentModalRepairs: '',
+    InvestmentModalWaterCharges: '',
+    InvestmentModalOthers: '',
+    InvestmentModalTelephone: '',
+    InvestmentModalProfessionalFees: '',
+    InvestmentModalAllOthers: ''
+  }
+
+  let InvestmentModal_validationSchema = Yup.object({
+    // InvestmentModalTotalExpense: '',
+    InvestmentModalCorporateFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalCouncilRates: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalLawnMoving: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalInsurance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalLandTax: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalRepairs: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalWaterCharges: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalTelephone: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalProfessionalFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalAllOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0)
+  })
+
+  let InvestmentModal_onSubmit = (Values) => [
+
+  ]
 
 
   let initialValues={
@@ -368,6 +515,7 @@ function Investments() {
     ManagedFundsRadio: 'No',
     ManagedFundsPortfolioRadio: 'No',
     InvestmentBondsRadio: 'No',
+    InvestmentPropertiesRadio: 'No',
     OthersRadio: 'No'
   }
 
@@ -377,7 +525,7 @@ function Investments() {
   }
   let onSubmit=(values)=>{
   console.log(values)
-  Navigate('/')
+  Navigate('/Estate-Planning')
   }
 
   return (
@@ -2489,6 +2637,617 @@ function Investments() {
                           {/* ---------------------------------------------------- */}
                           </div>
                           {/* Investment Bonds Details */}
+
+                          {/* Investment Properties Details */}
+                          <div className='mb-5'>
+                          <h3 className="">Investment Properties</h3>
+
+                          {/* --------------------------------------------- */}     
+                              {/* 1 row */}
+                              <div className="row mb-3">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Investment Properties?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="InvestmentPropertiesRadio"
+                                id="InvestmentPropertiesOpt1" value="Yes"
+                                onClick={()=>InvestmentPropertiesHandler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.InvestmentPropertiesRadio==="Yes"}
+                                />
+                                <label htmlFor="InvestmentPropertiesOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="InvestmentPropertiesRadio"
+                                id="InvestmentPropertiesOpt2" value="No"
+                                onClick={()=>InvestmentPropertiesHandler("No")} 
+                                onChange={handleChange}
+                                checked={values.InvestmentPropertiesRadio==="No"}
+                              />
+                                <label htmlFor="InvestmentPropertiesOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {InvestmentProperties && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Investment Properties
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={InvestmentPropertieshandleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              <Modal
+                                show={InvestmentPropertiesshow}
+                                onHide={InvestmentPropertieshandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                Investment Properties Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Investment Properties                       
+                                </h3>
+                            <div className="row">
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesCurrentValue" className="form-label">Current Value</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesCurrentValue" name='InvestmentPropertiesCurrentValue' placeholder="Current Value"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesCurrentValue' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesClientOwnership" className="form-label">Client % of Ownership</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesClientOwnership" name='InvestmentPropertiesClientOwnership' placeholder="Client Ownership Percentage"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesClientOwnership' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesCostBase" className="form-label">Cost Base</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesCostBase" name='InvestmentPropertiesCostBase' placeholder="Cost Base"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesCostBase' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesAddress" className="form-label">Property Address</   label>
+                              <Field type="text" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesAddress" name='InvestmentPropertiesAddress' placeholder="Property Address"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesAddress' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesPostcode" className="form-label">Postcode</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesPostcode" name='InvestmentPropertiesPostcode' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesPostcode' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesRentalIncome" className="form-label">Rental Income</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesRentalIncome" name='InvestmentPropertiesRentalIncome' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesRentalIncome' />
+                            </div>            
+                            </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesFrequency" className="form-label">Frequency</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentPropertiesFrequency"
+                                      id="InvestmentPropertiesFrequency"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentPropertiesFrequency" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesTotalAnnualIncome" className="form-label">Total Annual Income</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesTotalAnnualIncome" name='InvestmentPropertiesTotalAnnualIncome' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesTotalAnnualIncome' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesExpensesPA" className="form-label">Expenses P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesExpensesPA" name='InvestmentPropertiesExpensesPA' placeholder="No. of shares"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesExpensesPA' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Is there any loan attached?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="InvestmentPropertiesLoanAttached"
+                                id="InvestmentPropertiesLoanAttachedOpt1" value="Yes"
+                                onClick={() => InvestmentProperties2Handler("Yes")}
+                                onChange={handleChange}
+                                checked={values.InvestmentPropertiesLoanAttached==="Yes"}
+                                />
+                                <label htmlFor="InvestmentPropertiesLoanAttachedOpt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="InvestmentPropertiesLoanAttached"
+                                id="InvestmentPropertiesLoanAttachedOpt2" value="No"
+                                onClick={() => InvestmentProperties2Handler("No")}
+                                onChange={handleChange}
+                                checked={values.InvestmentPropertiesLoanAttached==="No"}
+                              />
+                                <label htmlFor="InvestmentPropertiesLoanAttachedOpt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            <div className='col-md-6'>
+                              <div className='mb-3'><div>
+                            <label  className="form-label">
+                            Expense Schedule
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={InvestmentProperties2handleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>
+                            <Modal
+                                show={InvestmentProperties2show}
+                                onHide={InvestmentProperties2handleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                Investment Properties Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={InvestmentModal_initialValues}
+                                validationSchema={InvestmentModal_validationSchema}
+                                onSubmit={InvestmentModal_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Australian Share Market Form */}
+                                    
+                                    {/* Solicitor */}
+                            <div className=' '>
+                            <h3 className=''>
+                            <div className="iconContainerLg mx-1">
+                                <img className="img-fluid" src={lawyer} alt="" />
+
+                                </div>
+                                Expense Schedule                       
+                                </h3>
+                            <div className="row">
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalTotalExpense" className="form-label">Total Property Expenses</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalTotalExpense" name='InvestmentModalTotalExpense' readOnly/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalTotalExpense' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalCorporateFees" className="form-label">Body Corporate Fees</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalCorporateFees" name='InvestmentModalCorporateFees' placeholder='Body Corporate Fees'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalCorporateFees' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalCouncilRates" className="form-label">Council Rates</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalCouncilRates" name='InvestmentModalCouncilRates' placeholder='Council Rates'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalCouncilRates' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalLawnMoving" className="form-label">Gardening and Lawn Moving</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalLawnMoving" name='InvestmentModalLawnMoving' placeholder='Gardening and Lawn Moving'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalLawnMoving' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalInsurance" className="form-label">Insurance</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalInsurance" name='InvestmentModalInsurance' placeholder='Insurance'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalInsurance' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalLandTax" className="form-label">Land Tax</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalLandTax" name='InvestmentModalLandTax' placeholder='Land Tax'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalLandTax' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalRepairs" className="form-label">Repairs and Maintenance</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalRepairs" name='InvestmentModalRepairs' placeholder='Repairs and Maintenance'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalRepairs' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalWaterCharges" className="form-label">Water Charges</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalWaterCharges" name='InvestmentModalWaterCharges' placeholder='Water Charges'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalWaterCharges' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalOthers" className="form-label">Other</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalOthers" name='InvestmentModalOthers' placeholder='Other'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalOthers' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalTelephone" className="form-label">Telephone & Internet</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalTelephone" name='InvestmentModalTelephone' placeholder='Telephone & Internet'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalTelephone' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalProfessionalFees" className="form-label">Professional Fees</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalProfessionalFees" name='InvestmentModalProfessionalFees' placeholder='Professional Fees'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalProfessionalFees' />
+                              </div>            
+                              </div>
+                              <div className="col-md-6">
+                              <div className="mb-3">
+                                <label htmlFor="InvestmentModalAllOthers" className="form-label">All Other</   label>
+                                <Field type="number" className="form-control shadow inputDesign"
+                                id="InvestmentModalAllOthers" name='InvestmentModalAllOthers' placeholder='All Others'/>
+                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalAllOthers' />
+                              </div>            
+                              </div>
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={ManagedFundshandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={ManagedFundshandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              </div>
+                            </div>
+
+                            {InvestmentProperties2 && <div className='row'>
+                                
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesCurrentBalance" className="form-label">Current Balance</   label>
+                              <Field type="number" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesCurrentBalance" name='InvestmentPropertiesCurrentBalance' placeholder="Current Balance"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesCurrentBalance' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesClientBorrowing" className="form-label">Client % Borrowing</   label>
+                              <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesClientBorrowing" 
+                              name='InvestmentPropertiesClientBorrowing' placeholder="Client Borrowing Percentage"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesClientBorrowing' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesLender" className="form-label">Lender</   label>
+                              <Field type="text" className="form-control shadow inputDesign"
+                              id="InvestmentPropertiesLender" name='InvestmentPropertiesLender' placeholder="Lender"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesLender' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesRepaymentAmount" className="form-label">Repayment Amount</   label>
+                              <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesRepaymentAmount" 
+                              name='InvestmentPropertiesRepaymentAmount' placeholder="Repayment Amount"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesRepaymentAmount' />
+                            </div>            
+                            </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesFrequency2" className="form-label">Frequency</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentPropertiesFrequency2"
+                                      id="InvestmentPropertiesFrequency2"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="Weekly">Weekly</option>
+                                      <option value="Monthly">Monthly</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentPropertiesFrequency2" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesAnnualRepayment" className="form-label">Annual Repayments</   label>
+                              <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesAnnualRepayment" 
+                              name='InvestmentPropertiesAnnualRepayment' placeholder="Annual Repayment"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesAnnualRepayment' />
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesInterestRatePA" className="form-label">Interest Rate P.A.</   label>
+                              <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesInterestRatePA" 
+                              name='InvestmentPropertiesInterestRatePA' placeholder="Repayment Amount"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesInterestRatePA' />
+                            </div>            
+                            </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesLoanTerm" className="form-label">Loan Term (1-30 Years)</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentPropertiesLoanTerm"
+                                      id="InvestmentPropertiesLoanTerm"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                              <option value="11">11</option>
+                                              <option value="12">12</option>
+                                              <option value="13">13</option>
+                                              <option value="14">14</option>
+                                              <option value="15">15</option>
+                                              <option value="16">16</option>
+                                              <option value="17">17</option>
+                                              <option value="18">18</option>
+                                              <option value="19">19</option>
+                                              <option value="20">20</option>
+                                              <option value="21">21</option>
+                                              <option value="22">22</option>
+                                              <option value="23">23</option>
+                                              <option value="24">24</option>
+                                              <option value="25">25</option>
+                                              <option value="26">26</option>
+                                              <option value="27">27</option>
+                                              <option value="28">28</option>
+                                              <option value="29">29</option>
+                                              <option value="30">30</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentPropertiesLoanTerm" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesLoanType" className="form-label">Loan Type</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentPropertiesLoanType"
+                                      id="InvestmentPropertiesLoanType"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                      <option value="I/Only">I/Only</option>
+                                      <option value="P & I">P & I</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentPropertiesLoanType" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesDebtLoanAmount" className="form-label">Debt Amount of Loan</   label>
+                              <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesDebtLoanAmount" 
+                              name='InvestmentPropertiesDebtLoanAmount' placeholder="Debt Loan Amount"/>
+                              <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesDebtLoanAmount' />
+                            </div>            
+                            </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label htmlFor="InvestmentPropertiesYearsRemaining" className="form-label">Years Remaining (1-30 Years)</   label>
+                              <Field
+                                      as='select'
+                                      name="InvestmentPropertiesYearsRemaining"
+                                      id="InvestmentPropertiesYearsRemaining"
+                                      className="form-select shadow  inputDesign"
+                                    >
+                                      <option value=''>Select</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                              <option value="11">11</option>
+                                              <option value="12">12</option>
+                                              <option value="13">13</option>
+                                              <option value="14">14</option>
+                                              <option value="15">15</option>
+                                              <option value="16">16</option>
+                                              <option value="17">17</option>
+                                              <option value="18">18</option>
+                                              <option value="19">19</option>
+                                              <option value="20">20</option>
+                                              <option value="21">21</option>
+                                              <option value="22">22</option>
+                                              <option value="23">23</option>
+                                              <option value="24">24</option>
+                                              <option value="25">25</option>
+                                              <option value="26">26</option>
+                                              <option value="27">27</option>
+                                              <option value="28">28</option>
+                                              <option value="29">29</option>
+                                              <option value="30">30</option>
+                                    </Field>
+                                    <ErrorMessage name="InvestmentPropertiesYearsRemaining" component='div' className="text-danger fw-bold"/>
+                            </div>            
+                            </div>
+                            </div>       }                     
+
+                            </div>
+                            
+                            </div>
+                            {/* Solicitor */}
+
+                            {/*Australian Share Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={ManagedFundshandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={InvestmentPropertieshandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                          {/* ---------------------------------------------------- */}
+                          </div>
+                          {/* Investment Properties Details */}
 
                           {/* Others Details */}
                           <div className='mb-5'>

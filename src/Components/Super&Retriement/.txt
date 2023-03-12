@@ -1,0 +1,204 @@
+<Modal
+                                show={LifetimePensionshow}
+                                onHide={LifetimePensionhandleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  LifetimePension Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Client_initialValues}
+                                validationSchema={Client_validationSchema}
+                                onSubmit={Client_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        LifetimePension Accounts
+                                    
+                                        </h3>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionProductProvider" className="form-label">Product Provider</   label>
+                                    <Field
+                                            as='select'
+                                            name="LifetimePensionProductProvider"
+                                            id="LifetimePensionProductProvider"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Challenger">Challenger</option>
+                                            <option value="CommInsure">CommInsure</option>
+                                            <option value="Other">Other</option>
+                                            </Field>
+                                            <ErrorMessage name="LifetimePensionProductProvider" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionOriginalInvestment" className="form-label">Original Investment Amount</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePensionOriginalInvestment" name='LifetimePensionOriginalInvestment' placeholder="Original Investment Amount"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePensionOriginalInvestment' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionCurrentValue" className="form-label">Current Value</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePensionCurrentValue" name='LifetimePensionCurrentValue' placeholder="Current Value"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePensionCurrentValue' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionAnnuityType" className="form-label">Annuity Type</   label>
+                                    <Field
+                                            as='select'
+                                            name="LifetimePensionAnnuityType"
+                                            id="LifetimePensionAnnuityType"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Short Term">Short Term</option>
+                                            <option value="Long Term">Long Term</option>
+                                            </Field>
+                                            <ErrorMessage name="LifetimePensionAnnuityType" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionRCV" className="form-label">RCV</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePensionRCV" name='LifetimePensionRCV' placeholder="RCV"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePensionRCV' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionTerm" className="form-label">Term</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePensionTerm" name='LifetimePensionTerm' placeholder="Term"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePensionTerm' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionMaturityYears" className="form-label">Years Until Maturity</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePensionMaturityYears" name='LifetimePensionMaturityYears' placeholder="Years Until Maturity"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePensionMaturityYears' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionRegularIncomeDrawn" className="form-label">Regular Income Drawn</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePensionRegularIncomeDrawn" name='LifetimePensionRegularIncomeDrawn' placeholder="Regular Income Drawn"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePensionRegularIncomeDrawn' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionFrequency" className="form-label">Frequency</   label>
+                                    <Field
+                                            as='select'
+                                            name="LifetimePensionFrequency"
+                                            id="LifetimePensionFrequency"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Fortnightly">Fortnightly</option>
+                                            <option value="Monthky">Monthky</option>
+                                            <option value="Quarterly">Quarterly</option>
+                                            <option value="Six Monthly">Six Monthly</option>
+                                            <option value="Annually">Annually</option>
+                                            </Field>
+                                            <ErrorMessage name="LifetimePensionFrequency" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePensionInflationRate" className="form-label">Annual Inflation Rate</   label>
+                                    <Field
+                                            as='select'
+                                            name="LifetimePensionInflationRate"
+                                            id="LifetimePensionInflationRate"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="%0.00">%0.00</option>
+                                            <option value="%0.50">%0.50</option>
+                                            <option value="%1.00">%1.00</option>
+                                            <option value="%1.50">%1.50</option>
+                                            <option value="%2.00">%2.00</option>
+                                            <option value="%2.50">%2.50</option>
+                                            <option value="%3.00">%3.00</option>
+                                            <option value="%3.50">%3.50</option>
+                                            <option value="%4.00">%4.00</option>
+                                            <option value="%4.50">%4.50</option>
+                                            <option value="%5.00">%5.00</option>
+                                            <option value="%5.50">%5.50</option>
+                                            <option value="%6.00">%6.00</option>
+                                            <option value="%6.50">%6.50</option>
+                                            <option value="%7.00">%7.00</option>
+                                            <option value="%7.50">%7.50</option>
+                                            <option value="%8.00">%8.00</option>
+                                            <option value="%8.50">%8.50</option>
+                                            <option value="%9.00">%9.00</option>
+                                            <option value="%9.50">%9.50</option>
+                                            <option value="%10.00">%10.00</option>
+                                            </Field>
+                                            <ErrorMessage name="LifetimePensionInflationRate" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                            {/* Bank Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={BankhandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={LifetimePensionhandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>

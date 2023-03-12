@@ -22,6 +22,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const PersonalDetail = () => {
+  const [isPartnered, setIsPartnered] = useState(true)
+
   let letters = /^[a-zA-Z ]*$/;
   let phonePattern=/^[1-9][0-9]{9}$/;
   let postCodePattern=/^\d{4}$/;
@@ -45,6 +47,56 @@ const PersonalDetail = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  let partnerHandler=(value)=>{
+    //  alert(value)
+     
+
+    let selectedValue= document.getElementById("maritalStatus").value;
+     
+    switch (selectedValue) {
+      case 'Married':
+        setIsPartnered(true)
+        console.log('Married');
+        // window.localStorage.setItem("maritalStatus",selectedValue)
+        window.localStorage.setItem("partner",true)
+        document.getElementById("PartnerPersonalInformation").classList.remove("d-none")
+        break;
+      case 'Partnered':
+        setIsPartnered(true)
+        window.localStorage.setItem("partner",true)
+        document.getElementById("PartnerPersonalInformation").classList.remove("d-none")
+
+        console.log('Partnered');
+        break;
+      case 'Single':
+        setIsPartnered(false)
+        window.localStorage.setItem("partner",false)
+
+        document.getElementById("PartnerPersonalInformation").classList.add("d-none")
+        console.log('Single');
+        break;
+        case 'DeFacto':
+          setIsPartnered(true)
+          window.localStorage.setItem("partner",true)
+        document.getElementById("PartnerPersonalInformation").classList.remove("d-none")
+        console.log('DeFacto');
+        break;
+        case 'Widowed':
+          setIsPartnered(false)
+          window.localStorage.setItem("partner",false)
+
+          document.getElementById("PartnerPersonalInformation").classList.add("d-none")
+          console.log('Widowed');
+          break;
+          case '':
+          setIsPartnered(false)
+          console.log('empty');
+          break;
+      default:
+        console.log(`Sorry, we are out of ${selectedValue}.`);
+    }
+  }
 
   let smokerHandler=(elem)=>{
     if(elem=="smoker"){
@@ -122,7 +174,6 @@ const PersonalDetail = () => {
         document.getElementById("female12").classList.remove('selectedimage');
         document.getElementById("female12").classList.add('notSelectedimage');
       setClientGender2("male")
-
 
       }
     
@@ -383,7 +434,9 @@ let ClientDetails={
     Email:values.emailID2,
     
   }
-  axios
+
+  if(isPartnered===true){
+     axios
   .post('http://localhost:7000/Client/Add-Client',ClientDetails)
   .then((res) => {
     console.log("Client Successfully Added!");
@@ -394,9 +447,20 @@ let ClientDetails={
   .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
   .then((res) => console.log("Partner Successfully Added!"))
 
-console.log(PartnerDetails)
+    console.log(PartnerDetails)
+    console.log(ClientDetails)
+  }
+  else{
+   axios
+  .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
+  .then((res) => console.log("Partner Successfully Added!"))
+
+    
 console.log(ClientDetails)
 
+
+  }
+  
 
 }
         const validationSchema = Yup.object({
@@ -465,6 +529,49 @@ console.log(ClientDetails)
           emailID2: Yup.string().email("Invalid email format").required("Required"),
 
         })
+
+        const SinglevalidationSchema = Yup.object({
+          givenNameID: Yup.string().matches(letters, "only letters").required('Required') ,
+          maritalStatus: Yup.string().required('Required'),
+          preferedNameID: Yup.string().matches(letters, "only letters").required('Required') ,
+          employmentStatusID: Yup.string().required('Required'),
+          titleID: Yup.string().required('Required'),
+          surnameID: Yup.string().matches(letters, "only letters").required('Required') ,
+          HealthID: Yup.string().required('Required'),
+          plannedRetirementAgeID:Yup.number().required("Required")
+          .test(
+            "Is positive?",
+            "Age must be a positive number",
+
+            (value) => value > 0
+          ),
+          ClientDoBID: Yup.string().required('Required'),
+
+          homeAddressID:Yup.string().required('Required'),
+          homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
+          .required('Required'),
+          PostcodeID:Yup.string().matches(postCodePattern,"invalid postcode").required('Required'),
+
+          workPhoneID:Yup.string().matches(phonePattern, "invalid phone number")
+          .required('Required'),
+          emailID: Yup.string().email("Invalid email format").required("Required"),
+          mobileID:Yup.string().matches(phonePattern, "invalid phone number").required("Required"),
+          postalAddressID:Yup.string().when("clientPostalAddressCheckBoxID",{
+           is:false,
+           then:Yup.string().required("Required")
+          }),
+           postalPostcodeIDSame:Yup.string().when("clientPostalAddressCheckBoxID",{
+           is:false,
+           then:Yup.string().matches(postCodePattern,"invalid postcode").required("Required")
+          }),
+
+           DescriptionID:Yup.string()
+           .when("healthIssuesradio",{
+           is:(val)=> val && val.length ==3,
+           then:Yup.string().required("Required")
+            }),
+
+       })
 
 // ----------------------------------------------------------------------
 let ageHandler2=()=>{
@@ -693,7 +800,7 @@ const initialValues2={
         {/* --------------------------Start client Form-------------------- */}
                   <Formik
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
+                    validationSchema={isPartnered ? validationSchema : SinglevalidationSchema}
                     onSubmit={onSubmit}
                     enableReinitialize
                     >
@@ -758,14 +865,16 @@ const initialValues2={
                         as="select"
                           id="maritalStatus"
                           className="form-select shadow  inputDesign"
-                          onChange={(e) => setFieldValue("maritalStatus", e.target.value)}
+                          // onChange={(e) => setFieldValue("maritalStatus", e.target.value)}
+                          onChange={(e)=> {setFieldValue("maritalStatus", e.target.value); partnerHandler("false")}}
+
                           value={values.maritalStatus}
                         >
                           <option value="">Select</option>
                           <option value="Married">Married</option>
                           <option value="Partnered">Partnered</option>
                           <option value="Single">Single</option>
-                          <option value="De-Facto">De-facto</option>
+                          <option value="DeFacto">De-facto</option>
                           <option value="Widowed">Widowed</option>
                         </Field>
                         <ErrorMessage component='div' className="text-danger fw-bold"name="maritalStatus" />
@@ -1010,7 +1119,7 @@ const initialValues2={
                           </span>
                         </div>
                       </div>
-                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID2" />
+                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -1043,8 +1152,11 @@ const initialValues2={
               {/* Client Personal Information */}
 
               {/* Partner Personal Information */}
-              <div className="mt-4">
-                <div className=" shadow px-4 py-4">
+{/*              
+                isPartnered && */}
+             <div className="mt-4" id="PartnerPersonalInformation">
+
+                  <div className=" shadow px-4 py-4">
                 <h3 className="heading ">Partner Personal Information
                   <div className="iconContainerLg">
                     <img className="img-fluid" src={notebook} alt="" />
@@ -1096,7 +1208,7 @@ const initialValues2={
                           <option value="">Select</option>
                           <option value="Married">Married</option>
                           <option value="Partnered">Partnered</option>
-                          <option value="De-Facto">De-facto</option>
+                          <option value="De-facto">De-facto</option>
                         </Field>
                         <ErrorMessage className="text-danger fw-bold" component="div"   name="maritalStatus2" />
 
@@ -1363,7 +1475,10 @@ const initialValues2={
                     
 
                 </div>
+                
+
               </div>
+             
               {/* Partner Personal Information */}
             
 
@@ -1604,7 +1719,9 @@ const initialValues2={
 
          {/*  start partner contact details form */}
            
-         <div className=" shadow px-4 py-4 mt-4">
+         {
+          isPartnered &&
+          <div className=" shadow px-4 py-4 mt-4" >
               <h3 className="heading">
                 Partner Contact Details 
                 <div className="iconContainerLg">
@@ -1672,6 +1789,7 @@ const initialValues2={
                 {/* 2nd row*/}
                 
          </div>
+         }
       {/*  end partner contact details form */}
 
           
@@ -2022,7 +2140,7 @@ const initialValues2={
                                   >
                                     <option value="">Select</option>
                                     <option value="No">No</option>
-                                    <option value="Paid">Paid</option>
+                                    <option value="Paid">Paid123</option>
                                     <option value="Received">Received</option>
                                   </Field>
                                   <ErrorMessage className="text-danger fw-bold" component="div"   name="childSupportReceived" />

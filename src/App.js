@@ -11,6 +11,7 @@ import AssetsLiabilities from './components/Assets&Liabilities/AssetsLiabilities
 import Investments from './components/Investments/Investments';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Options from './components/Options';
+import SuperRetriement from './components/Super&Retriement/SuperRetriement';
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
         <Route path='/Professional-Advisors' element={<ProfessionalAdvisers/>} />
         <Route path='/Assets-And-Liabilities' element={<AssetsLiabilities/>} />
         <Route path='/Investments' element={<Investments/>} />
+        <Route path='/Estate-Planning' element={<Investments/>} />
+        <Route path='/Super-And-Retirment' element={<SuperRetriement/>} />
       </Routes>
       </BrowserRouter>
       </div>
