@@ -12,6 +12,8 @@ import Investments from './components/Investments/Investments';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Options from './components/Options';
 import SuperRetriement from './components/Super&Retriement/SuperRetriement';
+import EstatePlanning from './components/EstatePlanning/EstatePlanning';
+import SMSF from './components/SMSF/SMSF';
 
 function App() {
   return (
@@ -32,8 +34,9 @@ function App() {
         <Route path='/Professional-Advisors' element={<ProfessionalAdvisers/>} />
         <Route path='/Assets-And-Liabilities' element={<AssetsLiabilities/>} />
         <Route path='/Investments' element={<Investments/>} />
-        <Route path='/Estate-Planning' element={<Investments/>} />
+        <Route path='/Estate-Planning' element={<EstatePlanning/>} />
         <Route path='/Super-And-Retirment' element={<SuperRetriement/>} />
+        <Route path='/SMSF' element={<SMSF/>} />
       </Routes>
       </BrowserRouter>
       </div>
