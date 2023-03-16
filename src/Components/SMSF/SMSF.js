@@ -143,9 +143,6 @@ function SMSF() {
       SMSFABN: Yup.string().required("Required"),
       SMSFTrusteeType: Yup.string().required("Required"),
       SMSFEstablishmentDate: Yup.string().required("Required"),
-      SMSFAssetsSegregated: 'No',
-      SMSFBorrowingInvestment: 'No',
-      SMSFAcquiringInsurances: 'No',
       SMSFAccountant: Yup.string().required("Required"),
       SMSFAuditor: Yup.string().required("Required"),
       SMSFAccountingAuditing: Yup.string().required("Required"),
@@ -158,7 +155,7 @@ function SMSF() {
         Navigate('/Accumulation-And-Retirment');
     }
     let onSubmit = (Values) => {
-
+      Navigate('/Investment-Trust')
     }
 
     let Client_initialValues = {
