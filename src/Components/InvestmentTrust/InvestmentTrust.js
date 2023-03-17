@@ -2259,7 +2259,7 @@ InvestmentYearsRemainingYear:Yup.string()
 
                    {/*Manage Funds */}
                    <div className='shadow py-4 px-4 my-5'>
-                        <h3 className="text-center">manage Funds</h3>
+                        <h3 className="text-center">Managed Funds</h3>
                         <div className="row">
                         <div className='col-md-6'>
                         <label  className="form-label">

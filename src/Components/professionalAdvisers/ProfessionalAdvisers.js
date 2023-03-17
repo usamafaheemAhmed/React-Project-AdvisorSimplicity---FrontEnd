@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 
 import plus from "./images/plus.svg"
@@ -16,21 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ProfessionalAdvisors = () => {
-
-  let partner= window.localStorage.getItem("partner");
-const [isPartnered, setIsPartnered] = useState()
-
-useEffect(() => {
-  if(partner=="true"){
-    setIsPartnered(true)
-  
-  }
-  else{
-    setIsPartnered(false)
- 
-  }
-  
-   }, [])
   let letters = /^[a-zA-Z ]*$/;
   let phonePattern=/^[1-9][0-9]{9}$/;
 
@@ -268,30 +253,21 @@ console.log(PartnerModalDetails)
   }
 
   let onSubmit=(values)=>{
-  // Navigate('/Assets-And-Liabilities')
+  Navigate('/Assets-And-Liabilities')
   let ProfessionalAdvisor={
     ProfessionalAdvisor: values.ProfessionalAdvisors1radio
   }
+  axios
+  .post('http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor', ProfessionalAdvisor)
+  .then((res) => console.log("Client Advisor Added Successfully!"))
+
   let ProfessionalAdvisor2={
     ProfessionalAdvisor: values.ProfessionalAdvisors2radio
   }
-  if(isPartnered===true){
-console.log(ProfessionalAdvisor)
-console.log(ProfessionalAdvisor2)
-
-  }
-  else{
-    console.log(ProfessionalAdvisor2)
-  }
-//   axios
-//   .post('http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor', ProfessionalAdvisor)
-//   .then((res) => console.log("Client Advisor Added Successfully!"))
-
-  
-// axios
-// .post('http://localhost:7000/Partner-ProfessionalAdvisor/Add-PartnerAdvisor', ProfessionalAdvisor2)
-// .then((res) => console.log("Partner Advisor Added Successfully!"))
-  
+axios
+.post('http://localhost:7000/Partner-ProfessionalAdvisor/Add-PartnerAdvisor', ProfessionalAdvisor2)
+.then((res) => console.log("Partner Advisor Added Successfully!"))
+  console.log(values)
   }
 
 
@@ -668,8 +644,7 @@ enableReinitialize
 
 
                        {/* Partner Professional Advisors */}
-                      {
-                      isPartnered && <div className='mt-5'>
+                       <div className='mt-5'>
                       <h3 className="">Partner Professional Advisors</h3>
 
                            {/* 1 row */}
@@ -1010,7 +985,7 @@ enableReinitialize
                             </Formik>
                           </Modal>
                            {/* ---------------------------------------------------- */}
-                       </div>}
+                       </div>
                       {/* Partner Professional Advisors */}
                      
                       <div className="row mt-5 mb-3">

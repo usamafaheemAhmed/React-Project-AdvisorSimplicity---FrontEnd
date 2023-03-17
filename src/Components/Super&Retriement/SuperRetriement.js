@@ -66,6 +66,11 @@ function SuperRetriement() {
         }
     }
 
+
+    let Navigate = useNavigate();
+    function BackFunction(){
+      Navigate('/Estate-Planning')
+    }
     let Client_initialValues={
         SuperFundName: '',
         SuperMemberNo: '',
@@ -208,6 +213,7 @@ function SuperRetriement() {
     }
 
     let onSubmit = (Values) => {
+      Navigate('/SMSF')
         console.log(Values)
     }
 
@@ -1423,6 +1429,13 @@ function SuperRetriement() {
                               {/* ---------------------------------------------------- */}
                     </div>
                   {/* Lifetime Pension Details */}
+
+                      <div className="row mt-5 mb-3">
+                        <div className="col-md-12">
+                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
+                          <button className="float-end btn w-25  btn-outline backBtn mx-3" onClick={BackFunction}>Back</button>
+                        </div>
+                      </div>
 
                 </Form>}
             </Formik>

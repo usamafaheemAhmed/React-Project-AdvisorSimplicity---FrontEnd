@@ -38,7 +38,7 @@ function Options() {
                                 <h5 ><b><a id="Options" href='/SMSF'>SMSF</a></b></h5>
                             </div>
                             <div className='col-md-2 text-center'>
-                                <h5 ><b><a id="Options" href='/Investement-Trust'>Investement Trust</a></b></h5>
+                                <h5 ><b><a id="Options" href='/Investment-Trust'>Investment Trust</a></b></h5>
                             </div>
                             <div className='col-md-2 text-center'>
                                 <h5 ><b><a id="Options" href='/Personal-Insurance'>Personal Insurance</a></b></h5>
