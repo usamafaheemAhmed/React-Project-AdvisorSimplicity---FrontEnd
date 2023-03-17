@@ -14,6 +14,8 @@ import Options from './components/Options';
 import SuperRetriement from './components/Super&Retriement/SuperRetriement';
 import EstatePlanning from './components/EstatePlanning/EstatePlanning';
 import SMSF from './components/SMSF/SMSF';
+import InvestmentTrust from './components/InvestmentTrust/InvestmentTrust';
+import PersonalInsurance from './components/PersonalInsurance/PersonalInsurance';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
         <Route path='/Estate-Planning' element={<EstatePlanning/>} />
         <Route path='/Super-And-Retirment' element={<SuperRetriement/>} />
         <Route path='/SMSF' element={<SMSF/>} />
+        <Route path='/Investment-Trust' element={<InvestmentTrust/>} />
+        <Route path='/Personal-Insurance' element={<PersonalInsurance/>} />
       </Routes>
       </BrowserRouter>
       </div>
