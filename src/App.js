@@ -1,33 +1,33 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import PersonalDetail from './components/personalDetail/PersonalDetail';
-import BusinessTextStucture from './components/business-textStructure/BusinessTextStucture';
-import IncomeExpenses from './components/incomeAndExpenses/IncomeExpenses';
-import ProfessionalAdvisers from './components/professionalAdvisers/ProfessionalAdvisers';
-import SideBarrr from './components/SideBar/SideBarrr';
+import PersonalDetail from './components/PersonalDetails/PersonalDetail';
+import BusinessTextStucture from './components/Business&TaxStructure/BusinessTextStucture';
+import IncomeExpenses from './components/Income&Expenses/IncomeExpenses';
+import ProfessionalAdvisers from './components/ProfessionalAdvisors/ProfessionalAdvisers';
+import SideBar from './components/SideBar/SideBarrr';
 import Topbar from './components/Topbar/Topbar';
 import AssetsLiabilities from './components/Assets&Liabilities/AssetsLiabilities';
 import Investments from './components/Investments/Investments';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Options from './components/Options';
-import SuperRetriement from './components/Super&Retriement/SuperRetriement';
+import SuperRetriement from './components/Super&Retirement/SuperRetriement';
 import EstatePlanning from './components/EstatePlanning/EstatePlanning';
 import SMSF from './components/SMSF/SMSF';
 import InvestmentTrust from './components/InvestmentTrust/InvestmentTrust';
 import PersonalInsurance from './components/PersonalInsurance/PersonalInsurance';
 import RiskProfile from './components/RiskProfile/RiskProfile';
-import GoalsObjectives from './components/GoalsAndObjective/GoalsObjective';
+import GoalsObjectives from './components/Goals&Objectives/GoalsObjective';
 
 function App() {
   return (
     <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
-        {/* <SideBarrr/> */}
+        <SideBar/>
       </div>
 
       <div className="col-md-10 m-0 p-0"> 
-      {/* <Topbar />   */}
+      <Topbar />  
       <Options />
       
       <BrowserRouter>

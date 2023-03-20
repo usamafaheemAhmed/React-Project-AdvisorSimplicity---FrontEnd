@@ -4,8 +4,6 @@ import "./Side.css"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faReceipt, faTasks } from '@fortawesome/free-solid-svg-icons';
-import TopNavBar from '../navbar/TopNavBar';
-
 const SideBarrr = () => {
 
     
