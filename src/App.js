@@ -23,11 +23,11 @@ function App() {
   return (
     <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
-        <SideBarrr/>
+        {/* <SideBarrr/> */}
       </div>
 
       <div className="col-md-10 m-0 p-0"> 
-      <Topbar />  
+      {/* <Topbar />   */}
       <Options />
       
       <BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from "react-bootstrap/Modal";
 
 import plus from "./images/plus.svg"
@@ -16,6 +16,38 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ProfessionalAdvisors = () => {
+
+  const [isClientTable, setIsClientTable] = useState(false)
+  const [isPartnerTable, setIsPartnerTable] = useState(false)
+
+  const [listofSolicitor, setListofSolicitor] = useState([]);
+  const [listOfDoctor, setListOfDoctor] = useState([]);
+  const [listOfAccountant, setListOfAccountant] = useState([])
+  const [listOfInsuranceAdvisor, setListOfInsuranceAdvisor] = useState([])
+  const [listOfOther, setListOfOther] = useState([]);
+
+  const [listofSolicitor2, setListofSolicitor2] = useState([]);
+  const [listOfDoctor2, setListOfDoctor2] = useState([]);
+  const [listOfAccountant2, setListOfAccountant2] = useState([])
+  const [listOfInsuranceAdvisor2, setListOfInsuranceAdvisor2] = useState([])
+  const [listOfOther2, setListOfOther2] = useState([]);
+
+  
+
+  let partner= window.localStorage.getItem("partner");
+  const [isPartnered, setIsPartnered] = useState()
+
+useEffect(() => {
+  if(partner=="true"){
+    setIsPartnered(true)
+  
+  }
+  else{
+    setIsPartnered(false)
+ 
+  }
+  
+   }, [])
   let letters = /^[a-zA-Z ]*$/;
   let phonePattern=/^[1-9][0-9]{9}$/;
 
@@ -31,6 +63,8 @@ const ProfessionalAdvisors = () => {
   const [advisorState, setAdvisorState] = useState(false);
   const [advisorState2, setAdvisorState2] = useState(false);
 
+
+ 
 
   let advisorHandler=(elem)=>{
     if (elem==="No"){
@@ -141,6 +175,15 @@ const ProfessionalAdvisors = () => {
       Other_Email: values.otherEmail,
     }
 
+    
+
+    setListofSolicitor([ClientModalDetails]);
+    setListOfAccountant([ClientModalDetails])
+    setListOfInsuranceAdvisor([ClientModalDetails])
+    setListOfDoctor([ClientModalDetails]);
+    setListOfOther([ClientModalDetails])
+setIsClientTable(true)
+handleClose();
     axios
   .post('http://localhost:7000/Client-ProfessionalAdvisor-Modal/Add-Client-AdvisorModal', ClientModalDetails)
   .then((res) => console.log("Client Advisor Modal Added Successfully!"))
@@ -232,13 +275,20 @@ console.log(ClientModalDetails)
       Other_Name: values.otherName2,
       Other_Company: values.otherCompany2,
       Other_Phone: values.otherPhone2,
-      Other_Email: values.otherEmai2,
+      Other_Email: values.otherEmail2,
     }
+    setListofSolicitor2([PartnerModalDetails]);
+    setListOfAccountant2([PartnerModalDetails])
+    setListOfInsuranceAdvisor2([PartnerModalDetails])
+    setListOfDoctor2([PartnerModalDetails]);
+    setListOfOther2([PartnerModalDetails])
+   setIsPartnerTable(true)
     axios
   .post('http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Add-Partner-AdvisorModal', PartnerModalDetails)
   .then((res) => console.log("Partner Advisor Modal Added Successfully!"))
     
-console.log(PartnerModalDetails)
+  console.log(PartnerModalDetails)
+  handleClose2();
   }
 
   let initialValues={
@@ -254,20 +304,34 @@ console.log(PartnerModalDetails)
 
   let onSubmit=(values)=>{
   Navigate('/Assets-And-Liabilities')
-  let ProfessionalAdvisor={
+  let ProfessionalAdvisor1={
     ProfessionalAdvisor: values.ProfessionalAdvisors1radio
   }
-  axios
-  .post('http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor', ProfessionalAdvisor)
-  .then((res) => console.log("Client Advisor Added Successfully!"))
-
   let ProfessionalAdvisor2={
     ProfessionalAdvisor: values.ProfessionalAdvisors2radio
   }
-axios
-.post('http://localhost:7000/Partner-ProfessionalAdvisor/Add-PartnerAdvisor', ProfessionalAdvisor2)
-.then((res) => console.log("Partner Advisor Added Successfully!"))
-  console.log(values)
+  if(isPartnered===true){
+    console.log(ProfessionalAdvisor1)
+    console.log(ProfessionalAdvisor2)
+      axios
+      .post('http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor', ProfessionalAdvisor1)
+      .then((res) => console.log("Client Advisor Added Successfully!"))
+    
+      
+    axios
+    .post('http://localhost:7000/Partner-ProfessionalAdvisor/Add-PartnerAdvisor', ProfessionalAdvisor2)
+    .then((res) => console.log("Partner Advisor Added Successfully!"))
+
+  }
+  else{
+    console.log(ProfessionalAdvisor1)
+    
+    axios
+    .post('http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor', ProfessionalAdvisor1)
+    .then((res) => console.log("Client Advisor Added Successfully!"))
+  } 
+
+
   }
 
 
@@ -353,7 +417,7 @@ enableReinitialize
                            </div>
                            {/* 1 row */}
                            
-                           {/* --------------------------------------------- */}
+                           {/* -------------bank accounts modal---------------------------- */}
 
                            <Modal
                             show={show}
@@ -376,7 +440,7 @@ enableReinitialize
                             </Modal.Header>
                            <Formik
                             initialValues={Client_initialValues}
-                            validationSchema={Client_validationSchema}
+                            // validationSchema={Client_validationSchema}
                             onSubmit={Client_onSubmit}>
                           {({values , setFieldValue ,setValues,handleChange,formik})=>
                             <Form>
@@ -626,25 +690,199 @@ enableReinitialize
                                 >
                                   Save
                                 </button>
-                                <button
+                                <span
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose}
                                 >
                                   Cancel
-                                </button>
+                                </span>
                               </div>
                             </Modal.Footer>
                             </Form>
                             }
                            </Formik>
                           </Modal>
-                           {/* ---------------------------------------------------- */}
+                           {/* -------------Client Professional Advisors modal---------------------------- */}
+                          
                       </div>
                       {/* Client Professional Advisors */}
 
+                      {/* Table Client Professional Advisors */}
+                      { 
+          isClientTable && 
+         <div   className='table-responsive my-3'>
+         <table className="table table-bordered table-hover text-center">
+  <thead className="text-light" id="tableHead">
+  <tr>
+    <th>Advisor</th>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Phone</th>
+        <th>Email</th>
+       <th>Operations</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+
+   {  listofSolicitor.map((elem,index)=>{
+      let {Solicitor_Name,Solicitor_Company, Solicitor_Phone,Solicitor_Email}=elem;
+      if(listofSolicitor[0].Solicitor_Name =='' || listofSolicitor[0].Solicitor_Phone =='' ||
+      listofSolicitor[0].Solicitor_Company =='' || listofSolicitor[0].Solicitor_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Solicitor</td>
+              <td>{Solicitor_Name}</td>
+              <td>{Solicitor_Company}</td>
+              <td>{Solicitor_Phone}</td>
+              <td>{Solicitor_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+   
+    }) }
+
+{  listOfAccountant.map((elem,index)=>{
+      let {Accountant_Name,Accountant_Company, Accountant_Phone,Accountant_Email}=elem;
+      if(listOfAccountant[0].Accountant_Name =='' || listOfAccountant[0].Accountant_Phone =='' ||
+      listOfAccountant[0].Accountant_Company =='' || listOfAccountant[0].Accountant_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Accountant</td>
+              <td>{Accountant_Name}</td>
+              <td>{Accountant_Company}</td>
+              <td>{Accountant_Phone}</td>
+              <td>{Accountant_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+               </td> 
+          
+          </tr>
+          );
+      }
+    }) }
+
+{  listOfInsuranceAdvisor.map((elem,index)=>{
+      let {InsuranceAdvisor_Name,InsuranceAdvisor_Company,InsuranceAdvisor_Phone,InsuranceAdvisor_Email}=elem;
+      if(listOfInsuranceAdvisor[0].InsuranceAdvisor_Name =='' || listOfInsuranceAdvisor[0].InsuranceAdvisor_Phone =='' ||
+      listOfInsuranceAdvisor[0].InsuranceAdvisor_Company =='' || listOfInsuranceAdvisor[0].InsuranceAdvisor_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+              <td className='fw-bold'>Insurance Advisor</td>
+              <td>{InsuranceAdvisor_Name}</td>
+              <td>{InsuranceAdvisor_Company}</td>
+              <td>{InsuranceAdvisor_Phone}</td>
+              <td>{InsuranceAdvisor_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+               </td> 
+          
+          </tr>
+          );
+      }
+    }) }
+
+    {  listOfDoctor.map((elem,index)=>{
+      let {Doctor_Name,Doctor_Company, Doctor_Phone,Doctor_Email,}=elem;
+      if(listOfDoctor[0].Doctor_Name =='' || listOfDoctor[0].Doctor_Phone =='' ||
+      listOfDoctor[0].Doctor_Company =='' || listOfDoctor[0].Doctor_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Doctor</td>
+              <td>{Doctor_Name}</td>
+              <td>{Doctor_Company}</td>
+              <td>{Doctor_Phone}</td>
+              <td>{Doctor_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+
+       
+
+        
+    }) }
+
+    { listOfOther.map((elem,index)=>{
+      let {Other_Name,Other_Company, Other_Phone,Other_Email}=elem;
+      if(listOfOther[0].Other_Name =='' || listOfOther[0].Other_Phone =='' ||
+      listOfOther[0].Other_Company =='' || listOfOther[0].Other_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+               <td className='fw-bold'>Other</td>
+              <td>{Other_Name}</td>
+              <td>{Other_Company}</td>
+              <td>{Other_Phone}</td>
+              <td>{Other_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }   
+    }) }
+    
+  </tbody>
+</table>
+         </div>
+         }
+
+                      {/* Table Client Professional Advisors */}
+
+
+
 
                        {/* Partner Professional Advisors */}
-                       <div className='mt-5'>
+                      {
+                      isPartnered && <div className='mt-5'>
                       <h3 className="">Partner Professional Advisors</h3>
 
                            {/* 1 row */}
@@ -719,7 +957,10 @@ enableReinitialize
                             </div>
                               </Modal.Title>
                             </Modal.Header>
-                            <Formik initialValues={Partner_initialValues} validationSchema={Partner_validationSchema} onSubmit={Partner_onSubmit}>
+                            <Formik 
+                            initialValues={Partner_initialValues} 
+                            // validationSchema={Partner_validationSchema}
+                             onSubmit={Partner_onSubmit}>
                               <Form>
                                 <Modal.Body>
                                 {/* Professional Advisor Detail Form */}
@@ -985,9 +1226,178 @@ enableReinitialize
                             </Formik>
                           </Modal>
                            {/* ---------------------------------------------------- */}
-                       </div>
+                       </div>}
                       {/* Partner Professional Advisors */}
                      
+
+                             {/* Table Client Professional Advisors */}
+                             { 
+          isPartnerTable && 
+         <div   className='table-responsive my-3'>
+         <table className="table table-bordered table-hover text-center">
+  <thead className="text-light" id="tableHead">
+  <tr>
+    <th>Advisor</th>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Phone</th>
+        <th>Email</th>
+       <th>Operations</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+
+   {  listofSolicitor2.map((elem,index)=>{
+      let {Solicitor_Name,Solicitor_Company, Solicitor_Phone,Solicitor_Email}=elem;
+      if(listofSolicitor2[0].Solicitor_Name =='' || listofSolicitor2[0].Solicitor_Phone =='' ||
+      listofSolicitor2[0].Solicitor_Company =='' || listofSolicitor2[0].Solicitor_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Solicitor</td>
+              <td>{Solicitor_Name}</td>
+              <td>{Solicitor_Company}</td>
+              <td>{Solicitor_Phone}</td>
+              <td>{Solicitor_Email}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+   
+    }) }
+
+{  listOfAccountant2.map((elem,index)=>{
+      let {Accountant_Name,Accountant_Company, Accountant_Phone,Accountant_Email}=elem;
+      if(listOfAccountant2[0].Accountant_Name =='' || listOfAccountant2[0].Accountant_Phone =='' ||
+      listOfAccountant2[0].Accountant_Company =='' || listOfAccountant2[0].Accountant_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Accountant</td>
+              <td>{Accountant_Name}</td>
+              <td>{Accountant_Company}</td>
+              <td>{Accountant_Phone}</td>
+              <td>{Accountant_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+               </td> 
+          
+          </tr>
+          );
+      }
+    }) }
+
+{  listOfInsuranceAdvisor2.map((elem,index)=>{
+      let {InsuranceAdvisor_Name,InsuranceAdvisor_Company,InsuranceAdvisor_Phone,InsuranceAdvisor_Email}=elem;
+      if(listOfInsuranceAdvisor2[0].InsuranceAdvisor_Name =='' || listOfInsuranceAdvisor2[0].InsuranceAdvisor_Phone =='' ||
+      listOfInsuranceAdvisor2[0].InsuranceAdvisor_Company =='' || listOfInsuranceAdvisor2[0].InsuranceAdvisor_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+              <td className='fw-bold'>Insurance Advisor</td>
+              <td>{InsuranceAdvisor_Name}</td>
+              <td>{InsuranceAdvisor_Company}</td>
+              <td>{InsuranceAdvisor_Phone}</td>
+              <td>{InsuranceAdvisor_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+               </td> 
+          
+          </tr>
+          );
+      }
+    }) }
+
+    {  listOfDoctor2.map((elem,index)=>{
+      let {Doctor_Name,Doctor_Company, Doctor_Phone,Doctor_Email,}=elem;
+      if(listOfDoctor2[0].Doctor_Name =='' || listOfDoctor2[0].Doctor_Phone =='' ||
+      listOfDoctor2[0].Doctor_Company =='' || listOfDoctor2[0].Doctor_Email ==''){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Doctor</td>
+              <td>{Doctor_Name}</td>
+              <td>{Doctor_Company}</td>
+              <td>{Doctor_Phone}</td>
+              <td>{Doctor_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+
+       
+
+        
+    }) }
+
+    { listOfOther2.map((elem,index)=>{
+      let {Other_Name,Other_Company, Other_Phone,Other_Email}=elem;
+      if(listOfOther2[0].Other_Name =='' || listOfOther2[0].Other_Phone =='' ||
+      listOfOther2[0].Other_Company =='' || listOfOther2[0].Other_Email ==''){
+       
+      }
+      else{
+     return(
+    
+          <tr key={index}>
+               <td className='fw-bold'>Other</td>
+              <td>{Other_Name}</td>
+              <td>{Other_Company}</td>
+              <td>{Other_Phone}</td>
+              <td>{Other_Email}</td>
+      
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }   
+    }) }
+    
+  </tbody>
+</table>
+         </div>
+         }
+
+                      {/* Table Partner Professional Advisors */}
                       <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>

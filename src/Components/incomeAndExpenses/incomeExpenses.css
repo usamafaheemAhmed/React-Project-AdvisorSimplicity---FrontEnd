@@ -17,7 +17,7 @@
 }
 
 input[type="radio"] {
-    display: none;
+    /* display: none; */
 }
 
 .label1,
@@ -53,8 +53,8 @@ span {
 
 input:checked+label {
     background-position: 0 -90px;
-    color: white;
-    transition: 0.7s;
+    /* color: white; */
+    /* transition: 0.7s; */
 }
 
 .bgColorIncome{
@@ -79,7 +79,7 @@ background-color: #36b447df;
 }
 
 input[type="radio"] {
-    display: none;
+    /* display: none; */
 }
 
 .label11 {

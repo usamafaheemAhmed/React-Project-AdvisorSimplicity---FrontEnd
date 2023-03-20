@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ useState , useEffect } from "react";
 import "./incomeExpenses.css"
 import Modal from "react-bootstrap/Modal";
 import Collapse from 'react-bootstrap/Collapse';
@@ -46,6 +46,22 @@ const [centerlinkPaymentState2, setCenterlinkPaymentState2] = useState(false)
 const [giftedAssetState, setGiftedAssetState] = useState(false)
 const [lumpsumExpensesState, setlumpsumExpensesState] = useState(false)
 const [expectingState, setExpectingState] = useState(false)
+
+
+let partner= localStorage.getItem("partner");
+const [isPartnered, setIsPartnered] = useState()
+
+useEffect(() => {
+  if(partner=="true"){
+    setIsPartnered(true)
+  
+  }
+  else{
+    setIsPartnered(false)
+ 
+  }
+  
+   }, [])
 
 
 let expectingInheritancesHandler=(elem)=>{
@@ -404,6 +420,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
     Navigate('/Business-Tax-Structure')
   }
   const onSubmit= (values,action) => {
+
     let Client_IncomeExpenseDetais={
       Client_PrimaryOccupation:values.clientPrimaryOccupation,
       Client_EmploymentStatus:values.clientEmploymentStatus,
@@ -470,69 +487,79 @@ let currentlySalaryPackageHandler2=(elem)=>{
   Inheritance_Amount: values.expectingInheritancesAmount,
 
     }
-  console.log(Client_IncomeExpenseDetais)
-  axios
+
+    let Partner_IncomeExpenseDetais={
+      Partner_PrimaryOccupation:values.clientPrimaryOccupation2,
+      Partner_EmploymentStatus:values.clientEmploymentStatus2,
+      Partner_CompanyName:values.clientNameofCompany2,
+      Partner_CommencementDate:values.clientCommencementDate2,
+      Partner_HoursPerWeek:values.clientNumberofhoursperweek2,
+      Partner_Salary:values.clientSalaryExcludingSuper2,
+      Partner_Superannuation:values.clientSuperAnnuationGuaranteeNumber2,
+      Partner_Superannuation_Type:values.clientSuperAnnuationGuaranteeType2,
+      Partner_FundChoice:values.ChoiceofFundradio2,
+      Partner_Sacririfce:values.sacrificeradio2,
+      Partner_SacririfceAbility:values.clientAbilitytoSalarySacrificeHM2,
+      Partner_TaxContribution:values.contributionradio2,
+      Partner_TaxContributionAbility:values.clientTaxContributiontoSuperHM2,
+      Partner_SalaryPackage:values.currentlySalaryPackageRadio2,
+      Partner_FBT_Status:values.clientEmployerFBTStatus2,
+      Partner_FBT_Options:values.whatDoYouHave2,
+      Partner_FBT_CarCostBase :values.clientCostBaseofCar2,
+      Partner_FBT_Paid:values.FBTradio2,
+      Partner_FBT_CarRunningAmount:values.clientRunningCostsofCarPackaged2,
+      Partner_FBT_CardMortage:values.clientCreditCardMortgageorOther2,
+      Partner_IncomeVaries:values.significantlyradio2,
+      Partner_SickLeaves_Number:values.UnusedSickLeaveEntitlementsNumber2,
+      Partner_SickLeaves_Type:values.UnusedSickLeaveEntitlementsType2,
+      Partner_AnnualLeaves_Number:values.clientUnusedAnnualleaveentitlementsNumber2,
+      Partner_AnnualLeaves_Type:values.clientUnusedAnnualleaveentitlementsType2,
+      Partner_LongServiceLeaves_Number:values.clientUnusedlongserviceleaveNumber2,
+      Partner_LongServiceLeaves_Type:values.clientUnusedlongserviceleaveType2,
+  
+  //partner Centre Link
+  
+  Partner_Recieve_CentreLinkPayments: values. centerlink2radio,
+  Partner_CentreLinkPayments: values.centrelinkPayments2,
+  Partner_PaymentAmount: values.PaymentAmountFortnightly2,
+  Partner_AnnualPaymentAmount: values.AnnualPaymentAmount2,
+  Partner_CareerAllowance: values.CarerAllowance2radio,
+  Partner_FamilyTax: values.FamilyTaxBenefit2,
+  
+  
+  //partner Other Taxable Income
+  Partner_TaxableIncome: values.otherTaxableIncome2radio,
+  Partner_TaxableAmount:values.AmountofOtherTaxableIncome2,
+  Partner_AustralianResident: values.AustralianResident2radio,
+  Partner_HECS_Debt: values.HECSdebt2radio,
+  Partner_PrivateHospital: values.PrivateHospital2radio,
+  Partner_ClaimingRebate: values.claimingRebate2radio,
+  Partner_PAYG_Application:values.applicationPAYG2radio,
+  Partner_Outstanding_TaxPayments: values.TaxPaymentsOutstanding2,
+  Partner_TaxLosses: values.TaxLossesCarriedForward2,
+  
+    }
+
+    if(isPartnered===true){
+      console.log(Client_IncomeExpenseDetais)
+      console.log(Partner_IncomeExpenseDetais)
+axios
   .post('http://localhost:7000/Client-ExpenseIncome/Add-Client-ExpenseIncome', Client_IncomeExpenseDetais)
   .then((res) => console.log("Client Income Expense Added Successfully!"))
 
-
-  let Partner_IncomeExpenseDetais={
-    Partner_PrimaryOccupation:values.clientPrimaryOccupation2,
-    Partner_EmploymentStatus:values.clientEmploymentStatus2,
-    Partner_CompanyName:values.clientNameofCompany2,
-    Partner_CommencementDate:values.clientCommencementDate2,
-    Partner_HoursPerWeek:values.clientNumberofhoursperweek2,
-    Partner_Salary:values.clientSalaryExcludingSuper2,
-    Partner_Superannuation:values.clientSuperAnnuationGuaranteeNumber2,
-    Partner_Superannuation_Type:values.clientSuperAnnuationGuaranteeType2,
-    Partner_FundChoice:values.ChoiceofFundradio2,
-    Partner_Sacririfce:values.sacrificeradio2,
-    Partner_SacririfceAbility:values.clientAbilitytoSalarySacrificeHM2,
-    Partner_TaxContribution:values.contributionradio2,
-    Partner_TaxContributionAbility:values.clientTaxContributiontoSuperHM2,
-    Partner_SalaryPackage:values.currentlySalaryPackageRadio2,
-    Partner_FBT_Status:values.clientEmployerFBTStatus2,
-    Partner_FBT_Options:values.whatDoYouHave2,
-    Partner_FBT_CarCostBase :values.clientCostBaseofCar2,
-    Partner_FBT_Paid:values.FBTradio2,
-    Partner_FBT_CarRunningAmount:values.clientRunningCostsofCarPackaged2,
-    Partner_FBT_CardMortage:values.clientCreditCardMortgageorOther2,
-    Partner_IncomeVaries:values.significantlyradio2,
-    Partner_SickLeaves_Number:values.UnusedSickLeaveEntitlementsNumber2,
-    Partner_SickLeaves_Type:values.UnusedSickLeaveEntitlementsType2,
-    Partner_AnnualLeaves_Number:values.clientUnusedAnnualleaveentitlementsNumber2,
-    Partner_AnnualLeaves_Type:values.clientUnusedAnnualleaveentitlementsType2,
-    Partner_LongServiceLeaves_Number:values.clientUnusedlongserviceleaveNumber2,
-    Partner_LongServiceLeaves_Type:values.clientUnusedlongserviceleaveType2,
-
-//partner Centre Link
-
-Partner_Recieve_CentreLinkPayments: values. centerlink2radio,
-Partner_CentreLinkPayments: values.centrelinkPayments2,
-Partner_PaymentAmount: values.PaymentAmountFortnightly2,
-Partner_AnnualPaymentAmount: values.AnnualPaymentAmount2,
-Partner_CareerAllowance: values.CarerAllowance2radio,
-Partner_FamilyTax: values.FamilyTaxBenefit2,
-
-
-//partner Other Taxable Income
-Partner_TaxableIncome: values.otherTaxableIncome2radio,
-Partner_TaxableAmount:values.AmountofOtherTaxableIncome2,
-Partner_AustralianResident: values.AustralianResident2radio,
-Partner_HECS_Debt: values.HECSdebt2radio,
-Partner_PrivateHospital: values.PrivateHospital2radio,
-Partner_ClaimingRebate: values.claimingRebate2radio,
-Partner_PAYG_Application:values.applicationPAYG2radio,
-Partner_Outstanding_TaxPayments: values.TaxPaymentsOutstanding2,
-Partner_TaxLosses: values.TaxLossesCarriedForward2,
-
-  }
-  console.log(Partner_IncomeExpenseDetais)
   axios
   .post('http://localhost:7000/Partner-ExpenseIncome/Add-Partner-ExpenseIncome', Partner_IncomeExpenseDetais)
   .then((res) => console.log("Partner Income Expense Added Successfully!"))
+    }
 
+    else{
+      axios
+  .post('http://localhost:7000/Client-ExpenseIncome/Add-Client-ExpenseIncome', Client_IncomeExpenseDetais)
+  .then((res) => console.log("Client Income Expense Added Successfully!"))
+      console.log(Client_IncomeExpenseDetais)
+    }
 
+  
    Navigate('/Professional-Advisors')
   }
   
@@ -639,17 +666,17 @@ Partner_TaxLosses: values.TaxLossesCarriedForward2,
         // partner employeement Details
         clientPrimaryOccupation2: Yup.string().matches(letters, "Only letters").required('Required') ,
         clientEmployerFBTStatus2:Yup.string().required( "Required"),
-        clientCostBaseofCar2:Yup.number()
-        .when('whatDoYouHave2',{
-          is: val => val && val.length <=4,
-          then:Yup.number().required("Required")
-          .test(
-            "Is positive?",
-            "Must be a positive number",
-            (value)=> value >0
-          ),
-          otherwise: Yup.number().notRequired()
-        }),
+        // clientCostBaseofCar2:Yup.number()
+        // .when('whatDoYouHave2',{
+        //   is: val => val && val.length <=4,
+        //   then:Yup.number().required("Required")
+        //   .test(
+        //     "Is positive?",
+        //     "Must be a positive number",
+        //     (value)=> value >0
+        //   ),
+        //   otherwise: Yup.number().notRequired()
+        // }),
         clientRunningCostsofCarPackaged2:Yup.number().required("Required")
           .test(
             "Is positive?",
@@ -657,12 +684,12 @@ Partner_TaxLosses: values.TaxLossesCarriedForward2,
             (value)=> value >0
           ),
     
-        clientCreditCardMortgageorOther2:Yup.number().required("Required")
-        .test(
-          "Is positive?",
-          "Must be a positive number",
-          (value) => value > 0
-        ),
+        // clientCreditCardMortgageorOther2:Yup.number().required("Required")
+        // .test(
+        //   "Is positive?",
+        //   "Must be a positive number",
+        //   (value) => value > 0
+        // ),
         clientEmploymentStatus2:Yup.string().required( "Required"),
         clientNameofCompany2: Yup.string().matches(letters, "Only letters").required('Required') ,
         clientCommencementDate2:Yup.string().required( "Required"),
@@ -898,6 +925,269 @@ Partner_TaxLosses: values.TaxLossesCarriedForward2,
       otherwise: Yup.number().notRequired()
     }),
 
+    //Expenses
+    totalGeneralLivingCosts: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    incomeInRetirement: Yup.number().required("Required").test(
+      "Is positive?",
+      "Must be a positive number",
+      (value)=> value >0
+    ),
+    
+    lumpSumExpenseDescription: Yup.string()
+    .when("lumpsumExpensesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    lumpSumExpenseYear: Yup.string()
+    .when("lumpsumExpensesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    lumpSumExpenseAmount:Yup.number()
+    .when('lumpsumExpensesradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+
+    expectingInheritancesDescription:Yup.string()
+    .when("expectingInheritancesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().matches(letters, "Only letters").required('Required')
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+
+    expectingInheritancesYear: Yup.string()
+    .when("expectingInheritancesradio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    expectingInheritancesAmount:Yup.number()
+    .when('expectingInheritancesradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+  })
+
+  const singlevalidationSchema = Yup.object({
+    clientPrimaryOccupation: Yup.string().matches(letters, "Only letters").required('Required') ,
+    clientEmployerFBTStatus:Yup.string().required( "Required"),
+    // clientCostBaseofCar:Yup.number()
+    // .when('whatDoYouHave',{
+    //   is: val => val && val.length <=4,
+    //   then:Yup.number().required("Required")
+    //   .test(
+    //     "Is positive?",
+    //     "Must be a positive number",
+    //     (value)=> value >0
+    //   ),
+    //   otherwise: Yup.number().notRequired()
+    // }),
+    clientRunningCostsofCarPackaged:Yup.number()
+    .when('whatDoYouHave',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    // clientCreditCardMortgageorOther:Yup.number().required("Required")
+    // .test(
+    //   "Is positive?",
+    //   "Must be a positive number",
+    //   (value) => value > 0
+    // ),
+    clientEmploymentStatus:Yup.string().required( "Required"),
+    clientNameofCompany: Yup.string().matches(letters, "Only letters").required('Required') ,
+    clientCommencementDate:Yup.string().required( "Required"),
+    clientNumberofhoursperweek:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientSalaryExcludingSuper:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientSuperAnnuationGuaranteeNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientSuperAnnuationGuaranteeType:Yup.string().required( "Required"),
+    UnusedSickLeaveEntitlementsNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    UnusedSickLeaveEntitlementsType:Yup.string().required( "Required"),
+    clientUnusedAnnualleaveentitlementsNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientUnusedAnnualleaveentitlementsType:Yup.string().required( "Required"),
+    clientUnusedlongserviceleaveNumber:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    clientUnusedlongserviceleaveType:Yup.string().required( "Required"),
+    clientAbilitytoSalarySacrificeHM:Yup.number()
+    .when('sacrificeradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    clientTaxContributiontoSuperHM:Yup.number()
+    .when('contributionradio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    
+
+        // partner employeement Details
+        
+
+       // partner employeement Details
+
+    //Client Centre Link
+    centrelinkPayments1: Yup.string()
+    .when("centerlink1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+
+    PaymentAmountFortnightly1: Yup.number()
+    .when('centerlink1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+    AnnualPaymentAmount1: Yup.number()
+    .when('centerlink1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    FamilyTaxBenefit1:  Yup.string()
+    .when("centerlink1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    AssetBeenGiftedHM1: Yup.number()
+    .when('AssetGifted1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+    AssetBeenGiftedYears1: Yup.string()
+    .when("AssetGifted1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ActualDateofyear1: Yup.string()
+    .when("AssetGifted1radio",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+
+    //Partner Centre Link
+   
+    // //Client other taxable income
+    TaxPaymentsOutstanding1:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value)=> value >0
+    ),
+    TaxLossesCarriedForward1:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value)=> value >0
+    ),
+    AmountofOtherTaxableIncome1:Yup.number()
+    .when('otherTaxableIncome1radio',{
+      is: val => val && val.length ===3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Must be a positive number",
+        (value)=> value >0
+      ),
+      otherwise: Yup.number().notRequired()
+    }),
+
+  
     //Expenses
     totalGeneralLivingCosts: Yup.number().required("Required").test(
       "Is positive?",
@@ -1359,7 +1649,7 @@ TransInsuranceType:'',
 
           <Formik
               initialValues={initialValues}
-              // validationSchema={validationSchema}
+               validationSchema={isPartnered ? validationSchema : singlevalidationSchema}
               onSubmit={onSubmit}
               enableReinitialize>
                   {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -2003,7 +2293,10 @@ TransInsuranceType:'',
                   {/* Client Employment Details */}
 
                     {/* Partner Employment Details */}
-                   <div className="row">
+
+
+                   {
+                   isPartnered && <div className="row my-5">
                       <div className="col-md-12">
                         <div className="shadow px-4 py-4">
                           <h3 className="text-center">Income & Expense</h3>
@@ -2633,7 +2926,8 @@ TransInsuranceType:'',
 
 
                    
-                    </div>
+                    </div>}
+                    
                   {/* Partner Employment Details */}
 
                  {/* Client Centre Link  */}
@@ -2929,7 +3223,8 @@ TransInsuranceType:'',
                 {/* Client Centre Link */}
 
                  {/* Partner Centre Link  */}
-                 <div className="row my-5">
+                {
+                isPartnered && <div className="row my-5">
                 <div className="col-md-12">
                   <div className="shadow px-4 py-4">
                     <h3 className="text-center">Centre Link</h3>
@@ -3077,7 +3372,7 @@ TransInsuranceType:'',
                     </div>}
                   </div>
                 </div>
-                </div>
+                </div>}
                 {/* Partner Centre Link */}
 
                 {/*Client other taxable income  */}
@@ -3314,7 +3609,9 @@ TransInsuranceType:'',
                 {/*Client Other taxable income */}
 
                 {/*Partner other taxable income  */}
-                <div className="row my-5">
+                {
+                 isPartnered && 
+                 <div className="row my-5">
                   <div className="col-md-12">
                     <div className="shadow px-4 py-4">
                       <h3 className="text-center">Partner Taxable Income</h3>
@@ -3536,7 +3833,7 @@ TransInsuranceType:'',
                   </div>
 
 
-                </div>
+                </div> }
                 {/*Partner Other taxable income */}
 
                 {/*Expenses */}
@@ -3616,7 +3913,7 @@ TransInsuranceType:'',
                             </Modal.Header>
                             <Formik 
                               initialValues={initialValues2}
-                              // validationSchema={validationSchema2}
+                              validationSchema={validationSchema2}
                               onSubmit={onSubmit2} >
                                 
                               <Form>  

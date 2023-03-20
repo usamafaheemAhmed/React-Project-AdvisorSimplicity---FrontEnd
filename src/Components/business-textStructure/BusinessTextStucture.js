@@ -498,7 +498,7 @@ else{
          axios
       .post('http://localhost:7000/Client-Business/Add-Client-Business', ClientBusinessDetails)
       .then((res) => console.log("Client Business Added Successfully!"))
-      //  Navigate('/Income-And-Expenses')
+       Navigate('/Income-And-Expenses')
 
 
    
@@ -513,7 +513,7 @@ else{
        axios
       .post('http://localhost:7000/Client-Business/Add-Client-Business', ClientBusinessDetails)
       .then((res) => console.log("Client Business Added Successfully!"))
-      //  Navigate('/Income-And-Expenses')
+       Navigate('/Income-And-Expenses')
         
       console.log(ClientBusinessDetails)
 

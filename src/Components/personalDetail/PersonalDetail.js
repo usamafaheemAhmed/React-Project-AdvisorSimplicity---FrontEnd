@@ -58,7 +58,6 @@ const PersonalDetail = () => {
       case 'Married':
         setIsPartnered(true)
         console.log('Married');
-        // window.localStorage.setItem("maritalStatus",selectedValue)
         window.localStorage.setItem("partner",true)
         document.getElementById("PartnerPersonalInformation").classList.remove("d-none")
         break;
