@@ -43,8 +43,8 @@ const SideBarrr = () => {
   <div className="dropdown-content">
     <a href="#" className='py-1 '>Select Client</a>
     <a href="#" className='py-1 '>Edit Client</a>
-    <a href="#" className='py-1 '>Goal and Objectives</a>
-    <a href="#" className='py-1 '>Risk Profile</a>
+    <a href="Goals-And-Objectives" className='py-1 '>Goals and Objectives</a>
+    <a href="Risk-Profile" className='py-1 '>Risk Profile</a>
     <a href="#" className='py-1 '>Scenario</a>
     <a href="#" className='py-1 '>Cash Flow</a>
     <a href="#" className='py-1 '>Document Wizard</a>

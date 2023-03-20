@@ -14,6 +14,16 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 
 function Investments() {
+
+  const [BankAccountList, setBankAccountList] = useState([]);
+  const [TermDepositList, setTermDepositList] = useState([]);
+  const [AustralianShareMarketList, setAustralianShareMarketList] = useState([]);
+  const [AustralianSharePortfolioList, setAustralianSharePortfolioList] = useState([]);
+  const [ManagedFundsList, setManagedFundsList] = useState([]);
+  const [ManagedFundsPortfolioList, setManagedFundsPortfolioList] = useState([]);
+  const [InvestmentBondsList, setInvestmentBondsList] = useState([]);
+  const [InvestmentPropertiesList, setInvestmentPropertiesList] = useState([]);
+  const [OthersList, setOthersList] = useState([]);
     
   const [BankAccount, setBankAccount] = useState(false);
   const [Bankshow, setBankShow] = useState(false);
@@ -290,186 +300,320 @@ function Investments() {
   }
 
   let Client_validationSchema = Yup.object({
-    BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    BankFinancialInstitution: Yup.string().required('Required') ,
-    BankIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    BankIncomePAType: Yup.string().required("Required"),
-    BankIncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    BankRegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankFinancialInstitution: Yup.string() ,
+    BankIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    BankIncomePAType: Yup.string(),
+    BankIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
-    Bank2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    Bank2FinancialInstitution: Yup.string().required('Required') ,
-    Bank2IncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    Bank2IncomePAType: Yup.string().required("Required"),
-    Bank2IncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    Bank2RegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-
-
-
-    TermDepositCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDepositFinancialInstitution: Yup.string().required('Required') ,
-    TermDepositIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    TermDepositIncomePAType: Yup.string().required("Required"),
-    TermDepositIncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDepositRegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-
-    TermDeposit2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDeposit2FinancialInstitution: Yup.string().required('Required') ,
-    TermDeposit2IncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    TermDeposit2IncomePAType: Yup.string().required("Required"),
-    TermDeposit2IncomeinDollars: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDeposit2RegularSavings: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2FinancialInstitution: Yup.string() ,
+    Bank2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    Bank2IncomePAType: Yup.string(),
+    Bank2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
 
 
-    AustralianMarketInvestmentName: Yup.string().required('Required'),
-    AustralianMarketNumberOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketSharePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketTotalShareValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketPurchaseDate: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketIncomePAType: Yup.string().required('Required'),
-    AustralianMarketTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketFrankedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketRegInvestments: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDepositCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositFinancialInstitution: Yup.string() ,
+    TermDepositIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDepositIncomePAType: Yup.string(),
+    TermDepositIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
-    AustralianPortfolioLoanType: Yup.string().required("Required"),
-    AustralianPortfolioCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianPortfolioLender: Yup.string().required("Required"),
-    AustralianInterestRatePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianPortfolioLoanTerm: Yup.string().required("Required"),
-    AustralianPortfolioLoanType2: Yup.string().required("Required"),
-    AustralianPortfolioDeductibleLoanAmount: Yup.string().required("Required"),
-    AustralianPortfolioYearRemaining: Yup.string().required("Required"),
+    TermDeposit2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2FinancialInstitution: Yup.string() ,
+    TermDeposit2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDeposit2IncomePAType: Yup.string(),
+    TermDeposit2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
 
-    ManagedFundsPlatformName: Yup.string().required("Required"),
-    ManagedFundsInvestmentName: Yup.string().required("Required"),
-    ManagedFundsNumberOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsSharePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPurchaseDate: Yup.string().required("Required"),
-    ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsIncomePAType: Yup.string().required("Required"),
-    ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsRegInvestments: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
 
-    ManagedFundsPortfolioLoanType: Yup.string().required("Required"),
-    ManagedFundsPortfolioCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPortfolioLender: Yup.string().required("Required"),
-    ManagedFundsPortfolioInterestRatePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPortfolioLoanTerm: Yup.string().required("Required"),
-    ManagedFundsPortfolioLoanType2: Yup.string().required("Required"),
-    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string().required("Required"),
-    ManagedFundsPortfolioYearRemaining: Yup.string().required("Required"),
 
-    InvestmentBondsPlatformName: Yup.string().required("Required"),
-    InvestmentBondsInvestmentName: Yup.string().required("Required"),
-    InvestmentBondsNumberOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsSharePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsPurchaseDate: Yup.string().required("Required"),
-    InvestmentBondsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsIncomePAType: Yup.string().required("Required"),
-    InvestmentBondsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsRegInvestments: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketInvestmentName: Yup.string(),
+    AustralianMarketNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketTotalShareValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketPurchaseDate: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketIncomePAType: Yup.string(),
+    AustralianMarketTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketFrankedAmount: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
 
-    OtherInvestmentName: Yup.string().required("Required"),
-    OtherCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherPurchaseDate: Yup.string().required("Required"),
-    OtherIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherIncomePAType: Yup.string().required("Required"),
-    // OtherTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherIncomePAType: Yup.string().required("Required"),
-    OtherRegularInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLoanType: Yup.string(),
+    AustralianPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLender: Yup.string(),
+    AustralianInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLoanTerm: Yup.string(),
+    AustralianPortfolioLoanType2: Yup.string(),
+    AustralianPortfolioDeductibleLoanAmount: Yup.string(),
+    AustralianPortfolioYearRemaining: Yup.string(),
 
-    OtherInvestmentName2: Yup.string().required("Required"),
-    OtherCurrentValue2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherCostBase2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0)
+    ManagedFundsPlatformName: Yup.string(),
+    ManagedFundsInvestmentName: Yup.string(),
+    ManagedFundsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPurchaseDate: Yup.string(),
+    ManagedFundsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsIncomePAType: Yup.string(),
+    ManagedFundsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    ManagedFundsPortfolioLoanType: Yup.string(),
+    ManagedFundsPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLender: Yup.string(),
+    ManagedFundsPortfolioInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLoanTerm: Yup.string(),
+    ManagedFundsPortfolioLoanType2: Yup.string(),
+    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string(),
+    ManagedFundsPortfolioYearRemaining: Yup.string(),
+
+    InvestmentBondsPlatformName: Yup.string(),
+    InvestmentBondsInvestmentName: Yup.string(),
+    InvestmentBondsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsPurchaseDate: Yup.string(),
+    InvestmentBondsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsIncomePAType: Yup.string(),
+    InvestmentBondsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    OtherInvestmentName: Yup.string(),
+    OtherCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherPurchaseDate: Yup.string(),
+    OtherIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType: Yup.string(),
+    // OtherTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType: Yup.string(),
+    OtherRegularInvestmentsPA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    OtherInvestmentName2: Yup.string(),
+    OtherCurrentValue2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherCostBase2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
     .test(
       "Is positive?",
       "Cost Base must be a positive value",
 
       (value) => value > 0
     ),
-    OtherPurchaseDate2: Yup.string().required("Required"),
-    OtherIncomePA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherIncomePAType2: Yup.string().required("Required"),
-    // OtherTotalIncomePA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherIncomePAType2: Yup.string().required("Required"),
-    OtherRegularInvestmentsPA2: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherPurchaseDate2: Yup.string(),
+    OtherIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType2: Yup.string(),
+    // OtherTotalIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType2: Yup.string(),
+    OtherRegularInvestmentsPA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
 
-    InvestmentPropertiesCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentPropertiesClientOwnership: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentPropertiesCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentPropertiesAddress: Yup.string().required("Required"),
-    InvestmentPropertiesPostcode: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentPropertiesRentalIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentPropertiesFrequency: Yup.string().required("Required"),
-    InvestmentPropertiesTotalAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentPropertiesExpensesPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesClientOwnership: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesAddress: Yup.string(),
+    InvestmentPropertiesPostcode: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesRentalIncome: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesFrequency: Yup.string(),
+    InvestmentPropertiesTotalAnnualIncome: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesExpensesPA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentPropertiesCurrentBalance: Yup.number().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      then: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
       otherwise: Yup.number().notRequired()
     }),
     InvestmentPropertiesClientBorrowing: Yup.number().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      then: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
       otherwise: Yup.number().notRequired()
     }),
     InvestmentPropertiesLender: Yup.string().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.string().required("Required"),
+      then: Yup.string(),
       otherwise: Yup.string().notRequired()
     }),
     InvestmentPropertiesRepaymentAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      then: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
       otherwise: Yup.number().notRequired()
     }),
     InvestmentPropertiesFrequency2: Yup.string().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.string().required("Required"),
+      then: Yup.string(),
       otherwise: Yup.string().notRequired()
     }),
     InvestmentPropertiesAnnualRepayment: Yup.number().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      then: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
       otherwise: Yup.number().notRequired()
     }),
     InvestmentPropertiesInterestRatePA: Yup.number().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      then: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
       otherwise: Yup.number().notRequired()
     }),
     InvestmentPropertiesLoanTerm: Yup.string().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.string().required("Required"),
+      then: Yup.string(),
       otherwise: Yup.string().notRequired()
     }),
     InvestmentPropertiesLoanType: Yup.string().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.string().required("Required"),
+      then: Yup.string(),
       otherwise: Yup.string().notRequired()
     }),
     InvestmentPropertiesDebtLoanAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      then: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
       otherwise: Yup.number().notRequired()
     }),
     InvestmentPropertiesYearsRemaining: Yup.string().when('InvestmentPropertiesLoanAttached',{
       is: val => val && val.length === 3,
-      then: Yup.string().required("Required"),
+      then: Yup.string(),
       otherwise: Yup.string().notRequired()
     })
   })
 
-  let Client_onSubmit = (Values) => {
-    console.log(Values)
+  let BankAccount_onSubmit = (values) => {
+    
+    let BankDetails = {
+      BankCurrentValue: values.BankCurrentValue,
+      BankFinancialInstitution: values.BankFinancialInstitution,
+      BankIncomePA: values.BankIncomePA,
+      BankIncomePAType: values.BankIncomePAType,
+      BankIncomeinDollars: values.BankIncomeinDollars,
+      BankRegularSavings: values.BankRegularSavings,
+      BankReinvestedIncome: values.BankReinvestedIncome,
+      
+      Bank2CurrentValue: values.Bank2CurrentValue,
+      Bank2FinancialInstitution: values.Bank2FinancialInstitution,
+      Bank2IncomePA: values.Bank2IncomePA,
+      Bank2IncomePAType: values.Bank2IncomePAType,
+      Bank2IncomeinDollars: values.Bank2IncomeinDollars,
+      Bank2RegularSavings: values.Bank2RegularSavings,
+      Bank2ReinvestedIncome: values.Bank2ReinvestedIncome
+    }
+
+    setBankAccountList([BankDetails])
+    BankhandleClose();
+
+  }
+
+  let TermDeposit_onSubmit = (values) => {
+    
+    let TermDepositDetails = {
+      TermDepositCurrentValue: values.TermDepositCurrentValue,
+      TermDepositFinancialInstitution: values.TermDepositFinancialInstitution,
+      TermDepositIncomePA: values.TermDepositIncomePA,
+      TermDepositIncomePAType: values.TermDepositIncomePAType,
+      TermDepositIncomeinDollars: values.TermDepositIncomeinDollars,
+      TermDepositRegularSavings: values.TermDepositRegularSavings,
+      TermDepositReinvestedIncome: values.TermDepositReinvestedIncome,
+      
+      TermDeposit2CurrentValue: values.TermDeposit2CurrentValue,
+      TermDeposit2FinancialInstitution: values.TermDeposit2FinancialInstitution,
+      TermDeposit2IncomePA: values.TermDeposit2IncomePA,
+      TermDeposit2IncomePAType: values.TermDeposit2IncomePAType,
+      TermDeposit2IncomeinDollars: values.TermDeposit2IncomeinDollars,
+      TermDeposit2RegularSavings: values.TermDeposit2RegularSavings,
+      TermDeposit2ReinvestedIncome: values.TermDeposit2ReinvestedIncome
+    }
+
+    setTermDepositList([TermDepositDetails])
+    TermDeposithandleClose();
+
+  }
+
+  let AustralianShareMarket_onSubmit = (values) => {
+
+    let AustralianShareMarketDetails = {
+      AustralianMarketInvestmentName: values.AustralianMarketInvestmentName,
+      AustralianMarketNumberOfShares: values.AustralianMarketNumberOfShares,
+      AustralianMarketSharePrice: values.AustralianMarketSharePrice,
+      AustralianMarketTotalShareValue: values.AustralianMarketTotalShareValue,
+      AustralianMarketCostBase: values.AustralianMarketCostBase,
+      AustralianMarketPurchaseDate: values.AustralianMarketPurchaseDate,
+      AustralianMarketIncomePA: values.AustralianMarketIncomePA,
+      AustralianMarketIncomePAType: values.AustralianMarketIncomePAType,
+      AustralianMarketTotalIncomePA: values.AustralianMarketTotalIncomePA,
+      AustralianMarketFrankedAmount: values.AustralianMarketFrankedAmount,
+      AustralianMarketReinvestedIncome: values.AustralianMarketReinvestedIncome,
+      AustralianMarketRegInvestments: values.AustralianMarketRegInvestments,
+    }
+
+    setAustralianShareMarketList([AustralianShareMarketDetails])
+    AustralianShareMarkethandleClose();
+  }
+
+  let AustralianSharePortfolio_onSubmit = (values) => {
+
+    let AustralianSharePortfolioDetails = {    
+      AustralianPortfolioLoanType: values.AustralianPortfolioLoanType,
+      AustralianPortfolioCurrentBalance: values.AustralianPortfolioCurrentBalance,
+      AustralianPortfolioLender: values.AustralianPortfolioLender,
+      AustralianInterestRatePA: values.AustralianInterestRatePA,
+      AustralianPortfolioLoanTerm: values.AustralianPortfolioLoanTerm,
+      AustralianPortfolioLoanType2: values.AustralianPortfolioLoanType2,
+      AustralianPortfolioDeductibleLoanAmount: values.AustralianPortfolioDeductibleLoanAmount,
+      AustralianPortfolioYearRemaining: values.AustralianPortfolioYearRemaining,
+    }
+
+    setAustralianSharePortfolioList([AustralianSharePortfolioDetails])
+    AustralianSharePortfoliohandleClose();
+  }
+
+  let ManagedFunds_onSubmit = (values) => {
+
+    let ManagedFundsDetails = {
+      ManagedFundsPlatformName: values.ManagedFundsPlatformName,
+      ManagedFundsInvestmentName: values.ManagedFundsInvestmentName,
+      ManagedFundsNumberOfShares: values.ManagedFundsNumberOfShares,
+      ManagedFundsSharePrice: values.ManagedFundsSharePrice,
+      ManagedFundsCurrentValue: values.ManagedFundsCurrentValue,
+      ManagedFundsOriginalInvestment: values.ManagedFundsOriginalInvestment,
+      ManagedFundsPurchaseDate: values.ManagedFundsPurchaseDate,
+      ManagedFundsIncomePA: values.ManagedFundsIncomePA,
+      ManagedFundsIncomePAType: values.ManagedFundsIncomePAType,
+      ManagedFundsTotalIncomePA: values.ManagedFundsTotalIncomePA,
+      ManagedFundsReinvestedIncome: values.ManagedFundsReinvestedIncome,
+      ManagedFundsRegInvestments: values.ManagedFundsRegInvestments
+    }
+
+    ManagedFundsList([ManagedFundsDetails])
+    ManagedFundshandleClose();
+  }
+
+  let ManagedFundsPortfolio_onSubmit = (values) => {
+
+    let ManagedFundsPortfolioDetails = {
+      ManagedFundsPortfolioLoanType: values.ManagedFundsPortfolioLoanType,
+      ManagedFundsPortfolioCurrentBalance: values.ManagedFundsPortfolioCurrentBalance,
+      ManagedFundsPortfolioLender: values.ManagedFundsPortfolioLender,
+      ManagedFundsPortfolioInterestRatePA: values.ManagedFundsPortfolioInterestRatePA,
+      ManagedFundsPortfolioLoanTerm: values.ManagedFundsPortfolioLoanTerm,
+      ManagedFundsPortfolioLoanType2: values.ManagedFundsPortfolioLoanType2,
+      ManagedFundsPortfolioDeductibleLoanAmount: values.ManagedFundsPortfolioDeductibleLoanAmount,
+      ManagedFundsPortfolioYearRemaining: values.ManagedFundsPortfolioYearRemaining
+    }
+
+    ManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
+    ManagedFundsPortfoliohandleClose();
+  }
+
+  let InvestmentBonds_onSubmit = (values) => {
+
+  }
+
+  let InvestmentProperties_onSubmit = (values) => {
+
+  }
+
+  let Others_onSubmit = (values) => {
+
   }
 
   let InvestmentModal_initialValues = {
@@ -489,17 +633,17 @@ function Investments() {
 
   let InvestmentModal_validationSchema = Yup.object({
     // InvestmentModalTotalExpense: '',
-    InvestmentModalCorporateFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalCouncilRates: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalLawnMoving: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalInsurance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalLandTax: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalRepairs: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalWaterCharges: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalTelephone: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalProfessionalFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalAllOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0)
+    InvestmentModalCorporateFees: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalCouncilRates: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalLawnMoving: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalInsurance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalLandTax: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalRepairs: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalWaterCharges: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalTelephone: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalProfessionalFees: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalAllOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
   let InvestmentModal_onSubmit = (Values) => [
@@ -518,7 +662,6 @@ function Investments() {
     InvestmentPropertiesRadio: 'No',
     OthersRadio: 'No'
   }
-
   let Navigate = useNavigate();
   function BackFunction(){
   Navigate('/Assets-And-Liabilities')
@@ -626,8 +769,8 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={BankAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -874,6 +1017,79 @@ function Investments() {
                               </Formik>
                               </Modal>
                               {/* ---------------------------------------------------- */}
+
+                              <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Current Values</th>
+                                        <th>Financial Institution</th>
+                                        <th>Income</th>
+                                        <th>Reinvest Income</th>  
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* Bank #1  */}
+                                {  BankAccountList.map((elem,index)=>{
+                                    let {BankCurrentValue, BankFinancialInstitution, BankIncomePA, BankReinvestedIncome}=elem;
+                                    if(BankAccountList[0].BankCurrentValue !=='' || 
+                                    BankAccountList[0].BankFinancialInstitution !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{BankCurrentValue}</td>
+                                            <td>{BankFinancialInstitution}</td>
+                                            <td>{BankIncomePA}</td>
+                                            <td>{BankReinvestedIncome}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Bank #1  */}
+                                
+                                  {/* Bank #2  */}
+                                {  BankAccountList.map((elem,index)=>{
+                                    let {Bank2CurrentValue, Bank2FinancialInstitution, Bank2IncomePA, Bank2ReinvestedIncome}=elem;
+                                    if(BankAccountList[0].Bank2CurrentValue !=='' || 
+                                    BankAccountList[0].Bank2FinancialInstitution !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{Bank2CurrentValue}</td>
+                                            <td>{Bank2FinancialInstitution}</td>
+                                            <td>{Bank2IncomePA}</td>
+                                            <td>{Bank2ReinvestedIncome}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Bank #2  */}
+
+                                </tbody>
+                                </table>
+                               </div>
                           </div>
                           {/* Bank Account Details */}
 
@@ -963,8 +1179,8 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={TermDeposit_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1211,6 +1427,79 @@ function Investments() {
                               </Formik>
                               </Modal>
                               {/* ---------------------------------------------------- */}
+
+                              <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Current Values</th>
+                                        <th>Financial Institution</th>
+                                        <th>Income</th>
+                                        <th>Reinvest Income</th>  
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* Term Deposit #1  */}
+                                {  TermDepositList.map((elem,index)=>{
+                                    let {TermDepositCurrentValue, TermDepositFinancialInstitution, TermDepositIncomePA, TermDepositReinvestedIncome}=elem;
+                                    if(TermDepositList[0].TermDepositCurrentValue !=='' || 
+                                    TermDepositList[0].TermDepositFinancialInstitution !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{TermDepositCurrentValue}</td>
+                                            <td>{TermDepositFinancialInstitution}</td>
+                                            <td>{TermDepositIncomePA}</td>
+                                            <td>{TermDepositReinvestedIncome}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Term Deposit #1  */}
+                                
+                                  {/* Term Deposit #2  */}
+                                {  TermDepositList.map((elem,index)=>{
+                                    let {TermDeposit2CurrentValue, TermDeposit2FinancialInstitution, TermDeposit2IncomePA, TermDeposit2ReinvestedIncome}=elem;
+                                    if(TermDepositList[0].TermDeposit2CurrentValue !=='' || 
+                                    TermDepositList[0].TermDeposit2FinancialInstitution !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{TermDeposit2CurrentValue}</td>
+                                            <td>{TermDeposit2FinancialInstitution}</td>
+                                            <td>{TermDeposit2IncomePA}</td>
+                                            <td>{TermDeposit2ReinvestedIncome}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Term Deposit #2  */}
+
+                                </tbody>
+                                </table>
+                               </div>
                           </div>
                           {/* Term Deposit Details */}
 
@@ -1299,8 +1588,8 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={AustralianShareMarket_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1428,7 +1717,7 @@ function Investments() {
                                 <input type="radio" name="AustralianMarketReinvestedIncome"
                                 id="AustralianMarketReinvestedOpt1" value="Yes"
                                 onChange={handleChange}
-                                checked={values.TermDepositReinvestedIncome==="Yes"}
+                                checked={values.AustralianMarketReinvestedIncome==="Yes"}
                                 />
                                 <label htmlFor="AustralianMarketReinvestedOpt1" className="label1">
                                   <span>YES</span>
@@ -1436,7 +1725,7 @@ function Investments() {
                                 <input type="radio" name="AustralianMarketReinvestedIncome"
                                 id="AustralianMarketReinvestedOpt2" value="No"
                                 onChange={handleChange}
-                                checked={values.TermDepositReinvestedIncome==="No"}
+                                checked={values.AustralianMarketReinvestedIncome==="No"}
                               />
                                 <label htmlFor="AustralianMarketReinvestedOpt2" className="label2">
                                   <span>NO</span>
@@ -1488,6 +1777,54 @@ function Investments() {
                               </Formik>
                               </Modal>
                           {/* ---------------------------------------------------- */}
+
+                              <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Company Name</th>
+                                        <th>Total Share Value</th>
+                                        <th>Cost Base</th>
+                                        <th>Income P.A.</th>
+                                        <th>Reinvest Income</th>  
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* Australian Share Market  */}
+                                {  AustralianShareMarketList.map((elem,index)=>{
+                                    let {AustralianMarketInvestmentName, AustralianMarketTotalShareValue, AustralianMarketCostBase, 
+                                      AustralianMarketIncomePA, AustralianMarketReinvestedIncome}=elem;
+                                    if(AustralianShareMarketList[0].AustralianMarketInvestmentName !=='' || 
+                                    AustralianShareMarketList[0].AustralianMarketTotalShareValue !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{AustralianMarketInvestmentName}</td>
+                                            <td>{AustralianMarketTotalShareValue}</td>
+                                            <td>{AustralianMarketCostBase}</td>
+                                            <td>{AustralianMarketIncomePA}</td>
+                                            <td>{AustralianMarketReinvestedIncome}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Australian Share Market  */}
+
+                                </tbody>
+                                </table>
+                               </div>
                           
                           
                           {/* --------------------------------------------- */}
@@ -1569,8 +1906,8 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={AustralianSharePortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1775,6 +2112,52 @@ function Investments() {
                               </Modal>
                           {/* ---------------------------------------------------- */}
 
+                              <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Type of Loan</th>
+                                        <th>Current Balance</th>
+                                        <th>Lender</th>
+                                        <th>Interest Rate P.A.</th>  
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* AustralianSharePortfolio #1  */}
+                                {  AustralianSharePortfolioList.map((elem,index)=>{
+                                    let {AustralianPortfolioLoanType, AustralianPortfolioCurrentBalance, 
+                                      AustralianPortfolioLender, AustralianInterestRatePA}=elem;
+                                    if(AustralianSharePortfolioList[0].AustralianPortfolioLoanType !=='' || 
+                                    AustralianSharePortfolioList[0].AustralianPortfolioCurrentBalance !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{AustralianPortfolioLoanType}</td>
+                                            <td>{AustralianPortfolioCurrentBalance}</td>
+                                            <td>{AustralianPortfolioLender}</td>
+                                            <td>{AustralianInterestRatePA}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* AustralianSharePortfolio #1  */}
+
+                                </tbody>
+                                </table>
+                               </div>
+
                           </div>
                           {/* Australian Share Details */} 
 
@@ -1863,8 +2246,8 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={ManagedFunds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -2062,6 +2445,49 @@ function Investments() {
                               </Formik>
                               </Modal>
                           {/* ---------------------------------------------------- */}
+
+                              <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Platform Name</th>
+                                        <th>Total Portfolio Value</th>
+                                        <th>Total Cost Base</th>
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* ManagedFunds #1  */}
+                                {  ManagedFundsList.map((elem,index)=>{
+                                    let {ManagedFundsPlatformName, ManagedFundsCurrentValue, ManagedFundsOriginalInvestment}=elem;
+                                    if(ManagedFundsList[0].ManagedFundsPlatformName !=='' || 
+                                    ManagedFundsList[0].ManagedFundsOriginalInvestment !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{ManagedFundsPlatformName}</td>
+                                            <td>{ManagedFundsCurrentValue}</td>
+                                            <td>{ManagedFundsOriginalInvestment}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* ManagedFunds #1  */}
+
+                                </tbody>
+                                </table>
+                               </div>
                           
                           
                           {/* --------------------------------------------- */}
@@ -2144,7 +2570,7 @@ function Investments() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={ManagedFundsPortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -2349,6 +2775,52 @@ function Investments() {
                               </Modal>
                           {/* ---------------------------------------------------- */}
 
+                              <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Type of Loan</th>
+                                        <th>Current Value</th>
+                                        <th>Lender</th>
+                                        <th>Interest Rate P.A.</th>
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* ManagedFundsPortfolio #1  */}
+                                {  ManagedFundsPortfolioList.map((elem,index)=>{
+                                    let {ManagedFundsPortfolioLoanType, ManagedFundsPortfolioCurrentBalance, 
+                                      ManagedFundsPortfolioLender, ManagedFundsPortfolioInterestRatePA}=elem;
+                                    if(ManagedFundsPortfolioList[0].ManagedFundsPortfolioLoanType !=='' || 
+                                    ManagedFundsPortfolioList[0].ManagedFundsPortfolioLender !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{ManagedFundsPortfolioLoanType}</td>
+                                            <td>{ManagedFundsPortfolioCurrentBalance}</td>
+                                            <td>{ManagedFundsPortfolioLender}</td>
+                                            <td>{ManagedFundsPortfolioInterestRatePA}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* ManagedFundsPortfolio #1  */}
+
+                                </tbody>
+                                </table>
+                               </div>
+
                           </div>
                           {/* Managed Funds Details */}                          
                           
@@ -2437,7 +2909,7 @@ function Investments() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={InvestmentBonds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -2722,7 +3194,7 @@ function Investments() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={InvestmentProperties_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -3333,7 +3805,7 @@ function Investments() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={Others_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>

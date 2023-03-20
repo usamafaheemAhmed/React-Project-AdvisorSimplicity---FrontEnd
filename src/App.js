@@ -16,6 +16,8 @@ import EstatePlanning from './components/EstatePlanning/EstatePlanning';
 import SMSF from './components/SMSF/SMSF';
 import InvestmentTrust from './components/InvestmentTrust/InvestmentTrust';
 import PersonalInsurance from './components/PersonalInsurance/PersonalInsurance';
+import RiskProfile from './components/RiskProfile/RiskProfile';
+import GoalsObjectives from './components/GoalsAndObjective/GoalsObjective';
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
         <Route path='/SMSF' element={<SMSF/>} />
         <Route path='/Investment-Trust' element={<InvestmentTrust/>} />
         <Route path='/Personal-Insurance' element={<PersonalInsurance/>} />
+        <Route path='/Risk-Profile' element={<RiskProfile/>} />
+        <Route path='/Goals-And-Objectives' element={<GoalsObjectives/>} />
       </Routes>
       </BrowserRouter>
       </div>

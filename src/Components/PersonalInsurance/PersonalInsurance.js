@@ -137,7 +137,7 @@ function PersonalInsurance() {
       Navigate('/Investment-Trust')
     }
     let onSubmit = () => {
-      Navigate('/')
+      Navigate('/Risk-Profile')
     }
 
     let Client_initialValues = {
