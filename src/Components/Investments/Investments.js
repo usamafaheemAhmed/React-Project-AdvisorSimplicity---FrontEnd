@@ -10,6 +10,7 @@ import doctor from './images/doctor.svg'
 import lawyer from './images/lawyer.svg'
 import notebook from './images/notebook.svg'
 import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 
@@ -501,6 +502,11 @@ function Investments() {
     setBankAccountList([BankDetails])
     BankhandleClose();
 
+    axios
+    .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
+    .then((res) => console.log("Bank Accounts Added Successfully!"))
+    console.log(BankDetails)
+
   }
 
   let TermDeposit_onSubmit = (values) => {
@@ -526,6 +532,11 @@ function Investments() {
     setTermDepositList([TermDepositDetails])
     TermDeposithandleClose();
 
+    axios
+    .post('http://localhost:7000/Client-TermDeposit/Add-Client-TermDeposit', TermDepositDetails)
+    .then((res) => console.log("Term Deposit Added Successfully!"))
+    console.log(TermDepositDetails)
+
   }
 
   let AustralianShareMarket_onSubmit = (values) => {
@@ -547,6 +558,11 @@ function Investments() {
 
     setAustralianShareMarketList([AustralianShareMarketDetails])
     AustralianShareMarkethandleClose();
+
+    axios
+    .post('http://localhost:7000/Client-Australian-Market-Share/Add-Client-Australian-Market-Share', AustralianShareMarketDetails)
+    .then((res) => console.log("Australian Share Market Added Successfully!"))
+    console.log(AustralianShareMarketDetails)
   }
 
   let AustralianSharePortfolio_onSubmit = (values) => {
@@ -564,9 +580,15 @@ function Investments() {
 
     setAustralianSharePortfolioList([AustralianSharePortfolioDetails])
     AustralianSharePortfoliohandleClose();
+
+    axios
+    .post('http://localhost:7000/Client-Australian-Share-Portfolio/Add-Client-Australian-Share-Portfolio', AustralianSharePortfolioDetails)
+    .then((res) => console.log("Australian Share Portfolio Added Successfully!"))
+    console.log(AustralianSharePortfolioDetails)
   }
 
   let ManagedFunds_onSubmit = (values) => {
+    ManagedFundshandleClose();
 
     let ManagedFundsDetails = {
       ManagedFundsPlatformName: values.ManagedFundsPlatformName,
@@ -583,12 +605,16 @@ function Investments() {
       ManagedFundsRegInvestments: values.ManagedFundsRegInvestments
     }
 
-    ManagedFundsList([ManagedFundsDetails])
-    ManagedFundshandleClose();
+    setManagedFundsList([ManagedFundsDetails]);
+
+    axios
+    .post('http://localhost:7000/Client-ManagedFunds/Add-Client-ManagedFunds', ManagedFundsDetails)
+    .then((res) => console.log("Managed Funds Added Successfully!"))
+    console.log(ManagedFundsDetails)
   }
 
   let ManagedFundsPortfolio_onSubmit = (values) => {
-
+    ManagedFundsPortfoliohandleClose();
     let ManagedFundsPortfolioDetails = {
       ManagedFundsPortfolioLoanType: values.ManagedFundsPortfolioLoanType,
       ManagedFundsPortfolioCurrentBalance: values.ManagedFundsPortfolioCurrentBalance,
@@ -600,20 +626,104 @@ function Investments() {
       ManagedFundsPortfolioYearRemaining: values.ManagedFundsPortfolioYearRemaining
     }
 
-    ManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
-    ManagedFundsPortfoliohandleClose();
+    setManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
+
+    axios
+    .post('http://localhost:7000/Client-ManagedFunds-Portfolio/Add-Client-ManagedFunds-Portfolio', ManagedFundsPortfolioDetails)
+    .then((res) => console.log("Managed Funds Portfolio Added Successfully!"))
+    console.log(ManagedFundsPortfolioDetails)
   }
 
   let InvestmentBonds_onSubmit = (values) => {
+
+    InvestmentBondshandleClose();
+    let InvestmentBondsDetails = {
+      InvestmentBondsPlatformName: values.InvestmentBondsPlatformName,
+      InvestmentBondsInvestmentName: values.InvestmentBondsInvestmentName,
+      InvestmentBondsNumberOfShares: values.InvestmentBondsNumberOfShares,
+      InvestmentBondsSharePrice: values.InvestmentBondsSharePrice,
+      InvestmentBondsCurrentValue: values.InvestmentBondsCurrentValue,
+      InvestmentBondsOriginalInvestment: values.InvestmentBondsOriginalInvestment,
+      InvestmentBondsPurchaseDate: values.InvestmentBondsPurchaseDate,
+      InvestmentBondsIncomePA: values.InvestmentBondsIncomePA,
+      InvestmentBondsIncomePAType: values.InvestmentBondsIncomePAType,
+      InvestmentBondsTotalIncomePA: values.InvestmentBondsTotalIncomePA,
+      InvestmentBondsReinvestedIncome: values.InvestmentBondsReinvestedIncome,
+      InvestmentBondsRegInvestments: values.InvestmentBondsRegInvestments,
+    }
+    setInvestmentBondsList([InvestmentBondsDetails])
+
+    axios
+    .post('http://localhost:7000/Client-InvestmentBonds/Add-Client-Investment-Bonds', InvestmentBondsDetails)
+    .then((res) => console.log("Investment Bonds Added Successfully!"))
+    console.log(InvestmentBondsDetails)
 
   }
 
   let InvestmentProperties_onSubmit = (values) => {
 
+    InvestmentPropertieshandleClose();
+    let InvestmentPropertiesDetails = {
+      InvestmentPropertiesCurrentValue: values.InvestmentPropertiesCurrentValue,
+      InvestmentPropertiesClientOwnership: values.InvestmentPropertiesClientOwnership,
+      InvestmentPropertiesCostBase: values.InvestmentPropertiesCostBase,
+      InvestmentPropertiesAddress: values.InvestmentPropertiesAddress,
+      InvestmentPropertiesPostcode: values.InvestmentPropertiesPostcode,
+      InvestmentPropertiesRentalIncome: values.InvestmentPropertiesRentalIncome,
+      InvestmentPropertiesFrequency: values.InvestmentPropertiesFrequency,
+      InvestmentPropertiesTotalAnnualIncome: values.InvestmentPropertiesTotalAnnualIncome,
+      InvestmentPropertiesExpensesPA: values.InvestmentPropertiesExpensesPA,
+      InvestmentPropertiesLoanAttached: values.InvestmentPropertiesLoanAttached,
+      InvestmentPropertiesCurrentBalance: values.InvestmentPropertiesCurrentBalance,
+      InvestmentPropertiesClientBorrowing: values.InvestmentPropertiesClientBorrowing,
+      InvestmentPropertiesLender: values.InvestmentPropertiesLender,
+      InvestmentPropertiesRepaymentAmount: values.InvestmentPropertiesRepaymentAmount,
+      InvestmentPropertiesFrequency2: values.InvestmentPropertiesFrequency2,
+      InvestmentPropertiesAnnualRepayment: values.InvestmentPropertiesAnnualRepayment,
+      InvestmentPropertiesInterestRatePA: values.InvestmentPropertiesInterestRatePA,
+      InvestmentPropertiesLoanTerm: values.InvestmentPropertiesLoanTerm,
+      InvestmentPropertiesLoanType: values.InvestmentPropertiesLoanType,
+      InvestmentPropertiesDebtLoanAmount: values.InvestmentPropertiesDebtLoanAmount,
+      InvestmentPropertiesYearsRemaining: values.InvestmentPropertiesYearsRemaining
+    }
+    setInvestmentPropertiesList([InvestmentPropertiesDetails])
+
+    axios
+    .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
+    .then((res) => console.log("Investment Properties Added Successfully!"))
+    console.log(InvestmentPropertiesDetails)
   }
 
   let Others_onSubmit = (values) => {
 
+    OthershandleClose();
+    let OthersDetails = {
+      OtherInvestmentName: values.OtherInvestmentName,
+      OtherCurrentValue: values.OtherCurrentValue,
+      OtherCostBase: values.OtherCostBase,
+      OtherPurchaseDate: values.OtherPurchaseDate,
+      OtherIncomePA: values.OtherIncomePA,
+      OtherIncomePAType: values.OtherIncomePAType,
+      OtherTotalIncomePA: 5000,
+      OtherReinvestedIncome: values.OtherReinvestedIncome,
+      OtherRegularInvestmentsPA: values.OtherRegularInvestmentsPA,
+  
+      OtherInvestmentName2: values.OtherInvestmentName2,
+      OtherCurrentValue2: values.OtherCurrentValue2,
+      OtherCostBase2: values.OtherCostBase2,
+      OtherPurchaseDate2: values.OtherPurchaseDate2,
+      OtherIncomePA2: values.OtherIncomePA2,
+      OtherIncomePAType2: values.OtherIncomePAType2,
+      OtherTotalIncomePA2: 5000,
+      OtherReinvestedIncome2: values.OtherReinvestedIncome2,
+      OtherRegularInvestmentsPA2: values.OtherRegularInvestmentsPA2,
+    }
+    setOthersList([OthersDetails])
+
+    axios
+    .post('http://localhost:7000/Client-Others/Add-Client-Others', OthersDetails)
+    .then((res) => console.log("Other Investments Added Successfully!"))
+    console.log(OthersDetails)
   }
 
   let InvestmentModal_initialValues = {
@@ -668,7 +778,24 @@ function Investments() {
   }
   let onSubmit=(values)=>{
   console.log(values)
-  Navigate('/Estate-Planning')
+
+  let InvestmentDetails = {
+    BankAccounts: values.BankAccountRadio,
+    TermDeposits: values.TermDepositRadio,
+    AustralianShareMarket: values.AustralianShareMarketRadio,
+    AustralianSharePortfolio: values.AustralianSharePortfolioRadio,
+    ManagedFunds: values.ManagedFundsRadio,
+    ManagedFundsPortfolio: values.ManagedFundsPortfolioRadio,
+    InvestmentBonds: values.InvestmentBondsRadio,
+    InvestmentProperties: values.InvestmentPropertiesRadio,
+    Others: values.OthersRadio,
+  }
+
+  axios
+  .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
+  .then((res) => console.log("Investment Added Successfully!"))
+
+  // Navigate('/Estate-Planning');
   }
 
   return (
@@ -2451,24 +2578,22 @@ function Investments() {
                                     <thead className="text-light" id="tableHead">
                                       <tr>
                                         <th>Platform Name</th>
-                                        <th>Total Portfolio Value</th>
-                                        <th>Total Cost Base</th>
+                                        <th>Current Value</th>
                                       </tr>
                                     </thead>
 
                                 <tbody>
                                 
-                                  {/* ManagedFunds #1  */}
+                                  {/* Australian Share Market  */}
                                 {  ManagedFundsList.map((elem,index)=>{
-                                    let {ManagedFundsPlatformName, ManagedFundsCurrentValue, ManagedFundsOriginalInvestment}=elem;
-                                    if(ManagedFundsList[0].ManagedFundsPlatformName !=='' || 
-                                    ManagedFundsList[0].ManagedFundsOriginalInvestment !=='' ){
+                                    let {ManagedFundsPlatformName, ManagedFundsCurrentValue}=elem;
+                                    if(ManagedFundsList[0].ManagedFundsPlatformName !=='' ||
+                                    ManagedFundsList[0].ManagedFundsCurrentValue !=='' ){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
                                             <td>{ManagedFundsPlatformName}</td>
                                             <td>{ManagedFundsCurrentValue}</td>
-                                            <td>{ManagedFundsOriginalInvestment}</td>
                                             {/* <td >
                                             <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
                                             <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
@@ -2483,7 +2608,7 @@ function Investments() {
                                     }
 
                                   }) }
-                                  {/* ManagedFunds #1  */}
+                                  {/* Australian Share Market  */}
 
                                 </tbody>
                                 </table>
@@ -2569,7 +2694,7 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
+                                // validationSchema={Client_validationSchema}
                                 onSubmit={ManagedFundsPortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -2824,6 +2949,7 @@ function Investments() {
                           </div>
                           {/* Managed Funds Details */}                          
                           
+
                         
                           {/* Investment Bonds Details */}
                           <div className='mb-5'>
@@ -2908,7 +3034,7 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
+                                // validationSchema={Client_validationSchema}
                                 onSubmit={InvestmentBonds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -3106,9 +3232,53 @@ function Investments() {
                                 }
                               </Formik>
                               </Modal>
-                          {/* ---------------------------------------------------- */}
+                          {/* ---------------------------------------------------- */}                          
+
+                          <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Platform Name</th>
+                                        <th>Current Value</th>
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* Australian Share Market  */}
+                                {  InvestmentBondsList.map((elem,index)=>{
+                                    let { InvestmentBondsPlatformName, InvestmentBondsCurrentValue }=elem;
+                                    if(InvestmentBondsList[0].InvestmentBondsPlatformName !=='' ||
+                                    InvestmentBondsList[0].InvestmentBondsCurrentValue !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{InvestmentBondsPlatformName}</td>
+                                            <td>{InvestmentBondsCurrentValue}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Australian Share Market  */}
+
+                                </tbody>
+                                </table>
+                               </div>
+
                           </div>
                           {/* Investment Bonds Details */}
+
+
 
                           {/* Investment Properties Details */}
                           <div className='mb-5'>
@@ -3193,7 +3363,7 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
+                                // validationSchema={Client_validationSchema}
                                 onSubmit={InvestmentProperties_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -3718,8 +3888,62 @@ function Investments() {
                               </Formik>
                               </Modal>
                           {/* ---------------------------------------------------- */}
+                        
+                          <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Proper Address</th>
+                                        <th>Value</th>
+                                        <th>Ownership</th>
+                                        <th>Rent P.A.</th>
+                                        <th>Annual Expenses</th>
+                                        <th>Repayments P.A.</th>
+                                      </tr>
+                                    </thead>
+
+                                <tbody>
+                                
+                                  {/* Australian Share Market  */}
+                                {  InvestmentPropertiesList.map((elem,index)=>{
+                                    let { InvestmentPropertiesCurrentValue, InvestmentPropertiesAddress, 
+                                      InvestmentPropertiesClientOwnership, InvestmentPropertiesRentalIncome,
+                                      InvestmentPropertiesExpensesPA, InvestmentPropertiesRepaymentAmount }=elem;
+                                    if(InvestmentPropertiesList[0].InvestmentPropertiesAddress !=='' ||
+                                    InvestmentPropertiesList[0].InvestmentPropertiesClientOwnership !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{InvestmentPropertiesAddress}</td>
+                                            <td>{InvestmentPropertiesCurrentValue}</td>
+                                            <td>{InvestmentPropertiesClientOwnership}</td>
+                                            <td>{InvestmentPropertiesRentalIncome}</td>
+                                            <td>{InvestmentPropertiesExpensesPA}</td>
+                                            <td>{InvestmentPropertiesRepaymentAmount}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Australian Share Market  */}
+
+                                </tbody>
+                                </table>
+                               </div>
+
                           </div>
                           {/* Investment Properties Details */}
+
+
 
                           {/* Others Details */}
                           <div className='mb-5'>
@@ -3804,7 +4028,7 @@ function Investments() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
+                                // validationSchema={Client_validationSchema}
                                 onSubmit={Others_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -4074,9 +4298,82 @@ function Investments() {
                               </Formik>
                               </Modal>
                           {/* ---------------------------------------------------- */}
+                        
+                          <div   className='table-responsive my-3'>
+                                <table className="table table-bordered table-hover text-center">
+                                    <thead className="text-light" id="tableHead">
+                                      <tr>
+                                        <th>Name of Investments</th>
+                                        <th>Current Value</th>
+                                        <th>Income P.A.</th>
+                                        <th>Reinvest Income</th>
+                                      </tr>
+                                    </thead>
 
+                                <tbody>
+                                
+                                  {/* Australian Share Market 1  */}
+                                {  OthersList.map((elem,index)=>{
+                                    let { OtherInvestmentName, OtherCurrentValue, OtherIncomePA, OtherReinvestedIncome }=elem;
+                                    if(OthersList[0].OtherInvestmentName !=='' ||
+                                    OthersList[0].OtherCurrentValue !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{OtherInvestmentName}</td>
+                                            <td>{OtherCurrentValue}</td>
+                                            <td>{OtherIncomePA}</td>
+                                            <td>{OtherReinvestedIncome}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Australian Share Market 1 */}
+                                
+                                  {/* Australian Share Market 2 */}
+                                {  OthersList.map((elem,index)=>{
+                                    let { OtherInvestmentName2, OtherCurrentValue2, OtherIncomePA2, OtherReinvestedIncome2 }=elem;
+                                    if(OthersList[0].OtherInvestmentName2 !=='' ||
+                                    OthersList[0].OtherCurrentValue2 !=='' ){
+                                      return(
+                                        <tr key={index}>
+                                          {/* <td className='fw-bold'>Bank #1</td> */}
+                                            <td>{OtherInvestmentName2}</td>
+                                            <td>{OtherCurrentValue2}</td>
+                                            <td>{OtherIncomePA2}</td>
+                                            <td>{OtherReinvestedIncome2}</td>
+                                            {/* <td >
+                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    
+                                            </td>  */}
+                                        
+                                        </tr>
+                                        );
+                                    }
+                                    else{
+                                
+                                    }
+
+                                  }) }
+                                  {/* Australian Share Market 2 */}
+
+                                </tbody>
+                                </table>
+                               </div>
                           </div>
                           {/* Others Details */} 
+                          
 
                           <div className="row mt-5 mb-3">
                             <div className="col-md-12">

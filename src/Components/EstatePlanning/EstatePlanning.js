@@ -7,11 +7,14 @@ import notebook from './images/notebook.svg';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const EstatePlanning = () => {
     const [POA, setPOA] = useState(false)
     const [POA2, setPOA2] = useState(false)
+
+    
     
 
     const [show2, setShow2] = useState(false);
@@ -22,6 +25,10 @@ const EstatePlanning = () => {
     const [estatePlanning, setEstatePlanning] = useState(false)
     const [estatePlanning2, setEstatePlanning2] = useState(false)
     const [isPartnered, setIsPartnered] = useState()
+
+    const [ClientPOAList, setClientPOAList] = useState([])
+    const [ClientPOAList2, setClientPOAList2] = useState([])
+
 
     let partner= window.localStorage.getItem("partner");
     useEffect(() => {
@@ -153,7 +160,8 @@ const EstatePlanning = () => {
        Executor:Yup.string()
       .when("haveWillsradio",{
       is:(val)=> val && val.length ==3,
-      then:Yup.string().required("Required")
+      then:Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
        }),
 
        datePrepared:Yup.date()
@@ -183,13 +191,15 @@ const EstatePlanning = () => {
 LocationOfWill2:Yup.string()
 .when("haveWillsradio2",{
 is:(val)=> val && val.length ==3,
-then:Yup.string().required("Required")
+then:Yup.string().required("Required"),
+otherwise: Yup.string().notRequired()
  }),
 
  Executor2:Yup.string()
 .when("haveWillsradio2",{
 is:(val)=> val && val.length ==3,
-then:Yup.string().required("Required")
+then:Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
  }),
 
  datePrepared2:Yup.date()
@@ -206,7 +216,8 @@ then:Yup.string().required("Required")
    estatePlanningDetails2:Yup.string()
    .when("specificEstatePlanningradio2",{
    is:(val)=> val && val.length ==3,
-   then:Yup.string().required("Required")
+   then:Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
     }),
 
 
@@ -226,7 +237,8 @@ then:Yup.string().required("Required")
        Executor:Yup.string()
       .when("haveWillsradio",{
       is:(val)=> val && val.length ==3,
-      then:Yup.string().required("Required")
+      then:Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
        }),
 
        datePrepared:Yup.date()
@@ -253,69 +265,66 @@ then:Yup.string().required("Required")
      
     })
     
-
     let Navigate = useNavigate();
-            function BackFunction(){
-              Navigate('/Investments')
-            }
+    function BackFunction(){
+      Navigate('/Investments')
+    }
+
     let onSubmit = (values) => {
+      // Navigate('/Super-And-Retirment')
 
-    let clientPartnerData={
-      A:values.haveWillsradio,
-      B:values.reflectCurrentWishesradio,
-      cA:values.datePrepared,
-      dA:values.lastReviewed,
-      eA:values.LocationOfWill,
-      fA:values.allowTestamentaryradio,
-      gA:values.funeralBondsradio,
-      hA:values.Executor,
-      iA:values.specificEstatePlanningradio,
-      jA:values.POAradio,
-      kA:values.estatePlanningDetails,
-
-      // partner estate planning
-
-      Adfg:values.haveWillsradio2,
-      cvbA:values.reflectCurrentWishesradio2,
-      tyA:values.datePrepared2,
-      Aew:values.lastReviewed2,
-      ewwA:values.LocationOfWill2,
-      wewA:values.allowTestamentaryradio2,
-      ewA:values.funeralBondsradio2,
-      dsA:values.Executor2,
-      A:values.estatePlanningDetails2,
-      asA:values.specificEstatePlanningradio2,
-      sA:values.POAradio2,
+// partner estate planning
+    let PartnerData={
+      Partner_AnyWill:values.haveWillsradio2,
+      Partner_CurrentWill_Reflection:values.reflectCurrentWishesradio2,
+      Partner_PreparationDate:values.datePrepared2,
+      Partner_LastReviewDate:values.lastReviewed2,
+      Partner_WillLocation:values.LocationOfWill2,
+      Partner_TestamentaryTest:values.allowTestamentaryradio2,
+      Partner_Executors:values.Executor2,
+      Partner_FuneralBonds:values.funeralBondsradio2,
+      Partner_SpecificEstateRequirements:values.specificEstatePlanningradio2,
+      Partner_Details_SpecificRequirements:values.estatePlanningDetails2,
+      Partner_POA:values.POAradio2,
 
 
     }
 
+// client estate planning
     let clientData={
-      A:values.haveWillsradio,
-      B:values.reflectCurrentWishesradio,
-      cA:values.datePrepared,
-      dA:values.lastReviewed,
-      eA:values.LocationOfWill,
-      fA:values.allowTestamentaryradio,
-      gA:values.funeralBondsradio,
-      hA:values.Executor,
-      iA:values.specificEstatePlanningradio,
-      jA:values.POAradio,
-      kA:values.estatePlanningDetails,
+      AnyWill:values.haveWillsradio,
+      CurrentWill_Reflection: values.reflectCurrentWishesradio,
+      PreparationDate:values.datePrepared,
+      LastReviewDate: values.lastReviewed,
+      WillLocation: values.LocationOfWill,
+      TestamentaryTest:values.allowTestamentaryradio,
+      Executors: values.Executor,
+      FuneralBonds: values.funeralBondsradio,
+      SpecificEstateRequirements: values.specificEstatePlanningradio,
+      Details_SpecificRequirements: values.estatePlanningDetails,
+      POA: values.POAradio,
     }
 
     if(isPartnered===true){
-    console.log(clientPartnerData)
-      
+      console.log(clientData)
+      console.log(PartnerData)
+      axios
+      .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
+      .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+      axios
+      .post('http://localhost:7000/Partner-EstatePlanning/Add-Partner-EstatePlanning', PartnerData)
+      .then((res) =>  console.log("Partner Estate Planning Added Successfullly!"))
       
         }
         else{
         
           console.log(clientData)
+          axios
+          .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
+          .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+
 
         }
-
-        Navigate('/Super-And-Retirment')
     
     }
 
@@ -362,7 +371,33 @@ then:Yup.string().required("Required")
 
 
     let POA_onSubmit = (Values) => {
-        console.log(Values)
+
+      let client_Modal={
+        POA_Type: Values.PowerofAttorney,
+        POA_OtherDescription: Values.OtherDescription,
+        POA_ReviewDate: Values.dateLastReviewed,
+        POA_Location: Values.locationOfPOA,
+        POA_1: Values.POA1,
+        POA_2: Values.POA2,
+        POA_3: Values.POA3,
+        POA_4: Values.POA4,
+        POA_5:  Values.POA5,
+        Relationship_1: Values.Relationship1,
+        Relationship_2: Values.Relationship2,
+        Relationship_3:  Values.Relationship3,
+        Relationship_4:  Values.Relationship4,
+        Relationship_5: Values.Relationship5,
+      }
+
+      setClientPOAList([...ClientPOAList,client_Modal])
+      console.log(client_Modal)
+
+      
+      axios
+      .post('http://localhost:7000/Client-ModalEstatePlanning/Add-Client-ModalEstatePlanning', client_Modal)
+      .then((res) =>  console.log("Client Estate Planning Modal Added Successfullly!"))
+      
+
         
         }
 
@@ -378,7 +413,6 @@ then:Yup.string().required("Required")
           POA32:'',
           Relationship32:'',
           POA42:'',
-          Relationship42:'',
           POA52:'',
           Relationship52:'',
         }
@@ -407,12 +441,28 @@ then:Yup.string().required("Required")
         })
     
     
-        let POA_onSubmit2 = (Values) => {
-            console.log(Values)
+        let POA_onSubmit2 = (values) => {
+          let Partnet_Modal={
+            POA_Type: values.PowerofAttorney2,
+            POA_ReviewDate:  values.datelastReviewed2,
+            // values.OtherDescription2, to be added in backend
+            POA_Location: values.locationOfPOA2,
+            POA_1:  values.POA12,
+            POA_2:  values.POA22,
+            POA_3: values.POA32,
+            POA_4: values.POA42,
+            POA_5: values.POA52,
+
+            Relationship_1: values.Relationship12,
+            Relationship_2: values.Relationship22,
+            Relationship_3: values.Relationship32,
+            Relationship_4: values.Relationship42,
+            Relationship_5: values.Relationship52,
+          }
+          setClientPOAList2([...ClientPOAList2,Partnet_Modal])
+            console.log(Partnet_Modal)
             
             }
-
-            
   return (
     <>
        <div className="container-fluid">
@@ -690,7 +740,7 @@ then:Yup.string().required("Required")
                        {
                        estatePlanning &&
                        <div className="mb-3">
-                          <label htmlFor="details" className="form-label">Please enter details below</   label>
+                          <label htmlFor="estatePlanningDetails" className="form-label">Please enter details below</   label>
                           <Field type="text" className="form-control shadow inputDesign"
                            id="estatePlanningDetails"
                            name="estatePlanningDetails"
@@ -781,7 +831,7 @@ then:Yup.string().required("Required")
                             </Modal.Header>
                            <Formik
                             initialValues={POA_initialValues}
-                            validationSchema={POA_validationSchema}
+                            // validationSchema={POA_validationSchema}
                             onSubmit={POA_onSubmit}
                             >
                           {({values,handleChange,setFieldValue,formik})=>
@@ -1018,6 +1068,50 @@ then:Yup.string().required("Required")
                               </div>
                           {/* Client Estate Planning */}
 
+                      {/*Table1 */}
+
+                        <div   className='table-responsive my-3'>
+         <table className="table table-bordered table-hover text-center">
+        <thead className="text-light" id="tableHead">
+              <tr>
+                <th>POA Type</th>
+                    <th>Number of POA</th>
+                   
+               </tr>
+       </thead>
+
+        <tbody>
+        
+          {/* ClientPOAList  */}
+        {  ClientPOAList.map((elem,index)=>{
+            let {POA_Type,}=elem;
+            if(ClientPOAList[0].POA_Type !=='' ){
+              return(
+                <tr key={index}>
+                  <td className='fw-bold'>{POA_Type}</td>
+                    <td>Cal</td>
+                    
+              
+                
+                </tr>
+                );
+            }
+            else{
+         
+            }
+
+          }) }
+          {/* ClientPOAList  */}
+
+       </tbody>
+</table>
+                        </div>
+
+                        {/*Table1 */}
+
+
+
+
                       {/* partner planninng */}
                      {
                      isPartnered && <div className='my-5'>
@@ -1089,7 +1183,7 @@ then:Yup.string().required("Required")
 
                         </div>
 {
-  // usama
+
   haveWills2 &&
   <div>
                           {/* dates row*/}
@@ -1368,7 +1462,7 @@ then:Yup.string().required("Required")
                             </Modal.Header>
                            <Formik
                             initialValues={POA_initialValues2}
-                            validationSchema={POA_validationSchema2}
+                            // validationSchema={POA_validationSchema2}
                             onSubmit={POA_onSubmit2}
                             >
                           {({values,handleChange,setFieldValue,formik})=>
@@ -1433,21 +1527,22 @@ then:Yup.string().required("Required")
 
                       </div>
                     </div>
-                  </div>
+                 
                         {/* Row 1*/}
 
                         {/* Row 2*/}
-                        <div className="row">
+                        {values.PowerofAttorney2 ==="OtherFinancial" &&
                         <div className="col-md-6">
-                  {values.PowerofAttorney2 ==="OtherFinancial" &&
+                 
                         <div className="mb-3">
                           <label htmlFor="OtherDescription2" className="form-label">Other Description</   label>
                           <Field type="text" className="form-control shadow inputDesign"
                            id="OtherDescription2" name='OtherDescription2' placeholder="Other Description" />
                            <ErrorMessage component='div' className='text-danger fw-bold' name='OtherDescription2' />
                         </div>    
-                        }        
+                             
                         </div>
+                      }  
 
                          <div className="col-md-6">
                         <div className="mb-3">
@@ -1598,14 +1693,61 @@ then:Yup.string().required("Required")
                             }
                            </Formik>
                           </Modal>
+
+                          
                           {/* Modal Do you have any POA?*/}
+
+                        {/*Table2 */}
+
+                        <div   className='table-responsive my-3'>
+         <table className="table table-bordered table-hover text-center">
+        <thead className="text-light" id="tableHead">
+              <tr>
+                <th>POA Type</th>
+                    <th>Number of POA</th>
+                   
+               </tr>
+       </thead>
+
+        <tbody>
+        
+          {/* ClientPOAList  */}
+        {  ClientPOAList2.map((elem,index)=>{
+            let {POA_Type,}=elem;
+            if(ClientPOAList2[0].POA_Type !=='' ){
+              return(
+                <tr key={index}>
+                  <td className='fw-bold'>{POA_Type}</td>
+                    <td>Cal</td>
+                    
+              
+                
+                </tr>
+                );
+            }
+            else{
          
-                      </div>}
+            }
+
+          }) }
+          {/* ClientPOAList */}
+
+       </tbody>
+</table>
+                        </div>
+
+                        {/*Table2 */}
+
+         
+                      </div>
+                      
+                      
+                      }
                       {/* partner planninng */}
                       <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline backBtn mx-3" onClick={BackFunction}>Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
                         </div>
                       </div>
                             </Form>

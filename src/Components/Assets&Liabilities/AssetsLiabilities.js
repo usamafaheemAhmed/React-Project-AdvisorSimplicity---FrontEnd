@@ -29,6 +29,24 @@ const AssetsLiabilities = () => {
     const handleClose3 = () => setShow3(false);
     const handleShow3 = () => setShow3(true);
 
+    const [ownFamilyList, setOwnFamilyList] = useState([])
+    
+    const [contentList, setContentList] = useState([])
+    const [MotorVehicle1, setMotorVehicle1] = useState([])
+    const [MotorVehicle2, setMotorVehicle2] = useState([])
+    const [Boat, setBoat] = useState([])
+    const [Caravan, setCaravan] = useState([])
+    const [personalOther, setPersonalOther] = useState([])
+
+    // table3 state lists
+    const [CreditCardList1, setCreditCardList1] = useState([])
+    const [CreditCardList2, setCreditCardList2] = useState([])
+    const [PersonalLoanList1, setPersonalLoanList1] = useState([])
+    const [PersonalLoanList2, setPersonalLoanList2] = useState([])
+
+
+
+
 
     let ownFamilyHandler=(elem)=>{
         if (elem==="No"){
@@ -94,7 +112,7 @@ const AssetsLiabilities = () => {
           .then((res) => console.log("Assets Details Added Successfully!"));
 
         console.log(AssetsDetails)
-        // Navigate('/Investments');
+        Navigate('/Investments');
         
         }
 
@@ -269,7 +287,7 @@ const AssetsLiabilities = () => {
         let own_onSubmit = (Values) => {
 
           let ClientFamilyHomeDetails={
-            HomeNO:  parseFloat(Values.home),
+            HomeNO:  parseFloat(Values.home)||0,
             CurrentValue:  Values.currentValue,
             ClientOwnership: Values.clientPercentage,
             PartnerOwnership: Values.partnerPercentage,
@@ -291,6 +309,9 @@ const AssetsLiabilities = () => {
             YearsRemaining: Values.yearsRemaining,
             
           }
+
+
+          setOwnFamilyList([ClientFamilyHomeDetails])
 
           axios
           .post('http://localhost:7000/Client-FamilyHome/Add-Client-FamilyHome', ClientFamilyHomeDetails)
@@ -423,6 +444,18 @@ const AssetsLiabilities = () => {
             Other_Security: Values.otherradio,
             
         }
+
+        setContentList([ClientPersonalAssets])
+        setMotorVehicle1([ClientPersonalAssets])
+        setMotorVehicle2([ClientPersonalAssets])
+        setBoat([ClientPersonalAssets])
+        setCaravan([ClientPersonalAssets])
+        setPersonalOther([ClientPersonalAssets])
+
+
+
+        console.log(contentList);
+
 
         axios
         .post('http://localhost:7000/Client-PersonalAssets/Add-Client-PersonalAssets', ClientPersonalAssets)
@@ -626,6 +659,11 @@ debtInterestRate4:Yup.number().required("Required")
       PersonalLoan2_YearRemaining: Values.debtYearRemaining4,
       
         }
+
+        setCreditCardList1([ClientPersonalDebts])
+        setCreditCardList2([ClientPersonalDebts])
+        setPersonalLoanList1([ClientPersonalDebts])
+        setPersonalLoanList2([ClientPersonalDebts])
 
     axios
     .post('http://localhost:7000/Client-PersonalDebts/Add-Client-PersonalDebts', ClientPersonalDebts)
@@ -987,6 +1025,28 @@ onSubmit={onSubmit}>
                             <option value="6">6</option>
                             <option value="7">7</option>
                             <option value="8">8</option>
+                            <option value="9">9</option>
+                               <option value="10">10</option>
+                               <option value="11">11</option>
+                               <option value="12">12</option>
+                               <option value="13">13</option>
+                               <option value="14">14</option>
+                               <option value="15">15</option>
+                               <option value="16">16</option>
+                               <option value="17">17</option>
+                               <option value="18">18</option>
+                               <option value="19">19</option>
+                               <option value="20">20</option>
+                               <option value="21">21</option>
+                               <option value="22">22</option>
+                               <option value="23">23</option>
+                               <option value="24">24</option>
+                               <option value="25">25</option>
+                               <option value="26">26</option>
+                               <option value="27">27</option>
+                               <option value="28">28</option>
+                               <option value="29">29</option>
+                               <option value="30">30</option>
                             </Field>
                             <ErrorMessage component='div' className="text-danger fw-bold"name="loanTerm" />
 
@@ -1099,6 +1159,55 @@ onSubmit={onSubmit}>
                           </Modal>
                           {/* Modal  Family Home Details*/}
 
+
+                          {/* Table1  Family Home Details*/}
+                          { 
+        //  isChildTable && 
+         <div   className='table-responsive my-3' id="childTable">
+         <table className="table table-bordered table-hover text-center">
+  <thead className="text-light" id="tableHead">
+  <tr>
+        <th>Address</th>
+        <th>Current Value</th>
+        <th>Ownership</th>
+        <th>Home Loan Balance</th>
+        <th>Repayments p.a</th>
+        <th>Operations</th>
+       
+    </tr>
+  </thead>
+  <tbody>
+  {  ownFamilyList.map((elem,index)=>{
+        let {Address,CurrentValue,ClientOwnership,PartnerOwnership,CurrentBalance,AnnualRepayments}=elem;
+       
+return(
+    
+    <tr key={index}>
+        <td>{Address}</td>
+        <td>{CurrentValue}</td>
+        <td>Client {ClientOwnership} Partner{PartnerOwnership}</td>
+        <td>{CurrentBalance}</td>
+        <td>{AnnualRepayments}</td>
+        <td >
+         {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+         <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+
+         </td> 
+    
+    </tr>
+    );
+        
+    }) }
+  </tbody>
+</table>
+         </div>
+         }
+
+                          {/* Table1  Family Home Details*/}
+
+
+
+
 {/*main second row */}
                           <div className="row my-3">
                          <div className="col-md-6">
@@ -1153,9 +1262,9 @@ onSubmit={onSubmit}>
                         </div>}
                        
                           </div>
-{/* Model 2*/}
+                     {/* Model 2*/}
 
-                        <Modal
+                         <Modal
                             show={show2}
                             onHide={handleClose2}
                             backdrop="static"
@@ -1176,7 +1285,7 @@ onSubmit={onSubmit}>
                             </Modal.Header>
                            <Formik
                             initialValues={personalAssetsInitialValues}
-                            validationSchema={personalAssetsValidationSchema}
+                            // validationSchema={personalAssetsValidationSchema}
                             onSubmit={personalAssetsOnSubmit}>
                           {({values , setFieldValue ,setValues,handleChange,formik})=>
                             <Form>
@@ -1597,13 +1706,223 @@ onSubmit={onSubmit}>
                             }
                            </Formik>
                           </Modal>
-{/* Model 2*/}
+                      {/* Model 2*/}
                         
-{/*main second row */}
-{/*main Third row */}
+                        {/*main second row */}
 
-                <div>
-                           {/* 1 row */}
+                        {/*Table2 main second row */}
+
+                        <div   className='table-responsive my-3'>
+         <table className="table table-bordered table-hover text-center">
+  <thead className="text-light" id="tableHead">
+  <tr>
+    <th>Description</th>
+        <th>Current Value</th>
+        <th>Centrelink Value</th>
+        <th>Security for Loan</th>
+        <th>Operations</th>
+
+       
+    </tr>
+  </thead>
+  <tbody>
+  
+    {/* content  */}
+   {  contentList.map((elem,index)=>{
+      let {Contents_CurrentValue,Contents_CentreLinkValue,Contents_Security}=elem;
+      if(contentList[0].Contents_CurrentValue =='' || 
+      contentList[0].Contents_CentreLinkValue =='' ){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Contents</td>
+              <td>{Contents_CurrentValue}</td>
+              <td>{Contents_CentreLinkValue}</td>
+              <td>{Contents_Security}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+    }) }
+    {/* content  */}
+
+     {/* motor 1  */}
+   {  MotorVehicle1.map((elem,index)=>{
+      let {MotorVehicle1_CurrentValue,MotorVehicle1_CentreLinkValue,MotorVehicle1_Security}=elem;
+      if(MotorVehicle1[0].MotorVehicle1_CurrentValue =='' || 
+      MotorVehicle1[0].MotorVehicle1_CentreLinkValue =='' ){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Motor Vehicle 1</td>
+              <td>{MotorVehicle1_CurrentValue}</td>
+              <td>{MotorVehicle1_CentreLinkValue}</td>
+              <td>{MotorVehicle1_Security}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+    }) }
+    {/* motor 1  */}
+
+     {/* motor 2  */}
+   {  MotorVehicle2.map((elem,index)=>{
+      let {MotorVehicle2_CurrentValue,MotorVehicle2_CentreLinkValue,MotorVehicle2_Security}=elem;
+      if(MotorVehicle2[0].MotorVehicle2_CurrentValue =='' || 
+      MotorVehicle2[0].MotorVehicle2_CentreLinkValue =='' ){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Motor Vehicle 2</td>
+              <td>{MotorVehicle2_CurrentValue}</td>
+              <td>{MotorVehicle2_CentreLinkValue}</td>
+              <td>{MotorVehicle2_Security}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+    }) }
+    {/* motor 2  */}
+
+
+      {/* Boat */}
+   {  Boat.map((elem,index)=>{
+      let {Boat_CurrentValue,Boat_CentreLinkValue,Boat_Security}=elem;
+      if(Boat[0].Boat_CurrentValue =='' || 
+      Boat[0].Boat_CentreLinkValue =='' ){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Boat</td>
+              <td>{Boat_CurrentValue}</td>
+              <td>{Boat_CentreLinkValue}</td>
+              <td>{Boat_Security}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+    }) }
+    {/* Boat  */}
+
+     {/* Carvan */}
+   {  Caravan.map((elem,index)=>{
+      let {Caravan_CurrentValue,Caravan_CentreLinkValue,Caravan_Security}=elem;
+      if(Caravan[0].Caravan_CurrentValue =='' || 
+      Caravan[0].Caravan_CentreLinkValue =='' ){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Caravan</td>
+              <td>{Caravan_CurrentValue}</td>
+              <td>{Caravan_CentreLinkValue}</td>
+              <td>{Caravan_Security}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+    }) }
+    {/* Carvan */}
+
+     {/* Other */}
+   {  personalOther.map((elem,index)=>{
+      let {Other_CurrentValue,Other_CentreLinkValue,Other_Security}=elem;
+      if(personalOther[0].Other_CurrentValue =='' || 
+      personalOther[0].Other_CentreLinkValue =='' ){
+       
+      }
+
+      else{
+     return(
+    
+          <tr key={index}>
+            <td className='fw-bold'>Other</td>
+              <td>{Other_CurrentValue}</td>
+              <td>{Other_CentreLinkValue}</td>
+              <td>{Other_Security}</td>
+    
+              <td >
+               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+      
+               </td> 
+          
+          </tr>
+          );
+      }
+
+    }) }
+    {/* Carvan */}
+
+
+  </tbody>
+</table>
+                        </div>
+
+                        {/*Table2 main second row */}
+
+
+
+
+
+                          {/*main Third row */}
+
+               
+                           {/* 3 row */}
                            <div className="row">
                         <div className="col-md-6">
                               <div className="mb-3">
@@ -1660,7 +1979,7 @@ onSubmit={onSubmit}>
                           </span>
                         </div>}
                            </div>
-                           {/* 1 row */}
+                           {/* 3 row */}
                            
                            {/* --------------------------------------------- */}
 
@@ -1685,7 +2004,7 @@ onSubmit={onSubmit}>
                             </Modal.Header>
                            <Formik
                             initialValues={personalLoansInitialValues}
-                            validationSchema={personalLoansvalidationSchema}
+                            // validationSchema={personalLoansvalidationSchema}
                             onSubmit={personalLoansonSubmit}>
                           {({values , setFieldValue ,setValues,handleChange,formik})=>
                             <Form>
@@ -2524,8 +2843,116 @@ onSubmit={onSubmit}>
                            </Formik>
                           </Modal>
                            {/* ---------------------------------------------------- */}
-                </div>
+               
                       {/* Client Professional Advisors */}
+
+                       {/*Table3  */}
+
+                       <div   className='table-responsive my-3'>
+         <table className="table table-bordered table-hover text-center">
+        <thead className="text-light" id="tableHead">
+              <tr>
+                <th>Description</th>
+                    <th>Current Belance</th>
+                    <th>Annual Repayments</th>
+                    <th>Interest Rate</th>
+               </tr>
+       </thead>
+
+        <tbody>
+        
+          {/* CreditCardList1  */}
+        {  CreditCardList1.map((elem,index)=>{
+            let {CreditCard1_CurrentBalance,CreditCard1_AnnualRepayment
+              ,CreditCard1_InterestRate}=elem;
+            if(CreditCardList1[0].CreditCard1_CurrentBalance !=='' ){
+              return(
+                <tr key={index}>
+                  <td className='fw-bold'>Credit Card 1</td>
+                    <td>{CreditCard1_CurrentBalance}</td>
+                    <td>{CreditCard1_AnnualRepayment}</td>
+                    <td>{CreditCard1_InterestRate}</td>
+              
+                
+                </tr>
+                );
+            }
+            else{
+         
+            }
+
+          }) }
+          {/* CreditCardList1  */}
+
+           {/* CreditCardList2  */}
+           {  CreditCardList2.map((elem,index)=>{
+            let {CreditCard2_CurrentBalance,CreditCard2_AnnualRepayment
+              ,CreditCard2_InterestRate}=elem;
+            if(CreditCardList2[0].CreditCard2_CurrentBalance !=='' ){
+              return(
+                <tr key={index}>
+                  <td className='fw-bold'>Credit Card 2</td>
+                    <td>{CreditCard2_CurrentBalance}</td>
+                    <td>{CreditCard2_AnnualRepayment}</td>
+                    <td>{CreditCard2_InterestRate}</td>
+                  </tr>
+                );
+            }
+            else{
+         
+            }
+
+          }) }
+          {/* CreditCardList2  */}
+
+
+            {/* PersonalLoan1  */}
+            {  CreditCardList1.map((elem,index)=>{
+            let {PersonalLoan1_CurrentBalance,PersonalLoan1_AnnualRepayment
+              ,PersonalLoan1_InterestRate}=elem;
+            if(CreditCardList1[0].PersonalLoan1_CurrentBalance !=='' ){
+              return(
+                <tr key={index}>
+                  <td className='fw-bold'>Personal Loan 1</td>
+                    <td>{PersonalLoan1_CurrentBalance}</td>
+                    <td>{PersonalLoan1_AnnualRepayment}</td>
+                    <td>{PersonalLoan1_InterestRate}</td>
+                  </tr>
+                );
+            }
+            else{
+         
+            }
+
+          }) }
+          {/* PersonalLoan1  */}
+
+          {/* PersonalLoan2  */}
+          {  PersonalLoanList2.map((elem,index)=>{
+            let {PersonalLoan2_CurrentBalance,PersonalLoan2_AnnualRepayment
+              ,PersonalLoan2_InterestRate}=elem;
+            if(PersonalLoanList2[0].PersonalLoan2_CurrentBalance !=='' ){
+              return(
+                <tr key={index}>
+                  <td className='fw-bold'>Personal Loan 2</td>
+                    <td>{PersonalLoan2_CurrentBalance}</td>
+                    <td>{PersonalLoan2_AnnualRepayment}</td>
+                    <td>{PersonalLoan2_InterestRate}</td>
+                  </tr>
+                );
+            }
+            else{
+         
+            }
+
+          }) }
+          {/* PersonalLoan2  */}
+
+        </tbody>
+</table>
+                        </div>
+
+                        {/*Table3 */}
 
      
                           <div className="row mt-5 mb-3">
