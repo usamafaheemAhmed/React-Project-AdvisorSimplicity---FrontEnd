@@ -482,6 +482,7 @@ function Investments() {
   let BankAccount_onSubmit = (values) => {
     
     let BankDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       BankCurrentValue: values.BankCurrentValue,
       BankFinancialInstitution: values.BankFinancialInstitution,
       BankIncomePA: values.BankIncomePA,
@@ -512,6 +513,7 @@ function Investments() {
   let TermDeposit_onSubmit = (values) => {
     
     let TermDepositDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       TermDepositCurrentValue: values.TermDepositCurrentValue,
       TermDepositFinancialInstitution: values.TermDepositFinancialInstitution,
       TermDepositIncomePA: values.TermDepositIncomePA,
@@ -542,6 +544,7 @@ function Investments() {
   let AustralianShareMarket_onSubmit = (values) => {
 
     let AustralianShareMarketDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       AustralianMarketInvestmentName: values.AustralianMarketInvestmentName,
       AustralianMarketNumberOfShares: values.AustralianMarketNumberOfShares,
       AustralianMarketSharePrice: values.AustralianMarketSharePrice,
@@ -568,6 +571,7 @@ function Investments() {
   let AustralianSharePortfolio_onSubmit = (values) => {
 
     let AustralianSharePortfolioDetails = {    
+      Email: localStorage.getItem("ClientEmail"),
       AustralianPortfolioLoanType: values.AustralianPortfolioLoanType,
       AustralianPortfolioCurrentBalance: values.AustralianPortfolioCurrentBalance,
       AustralianPortfolioLender: values.AustralianPortfolioLender,
@@ -591,6 +595,7 @@ function Investments() {
     ManagedFundshandleClose();
 
     let ManagedFundsDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       ManagedFundsPlatformName: values.ManagedFundsPlatformName,
       ManagedFundsInvestmentName: values.ManagedFundsInvestmentName,
       ManagedFundsNumberOfShares: values.ManagedFundsNumberOfShares,
@@ -616,6 +621,7 @@ function Investments() {
   let ManagedFundsPortfolio_onSubmit = (values) => {
     ManagedFundsPortfoliohandleClose();
     let ManagedFundsPortfolioDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       ManagedFundsPortfolioLoanType: values.ManagedFundsPortfolioLoanType,
       ManagedFundsPortfolioCurrentBalance: values.ManagedFundsPortfolioCurrentBalance,
       ManagedFundsPortfolioLender: values.ManagedFundsPortfolioLender,
@@ -638,6 +644,7 @@ function Investments() {
 
     InvestmentBondshandleClose();
     let InvestmentBondsDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       InvestmentBondsPlatformName: values.InvestmentBondsPlatformName,
       InvestmentBondsInvestmentName: values.InvestmentBondsInvestmentName,
       InvestmentBondsNumberOfShares: values.InvestmentBondsNumberOfShares,
@@ -664,6 +671,7 @@ function Investments() {
 
     InvestmentPropertieshandleClose();
     let InvestmentPropertiesDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       InvestmentPropertiesCurrentValue: values.InvestmentPropertiesCurrentValue,
       InvestmentPropertiesClientOwnership: values.InvestmentPropertiesClientOwnership,
       InvestmentPropertiesCostBase: values.InvestmentPropertiesCostBase,
@@ -698,6 +706,7 @@ function Investments() {
 
     OthershandleClose();
     let OthersDetails = {
+      Email: localStorage.getItem("ClientEmail"),
       OtherInvestmentName: values.OtherInvestmentName,
       OtherCurrentValue: values.OtherCurrentValue,
       OtherCostBase: values.OtherCostBase,
@@ -780,6 +789,7 @@ function Investments() {
   console.log(values)
 
   let InvestmentDetails = {
+    Email: localStorage.getItem("ClientEmail"),
     BankAccounts: values.BankAccountRadio,
     TermDeposits: values.TermDepositRadio,
     AustralianShareMarket: values.AustralianShareMarketRadio,

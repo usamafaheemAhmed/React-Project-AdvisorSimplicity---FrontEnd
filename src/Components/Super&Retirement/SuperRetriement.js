@@ -10,6 +10,7 @@ import doctor from './images/doctor.svg'
 import lawyer from './images/lawyer.svg'
 import notebook from './images/notebook.svg'
 import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 function SuperRetriement() {
@@ -26,6 +27,19 @@ function SuperRetriement() {
         setSuper(true)
         }
     }
+
+    const [Super2, setSuper2] = useState(false);
+    const [Super2show, setSuper2Show] = useState(false);
+    const Super2handleClose = () => setSuper2Show(false);
+    const Super2handleShow = () => setSuper2Show(true);
+    let Super2Handler=(elem)=>{
+        if (elem==="No"){
+        setSuper2(false)
+        }
+        else{
+        setSuper2(true)
+        }
+    }
     
     const [Pension, setPension] = useState(false);
     const [Pensionshow, setPensionShow] = useState(false);
@@ -37,6 +51,19 @@ function SuperRetriement() {
         }
         else{
         setPension(true)
+        }
+    }   
+    
+    const [Pension2, setPension2] = useState(false);
+    const [Pension2show, setPension2Show] = useState(false);
+    const Pension2handleClose = () => setPension2Show(false);
+    const Pension2handleShow = () => setPension2Show(true);
+    let Pension2Handler=(elem)=>{
+        if (elem==="No"){
+        setPension2(false)
+        }
+        else{
+        setPension2(true)
         }
     }
 
@@ -53,6 +80,19 @@ function SuperRetriement() {
         }
     }
 
+    const [Annuities2, setAnnuities2] = useState(false);
+    const [Annuities2show, setAnnuities2Show] = useState(false);
+    const Annuities2handleClose = () => setAnnuities2Show(false);
+    const Annuities2handleShow = () => setAnnuities2Show(true);
+    let Annuities2Handler=(elem)=>{
+        if (elem==="No"){
+        setAnnuities2(false)
+        }
+        else{
+        setAnnuities2(true)
+        }
+    }
+
     const [LifetimePension, setLifetimePension] = useState(false);
     const [LifetimePensionshow, setLifetimePensionShow] = useState(false);
     const LifetimePensionhandleClose = () => setLifetimePensionShow(false);
@@ -63,6 +103,19 @@ function SuperRetriement() {
         }
         else{
         setLifetimePension(true)
+        }
+    }
+
+    const [LifetimePension2, setLifetimePension2] = useState(false);
+    const [LifetimePension2show, setLifetimePension2Show] = useState(false);
+    const LifetimePension2handleClose = () => setLifetimePension2Show(false);
+    const LifetimePension2handleShow = () => setLifetimePension2Show(true);
+    let LifetimePension2Handler=(elem)=>{
+        if (elem==="No"){
+        setLifetimePension2(false)
+        }
+        else{
+        setLifetimePension2(true)
         }
     }
 
@@ -187,8 +240,8 @@ function SuperRetriement() {
         AnnuitiesOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         AnnuitiesCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         AnnuitiesAnnuityType: Yup.string().required("Required"),
-        AnnuitiesRCV: Yup.string().required("Required"),
-        AnnuitiesTerm: Yup.string().required("Required"),
+        AnnuitiesRCV: Yup.number().required("Required"),
+        AnnuitiesTerm: Yup.number().required("Required"),
         AnnuitiesMaturityYears: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         AnnuitiesRegularIncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         AnnuitiesFrequency: Yup.string().required("Required"),
@@ -200,16 +253,370 @@ function SuperRetriement() {
         LifetimePensionDeductibleAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         LifetimePensionTaxableAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     })
-    
-    let Client_onSubmit = (Values) => {
-        console.log(Values)
+
+    let Partner_initialValues = {
+      
+      Super2FundName: '',
+      Super2MemberNo: '',
+      Super2FundType: '',
+      Super2ContactNO: '',
+      Super2FaxNO: '',
+      Super2PostalAddress: '',
+      Super2ABN: '',
+      Super2SPIN: '',
+      Super2Website: '',
+      Super2Email: '',
+      Super2FundType2: '',
+      Super2CommencementDate: '',
+      Super2EligibleDate: '',
+      Super2TFNQuoted: 'No',
+      Super2CurrentBalance: '',
+      Super2TaxFree: '',
+      Super2Taxed: '',
+      Super2RestrictionNonPreserved: '',
+      Super2UnRestrictionNonPreserved: '',
+      Super2PreservedAmount: '',
+
+      Pension2FundName: '',
+        Pension2MemberNo: '',
+        Pension2FundType: '',
+        Pension2ContactNO: '',
+        Pension2FaxNO: '',
+        Pension2PostalAddress: '',
+        Pension2ABN: '',
+        Pension2SPIN: '',
+        Pension2Website: '',
+        Pension2Email: '',
+        Pension2FundType2: '',
+        Pension2CommencementDate: '',
+        Pension2EligibleDate: '',
+        Pension2CurrentBalance: '',
+        Pension2TaxFree: '',
+        Pension2Taxed: '',
+        Pension2PurchasePrice: '',
+        Pension2Frequency: '',
+        Pension2RegularIncomeDrawn: '',
+        Pension2MinimumRequired: '',
+        Pension2RelevantNumber: '',
+        Pension2PurchasePrice: '',
+        Pension2LumpsumTaken: '',
+        Pension2DeductibleAmount: '',
+
+        Annuities2ProductProvider: '',
+        Annuities2OriginalInvestment: '',
+        Annuities2CurrentValue: '',
+        Annuities2AnnuityType: '',
+        Annuities2RCV: '',
+        Annuities2Term: '',
+        Annuities2MaturityYears: '',
+        Annuities2RegularIncomeDrawn: '',
+        Annuities2Frequency: '',
+        Annuities2InflationRate: '',
+
+        LifetimePension2FundName: '',
+        LifetimePension2IncomeDrawn: '',
+        LifetimePension2Frequency: '',
+        LifetimePension2DeductibleAmount: '',
+        LifetimePension2TaxFree: 'No',
+        LifetimePension2TaxableAmount: ''
+    }
+
+    let Partner_validationSchema = Yup.object({
+      Super2FundName: Yup.string().required("Required"),
+      Super2MemberNo: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2FundType: Yup.string().required("Required"),
+      Super2ContactNO: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2FaxNO: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2PostalAddress: Yup.string().required("Required"),
+      Super2ABN: Yup.string().required("Required"),
+      Super2SPIN: Yup.string().required("Required"),
+      Super2Website: Yup.string().required("Required"),
+      Super2Email: Yup.string().required("Required"),
+      Super2FundType2: Yup.string().required("Required"),
+      Super2CommencementDate: Yup.string().required("Required"),
+      Super2EligibleDate: Yup.string().required("Required"),
+      Super2CurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2TaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2Taxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2RestrictionNonPreserved: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2UnRestrictionNonPreserved: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Super2PreservedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+      Pension2FundName: Yup.string().required("Required"),
+        Pension2MemberNo: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2FundType: Yup.string().required("Required"),
+        Pension2ContactNO: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2FaxNO: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2PostalAddress: Yup.string().required("Required"),
+        Pension2ABN: Yup.string().required("Required"),
+        Pension2SPIN: Yup.string().required("Required"),
+        Pension2Website: Yup.string().required("Required"),
+        Pension2Email: Yup.string().required("Required"),
+        Pension2FundType2: Yup.string().required("Required"),
+        Pension2CommencementDate: Yup.string().required("Required"),
+        Pension2EligibleDate: Yup.string().required("Required"),
+        Pension2CurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2TaxFree: Yup.string().required("Required"),
+        Pension2Taxed: Yup.string().required("Required"),
+        Pension2PurchasePrice: Yup.string().required("Required"),
+        Pension2Frequency: Yup.string().required("Required"),
+        Pension2RegularIncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2MinimumRequired: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2RelevantNumber: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2PurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2LumpsumTaken: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Pension2DeductibleAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+        Annuities2ProductProvider: Yup.string().required("Required"),
+        Annuities2OriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Annuities2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Annuities2AnnuityType: Yup.string().required("Required"),
+        Annuities2RCV: Yup.number().required("Required"),
+        Annuities2Term: Yup.number().required("Required"),
+        Annuities2MaturityYears: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Annuities2RegularIncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        Annuities2Frequency: Yup.string().required("Required"),
+        Annuities2InflationRate: Yup.string().required("Required"),
+
+        LifetimePension2FundName: Yup.string().required("Required"),
+        LifetimePension2IncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        LifetimePension2Frequency: Yup.string().required("Required"),
+        LifetimePension2DeductibleAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        LifetimePension2TaxableAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    })
+
+    let ClientSuperAccount_onSubmit = (values) => {
+      SuperhandleClose();
+      let SuperAccountDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        Super_FundName: values.SuperFundName,
+        Super_MemberNO: values.SuperMemberNo,
+        Super_FundType: values.SuperFundType,
+        Super_ContactNO: values.SuperContactNO,
+        Super_FaxNO: values.SuperFaxNO,
+        Super_PostalAddress: values.SuperPostalAddress,
+        Super_ABN: values.SuperABN,
+        Super_SPIN: values.SuperSPIN,
+        Super_Website: values.SuperWebsite,
+        Super_Email: values.SuperEmail,
+        Super_FundType_2: values.SuperFundType2,
+        Super_CommencementDate: values.SuperCommencementDate,
+        Super_EligibleServiceDate: values.SuperEligibleDate,
+        Super_TFN: values.SuperTFNQuoted,
+        Super_CurrentBalance: values.SuperCurrentBalance,
+        Super_TaxFree: values.SuperTaxFree,
+        Super_Taxed: values.SuperTaxed,
+        Super_Restricted: values.SuperRestrictionNonPreserved,
+        Super_Unrestricted: values.SuperUnRestrictionNonPreserved,
+        Super_PreservedAmount: values.SuperPreservedAmount
+      }
+      
+      axios
+      .post('http://localhost:7000/Client-Retirement/Add-Client-SuperAccount', SuperAccountDetails)
+      .then((res) => console.log('Client Super Account Added Successfully!'))
+      console.log(SuperAccountDetails)
+    }
+
+    let PartnerSuperAccount_onSubmit = (values) => {
+      
+      Super2handleClose();
+      let SuperAccountDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        Super_FundName: values.Super2FundName,
+        Super_MemberNO: values.Super2MemberNo,
+        Super_FundType: values.Super2FundType,
+        Super_ContactNO: values.Super2ContactNO,
+        Super_FaxNO: values.Super2FaxNO,
+        Super_PostalAddress: values.Super2PostalAddress,
+        Super_ABN: values.Super2ABN,
+        Super_SPIN: values.Super2SPIN,
+        Super_Website: values.Super2Website,
+        Super_Email: values.Super2Email,
+        Super_FundType_2: values.Super2FundType2,
+        Super_CommencementDate: values.Super2CommencementDate,
+        Super_EligibleServiceDate: values.Super2EligibleDate,
+        Super_TFN: values.Super2TFNQuoted,
+        Super_CurrentBalance: values.Super2CurrentBalance,
+        Super_TaxFree: values.Super2TaxFree,
+        Super_Taxed: values.Super2Taxed,
+        Super_Restricted: values.Super2RestrictionNonPreserved,
+        Super_Unrestricted: values.Super2UnRestrictionNonPreserved,
+        Super_PreservedAmount: values.Super2PreservedAmount
+      }
+      
+      axios
+      .post('http://localhost:7000/Partner-Retirement/Add-Partner-SuperAccount', SuperAccountDetails)
+      .then((res) => console.log('Partner Super Account Added Successfully!'))
+      console.log(SuperAccountDetails)
+    }
+
+    let ClientPensionAccount_onSubmit = (values) => {
+      
+      PensionhandleClose();
+      let PensionAccountDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        AccountPension_FundName: values.PensionFundName,
+        AccountPension_MemberNO: values.PensionMemberNo,
+        AccountPension_FundType: values.PensionFundType,
+        AccountPension_ContactNO: values.PensionContactNO,
+        AccountPension_FaxNO: values.PensionFaxNO,
+        AccountPension_PostalAddress: values.PensionPostalAddress,
+        AccountPension_ABN: values.PensionABN,
+        AccountPension_SPIN: values.PensionSPIN,
+        AccountPension_Website: values.PensionWebsite,
+        AccountPension_Email: values.PensionEmail,
+        AccountPension_PensionType: values.PensionFundType2,
+        AccountPension_CurrentBalance: values.PensionCurrentBalance,
+        AccountPension_TaxFree: values.PensionTaxFree,
+        AccountPension_Taxed: values.PensionTaxed,
+        AccountPension_EligibleService: values.PensionEligibleDate,
+        AccountPension_CommencementDate: values.PensionCommencementDate,
+        AccountPension_OriginalPrice: values.PensionPurchasePrice,
+        AccountPension_IncomeDrawn: values.PensionRegularIncomeDrawn,
+        AccountPension_Frequency: values.PensionFrequency,
+        AccountPension_MinimumRequired: values.PensionMinimumRequired,
+        AccountPension_RelevantNumber: values.PensionRelevantNumber,
+        AccountPension_LumpsumTaken: values.PensionLumpsumTaken,
+        AccountPension_DeductibleAmount: values.PensionDeductibleAmount
+      }
+      
+      axios
+      .post('http://localhost:7000/Client-Retirement/Add-Client-PensionAccount', PensionAccountDetails)
+      .then((res) => console.log('Client Pension Account Added Successfully!'))
+      console.log(PensionAccountDetails)
+    }
+
+    let PartnerPensionAccount_onSubmit = (values) => {
+      
+      PensionhandleClose();
+      let PensionAccountDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        AccountPension_FundName: values.Pension2FundName,
+        AccountPension_MemberNO: values.Pension2MemberNo,
+        AccountPension_FundType: values.Pension2FundType,
+        AccountPension_ContactNO: values.Pension2ContactNO,
+        AccountPension_FaxNO: values.Pension2FaxNO,
+        AccountPension_PostalAddress: values.Pension2PostalAddress,
+        AccountPension_ABN: values.Pension2ABN,
+        AccountPension_SPIN: values.Pension2SPIN,
+        AccountPension_Website: values.Pension2Website,
+        AccountPension_Email: values.Pension2Email,
+        AccountPension_PensionType: values.Pension2FundType2,
+        AccountPension_CurrentBalance: values.Pension2CurrentBalance,
+        AccountPension_TaxFree: values.Pension2TaxFree,
+        AccountPension_Taxed: values.Pension2Taxed,
+        AccountPension_EligibleService: values.Pension2EligibleDate,
+        AccountPension_CommencementDate: values.Pension2CommencementDate,
+        AccountPension_OriginalPrice: values.Pension2PurchasePrice,
+        AccountPension_IncomeDrawn: values.Pension2RegularIncomeDrawn,
+        AccountPension_Frequency: values.Pension2Frequency,
+        AccountPension_MinimumRequired: values.Pension2MinimumRequired,
+        AccountPension_RelevantNumber: values.Pension2RelevantNumber,
+        AccountPension_LumpsumTaken: values.Pension2LumpsumTaken,
+        AccountPension_DeductibleAmount: values.Pension2DeductibleAmount
+      }
+      
+      axios
+      .post('http://localhost:7000/Partner-Retirement/Add-Partner-PensionAccount', PensionAccountDetails)
+      .then((res) => console.log('Partner Pension Account Added Successfully!'))
+      console.log(PensionAccountDetails)
+    }
+
+    let ClientAnnuities_onSubmit = (values) => {
+
+      AnnuitieshandleClose();
+      let ClientAnnuitiesDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        Annuities_ProductProvider: values.AnnuitiesProductProvider,
+        Annuities_InvestmentAmount: values.AnnuitiesOriginalInvestment,
+        Annuities_CurrentValue: values.AnnuitiesCurrentValue,
+        Annuities_AnnuityType: values.AnnuitiesAnnuityType,
+        Annuities_RCV: values.AnnuitiesRCV,
+        Annuities_Term: values.AnnuitiesTerm,
+        Annuities_YearsUntilMaturity: values.AnnuitiesMaturityYears,
+        Annuities_RegularIncome: values.AnnuitiesRegularIncomeDrawn,
+        Annuities_Frequency: values.AnnuitiesFrequency,
+        Annuities_AnnualInflation: values.AnnuitiesInflationRate
+      }
+      
+      axios
+      .post('http://localhost:7000/Client-Retirement/Add-Client-AnnuitiesAccount', ClientAnnuitiesDetails)
+      .then((res) => console.log('Client Annuities Added Successfully!'))
+      console.log(ClientAnnuitiesDetails)
+    }
+
+    let PartnerAnnuities_onSubmit = (values) => {
+      Annuities2handleClose();
+      let PartnerAnnuitiesDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        Annuities_ProductProvider: values.Annuities2ProductProvider,
+        Annuities_InvestmentAmount: values.Annuities2OriginalInvestment,
+        Annuities_CurrentValue: values.Annuities2CurrentValue,
+        Annuities_AnnuityType: values.Annuities2AnnuityType,
+        Annuities_RCV: values.Annuities2RCV,
+        Annuities_Term: values.Annuities2Term,
+        Annuities_YearsUntilMaturity: values.Annuities2MaturityYears,
+        Annuities_RegularIncome: values.Annuities2RegularIncomeDrawn,
+        Annuities_Frequency: values.Annuities2Frequency,
+        Annuities_AnnualInflation: values.Annuities2InflationRate
+      }
+      
+      axios
+      .post('http://localhost:7000/Partner-Retirement/Add-Partner-AnnuitiesAccount', PartnerAnnuitiesDetails)
+      .then((res) => console.log('Partner Annuities Added Successfully!'))
+      console.log(PartnerAnnuitiesDetails)
+
+    }
+
+    let ClientLifetimePension_onSubmit = (values) => {
+
+      LifetimePensionhandleClose();
+      let ClientLifetimePensionDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        LifePension_FundName: values.LifetimePensionFundName,
+        LifePension_RegularIncome: values.LifetimePensionIncomeDrawn,
+        LifePension_Frequency: values.LifetimePensionFrequency,
+        LifePension_DeductibleAmount: values.LifetimePensionDeductibleAmount,
+        LifePension_TaxFree_Pension: values.LifetimePensionTaxFree,
+        LifePension_TaxablePensionAmount: values.LifetimePensionTaxableAmount
+      }
+      
+      axios
+      .post('http://localhost:7000/Client-Retirement/Add-Client-Lifetime-PensionAccount', ClientLifetimePensionDetails)
+      .then((res) => console.log('Client Annuities Added Successfully!'))
+      console.log(ClientLifetimePensionDetails)
+    }
+
+    let PartnerLifetimePension_onSubmit = (values) => {
+      LifetimePension2handleClose();
+      let PartnerLifetimePensionDetails = {
+        Email: localStorage.getItem("ClientEmail"),
+        LifePension_FundName: values.LifetimePension2FundName,
+        LifePension_RegularIncome: values.LifetimePension2IncomeDrawn,
+        LifePension_Frequency: values.LifetimePension2Frequency,
+        LifePension_DeductibleAmount: values.LifetimePension2DeductibleAmount,
+        LifePension_TaxFree_Pension: values.Lifetime2PensionTaxFree,
+        LifePension_TaxablePensionAmount: values.LifetimePension2TaxableAmount
+      }
+      
+      axios
+      .post('http://localhost:7000/Partner-Retirement/Add-Partner-Lifetime-PensionAccount', PartnerLifetimePensionDetails)
+      .then((res) => console.log('Partner Annuities Added Successfully!'))
+      console.log(PartnerLifetimePensionDetails)
     }
 
     let initialValues={
         SuperRadio: 'No',
+        Super2Radio: 'No',
+
         PensionRadio: 'No',
+        Pension2Radio: 'No',
+
         AnnuitiesRadio: 'No',
-        LifetimePensionRadio: 'No'
+        Annuities2Radio: 'No',
+
+        LifetimePensionRadio: 'No',
+        LifetimePension2Radio: 'No'
     }
 
     let onSubmit = (Values) => {
@@ -234,7 +641,7 @@ function SuperRetriement() {
 
                   {/* Super Details */}
                     <div className='mb-5'>
-                          <h3 className="">Super</h3>
+                          <h3 className="">Client Super Accounts</h3>
 
                               {/* 1 row */}
                               <div className="row">
@@ -316,8 +723,8 @@ function SuperRetriement() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={ClientSuperAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -578,12 +985,357 @@ function SuperRetriement() {
                               </Formik>
                               </Modal>
                               {/* ---------------------------------------------------- */}
+
+                          <h3 className="">Partner Super Accounts</h3>
+
+                              {/* 1 row */}
+                              <div className="row">
+                              <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Super Accounts?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="Super2Radio"
+                                id="Super2Radioopt1" value="Yes"
+                                onClick={()=>Super2Handler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.Super2Radio==="Yes"}
+                                />
+                                <label htmlFor="Super2Radioopt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="Super2Radio"
+                                id="Super2Radioopt2" value="No"
+                                onClick={()=>Super2Handler("No")} 
+                                onChange={handleChange}
+                                checked={values.Super2Radio==="No"}
+                              />
+                                <label htmlFor="Super2Radioopt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                              </div>
+                              {Super2 && <div className='col-md-6'>
+                              <label  className="form-label">
+                              Please enter the details of your Super Accounts
+                                </label>
+                                <br />
+
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={Super2handleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                              </div>}
+                              </div>
+                              {/* 1 row */}
+
+                              {/* --------------------------------------------- */}
+
+                              <Modal
+                                show={Super2show}
+                                onHide={Super2handleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Partner Super Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Partner_initialValues}
+                                // validationSchema={Partner_validationSchema}
+                                onSubmit={PartnerSuperAccount_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Super Accounts
+                                    
+                                        </h3>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2FundName" className="form-label">Fund Name</   label>
+                                    <Field
+                                            as='select'
+                                            name="Super2FundName"
+                                            id="Super2FundName"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="AMIST Super2">AMIST Super2</option>
+                                            <option value="AMP Choice">AMP Choice</option>
+                                            <option value="AMP North">AMP North</option>
+                                            <option value="AMP South">AMP South</option>
+                                            </Field>
+                                            <ErrorMessage name="Super2FundName" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>  
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2MemberNo" className="form-label">Member No</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2MemberNo" name='Super2MemberNo' placeholder="Member No"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2MemberNo' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2FundType" className="form-label">Fund Type</   label>
+                                    <Field
+                                            as='select'
+                                            name="Super2FundType"
+                                            id="Super2FundType"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Personal Industry">Personal Industry</option>
+                                            <option value="Personal Retail">Personal Retail</option>
+                                            <option value="Personal Master">Personal Master</option>
+                                            <option value="Personal WRAP">Personal WRAP</option>
+                                            <option value="Personal Public Sector">Personal Public Sector</option>
+                                            </Field>
+                                            <ErrorMessage name="Super2FundType" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2ContactNO" className="form-label">Contact No</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2ContactNO" name='Super2ContactNO' placeholder="Contact No"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2ContactNO' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2FaxNO" className="form-label">Fax No</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2FaxNO" name='Super2FaxNO' placeholder="Fax No"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2FaxNO' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2PostalAddress" className="form-label">Postal Address</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Super2PostalAddress" name='Super2PostalAddress' placeholder="Postal Address"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2PostalAddress' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2ABN" className="form-label">ABN</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2ABN" name='Super2ABN' placeholder="ABN"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2ABN' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2SPIN" className="form-label">SPIN</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Super2SPIN" name='Super2SPIN' placeholder="SPIN"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2SPIN' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2Website" className="form-label">Website</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Super2Website" name='Super2Website' placeholder="Website"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2Website' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2Email" className="form-label">Email</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Super2Email" name='Super2Email' placeholder="Email"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2Email' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2FundType2" className="form-label">Fund Type</   label>
+                                    <Field
+                                            as='select'
+                                            name="Super2FundType2"
+                                            id="Super2FundType2"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Accumulation">Accumulation</option>
+                                            <option value="Defined Benefit">Defined Benefit</option>
+                                            </Field>
+                                            <ErrorMessage name="Super2FundType2" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2CommencementDate" className="form-label">Commencment Date</   label>
+                                    <Field type="date" className="form-control shadow inputDesign" 
+                                    id="Super2CommencementDate" name='Super2CommencementDate'/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2CommencementDate' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2EligibleDate" className="form-label">Eligible Service Date</   label>
+                                    <Field type="date" className="form-control shadow inputDesign" 
+                                    id="Super2EligibleDate" name='Super2EligibleDate'/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2EligibleDate' />
+                                    </div>            
+                                    </div>
+                              <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                TFN Quoted
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="Super2TFNQuoted"
+                                id="Super2TFNQuoted1opt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.Super2TFNQuoted==="Yes"}
+                                />
+                                <label htmlFor="Super2TFNQuoted1opt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="Super2TFNQuoted"
+                                id="Super2TFNQuotedopt2" value="No"
+                                onChange={handleChange}
+                                checked={values.Super2TFNQuoted==="No"}
+                              />
+                                <label htmlFor="Super2TFNQuotedopt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                              </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2CurrentBalance" className="form-label">Current Balance</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2CurrentBalance" name='Super2CurrentBalance' placeholder="Current Balance"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2CurrentBalance' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2TaxFree" className="form-label">Tax Free</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2TaxFree" name='Super2TaxFree' placeholder="Tax Free"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2TaxFree' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2Taxed" className="form-label">Taxed</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2Taxed" name='Super2Taxed' placeholder="Taxed"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2Taxed' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2RestrictionNonPreserved" className="form-label">Restriction Non Preserved</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2RestrictionNonPreserved" name='Super2RestrictionNonPreserved' placeholder="Restriction Non Preserved"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2RestrictionNonPreserved' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2UnRestrictionNonPreserved" className="form-label">Un-Restriction Non Preserved</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2UnRestrictionNonPreserved" name='Super2UnRestrictionNonPreserved' placeholder="UnRestriction Non Preserved"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2UnRestrictionNonPreserved' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Super2PreservedAmount" className="form-label">Preserved Amount</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Super2PreservedAmount" name='Super2PreservedAmount' placeholder="Preserved Amount"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Super2PreservedAmount' />
+                                    </div>            
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                              {/* Bank Account Detail Form */}
+
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={BankhandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={Super2handleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              {/* ---------------------------------------------------- */}
                     </div>
                   {/* Super Details */}
                   
                   {/* Pension Account Details */}
-                  <div className='mb-5'>
-                          <h3 className="">Pension Account</h3>
+                  <div className='my-5'>
+                          <h3 className="">Client Pension Account</h3>
 
                               {/* 1 row */}
                               <div className="row">
@@ -665,8 +1417,8 @@ function SuperRetriement() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={ClientPensionAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -938,12 +1690,367 @@ function SuperRetriement() {
                               </Formik>
                               </Modal>
                               {/* ---------------------------------------------------- */}
+                              <h3 className="">Partner Pension Account</h3>
+
+                              {/* 1 row */}
+                              <div className="row">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Pension Accounts?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="Pension2Radio"
+                                id="Pension2Radioopt1" value="Yes"
+                                onClick={()=>Pension2Handler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.Pension2Radio==="Yes"}
+                                />
+                                <label htmlFor="Pension2Radioopt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="Pension2Radio"
+                                id="Pension2Radioopt2" value="No"
+                                onClick={()=>Pension2Handler("No")} 
+                                onChange={handleChange}
+                                checked={values.Pension2Radio==="No"}
+                              />
+                                <label htmlFor="Pension2Radioopt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {Pension2 && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Pension Accounts
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={Pension2handleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              {/* --------------------------------------------- */}
+
+                              <Modal
+                                show={Pension2show}
+                                onHide={Pension2handleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Pension Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Partner_initialValues}
+                                // validationSchema={Partner_validationSchema}
+                                onSubmit={PartnerPensionAccount_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Pension Accounts
+                                    
+                                        </h3>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2FundName" className="form-label">Fund Name</   label>
+                                    <Field
+                                            as='select'
+                                            name="Pension2FundName"
+                                            id="Pension2FundName"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="AMIST Pension2">AMIST Pension2</option>
+                                            <option value="AMP Choice">AMP Choice</option>
+                                            <option value="AMP North">AMP North</option>
+                                            <option value="AMP South">AMP South</option>
+                                            </Field>
+                                            <ErrorMessage name="Pension2FundName" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>  
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2MemberNo" className="form-label">Member No</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2MemberNo" name='Pension2MemberNo' placeholder="Member No"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2MemberNo' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2FundType" className="form-label">Fund Type</   label>
+                                    <Field
+                                            as='select'
+                                            name="Pension2FundType"
+                                            id="Pension2FundType"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Personal Industry">Personal Industry</option>
+                                            <option value="Personal Retail">Personal Retail</option>
+                                            <option value="Personal Master">Personal Master</option>
+                                            <option value="Personal WRAP">Personal WRAP</option>
+                                            <option value="Personal Public Sector">Personal Public Sector</option>
+                                            </Field>
+                                            <ErrorMessage name="Pension2FundType" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2ContactNO" className="form-label">Contact No</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2ContactNO" name='Pension2ContactNO' placeholder="Contact No"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2ContactNO' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2FaxNO" className="form-label">Fax No</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2FaxNO" name='Pension2FaxNO' placeholder="Fax No"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2FaxNO' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2PostalAddress" className="form-label">Postal Address</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Pension2PostalAddress" name='Pension2PostalAddress' placeholder="Postal Address"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2PostalAddress' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2ABN" className="form-label">ABN</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2ABN" name='Pension2ABN' placeholder="ABN"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2ABN' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2SPIN" className="form-label">SPIN</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Pension2SPIN" name='Pension2SPIN' placeholder="SPIN"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2SPIN' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2Website" className="form-label">Website</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Pension2Website" name='Pension2Website' placeholder="Website"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2Website' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2Email" className="form-label">Email</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="Pension2Email" name='Pension2Email' placeholder="Email"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2Email' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2FundType2" className="form-label">Pension2 Type</   label>
+                                    <Field
+                                            as='select'
+                                            name="Pension2FundType2"
+                                            id="Pension2FundType2"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="TTR">TTR</option>
+                                            <option value="Account Based">Account Based</option>
+                                            </Field>
+                                            <ErrorMessage name="Pension2FundType2" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2CommencementDate" className="form-label">Commencment Date</   label>
+                                    <Field type="date" className="form-control shadow inputDesign" 
+                                    id="Pension2CommencementDate" name='Pension2CommencementDate'/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2CommencementDate' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2EligibleDate" className="form-label">Eligible Service Date</   label>
+                                    <Field type="date" className="form-control shadow inputDesign" 
+                                    id="Pension2EligibleDate" name='Pension2EligibleDate'/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2EligibleDate' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2CurrentBalance" className="form-label">Current Balance</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2CurrentBalance" name='Pension2CurrentBalance' placeholder="Current Balance"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2CurrentBalance' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2TaxFree" className="form-label">Tax Free</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2TaxFree" name='Pension2TaxFree' placeholder="Tax Free"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2TaxFree' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2Taxed" className="form-label">Taxed</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2Taxed" name='Pension2Taxed' placeholder="Taxed"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2Taxed' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2PurchasePrice" className="form-label">Original Purchase Price</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2PurchasePrice" name='Pension2PurchasePrice' placeholder="Original Purchase Price"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2PurchasePrice' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2Frequency" className="form-label">Frequency</   label>
+                                    <Field
+                                            as='select'
+                                            name="Pension2Frequency"
+                                            id="Pension2Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Fortnightly">Fortnightly</option>
+                                            <option value="Monthly">Monthly</option>
+                                            <option value="Quarterly">Quarterly</option>
+                                            <option value="Six Monthly">Six Monthly</option>
+                                            <option value="Anually">Anually</option>
+                                            </Field>
+                                            <ErrorMessage name="Pension2Frequency" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2RegularIncomeDrawn" className="form-label">Regular Income Drawn</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2RegularIncomeDrawn" name='Pension2RegularIncomeDrawn' placeholder="Regular Income Drawn"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2RegularIncomeDrawn' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2MinimumRequired" className="form-label">Minimum Required</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2MinimumRequired" name='Pension2MinimumRequired' placeholder="Minimum Required"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2MinimumRequired' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2RelevantNumber" className="form-label">Relevant Number</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2RelevantNumber" name='Pension2RelevantNumber' placeholder="Relevant Number"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2RelevantNumber' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2LumpsumTaken" className="form-label">Lumpsum Withdrawl Taken</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2LumpsumTaken" name='Pension2LumpsumTaken' placeholder="Lumpsum Withdrawl Taken"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2LumpsumTaken' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Pension2DeductibleAmount" className="form-label">Deductible Amount</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Pension2DeductibleAmount" name='Pension2DeductibleAmount' placeholder="Deductible Amount"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pension2DeductibleAmount' />
+                                    </div>            
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                            {/* Bank Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={BankhandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={Pension2handleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              {/* ---------------------------------------------------- */}
                     </div>
                   {/* Pension Account Details */}
 
                   {/* Annuities Details */}
-                  <div className='mb-5'>
-                          <h3 className="">Annuities</h3>
+                  <div className='my-5'>
+                          <h3 className="">Client Annuities</h3>
 
                               {/* 1 row */}
                               <div className="row">
@@ -1025,8 +2132,8 @@ function SuperRetriement() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={ClientAnnuities_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1095,7 +2202,7 @@ function SuperRetriement() {
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                     <label htmlFor="AnnuitiesRCV" className="form-label">RCV</   label>
-                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    <Field type="number" className="form-control shadow inputDesign" 
                                     id="AnnuitiesRCV" name='AnnuitiesRCV' placeholder="RCV"/>
                                     <ErrorMessage component='div' className='text-danger fw-bold' name='AnnuitiesRCV' />
                                     </div>            
@@ -1209,12 +2316,279 @@ function SuperRetriement() {
                               </Formik>
                               </Modal>
                               {/* ---------------------------------------------------- */}
+                              
+                              <h3 className="">Partner Annuities</h3>
+
+                              {/* 1 row */}
+                              <div className="row">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Annuities?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="Annuities2Radio"
+                                id="Annuities2Radioopt1" value="Yes"
+                                onClick={()=>Annuities2Handler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.Annuities2Radio==="Yes"}
+                                />
+                                <label htmlFor="Annuities2Radioopt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="Annuities2Radio"
+                                id="Annuities2Radioopt2" value="No"
+                                onClick={()=>Annuities2Handler("No")} 
+                                onChange={handleChange}
+                                checked={values.Annuities2Radio==="No"}
+                              />
+                                <label htmlFor="Annuities2Radioopt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {Annuities2 && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Annuities Accounts
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={Annuities2handleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              {/* --------------------------------------------- */}
+
+                              <Modal
+                                show={Annuities2show}
+                                onHide={Annuities2handleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Annuities Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Partner_initialValues}
+                                // validationSchema={Partner_validationSchema}
+                                onSubmit={PartnerAnnuities_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Annuities Accounts
+                                    
+                                        </h3>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2ProductProvider" className="form-label">Product Provider</   label>
+                                    <Field
+                                            as='select'
+                                            name="Annuities2ProductProvider"
+                                            id="Annuities2ProductProvider"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Challenger">Challenger</option>
+                                            <option value="CommInsure">CommInsure</option>
+                                            <option value="Other">Other</option>
+                                            </Field>
+                                            <ErrorMessage name="Annuities2ProductProvider" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2OriginalInvestment" className="form-label">Original Investment Amount</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Annuities2OriginalInvestment" name='Annuities2OriginalInvestment' placeholder="Original Investment Amount"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Annuities2OriginalInvestment' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2CurrentValue" className="form-label">Current Value</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Annuities2CurrentValue" name='Annuities2CurrentValue' placeholder="Current Value"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Annuities2CurrentValue' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2AnnuityType" className="form-label">Annuity Type</   label>
+                                    <Field
+                                            as='select'
+                                            name="Annuities2AnnuityType"
+                                            id="Annuities2AnnuityType"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Short Term">Short Term</option>
+                                            <option value="Long Term">Long Term</option>
+                                            </Field>
+                                            <ErrorMessage name="Annuities2AnnuityType" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2RCV" className="form-label">RCV</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Annuities2RCV" name='Annuities2RCV' placeholder="RCV"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Annuities2RCV' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2Term" className="form-label">Term</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Annuities2Term" name='Annuities2Term' placeholder="Term"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Annuities2Term' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2MaturityYears" className="form-label">Years Until Maturity</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Annuities2MaturityYears" name='Annuities2MaturityYears' placeholder="Years Until Maturity"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Annuities2MaturityYears' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2RegularIncomeDrawn" className="form-label">Regular Income Drawn</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="Annuities2RegularIncomeDrawn" name='Annuities2RegularIncomeDrawn' placeholder="Regular Income Drawn"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Annuities2RegularIncomeDrawn' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2Frequency" className="form-label">Frequency</   label>
+                                    <Field
+                                            as='select'
+                                            name="Annuities2Frequency"
+                                            id="Annuities2Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Fortnightly">Fortnightly</option>
+                                            <option value="Monthky">Monthky</option>
+                                            <option value="Quarterly">Quarterly</option>
+                                            <option value="Six Monthly">Six Monthly</option>
+                                            <option value="Annually">Annually</option>
+                                            </Field>
+                                            <ErrorMessage name="Annuities2Frequency" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="Annuities2InflationRate" className="form-label">Annual Inflation Rate</   label>
+                                    <Field
+                                            as='select'
+                                            name="Annuities2InflationRate"
+                                            id="Annuities2InflationRate"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="%0.00">%0.00</option>
+                                            <option value="%0.50">%0.50</option>
+                                            <option value="%1.00">%1.00</option>
+                                            <option value="%1.50">%1.50</option>
+                                            <option value="%2.00">%2.00</option>
+                                            <option value="%2.50">%2.50</option>
+                                            <option value="%3.00">%3.00</option>
+                                            <option value="%3.50">%3.50</option>
+                                            <option value="%4.00">%4.00</option>
+                                            <option value="%4.50">%4.50</option>
+                                            <option value="%5.00">%5.00</option>
+                                            <option value="%5.50">%5.50</option>
+                                            <option value="%6.00">%6.00</option>
+                                            <option value="%6.50">%6.50</option>
+                                            <option value="%7.00">%7.00</option>
+                                            <option value="%7.50">%7.50</option>
+                                            <option value="%8.00">%8.00</option>
+                                            <option value="%8.50">%8.50</option>
+                                            <option value="%9.00">%9.00</option>
+                                            <option value="%9.50">%9.50</option>
+                                            <option value="%10.00">%10.00</option>
+                                            </Field>
+                                            <ErrorMessage name="Annuities2InflationRate" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                            {/* Bank Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={BankhandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={Annuities2handleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              {/* ---------------------------------------------------- */}
                     </div>
                   {/* Annuities Details */}
 
                   {/* Lifetime Pension Details */}
-                  <div className='mb-5'>
-                          <h3 className="">Lifetime Pension</h3>
+                  <div className='my-5'>
+                          <h3 className="">Client Lifetime Pension</h3>
 
                               {/* 1 row */}
                               <div className="row">
@@ -1296,8 +2670,8 @@ function SuperRetriement() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={ClientLifetimePension_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1417,6 +2791,219 @@ function SuperRetriement() {
                                     <button
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={LifetimePensionhandleClose}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </Modal.Footer>
+                                </Form>
+                                }
+                              </Formik>
+                              </Modal>
+                              {/* ---------------------------------------------------- */}
+                              <h3 className="">Partner Lifetime Pension</h3>
+
+                              {/* 1 row */}
+                              <div className="row">
+                            <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Do you have any Lifetime Pension?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="LifetimePension2Radio"
+                                id="LifetimePension2Radioopt1" value="Yes"
+                                onClick={()=>LifetimePension2Handler("Yes")} 
+                                onChange={handleChange}
+                                checked={values.LifetimePension2Radio==="Yes"}
+                                />
+                                <label htmlFor="LifetimePension2Radioopt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="LifetimePension2Radio"
+                                id="LifetimePension2Radioopt2" value="No"
+                                onClick={()=>LifetimePension2Handler("No")} 
+                                onChange={handleChange}
+                                checked={values.LifetimePension2Radio==="No"}
+                              />
+                                <label htmlFor="LifetimePension2Radioopt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                            {LifetimePension2 && <div className='col-md-6'>
+                            <label  className="form-label">
+                            Please enter the details of your Lifetime Pension Accounts
+                                </label>
+                                <br />
+                              
+                              <span
+                                className=" btn h-50 w-50
+                                btn-outline-success "
+                                onClick={LifetimePension2handleShow}
+                              >
+                                <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+
+                                </div>
+                                Enter Details
+                              </span>
+                            </div>}
+                              </div>
+                              {/* 1 row */}
+                              
+                              {/* --------------------------------------------- */}
+
+                              <Modal
+                                show={LifetimePension2show}
+                                onHide={LifetimePension2handleClose}
+                                backdrop="static"
+                                className="modal-lg"
+                                keyboard={false}
+                              >
+                                <Modal.Header
+                                  className="text-light modalBG "
+                                  closeButton
+                                >
+                                  <Modal.Title className="fontStyle">
+                                  Lifetime Pension Account Details
+                                    <div className="iconContainerLg">
+                                <img className="img-fluid" src={notebook} alt="" />
+
+                                </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                              <Formik
+                                initialValues={Partner_initialValues}
+                                // validationSchema={Partner_validationSchema}
+                                onSubmit={PartnerLifetimePension_onSubmit}>
+                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                <Form>
+                                <Modal.Body>
+                                    {/* Professional Advisor Detail Form */}
+                                    
+                                    {/* Solicitor */}
+                                    <div className=' '>
+                                    <h3 className=''>
+                                    <div className="iconContainerLg mx-1">
+                                        <img className="img-fluid" src={lawyer} alt="" />
+
+                                        </div>
+                                        Lifetime Pension Accounts
+                                    
+                                        </h3>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePension2FundName" className="form-label">Fund Name</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
+                                    id="LifetimePension2FundName" name='LifetimePension2FundName' placeholder="Fund Name"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePension2FundName' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePension2IncomeDrawn" className="form-label">Regular Income Drawn</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePension2IncomeDrawn" name='LifetimePension2IncomeDrawn' placeholder="Regular Income Drawn"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePension2IncomeDrawn' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePension2Frequency" className="form-label">Frequency</   label>
+                                    <Field
+                                            as='select'
+                                            name="LifetimePension2Frequency"
+                                            id="LifetimePension2Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            >
+                                            <option value=''>Select</option>
+                                            <option value="Fortnightly">Fortnightly</option>
+                                            <option value="Monthky">Monthky</option>
+                                            <option value="Quarterly">Quarterly</option>
+                                            <option value="Six Monthly">Six Monthly</option>
+                                            <option value="Annually">Annually</option>
+                                            </Field>
+                                            <ErrorMessage name="LifetimePension2Frequency" component='div' className="text-danger fw-bold"/>
+                                    </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePension2DeductibleAmount" className="form-label">Deductible Amount</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePension2DeductibleAmount" name='LifetimePension2DeductibleAmount' placeholder="Deductible Amount"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePension2DeductibleAmount' />
+                                    </div>            
+                                    </div>
+                                    <div className="col-md-6">
+                                  <div className="mb-3">
+                                <label  className="form-label">
+                                Is this Pension Tax-Free?
+                                </label>
+                              {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="LifetimePension2TaxFree"
+                                id="LifetimePension2opt1" value="Yes"
+                                onChange={handleChange}
+                                checked={values.LifetimePension2TaxFree==="Yes"}
+                                />
+                                <label htmlFor="LifetimePension2opt1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="LifetimePension2TaxFree"
+                                id="LifetimePension2opt2" value="No"
+                                onChange={handleChange}
+                                checked={values.LifetimePension2TaxFree==="No"}
+                              />
+                                <label htmlFor="LifetimePension2opt2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+
+
+                                  
+                                </div>
+                                  </div>    
+                            </div>
+                                    <div className="col-md-6">
+                                    <div className="mb-3">
+                                    <label htmlFor="LifetimePension2TaxableAmount" className="form-label">Taxable Pension Amount</   label>
+                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    id="LifetimePension2TaxableAmount" name='LifetimePension2TaxableAmount' placeholder="Taxable Pension Amount"/>
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifetimePension2TaxableAmount' />
+                                    </div>            
+                                    </div>
+                                    </div>
+                                    
+                                    </div>
+                                    {/* Solicitor */}
+
+                            {/* Bank Account Detail Form */}
+                              
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <div className="col-md-12">
+                                    <button
+                                      className="float-end btn w-25  bgColor modalBtn"
+                                      // onClick={BankhandleClose}
+                                      type='submit'
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                      onClick={LifetimePension2handleClose}
                                     >
                                       Cancel
                                     </button>

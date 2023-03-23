@@ -149,6 +149,7 @@ useEffect(() => {
   let Client_onSubmit = (values) => {
 
     let ClientModalDetails={
+      Email: localStorage.getItem("ClientEmail"),
       Solicitor_Name: values.solicitorName,
       Solicitor_Company: values.solicitorCompany,
       Solicitor_Phone: values.solicitorPhone,
@@ -252,6 +253,7 @@ console.log(ClientModalDetails)
 
   let Partner_onSubmit = (values) => {
     let PartnerModalDetails={
+      Email: localStorage.getItem("ClientEmail"),
       Solicitor_Name: values.solicitorName2,
       Solicitor_Company: values.solicitorCompany2,
       Solicitor_Phone: values.solicitorPhone2,
@@ -305,9 +307,11 @@ console.log(ClientModalDetails)
   let onSubmit=(values)=>{
   Navigate('/Assets-And-Liabilities')
   let ProfessionalAdvisor1={
+    Email: localStorage.getItem("ClientEmail"),
     ProfessionalAdvisor: values.ProfessionalAdvisors1radio
   }
   let ProfessionalAdvisor2={
+    Email: localStorage.getItem("ClientEmail"),
     ProfessionalAdvisor: values.ProfessionalAdvisors2radio
   }
   if(isPartnered===true){

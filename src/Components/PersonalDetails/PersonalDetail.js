@@ -388,6 +388,7 @@ const initialValues={
 let Navigate = useNavigate();
 
 const onSubmit= (values,action) => {
+  localStorage.setItem("ClientEmail", values.emailID);
 
   Navigate('/Business-Tax-Structure');
 
@@ -417,6 +418,7 @@ let ClientDetails={
     Description:values.DescriptionID,
   }
  let PartnerDetails={
+    ClientEmail: localStorage.getItem("ClientEmail"),
     Title:values.titleID2,
     GivenName:values.givenNameID2,
     Surname:values.surnameID2,
@@ -624,6 +626,7 @@ const initialValues2={
     let age=document.getElementById("childAge").value;
     
     let ChildDetails={
+      Email: localStorage.getItem("ClientEmail"),
       ChildNO: parseFloat(checkNumber),
       ChildName:values.childNameID,
       ChildDOB:values.childDoBID,

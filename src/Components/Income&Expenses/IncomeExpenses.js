@@ -422,6 +422,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
   const onSubmit= (values,action) => {
 
     let Client_IncomeExpenseDetais={
+      Email: localStorage.getItem("ClientEmail"),
       Client_PrimaryOccupation:values.clientPrimaryOccupation,
       Client_EmploymentStatus:values.clientEmploymentStatus,
       Client_CompanyName:values.clientNameofCompany,
@@ -489,6 +490,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
     }
 
     let Partner_IncomeExpenseDetais={
+      Email: localStorage.getItem("ClientEmail"),
       Partner_PrimaryOccupation:values.clientPrimaryOccupation2,
       Partner_EmploymentStatus:values.clientEmploymentStatus2,
       Partner_CompanyName:values.clientNameofCompany2,
@@ -1335,6 +1337,7 @@ TransInsuranceType:'',
   const onSubmit2=(values)=>{
     
     let ExpensesModal = {
+      Email: localStorage.getItem("ClientEmail"),
   //********************** Household Expense **********************
       Household_Rent: values.houseHoldrent,
       Household_RentType: values.houseHoldrentType,

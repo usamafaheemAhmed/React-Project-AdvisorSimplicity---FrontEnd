@@ -102,6 +102,7 @@ const AssetsLiabilities = () => {
         let onSubmit = (Values) => {
 
           let AssetsDetails = {
+            Email: localStorage.getItem("ClientEmail"),
             FamilyHome: Values.ownFamilyradio,
             PersonalAssets: Values.personalAssetsradio,
             PersonalDebts: Values.personalLoansradio
@@ -287,6 +288,7 @@ const AssetsLiabilities = () => {
         let own_onSubmit = (Values) => {
 
           let ClientFamilyHomeDetails={
+            Email: localStorage.getItem("ClientEmail"),
             HomeNO:  parseFloat(Values.home)||0,
             CurrentValue:  Values.currentValue,
             ClientOwnership: Values.clientPercentage,
@@ -421,6 +423,7 @@ const AssetsLiabilities = () => {
         let personalAssetsOnSubmit = (Values) => {
         
           let ClientPersonalAssets={
+            Email: localStorage.getItem("ClientEmail"),
             Contents_CurrentValue:  Values.contentCurrentValue,
             Contents_CentreLinkValue:  Values.contentCentrelinkValue,
             Contents_Security:  Values.contentradio,
@@ -617,6 +620,7 @@ debtInterestRate4:Yup.number().required("Required")
   let personalLoansonSubmit = (Values) => {
 
     let ClientPersonalDebts={
+      Email: localStorage.getItem("ClientEmail"),
       CreditCard1_CurrentBalance:Values. debtCurrentBalance1,
       CreditCard1_RepaymentAmount:Values. debtRepaymentAmount1,
       CreditCard1_Frequency:Values. DebtFrequency1,

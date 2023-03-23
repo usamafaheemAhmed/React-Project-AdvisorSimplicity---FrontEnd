@@ -437,6 +437,9 @@ else{
   }
   let onSubmit = (values) => {
     let ClientBusinessDetails={
+
+      Email: localStorage.getItem("ClientEmail"),
+
       Sole_BusinessName:values.soleBusinessName,
       Sole_BusinessType:values.soleBusinessType,
       Sole_IncomeGenerated:values.soleIncomeGenerated,
@@ -486,6 +489,8 @@ else{
   
       }
       let PartnerBusinessDetails={
+        
+        Email: localStorage.getItem("ClientEmail"),
         Sole_BusinessName:values.solePartnerBusinessName,
         Sole_BusinessType:values.solePartnerBusinessType,
         Sole_IncomeGenerated:values.solePartnerIncomeGenerated,
@@ -513,7 +518,7 @@ else{
        axios
       .post('http://localhost:7000/Client-Business/Add-Client-Business', ClientBusinessDetails)
       .then((res) => console.log("Client Business Added Successfully!"))
-       Navigate('/Income-And-Expenses')
+      //  Navigate('/Income-And-Expenses')
         
       console.log(ClientBusinessDetails)
 
@@ -581,6 +586,7 @@ else{
 
   let ClientModal_onSubmit = (Values) => {
      let Client_SoleTraderDetails={
+      Email: localStorage.getItem("ClientEmail"),
       Sole_ExpenseNumber:5000,
       Sole_Rent:Values.soleRent,
       Sole_LeaseCost:Values.soleLeaseCosts,
@@ -657,6 +663,8 @@ handleClose();
 
   let PartnerModal_onSubmit = (Values) => {
     let Partner_SoleTraderDetails={
+      
+      Email: localStorage.getItem("ClientEmail"),
       Sole_ExpenseNumber:5000,
       Sole_Rent:Values.solePartnerRent,
       Sole_LeaseCost:Values.soleLeaseCosts,
@@ -743,6 +751,7 @@ handleClosePartner();
 
   let Partnership_onSubmit = (Values) => {
     let Client_PartnershipDetails = {
+      Email: localStorage.getItem("ClientEmail"),
     Partnership_ExpenseNumber:5000,
     Partnership_Rent: Values.partnershipRent,
     Partnership_LeaseCost: Values.partnershipLeaseCosts,
@@ -755,7 +764,7 @@ handleClosePartner();
     Partnership_ProfessionalFees:Values.partnershipProfessionalFees ,
     Partnership_AllOther:Values.partnershipAllOther,
   }
-  console.log(Values)
+  console.log(Client_PartnershipDetails)
   axios
   .post('http://localhost:7000/Client-Partnership-Business/Add-Client-Partnership', Client_PartnershipDetails)
   .then((res) => console.log("Partnership Added Successfully!"))
@@ -848,7 +857,10 @@ handleClosePartnership();
   })
 
   let BusinessExpense_onSubmit = (Values) => {
-    let BusinessTrustDetails={BusinessTrust_ExpenseNumber:5000,
+    let BusinessTrustDetails={
+      
+      Email: localStorage.getItem("ClientEmail"),
+      BusinessTrust_ExpenseNumber:5000,
       BusinessTrust_Rent:Values.trustRent,
       BusinessTrust_LeaseCost:Values.trustLeaseCosts,
       BusinessTrust_Insurance:Values.trustInsurances,
@@ -956,6 +968,7 @@ handleClosePartnership();
 
   let onSubmitPrivate=(values)=>{
     let PrivateCompanyDetails={
+      Email: localStorage.getItem("ClientEmail"),
       PrivateCompany_ExpenseNumber: 5000, //  we will get value later of id  "privateBusinessExpenses"
       PrivateCompany_Rent:values.privateRent,
       PrivateCompany_LeaseCost:values.privateLeaseCosts,

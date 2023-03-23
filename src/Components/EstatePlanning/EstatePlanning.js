@@ -275,6 +275,7 @@ then:Yup.string().required("Required"),
 
 // partner estate planning
     let PartnerData={
+      Email: localStorage.getItem("ClientEmail"),
       Partner_AnyWill:values.haveWillsradio2,
       Partner_CurrentWill_Reflection:values.reflectCurrentWishesradio2,
       Partner_PreparationDate:values.datePrepared2,
@@ -292,6 +293,7 @@ then:Yup.string().required("Required"),
 
 // client estate planning
     let clientData={
+      Email: localStorage.getItem("ClientEmail"),
       AnyWill:values.haveWillsradio,
       CurrentWill_Reflection: values.reflectCurrentWishesradio,
       PreparationDate:values.datePrepared,
@@ -373,6 +375,7 @@ then:Yup.string().required("Required"),
     let POA_onSubmit = (Values) => {
 
       let client_Modal={
+        Email: localStorage.getItem("ClientEmail"),
         POA_Type: Values.PowerofAttorney,
         POA_OtherDescription: Values.OtherDescription,
         POA_ReviewDate: Values.dateLastReviewed,

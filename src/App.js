@@ -21,13 +21,17 @@ import GoalsObjectives from './components/Goals&Objectives/GoalsObjective';
 
 function App() {
   return (
+
+    <div className='container-fluid'>
+
+    
     <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
-        <SideBar/>
+        {/* <SideBar/> */}
       </div>
 
       <div className="col-md-10 m-0 p-0"> 
-      <Topbar />  
+      {/* <Topbar />   */}
       <Options />
       
       <BrowserRouter>
@@ -48,6 +52,8 @@ function App() {
       </Routes>
       </BrowserRouter>
       </div>
+    </div>
+    
     </div>
   );
 }
