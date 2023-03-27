@@ -61,8 +61,8 @@ function App() {
 
 
         {/* PATCH ROUTING */}
-        <Route path='/Edit-Client' element={<PersonalDetail_Edit/>} />
-        <Route path='/Edit-Business-Tax-Structure' element={<BusinessTextStucture_Edit/>} />
+        {/* <Route path='/Edit-Client' element={<PersonalDetail_Edit/>} /> */}
+        <Route path='/Edit-Client' element={<BusinessTextStucture_Edit/>} />
         <Route path='/Edit-Income-And-Expenses' element={<IncomeExpenses/>} />
         <Route path='/Edit-Professional-Advisors' element={<ProfessionalAdvisers_Edit/>} />
         {/* <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities/>} /> */}

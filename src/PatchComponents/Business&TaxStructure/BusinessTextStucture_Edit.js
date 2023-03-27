@@ -605,7 +605,7 @@ const BusinessTextStucture = () => {
         .patch(`http://localhost:7000/Client-Business/Update-Client-Business/${localStorage.getItem("EditClient")}`, ClientBusinessDetails)
         .then((res) => console.log("Client Business Updated Successfully!"))
         
-      //   Navigate('/Income-And-Expenses')    
+        Navigate('/Edit-Professional-Advisors')    
 
         axios
         .patch(`http://localhost:7000/Partner-Business/Update-Partner-Business/${localStorage.getItem("EditClient")}`, PartnerBusinessDetails)
@@ -618,7 +618,7 @@ const BusinessTextStucture = () => {
        axios
         .patch(`http://localhost:7000/Client-Business/Update-Client-Business/${localStorage.getItem("EditClient")}`, ClientBusinessDetails)
         .then((res) => console.log("Client Business Updated Successfully!"))
-      //  Navigate('/Income-And-Expenses')
+       Navigate('/Edit-Professional-Advisors')
         
       console.log(ClientBusinessDetails)
 
