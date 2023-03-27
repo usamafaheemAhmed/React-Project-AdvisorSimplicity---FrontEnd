@@ -19,6 +19,11 @@ import PersonalInsurance from './components/PersonalInsurance/PersonalInsurance'
 import RiskProfile from './components/RiskProfile/RiskProfile';
 import GoalsObjectives from './components/Goals&Objectives/GoalsObjective';
 
+import BusinessTextStucture_Edit from './PatchComponents/Business&TaxStructure/BusinessTextStucture_Edit';
+import PersonalDetail_Edit from './PatchComponents/PersonalDetails/PersonalDetail_Edit';
+import ProfessionalAdvisers_Edit from './PatchComponents/ProfessionalAdvisors/ProfessionalAdvisers_Edit';
+import AllClients from './GetComponents/AllClients';
+
 function App() {
   return (
 
@@ -27,15 +32,19 @@ function App() {
     
     <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
-        {/* <SideBar/> */}
+        <SideBar/>
       </div>
 
       <div className="col-md-10 m-0 p-0"> 
-      {/* <Topbar />   */}
+      <Topbar />  
       <Options />
       
       <BrowserRouter>
       <Routes>
+        {/* GET ROUTING */}
+        <Route path='/All-Clients' element={<AllClients/>} />
+
+        {/* POST ROUTING */}
         <Route path='/' element={<PersonalDetail/>} />
         <Route path='/Business-Tax-Structure' element={<BusinessTextStucture/>} />
         <Route path='/Income-And-Expenses' element={<IncomeExpenses/>} />
@@ -49,6 +58,22 @@ function App() {
         <Route path='/Personal-Insurance' element={<PersonalInsurance/>} />
         <Route path='/Risk-Profile' element={<RiskProfile/>} />
         <Route path='/Goals-And-Objectives' element={<GoalsObjectives/>} />
+
+
+        {/* PATCH ROUTING */}
+        <Route path='/Edit-Client' element={<PersonalDetail_Edit/>} />
+        <Route path='/Edit-Business-Tax-Structure' element={<BusinessTextStucture_Edit/>} />
+        <Route path='/Edit-Income-And-Expenses' element={<IncomeExpenses/>} />
+        <Route path='/Edit-Professional-Advisors' element={<ProfessionalAdvisers_Edit/>} />
+        {/* <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities/>} /> */}
+        {/* <Route path='/Edit-Investments' element={<Investments/>} /> */}
+        {/* <Route path='/Edit-Estate-Planning' element={<EstatePlanning/>} /> */}
+        {/* <Route path='/Edit-Super-And-Retirment' element={<SuperRetriement/>} /> */}
+        {/* <Route path='/Edit-SMSF' element={<SMSF/>} /> */}
+        {/* <Route path='/Edit-Investment-Trust' element={<InvestmentTrust/>} /> */}
+        {/* <Route path='/Edit-Personal-Insurance' element={<PersonalInsurance/>} /> */}
+        {/* <Route path='/Edit-Risk-Profile' element={<RiskProfile/>} /> */}
+        {/* <Route path='/Edit-Goals-And-Objectives' element={<GoalsObjectives/>} /> */}
       </Routes>
       </BrowserRouter>
       </div>

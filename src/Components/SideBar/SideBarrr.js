@@ -39,8 +39,8 @@ const SideBarrr = () => {
       <li className="dropdown d-block">
   <li className=""><FontAwesomeIcon icon={faUser}/> Client</li>
   <div className="dropdown-content">
-    <a href="#" className='py-1 '>Select Client</a>
-    <a href="#" className='py-1 '>Edit Client</a>
+    <a href="/All-Clients" className='py-1 '>Select Client</a>
+    <a href="/All-Clients" className='py-1 '>Edit Client</a>
     <a href="Goals-And-Objectives" className='py-1 '>Goals and Objectives</a>
     <a href="Risk-Profile" className='py-1 '>Risk Profile</a>
     <a href="#" className='py-1 '>Scenario</a>

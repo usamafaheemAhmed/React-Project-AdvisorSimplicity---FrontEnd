@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+label{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+.fontStyle{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold; 
+   
+}
+.HiddenDate{
+    width: 41%;
+    border: none;
+}
+
+
+#CalenderIcon{
+    height: 100%;
+    background-color: white;
+    color: #36B446;
+    border: 1px solid #36B446;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+.heading{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+input{
+   
+    font-family: 'Montserrat', sans-serif;
+
+}
+.inputDesign{
+    font-family: 'Montserrat', sans-serif;
+    border: 1px solid #36B446;
+    border-radius: 12px;
+    height: 45px;
+
+}
+
+.ImgContainer{
+    display: inline-block;
+    width: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.imgPerson:hover{
+    cursor: pointer;
+    background-color: #36B446;
+    width: 45px;
+    padding: 4px;
+    padding: 2px;
+
+    border-radius: 50%;
+
+
+}
+.selectedimage{
+    display: inline-block;
+    background-color: #36B446;
+    width: 45px;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.notSelectedimage{
+    display: inline-block;
+    width: 45px;
+    border-radius: 50%;
+}
+
+
+.childBtn{
+    display: inline-block;
+    border: 0px  ;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    background-color: grey;
+    padding-top: 8px;
+}
+.childBtn:hover{
+    border: 0px  ;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    
+    background-color: grey;
+
+}
+
+
+.selectedchildBtn{
+    border: 0px  ;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    background-color: #36B446;
+
+}
+.childBtn:hover{
+    background-color: #36B446;
+
+}
+
+
+.form-control:focus{
+    /* in shadow */
+    box-shadow:  none ;
+    border: 1px solid #36B446;
+
+    
+}
+.form-select:focus{
+    box-shadow:  none ;
+    border: 1px solid #36B446;
+
+
+
+}
+.btn-outline{
+    color: #36B446;
+    border: 1px solid #36B446;
+}
+.btn-outline:hover{
+    color: white;
+    background-color: #36B446;
+}
+.bgColor{ 
+    background-color: #36B446;
+    color: white;
+    border: 1px solid #36B446;
+
+}
+
+.bgColor:hover{ 
+    color: #36B446;
+    background-color: white;
+    border: 1px solid #36B446;
+}
+.modalBG{
+    background-color: #36B446;
+
+}
+.form-check-input{
+    cursor: pointer;
+}
+.switchBtn{
+    display: inline-block;
+    box-shadow:  none ;
+}
+
+.boxShadow:focus{
+    box-shadow:  none ;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    overflow: hidden;
+  }
+
+  #labelID{
+    color: black;
+    font-weight: 500;
+  }
+
+  #tableHead{
+    background-color: #36B446;
+  }
