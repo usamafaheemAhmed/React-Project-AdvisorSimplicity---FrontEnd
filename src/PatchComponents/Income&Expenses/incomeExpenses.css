@@ -1,0 +1,156 @@
+.chek1{
+    display: inline-block;
+    background-color: aquamarine;
+}
+
+.radiobutton {
+    background-color: white;
+    height: 35px;
+    width: 150px;
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #36B446;
+    cursor: pointer;
+
+    /* box-shadow: 2px 2px 8px -2px #36B446; */
+}
+
+input[type="radio"] {
+    /* display: none; */
+}
+
+.label1,
+.label2 {
+    display: block;
+    height: 180px;
+    width: 75px;
+    background: linear-gradient(to bottom,
+            white 0, white 90px,
+            #36B446 90px, #36B446 180px);
+    position: absolute;
+    top: 0;
+    color: #36B446;
+    transition: 0.5s;
+    cursor: pointer;
+
+}
+
+.label2 {
+    right: 0;
+}
+
+span {
+    display: flex;
+    height: 35px;
+    width: 75px;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+input:checked+label {
+    background-position: 0 -90px;
+    /* color: white; */
+    /* transition: 0.7s; */
+}
+
+.bgColorIncome{
+background-color: #36b447df;
+}
+
+/* ------------------------------------------------- */
+.radiobutton2:hover{
+    cursor: pointer;
+
+}
+.radiobutton2 {
+    background-color: white;
+    height: 35px;
+    width: 280px;
+    border: 2px solid red;
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    /* border: 1px solid #36B446; */
+    /* box-shadow: 2px 2px 8px -2px #36B446; */
+}
+
+input[type="radio"] {
+    /* display: none; */
+}
+
+.label11 {
+    display: block;
+    height: 180px;
+    width: 150px;
+    background: linear-gradient(to bottom,
+            white 0, white 90px,
+            #36B446 90px, #36B446 180px);
+    position: absolute;
+    top: 0;
+    color: #36B446;
+    transition: 0.5s;
+}
+.label22 {
+    display: block;
+    height: 180px;
+    width: 45px;
+    background: linear-gradient(to bottom,
+            white 0, white 90px,
+            #36B446 90px, #36B446 180px);
+    position: absolute;
+    top: 0;
+    color: #36B446;
+    transition: 0.5s;
+    
+}
+
+/* .label22 {
+    right: 0;
+} */
+
+.span1 {
+    display: flex;
+    height: 35px;
+    width: 130px;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+.span2 {
+    display: flex;
+    height: 35px;
+    width: 35px;
+    justify-content: center;
+    align-items: center;
+    
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+input:checked+label {
+    background-position: 0 -90px;
+    color: white;
+    transition: 0.7s;
+}
+
+.bgColorIncome2{
+background-color: #36b447df;
+}
+
+.btn-outline-success1{
+    background-color: white;
+    border:1px solid  #36b447df ;
+}
+.btn-outline-success1:checked{
+
+    border:1px solid  red ;
+
+
+}

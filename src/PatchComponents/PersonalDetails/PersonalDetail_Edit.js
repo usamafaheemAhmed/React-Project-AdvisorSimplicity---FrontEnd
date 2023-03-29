@@ -56,8 +56,8 @@ const PersonalDetail_Edit = () => {
 
 
   useEffect(() => {
-//  let Postcode=5400
- let email="client@gmail.com"
+
+ let email=localStorage.getItem("EditClient")
     axios
     .get(`http://127.0.0.1:7000/Client/`)
     .then((res) => {
@@ -434,8 +434,7 @@ let Navigate = useNavigate();
 
 const onSubmit= (values,action) => {
   localStorage.setItem("ClientEmail", values.emailID);
-
-  // Navigate('/Business-Tax-Structure');
+   Navigate('/Edit-Business-TextStucture');
 
 let ClientDetails={
     Title:values.titleID,
@@ -484,14 +483,18 @@ let ClientDetails={
 
   if(isPartnered===true){
      axios
-  .post('http://localhost:7000/Client/Add-Client',ClientDetails)
+
+  .patch(`http://localhost:7000/Client/Update-Client/${localStorage.getItem("EditClient")}`, ClientDetails)
+  
   .then((res) => {
     console.log("Client Successfully Added!");
     
   })
 
   axios
-  .post('http://localhost:7000/Partner/Add-Partner',PartnerDetails)
+  
+  .patch(`http://localhost:7000/Partner/Update-Partner/${localStorage.getItem("EditClient")}`, PartnerDetails)
+
   .then((res) => console.log("Partner Successfully Added!"))
 
     console.log(PartnerDetails)
@@ -499,7 +502,8 @@ let ClientDetails={
   }
   else{
    axios
-  .post('http://localhost:7000/Client/Add-Client',ClientDetails)
+   .patch(`http://localhost:7000/Client/Update-Client/${localStorage.getItem("EditClient")}`, ClientDetails)
+
   .then((res) => console.log("Client Successfully Added!"))    
 console.log(ClientDetails)
 
@@ -657,22 +661,31 @@ let ageHandler2=()=>{
 const initialValues2={
   childNameID:childData.ChildName,
   childDoBID:childData.ChildDOB,
-  childRelationship:'',
-  childSupportReceived:'No',
-  childDependentradio:'No',
-  significantEducationRadio:'No',
-  DependantUntilAge:'',
-  CostofPrimaryEducation:'',
-  CostofSecondaryEducation:'',
-  CostofUniEducation:'',
-  courseYears:'',
-  AmountPaidReceivedID:'',
-  childAge:'',
+  // ChildNO: (checkNumber),
+  childAge:childData.ChildAge,
+  // ChildGender:childGender,
+   childRelationship:childData.ChildRelation,
+
+   childDependentradio:childData.ChildFinancialyDependent,
+
+   DependantUntilAge:childData.ChildDependentAge,
+
+   childSupportReceived:childData.ChildSupportRecieved,
+
+   AmountPaidReceivedID:childData.ChildAmountRecieved,
+
+   significantEducationRadio:childData.ChildSignificantEducationCost,
+
+   CostofPrimaryEducation:childData.ChildPrimaryEducationCost,
+
+   CostofSecondaryEducation:childData.ChildSecondaryEducationCost,
+
+   CostofUniEducation:childData.ChildUniversityEducationCost,
+
+   courseYears:childData.ChildCourseYear,  
   }
   const onSubmit2= (values,action) => {
-  
     let age=document.getElementById("childAge").value;
-    
     let ChildDetails={
       Email: localStorage.getItem("ClientEmail"),
       ChildNO: parseFloat(checkNumber),
@@ -691,41 +704,16 @@ const initialValues2={
       ChildUniversityEducationCost:parseFloat(values.CostofUniEducation)||0,
       ChildCourseYear:parseFloat(values.courseYears)||0,    
     }
-    console.log(ChildDetails)
-    // setListOfChild([...listOfChild, ChildDetails])
 
     axios
-  .post('http://localhost:7000/Child/Add-Child', ChildDetails)
+  .patch(`http://localhost:7000/Child/Update-Child/${localStorage.getItem("EditClient")}`, ChildDetails)
   .then((res) => {
-    console.log("Child Successfully Added!")
-    setListOfChild(res.data)
+    console.log("Child Successfully Updated!")
+    // setListOfChild(res.data)
   }
-  
   )
-
-
-     console.log(listOfChild)
-   
-    setChildGender("female")
-    //  handleClose ();
-    if(numOfChild==checkNumber){
-      handleClose ();
-      setNumOfChild(1)
-      setIsChildTable(true)
-    }
-    else{
-      setNumOfChild(numOfChild+1)
-      handleClose ();
-      setIsChildTable(true)
-
-      // setShow(true)
-      setTimeout(() => {
-        handleShow();
-      }, 600);
-    }
-
-   
   
+  handleClose ();
   }
   
     const validationSchema2=Yup.object({
@@ -848,6 +836,9 @@ const initialValues2={
    }
 
    let updateHandler=(e)=>{
+    setChildData(e)
+    
+    handleShow();
    }
 
   return (
@@ -1961,6 +1952,7 @@ const initialValues2={
                                     className="form-control inputDesign  shadow"
                                     id="childNameID"
                                     placeholder="Name"
+                                    name="childNameID"
                                     
                                 />
                                   <ErrorMessage className="text-danger fw-bold" component="div"   name="childNameID" />
@@ -1982,22 +1974,13 @@ const initialValues2={
                                     Date of Birth
                                   </label>
 
-                                  {/* <Field
-                                    type="date"
-                                    className="form-control inputDesign shadow"
-                                    id="childDoBID"
-                                    onBlur={(e)=>ageHandler2(e)}
-                                    onChange={(e) => setFieldValue("childDoBID", e.target.value)}
-                                    value={values.childDoBID}
-                      /> */}
                        <div className="input-group ">
                         <Field
                           className="form-control inputDesign shadow"
                           id="childDoBID"
                           name='childDoBID'
                           onBlur={(e)=>ageHandler("childDoBID","childAge")}
-                          value={values.DoBID}
-                          max="2023-1-31"
+                         
                         />
                         <div className="input-group-append">
                           <span className="input-group-text" id="CalenderIcon">
@@ -2022,11 +2005,12 @@ const initialValues2={
                                   >
                                     Age
                                   </label>
-                                  <input
+                                  <Field
                                     type="text"
                                     className="form-control inputDesign shadow"
                                     id="childAge"
                                     placeholder="Age"
+                                    name="childAge"
                                     readOnly
                                   />
                                 </div>
@@ -2155,7 +2139,8 @@ const initialValues2={
                             {/* row 4*/}
 
                             {/* row 42*/}
-                            <div className="row d-none" id="dependantRow">
+                           { values.childDependentradio=="Yes" &&
+                            <div className="row" id="dependantRow">
                                {/* Dependant Until Age */}
                               <div className="col-md-6">
                                 <div className="mb-3">
@@ -2229,7 +2214,7 @@ const initialValues2={
                               {/* Amount Paid/Received*/}
                             
 
-                            </div>
+                            </div>}
                             {/* row 42*/}
 
                           
@@ -2272,7 +2257,8 @@ const initialValues2={
                             </div>
                             {/* row 5 */}
 
-                           <div className="d-none" id="significantCostsofEducationRow">
+                          {values.significantEducationRadio=="Yes" &&
+                           <div className="" id="significantCostsofEducationRow">
                             {/* row 6 */}
                             <div className="row">
 
@@ -2378,7 +2364,7 @@ const initialValues2={
 
                             </div>
                               {/* row 7 */}
-                              </div>
+                            </div>}
 
                           </Modal.Body>
                           <Modal.Footer>
@@ -2500,10 +2486,7 @@ const initialValues2={
                         name='DescriptionID'
                         rows="3"
                         placeholder="Description"
-                        
-
-
-                 
+                      
                       />
                       {/* <p className="" id="errorDes">error</p> */}
                       <ErrorMessage component='div' className="text-danger fw-bold"name="DescriptionID"/>

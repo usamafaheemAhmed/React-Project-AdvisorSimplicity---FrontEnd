@@ -381,7 +381,7 @@ console.log(ClientModalDetails)
   let Navigate = useNavigate();
 
   function BackFunction(){
-    Navigate('/Income-And-Expenses');
+    Navigate('/Edit-Income-And-Expenses');
   }
 
   let onSubmit=(values)=>{

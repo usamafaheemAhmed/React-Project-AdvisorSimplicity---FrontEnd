@@ -534,7 +534,7 @@ const BusinessTextStucture = () => {
   let Navigate = useNavigate();
 
   function BackFunction(){
-    Navigate('/')
+    Navigate('/Edit-Client')
   }
   let onSubmit = (values) => {
     let ClientBusinessDetails={
@@ -605,7 +605,7 @@ const BusinessTextStucture = () => {
         .patch(`http://localhost:7000/Client-Business/Update-Client-Business/${localStorage.getItem("EditClient")}`, ClientBusinessDetails)
         .then((res) => console.log("Client Business Updated Successfully!"))
         
-        Navigate('/Edit-Professional-Advisors')    
+        Navigate('/Edit-Income-And-Expenses')    
 
         axios
         .patch(`http://localhost:7000/Partner-Business/Update-Partner-Business/${localStorage.getItem("EditClient")}`, PartnerBusinessDetails)
@@ -618,7 +618,7 @@ const BusinessTextStucture = () => {
        axios
         .patch(`http://localhost:7000/Client-Business/Update-Client-Business/${localStorage.getItem("EditClient")}`, ClientBusinessDetails)
         .then((res) => console.log("Client Business Updated Successfully!"))
-       Navigate('/Edit-Professional-Advisors')
+       Navigate('/Edit-Income-And-Expenses')
         
       console.log(ClientBusinessDetails)
 

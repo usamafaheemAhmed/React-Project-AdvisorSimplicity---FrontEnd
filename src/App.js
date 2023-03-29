@@ -1,28 +1,29 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import PersonalDetail from './components/PersonalDetails/PersonalDetail';
-import BusinessTextStucture from './components/Business&TaxStructure/BusinessTextStucture';
-import IncomeExpenses from './components/Income&Expenses/IncomeExpenses';
-import ProfessionalAdvisers from './components/ProfessionalAdvisors/ProfessionalAdvisers';
-import SideBar from './components/SideBar/SideBarrr';
-import Topbar from './components/Topbar/Topbar';
-import AssetsLiabilities from './components/Assets&Liabilities/AssetsLiabilities';
-import Investments from './components/Investments/Investments';
+import PersonalDetail from './Components/PersonalDetails/PersonalDetail';
+import BusinessTextStucture from './Components/Business&TaxStructure/BusinessTextStucture';
+import IncomeExpenses from './Components/Income&Expenses/IncomeExpenses';
+import ProfessionalAdvisers from './Components/ProfessionalAdvisors/ProfessionalAdvisers';
+import SideBar from './Components/SideBar/SideBarrr';
+import Topbar from './Components/Topbar/Topbar';
+import AssetsLiabilities from './Components/Assets&Liabilities/AssetsLiabilities';
+import Investments from './Components/Investments/Investments';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Options from './components/Options';
-import SuperRetriement from './components/Super&Retirement/SuperRetriement';
-import EstatePlanning from './components/EstatePlanning/EstatePlanning';
-import SMSF from './components/SMSF/SMSF';
-import InvestmentTrust from './components/InvestmentTrust/InvestmentTrust';
-import PersonalInsurance from './components/PersonalInsurance/PersonalInsurance';
-import RiskProfile from './components/RiskProfile/RiskProfile';
-import GoalsObjectives from './components/Goals&Objectives/GoalsObjective';
+import Options from './Components/Options';
+import SuperRetriement from './Components/Super&Retirement/SuperRetriement';
+import EstatePlanning from './Components/EstatePlanning/EstatePlanning';
+import SMSF from './Components/SMSF/SMSF';
+import InvestmentTrust from './Components/InvestmentTrust/InvestmentTrust';
+import PersonalInsurance from './Components/PersonalInsurance/PersonalInsurance';
+import RiskProfile from './Components/RiskProfile/RiskProfile';
+import GoalsObjectives from './Components/Goals&Objectives/GoalsObjective';
 
 import BusinessTextStucture_Edit from './PatchComponents/Business&TaxStructure/BusinessTextStucture_Edit';
 import PersonalDetail_Edit from './PatchComponents/PersonalDetails/PersonalDetail_Edit';
 import ProfessionalAdvisers_Edit from './PatchComponents/ProfessionalAdvisors/ProfessionalAdvisers_Edit';
 import AllClients from './GetComponents/AllClients';
+import IncomeExpenses_Edit from './PatchComponents/Income&Expenses/IncomeExpenses_Edit';
 
 function App() {
   return (
@@ -61,9 +62,9 @@ function App() {
 
 
         {/* PATCH ROUTING */}
-        {/* <Route path='/Edit-Client' element={<PersonalDetail_Edit/>} /> */}
-        <Route path='/Edit-Client' element={<BusinessTextStucture_Edit/>} />
-        <Route path='/Edit-Income-And-Expenses' element={<IncomeExpenses/>} />
+        <Route path='/Edit-Client' element={<PersonalDetail_Edit/>} />
+        <Route path='/Edit-Business-TextStucture' element={<BusinessTextStucture_Edit/>} />
+        <Route path='/Edit-Income-And-Expenses' element={<IncomeExpenses_Edit/>} />
         <Route path='/Edit-Professional-Advisors' element={<ProfessionalAdvisers_Edit/>} />
         {/* <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities/>} /> */}
         {/* <Route path='/Edit-Investments' element={<Investments/>} /> */}
@@ -78,7 +79,7 @@ function App() {
       </BrowserRouter>
       </div>
     </div>
-    
+
     </div>
   );
 }
