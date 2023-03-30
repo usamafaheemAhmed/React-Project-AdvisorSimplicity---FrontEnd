@@ -450,7 +450,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
 
   let Navigate = useNavigate();
   function BackFunction(){
-    Navigate('/Edit-Business-TextStucture')
+    // Navigate('/Edit-Business-TextStucture')
   }
   const onSubmit= (values,action) => {
 
@@ -580,15 +580,12 @@ let currentlySalaryPackageHandler2=(elem)=>{
       console.log(Partner_IncomeExpenseDetais)
 axios
 .patch(`http://localhost:7000/Client-ExpenseIncome/Update-Client-ExpenseIncome/${localStorage.getItem("EditClient")}`, Client_IncomeExpenseDetais)
-  
-  // .post('http://localhost:7000/Client-ExpenseIncome/Add-Client-ExpenseIncome', Client_IncomeExpenseDetais)
   .then((res) => console.log("Client Income Expense Updated Successfully!"))
 
   axios
     .patch(`http://localhost:7000/Partner-ExpenseIncome/Update-Partner-ExpenseIncome/${localStorage.getItem("EditClient")}`, Partner_IncomeExpenseDetais)
 
-  // .post('http://localhost:7000/Partner-ExpenseIncome/Add-Partner-ExpenseIncome', Partner_IncomeExpenseDetais)
-    .then((res) => console.log("Partner Income Expense Updated Successfully!"))
+  .then((res) => console.log("Partner Income Expense Updated Successfully!"))
     }
 
     else
@@ -600,7 +597,7 @@ axios
     }
 
   
-   Navigate('/Edit-Professional-Advisors')
+  //  Navigate('/Edit-Professional-Advisors')
   }
   
 
@@ -608,34 +605,28 @@ axios
   const validationSchema = Yup.object({
     clientPrimaryOccupation: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientEmployerFBTStatus:Yup.string().required( "Required"),
-    clientCostBaseofCar:Yup.number()
-    .when('whatDoYouHave',{
-      is: val => val && val.length <=4,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
+  
+    clientCostBaseofCar: Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car'),
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
     }),
-    clientRunningCostsofCarPackaged:Yup.number()
-    .when('whatDoYouHave',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
+
+    clientRunningCostsofCarPackaged: Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car'),
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
     }),
-    clientCreditCardMortgageorOther:Yup.number().required("Required")
-    .test(
-      "Is positive?",
-      "Must be a positive number",
-      (value) => value > 0
-    ),
+
+   
+    clientCreditCardMortgageorOther: Yup.number()
+    .when('whatDoYouHave', {
+      is: whatDoYouHave => whatDoYouHave.includes('CreditCard') || whatDoYouHave.includes('Mortgage')|| whatDoYouHave.includes('Other')  ,
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
+    }),
     clientEmploymentStatus:Yup.string().required( "Required"),
     clientNameofCompany: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientCommencementDate:Yup.string().required( "Required"),
@@ -703,33 +694,30 @@ axios
     }),
     
 
-        // partner employeement Details
+        // ****** partner employeement Details ******
+
         clientPrimaryOccupation2: Yup.string().matches(letters, "Only letters").required('Required') ,
         clientEmployerFBTStatus2:Yup.string().required( "Required"),
-        // clientCostBaseofCar2:Yup.number()
-        // .when('whatDoYouHave2',{
-        //   is: val => val && val.length <=4,
-        //   then:Yup.number().required("Required")
-        //   .test(
-        //     "Is positive?",
-        //     "Must be a positive number",
-        //     (value)=> value >0
-        //   ),
-        //   otherwise: Yup.number().notRequired()
-        // }),
-        clientRunningCostsofCarPackaged2:Yup.number().required("Required")
-          .test(
-            "Is positive?",
-            "Must be a positive number",
-            (value)=> value >0
-          ),
+        clientCostBaseofCar2: Yup.number()
+        .when('whatDoYouHave2', {
+          is: abc => abc.includes('car'),
+          then: Yup.number().required('Required'),
+          otherwise: Yup.number().notRequired(),
+        }),
     
-        // clientCreditCardMortgageorOther2:Yup.number().required("Required")
-        // .test(
-        //   "Is positive?",
-        //   "Must be a positive number",
-        //   (value) => value > 0
-        // ),
+        clientRunningCostsofCarPackaged2: Yup.number()
+        .when('whatDoYouHave2', {
+          is: abc => abc.includes('car'),
+          then: Yup.number().required('Required'),
+          otherwise: Yup.number().notRequired(),
+        }),
+    
+        clientCreditCardMortgageorOther2: Yup.number()
+    .when('whatDoYouHave2', {
+      is: whatDoYouHave => whatDoYouHave.includes('CreditCard') || whatDoYouHave.includes('Mortgage')|| whatDoYouHave.includes('Other')  ,
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
+    }),
         clientEmploymentStatus2:Yup.string().required( "Required"),
         clientNameofCompany2: Yup.string().matches(letters, "Only letters").required('Required') ,
         clientCommencementDate2:Yup.string().required( "Required"),
@@ -940,7 +928,7 @@ axios
       otherwise: Yup.number().notRequired()
     }),
 
-    // //Partner Other Taxable Income
+     //Partner Other Taxable Income
     TaxPaymentsOutstanding2: Yup.number().required("Required")
     .test(
       "Is positive?",
@@ -1035,34 +1023,24 @@ axios
   const singlevalidationSchema = Yup.object({
     clientPrimaryOccupation: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientEmployerFBTStatus:Yup.string().required( "Required"),
-    // clientCostBaseofCar:Yup.number()
-    // .when('whatDoYouHave',{
-    //   is: val => val && val.length <=4,
-    //   then:Yup.number().required("Required")
-    //   .test(
-    //     "Is positive?",
-    //     "Must be a positive number",
-    //     (value)=> value >0
-    //   ),
-    //   otherwise: Yup.number().notRequired()
-    // }),
-    clientRunningCostsofCarPackaged:Yup.number()
-    .when('whatDoYouHave',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
+    clientCostBaseofCar: Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car'),
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
     }),
-    // clientCreditCardMortgageorOther:Yup.number().required("Required")
-    // .test(
-    //   "Is positive?",
-    //   "Must be a positive number",
-    //   (value) => value > 0
-    // ),
+    clientRunningCostsofCarPackaged: Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car'),
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
+    }),
+    clientCreditCardMortgageorOther: Yup.number()
+    .when('whatDoYouHave', {
+      is: whatDoYouHave => whatDoYouHave.includes('CreditCard') || whatDoYouHave.includes('Mortgage')|| whatDoYouHave.includes('Other')  ,
+      then: Yup.number().required('Required'),
+      otherwise: Yup.number().notRequired(),
+    }),
     clientEmploymentStatus:Yup.string().required( "Required"),
     clientNameofCompany: Yup.string().matches(letters, "Only letters").required('Required') ,
     clientCommencementDate:Yup.string().required( "Required"),
@@ -1688,7 +1666,7 @@ axios
 
           <Formik
               initialValues={initialValues}
-               validationSchema={isPartnered ? validationSchema : singlevalidationSchema}
+              validationSchema={isPartnered ? validationSchema : singlevalidationSchema}
               onSubmit={onSubmit}
               enableReinitialize>
                   {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -1786,28 +1764,28 @@ axios
                            
                                 <div className="btn-group " role="group" aria-label="Basic checkbox toggle button group">
                             
-  <Field type="checkbox" className="btn-check" id="car1"
-  name="whatDoYouHave" value="car"
-  onClick={()=>carStateHandler()}
+                                  <Field type="checkbox" className="btn-check" id="car1"
+                                  name="whatDoYouHave" value="car"
+                                  onClick={()=>carStateHandler()}
 
-   />
-  <label className="btn btn-outline-success"htmlFor="car1">Car</label>
+                                  />
+                                  <label className="btn btn-outline-success"htmlFor="car1">Car</label>
 
-  <Field type="checkbox" className="btn-check" id="CreditCard1"
-  name="whatDoYouHave" value="CreditCard" 
-  onClick={()=>creditCardStateHandler()} />
-  <label className="btn btn-outline-success"htmlFor="CreditCard1">Credit Card</label>
+                                  <Field type="checkbox" className="btn-check" id="CreditCard1"
+                                  name="whatDoYouHave" value="CreditCard" 
+                                  onClick={()=>creditCardStateHandler()} />
+                                  <label className="btn btn-outline-success"htmlFor="CreditCard1">Credit Card</label>
 
-  <Field type="checkbox" className="btn-check" id="Mortgage1"
-  name="whatDoYouHave" value="Mortgage"
-  onClick={()=>creditCardStateHandler()}  />
-  <label className="btn btn-outline-success"htmlFor="Mortgage1">Mortgage</label>
-  
- <Field type="checkbox" className="btn-check" id="Other1"
- name="whatDoYouHave" value="Other"
- onClick={()=>creditCardStateHandler()} />
-  <label className="btn btn-outline-success"htmlFor="Other1">Other</label>
-</div>
+                                  <Field type="checkbox" className="btn-check" id="Mortgage1"
+                                  name="whatDoYouHave" value="Mortgage"
+                                  onClick={()=>creditCardStateHandler()}  />
+                                  <label className="btn btn-outline-success"htmlFor="Mortgage1">Mortgage</label>
+                                  
+                                <Field type="checkbox" className="btn-check" id="Other1"
+                                name="whatDoYouHave" value="Other"
+                                onClick={()=>creditCardStateHandler()} />
+                                  <label className="btn btn-outline-success"htmlFor="Other1">Other</label>
+                                </div>
 
                            
                           
@@ -1817,7 +1795,8 @@ axios
                           {/* 2 row */}
 
                           {/* 3 row */}
-                           {carState && <div className="row">
+                           {carState && 
+                           <div className="row">
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCostBaseofCar" className="form-label">Cost Base of Car</   label>

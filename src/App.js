@@ -24,6 +24,7 @@ import PersonalDetail_Edit from './PatchComponents/PersonalDetails/PersonalDetai
 import ProfessionalAdvisers_Edit from './PatchComponents/ProfessionalAdvisors/ProfessionalAdvisers_Edit';
 import AllClients from './GetComponents/AllClients';
 import IncomeExpenses_Edit from './PatchComponents/Income&Expenses/IncomeExpenses_Edit';
+import AssetsLiabilities_Edit from './PatchComponents/Assets&Liabilities/AssetsLiabilities_Edit';
 
 function App() {
   return (
@@ -66,7 +67,7 @@ function App() {
         <Route path='/Edit-Business-TextStucture' element={<BusinessTextStucture_Edit/>} />
         <Route path='/Edit-Income-And-Expenses' element={<IncomeExpenses_Edit/>} />
         <Route path='/Edit-Professional-Advisors' element={<ProfessionalAdvisers_Edit/>} />
-        {/* <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities/>} /> */}
+        <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities_Edit/>} />
         {/* <Route path='/Edit-Investments' element={<Investments/>} /> */}
         {/* <Route path='/Edit-Estate-Planning' element={<EstatePlanning/>} /> */}
         {/* <Route path='/Edit-Super-And-Retirment' element={<SuperRetriement/>} /> */}

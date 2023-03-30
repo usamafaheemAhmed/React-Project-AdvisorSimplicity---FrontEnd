@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import Modal from "react-bootstrap/Modal";
 import * as Yup from 'yup';
 import 'yup-phone';
@@ -10,7 +10,7 @@ import "./assets.css";
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const AssetsLiabilities = () => {
+const AssetsLiabilities_Edit = () => {
 
     let postCodePattern=/^\d{4}$/;
   
@@ -46,6 +46,73 @@ const AssetsLiabilities = () => {
     const [PersonalLoanList1, setPersonalLoanList1] = useState([])
     const [PersonalLoanList2, setPersonalLoanList2] = useState([])
 
+    const [clientData, setclientData] = useState([])
+    const [familyHomeModal, setFamilyHomeModal] = useState([])
+    const [personalAssetsModal, setPersonalAssetsModal] = useState([])
+    const [personalLoanModal, setPersonalLoanModal] = useState([])
+
+    useEffect(() => {
+
+      let email=localStorage.getItem("EditClient")
+      axios
+        .get(`http://localhost:7000/Client-Assets`)
+        .then((res) => {
+        let clientObj=(res.data)
+        let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+        setclientData(clientFilterObj[0])
+          //  console.log(res.data)
+          
+        })
+    
+  
+    
+        // FamilyHome Modal
+        axios
+        .get(`http://localhost:7000/Client-FamilyHome`)
+        .then((res) => {
+        let modalObj=(res.data)
+        let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+        setFamilyHomeModal(objectFilterObj[0])
+        // console.log(res.data)
+        setOwnFamilyList(objectFilterObj)
+        })
+
+        // Modal personal assets
+
+        axios
+        .get(`http://localhost:7000/Client-PersonalAssets`)
+        .then((res) => {
+        let modalObj=(res.data)
+        let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+        setPersonalAssetsModal(objectFilterObj[0])
+        console.log(res.data)
+        
+        setContentList([objectFilterObj[0]])
+        setMotorVehicle1([objectFilterObj[0]])
+        setMotorVehicle2([objectFilterObj[0]])
+        setBoat([objectFilterObj[0]])
+        setCaravan([objectFilterObj[0]])
+        setPersonalOther([objectFilterObj[0]])
+        })
+
+        // personal loan modal
+        axios
+        .get(`http://localhost:7000/Client-PersonalDebts`)
+        .then((res) => {
+        let modalObj=(res.data)
+        let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+        setPersonalLoanModal(objectFilterObj[0])
+        console.log(res.data)
+
+        setCreditCardList1([objectFilterObj[0]])
+        setCreditCardList2([objectFilterObj[0]])
+        setPersonalLoanList1([objectFilterObj[0]])
+        setPersonalLoanList2([objectFilterObj[0]])
+        
+        })
+    
+      
+       }, [])
 
 
 
@@ -67,9 +134,9 @@ const AssetsLiabilities = () => {
                 setPropertyLoanState(true)
             }
             
-            }
+        }
 
-            let personalLoansHandler=(elem)=>{
+    let personalLoansHandler=(elem)=>{
               if (elem==="No"){
                 setPersonalLoanState(false)
               }
@@ -77,7 +144,7 @@ const AssetsLiabilities = () => {
                 setPersonalLoanState(true)
               }
               
-              }
+      }
 
             let personalAssetsHandler=(elem)=>{
                 if (elem==="No"){
@@ -90,16 +157,20 @@ const AssetsLiabilities = () => {
                 }
 
         let initialValues={
-            ownFamilyradio:'No',
-            personalAssetsradio:'No',
-            personalLoansradio:'No',
+           
+            //  ownFamilyradio: clientData.FamilyHome,
+            //  personalAssetsradio:clientData.PersonalAssets,
+            //  personalLoansradio:clientData.PersonalDebts
+            ownFamilyradio:'Yes' ,
+             personalAssetsradio:'Yes',
+             personalLoansradio:'Yes',
         }
         let validationSchema = Yup.object({})
         
-        let Navigate = useNavigate();
+        // let Navigate = useNavigate();
 
         function BackFunction(){
-          Navigate('/Professional-Advisors')
+          // Navigate('/Professional-Advisors')
         }
         let onSubmit = (Values) => {
 
@@ -111,35 +182,35 @@ const AssetsLiabilities = () => {
           }
 
           axios
-          .post('http://localhost:7000/Client-Assets/Add-Client-Assets', AssetsDetails)
-          .then((res) => console.log("Assets Details Added Successfully!"));
+          .patch(`http://localhost:7000/Client-Assets/Update-Client-Assets/${localStorage.getItem("EditClient")}`, AssetsDetails)
+          .then((res) => console.log("Assets Details Updated Successfully!"));
 
         console.log(AssetsDetails)
-        Navigate('/Investments');
+        // Navigate('/Investments');
         
         }
 
         let own_initialValues={
-            home:1,
-            currentValue:'',
-            clientPercentage:50,
-            partnerPercentage:50,
-            costBasePurchasePrice:'',
-            address:'',
-            postcodeSuburb:'',
-            AmountAssessedForCentrelink:'',
+           home:familyHomeModal.HomeNO,
+           currentValue:  familyHomeModal.CurrentValue,
+           clientPercentage: familyHomeModal.ClientOwnership,
+           partnerPercentage: familyHomeModal.PartnerOwnership,
+           costBasePurchasePrice:  familyHomeModal.CostBase,
+           address: familyHomeModal.Address,
+           postcodeSuburb: familyHomeModal.Postcode,
+           AmountAssessedForCentrelink: familyHomeModal.AmountAssessed,
 
-            propertyLoanradio:'No',
-            clientPercentageofBorrowing:'',
-            partnerPercentageofBorrowing:'',
-            currentBalance:'',
-            repaymentsAmount:'',
-            frequency:'',
-            annualRepayments:'',
-            interestRatePA:'',
-            loanTerm:'',
-            loanType:'',
-            yearsRemaining:'',
+           propertyLoanradio: familyHomeModal.PropertyLoan,
+           clientPercentageofBorrowing: familyHomeModal.ClientBorrowingPercentage,
+           partnerPercentageofBorrowing: familyHomeModal.PartnerBorrowingPercentage,
+           currentBalance: familyHomeModal.CurrentBalance,
+           repaymentsAmount: familyHomeModal.RepaymentAmounts,
+           frequency: familyHomeModal.Frequency,
+           annualRepayments: familyHomeModal.AnnualRepayments, // readOnly
+           interestRatePA: familyHomeModal.InterestRate,
+           loanTerm: familyHomeModal.LoanTerm,
+           loanType: familyHomeModal.LoanType,
+           yearsRemaining: familyHomeModal.YearsRemaining,
             
         }
         let own_validationSchema = Yup.object({
@@ -227,17 +298,7 @@ const AssetsLiabilities = () => {
       otherwise: Yup.number().notRequired()
     }),
 
-    //         annualRepayments:Yup.number()
-    // .when('propertyLoanradio',{
-    //   is: val => val && val.length ===3,
-    //   then:Yup.number().required("Required")
-    //   .test(
-    //     "Is positive?",
-    //     "Must be a positive number",
-    //     (value)=> value >0
-    //   ),
-    //   otherwise: Yup.number().notRequired()
-    // }),
+  
 
             interestRatePA:Yup.number()
     .when('propertyLoanradio',{
@@ -316,34 +377,40 @@ const AssetsLiabilities = () => {
 
 
           setOwnFamilyList([ClientFamilyHomeDetails])
+          setFamilyHomeModal(ClientFamilyHomeDetails)
 
           axios
-          .post('http://localhost:7000/Client-FamilyHome/Add-Client-FamilyHome', ClientFamilyHomeDetails)
-          .then((res) => console.log("Family Home Added Successfully!"))
+          .patch(`http://localhost:7000/Client-FamilyHome/Update-Client-FamilyHome/${localStorage.getItem("EditClient")}`, ClientFamilyHomeDetails)
+
+          // .post('http://localhost:7000/Client-FamilyHome/Add-Client-FamilyHome', ClientFamilyHomeDetails)
+          .then((res) => console.log("Family Home Updated Successfully!"))
           
           console.log(ClientFamilyHomeDetails)
         handleClose();
         }
 
         let personalAssetsInitialValues={
-            contentCurrentValue:'',
-            contentCentrelinkValue:'',
-            contentradio:'No',
-            motor1CurrentValue:'',
-            motor1CentrelinkValue:'',
-            motor1radio:'No',
-            motor2CurrentValue:'',
-            motor2CentrelinkValue:'',
-            motor2radio:'No',
-            boatCurrentValue:'',
-            boatCentrelinkValue:'',
-            boatradio:'No',
-            carvanCurrentValue:'',
-            carvanCentrelinkValue:'',
-            carvanradio:'No',
-            otherCurrentValue:'',
-            otherCentrelinkValue:'',
-            otherradio:'No',
+           contentCurrentValue:  personalAssetsModal.Contents_CurrentValue,
+             contentCentrelinkValue:  personalAssetsModal.Contents_CentreLinkValue,
+             contentradio:  personalAssetsModal.Contents_Security,
+
+             motor1CurrentValue: personalAssetsModal.MotorVehicle1_CurrentValue,
+             motor1CentrelinkValue: personalAssetsModal.MotorVehicle1_CentreLinkValue,
+             motor1radio:  personalAssetsModal.MotorVehicle1_Security,
+            
+             motor2CurrentValue: personalAssetsModal.MotorVehicle2_CurrentValue,
+             motor2CentrelinkValue: personalAssetsModal.MotorVehicle2_CentreLinkValue,
+             motor2radio:  personalAssetsModal.MotorVehicle2_Security,
+
+             boatCurrentValue: personalAssetsModal.Boat_CurrentValue,
+             boatCentrelinkValue: personalAssetsModal.Boat_CentreLinkValue,
+             boatradio: personalAssetsModal.Boat_Security,
+             carvanCurrentValue:  personalAssetsModal.Caravan_CurrentValue,
+             carvanCentrelinkValue:  personalAssetsModal.Caravan_CentreLinkValue,
+             carvanradio: personalAssetsModal.Caravan_Security,
+             otherCurrentValue: personalAssetsModal.Other_CurrentValue,
+             otherCentrelinkValue:  personalAssetsModal.Other_CentreLinkValue,
+             otherradio: personalAssetsModal.Other_Security,
             
         }
         let personalAssetsValidationSchema = Yup.object({
@@ -436,7 +503,7 @@ const AssetsLiabilities = () => {
 
             MotorVehicle2_CurrentValue: Values.motor2CurrentValue,
             MotorVehicle2_CentreLinkValue: Values.motor2CentrelinkValue,
-            MotorVehicle2_Security:  Values.motor2radio,
+            MotorVehicle2_Security:Values.motor2radio,
 
             Boat_CurrentValue: Values.boatCurrentValue,
             Boat_CentreLinkValue: Values.boatCentrelinkValue,
@@ -457,228 +524,233 @@ const AssetsLiabilities = () => {
         setCaravan([ClientPersonalAssets])
         setPersonalOther([ClientPersonalAssets])
 
-
-
-        console.log(contentList);
-
-
         axios
-        .post('http://localhost:7000/Client-PersonalAssets/Add-Client-PersonalAssets', ClientPersonalAssets)
-        .then((res) => console.log("Personal Assets Added Successfully!"))
+        .patch(`http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${localStorage.getItem("EditClient")}`, ClientPersonalAssets)
+        .then((res) => console.log("Personal Assets Updated Successfully!"))
 
           console.log(ClientPersonalAssets)
-        handleClose2();
+         handleClose2();
 
         }
 
+            let personalLoansInitialValues={
+               debtCurrentBalance1:personalLoanModal.CreditCard1_CurrentBalance ,
+               debtRepaymentAmount1:personalLoanModal.CreditCard1_RepaymentAmount,
+               DebtFrequency1:personalLoanModal.CreditCard1_Frequency,
+               debtAnnualRepayment1: personalLoanModal.CreditCard1_AnnualRepayment,
+               debtInterestRate1: personalLoanModal.CreditCard1_InterestRate,
+               debtLoanTerm1: personalLoanModal.CreditCard1_LoanTerm,
+               debtloanType1: personalLoanModal.CreditCard1_LoanType,
+               debtYearRemaining1: personalLoanModal.CreditCard1_YearRemaining,
+              
+              
+              // 2
+               debtCurrentBalance2: personalLoanModal.CreditCard2_CurrentBalance,
+               debtRepaymentAmount2: personalLoanModal.CreditCard2_RepaymentAmount,
+               DebtFrequency2: personalLoanModal.CreditCard2_Frequency,
+               debtAnnualRepayment2:personalLoanModal.CreditCard2_AnnualRepayment,
+               debtInterestRate2: personalLoanModal.CreditCard2_InterestRate,
+               debtLoanTerm2: personalLoanModal.CreditCard2_LoanTerm,
+               debtloanType2: personalLoanModal.CreditCard2_LoanType,
+               debtYearRemaining2: personalLoanModal.CreditCard2_YearRemaining,
+              
+              
+               // 3
+               debtCurrentBalance3: personalLoanModal.PersonalLoan1_CurrentBalance,
+               debtRepaymentAmount3: personalLoanModal.PersonalLoan1_RepaymentAmount,
+               DebtFrequency3: personalLoanModal.PersonalLoan1_Frequency,
+               debtAnnualRepayment3: personalLoanModal.PersonalLoan1_AnnualRepayment,
+               debtInterestRate3: personalLoanModal.PersonalLoan1_InterestRate,
+               debtLoanTerm3: personalLoanModal.PersonalLoan1_LoanTerm,
+               debtloanType3: personalLoanModal.PersonalLoan1_LoanType,
+               debtYearRemaining3: personalLoanModal.PersonalLoan1_YearRemaining,
+              
+               // 4
+               debtCurrentBalance4: personalLoanModal.PersonalLoan2_CurrentBalance,
+               debtRepaymentAmount4: personalLoanModal.PersonalLoan2_RepaymentAmount,
+               DebtFrequency4: personalLoanModal.PersonalLoan2_Frequency,
+               debtAnnualRepayment4: personalLoanModal.PersonalLoan2_AnnualRepayment,
+               debtInterestRate4: personalLoanModal.PersonalLoan2_InterestRate,
+               debtLoanTerm4: personalLoanModal.PersonalLoan2_LoanTerm,
+               debtloanType4: personalLoanModal.PersonalLoan2_LoanType,
+               debtYearRemaining4: personalLoanModal.PersonalLoan2_YearRemaining,
+              }
 
-        
-let personalLoansInitialValues={
-debtCurrentBalance1:'',
-debtRepaymentAmount1:'',
-debtInterestRate1:'',
+              let personalLoansvalidationSchema = Yup.object({
+                debtCurrentBalance1:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+                debtRepaymentAmount1:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+                debtInterestRate1:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+                DebtFrequency1:Yup.string().required('Required') ,
+                debtLoanTerm1:Yup.string().required('Required') ,
+                debtloanType1:Yup.string().required('Required') ,
+                debtYearRemaining1:Yup.string().required('Required') ,
+                
+                // 2
+                debtCurrentBalance2:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+            debtRepaymentAmount2:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+            debtInterestRate2:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
 
-DebtFrequency1:'',
-debtLoanTerm1:'',
-debtloanType1:'',
-debtYearRemaining1:'',
+                      DebtFrequency2:Yup.string().required('Required') ,
+                      debtLoanTerm2:Yup.string().required('Required') ,
+                      debtloanType2:Yup.string().required('Required') ,
+                      debtYearRemaining2:Yup.string().required('Required') ,
 
-debtAnnualRepayment1:'',
+            // 3
+            debtCurrentBalance3:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+            debtRepaymentAmount3:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+            debtInterestRate3:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
 
-// 2
-debtCurrentBalance2:'',
-debtRepaymentAmount2:'',
-debtInterestRate2:'',
-
-DebtFrequency2:'',
-debtLoanTerm2:'',
-debtloanType2:'',
-debtYearRemaining2:'',
-
-debtAnnualRepayment2:'',
-
-// 3
-debtCurrentBalance3:'',
-debtRepaymentAmount3:'',
-debtInterestRate3:'',
-DebtFrequency3:'',
-debtLoanTerm3:'',
-debtloanType3:'',
-debtYearRemaining3:'',
-debtAnnualRepayment3:'',
-
-// 4
-debtCurrentBalance4:'',
-debtRepaymentAmount4:'',
-debtInterestRate4:'',
-
-DebtFrequency4:'',
-debtLoanTerm4:'',
-debtloanType4:'',
-debtYearRemaining4:'',
-
-debtAnnualRepayment4:'',
-  }
-
-  let personalLoansvalidationSchema = Yup.object({
-    debtCurrentBalance1:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-    debtRepaymentAmount1:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-    debtInterestRate1:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-    DebtFrequency1:Yup.string().required('Required') ,
-    debtLoanTerm1:Yup.string().required('Required') ,
-    debtloanType1:Yup.string().required('Required') ,
-    debtYearRemaining1:Yup.string().required('Required') ,
-    
-    // 2
-    debtCurrentBalance2:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-debtRepaymentAmount2:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-debtInterestRate2:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-
-           DebtFrequency2:Yup.string().required('Required') ,
-           debtLoanTerm2:Yup.string().required('Required') ,
-           debtloanType2:Yup.string().required('Required') ,
-           debtYearRemaining2:Yup.string().required('Required') ,
-
-// 3
-debtCurrentBalance3:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-debtRepaymentAmount3:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-debtInterestRate3:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-
-           DebtFrequency3:Yup.string().required('Required') ,
-           debtLoanTerm3:Yup.string().required('Required') ,
-           debtloanType3:Yup.string().required('Required') ,
-           debtYearRemaining3:Yup.string().required('Required') ,
-// 4
-debtCurrentBalance4:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-debtRepaymentAmount4:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-debtInterestRate4:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-           DebtFrequency4:Yup.string().required('Required') ,
-           debtLoanTerm4:Yup.string().required('Required') ,
-           debtloanType4:Yup.string().required('Required') ,
-           debtYearRemaining4:Yup.string().required('Required') ,
-  })
+                      DebtFrequency3:Yup.string().required('Required') ,
+                      debtLoanTerm3:Yup.string().required('Required') ,
+                      debtloanType3:Yup.string().required('Required') ,
+                      debtYearRemaining3:Yup.string().required('Required') ,
+            // 4
+            debtCurrentBalance4:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+            debtRepaymentAmount4:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+            debtInterestRate4:Yup.number().required("Required")
+                      .test(
+                        "Is positive?",
+                        "Value must be a positive number",
+                        (value) => value > 0
+                      ),
+                      DebtFrequency4:Yup.string().required('Required') ,
+                      debtLoanTerm4:Yup.string().required('Required') ,
+                      debtloanType4:Yup.string().required('Required') ,
+                      debtYearRemaining4:Yup.string().required('Required') ,
+              })
 
 
-  let personalLoansonSubmit = (Values) => {
+              let personalLoansonSubmit = (Values) => {
 
-    let ClientPersonalDebts={
-      Email: localStorage.getItem("ClientEmail"),
-      CreditCard1_CurrentBalance:Values. debtCurrentBalance1,
-      CreditCard1_RepaymentAmount:Values. debtRepaymentAmount1,
-      CreditCard1_Frequency:Values. DebtFrequency1,
-      CreditCard1_AnnualRepayment: 5000,
-      CreditCard1_InterestRate: Values.debtInterestRate1,
-      CreditCard1_LoanTerm: Values.debtLoanTerm1,
-      CreditCard1_LoanType: Values.debtloanType1,
-      CreditCard1_YearRemaining: Values.debtYearRemaining1,
-      
-      
-      // // 2
-      CreditCard2_CurrentBalance: Values.debtCurrentBalance2,
-      CreditCard2_RepaymentAmount: Values.debtRepaymentAmount2,
-      CreditCard2_Frequency: Values.DebtFrequency2,
-      CreditCard2_AnnualRepayment:5000,
-      CreditCard2_InterestRate: Values.debtInterestRate2,
-      CreditCard2_LoanTerm: Values.debtLoanTerm2,
-      CreditCard2_LoanType: Values.debtloanType2,
-      CreditCard2_YearRemaining: Values.debtYearRemaining2,
-      
-      
-      // // 3
-      PersonalLoan1_CurrentBalance: Values.debtCurrentBalance3,
-      PersonalLoan1_RepaymentAmount: Values.debtRepaymentAmount3,
-      PersonalLoan1_Frequency: Values.DebtFrequency3,
-      PersonalLoan1_AnnualRepayment: 5000,
-      PersonalLoan1_InterestRate: Values.debtInterestRate3,
-      PersonalLoan1_LoanTerm: Values.debtLoanTerm3,
-      PersonalLoan1_LoanType: Values.debtloanType3,
-      PersonalLoan1_YearRemaining: Values.debtYearRemaining3,
-      
-      // // 4
-      PersonalLoan2_CurrentBalance: Values.debtCurrentBalance4,
-      PersonalLoan2_RepaymentAmount: Values.debtRepaymentAmount4,
-      PersonalLoan2_Frequency: Values.DebtFrequency4,
-      PersonalLoan2_AnnualRepayment: 5000,
-      PersonalLoan2_InterestRate: Values.debtInterestRate4,
-      PersonalLoan2_LoanTerm: Values.debtLoanTerm4,
-      PersonalLoan2_LoanType: Values.debtloanType4,
-      PersonalLoan2_YearRemaining: Values.debtYearRemaining4,
-      
-        }
+                let ClientPersonalDebts={
+                  Email: localStorage.getItem("ClientEmail"),
+                  CreditCard1_CurrentBalance:Values. debtCurrentBalance1,
+                  CreditCard1_RepaymentAmount:Values. debtRepaymentAmount1,
+                  CreditCard1_Frequency:Values. DebtFrequency1,
+                  CreditCard1_AnnualRepayment: 5000,
+                  CreditCard1_InterestRate: Values.debtInterestRate1,
+                  CreditCard1_LoanTerm: Values.debtLoanTerm1,
+                  CreditCard1_LoanType: Values.debtloanType1,
+                  CreditCard1_YearRemaining: Values.debtYearRemaining1,
+                  
+                  
+                   // 2
+                  CreditCard2_CurrentBalance: Values.debtCurrentBalance2,
+                  CreditCard2_RepaymentAmount: Values.debtRepaymentAmount2,
+                  CreditCard2_Frequency: Values.DebtFrequency2,
+                  CreditCard2_AnnualRepayment:5000,
+                  CreditCard2_InterestRate: Values.debtInterestRate2,
+                  CreditCard2_LoanTerm: Values.debtLoanTerm2,
+                  CreditCard2_LoanType: Values.debtloanType2,
+                  CreditCard2_YearRemaining: Values.debtYearRemaining2,
+                  
+                  
+                  // // 3
+                  PersonalLoan1_CurrentBalance: Values.debtCurrentBalance3,
+                  PersonalLoan1_RepaymentAmount: Values.debtRepaymentAmount3,
+                  PersonalLoan1_Frequency: Values.DebtFrequency3,
+                  PersonalLoan1_AnnualRepayment: 5000,
+                  PersonalLoan1_InterestRate: Values.debtInterestRate3,
+                  PersonalLoan1_LoanTerm: Values.debtLoanTerm3,
+                  PersonalLoan1_LoanType: Values.debtloanType3,
+                  PersonalLoan1_YearRemaining: Values.debtYearRemaining3,
+                  
+                  // // 4
+                  PersonalLoan2_CurrentBalance: Values.debtCurrentBalance4,
+                  PersonalLoan2_RepaymentAmount: Values.debtRepaymentAmount4,
+                  PersonalLoan2_Frequency: Values.DebtFrequency4,
+                  PersonalLoan2_AnnualRepayment: 5000,
+                  PersonalLoan2_InterestRate: Values.debtInterestRate4,
+                  PersonalLoan2_LoanTerm: Values.debtLoanTerm4,
+                  PersonalLoan2_LoanType: Values.debtloanType4,
+                  PersonalLoan2_YearRemaining: Values.debtYearRemaining4,
+                  
+                    }
 
-        setCreditCardList1([ClientPersonalDebts])
-        setCreditCardList2([ClientPersonalDebts])
-        setPersonalLoanList1([ClientPersonalDebts])
-        setPersonalLoanList2([ClientPersonalDebts])
+                    setCreditCardList1([ClientPersonalDebts])
+                    setCreditCardList2([ClientPersonalDebts])
+                    setPersonalLoanList1([ClientPersonalDebts])
+                    setPersonalLoanList2([ClientPersonalDebts])
 
-    axios
-    .post('http://localhost:7000/Client-PersonalDebts/Add-Client-PersonalDebts', ClientPersonalDebts)
-    .then((res) => console.log("Personal Debts Added Successfully!"))
+                axios
+        .patch(`http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${localStorage.getItem("EditClient")}`, ClientPersonalDebts)
 
-    console.log(ClientPersonalDebts)
-    handleClose3();
+                // .post('http://localhost:7000/Client-PersonalDebts/Add-Client-PersonalDebts', ClientPersonalDebts)
+                .then((res) => console.log("Personal Debts Updated Successfully!"))
 
-  }
+                console.log(ClientPersonalDebts)
+                handleClose3();
+
+              }
+
+              let assetUpdateHandler=()=>{
+               
+                handleShow();
+              }
+
+              let personalAssetUpdateHandler=()=>{
+                
+                handleShow2();
+              }
+              let personalLoanUpdateHandler=()=>{
+                
+                handleShow3();
+              }
 
 
   return (
@@ -688,16 +760,17 @@ debtInterestRate4:Yup.number().required("Required")
             <div className="col-md-12">
                 <div className='shadow py-4 px-4'>
                  <div>
-                     <h3 className="text-center">Assets & Liabilities</h3>
-<Formik 
-initialValues={initialValues}
-validationSchema={validationSchema}
-onSubmit={onSubmit}>
-{({values,handleChange})=>
-    <Form>
+                   
+                     <h3 className="text-center">Editable Assets & Liabilities</h3>
+                        <Formik 
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}>
+                        {({values,handleChange})=>
+                            <Form>
 
- 
                         <div className="row">
+                          
                          <div className="col-md-6">
                               <div className="mb-3">
                             <label  className="form-label">
@@ -732,7 +805,7 @@ onSubmit={onSubmit}>
                             </div>
                               </div>    
                         </div>
-                        {ownFamily &&
+                        {values.ownFamilyradio=="Yes" &&
                         <div className='col-md-6'>
                         <label  className="form-label">
                         Please Enter Detailed Information
@@ -915,7 +988,7 @@ onSubmit={onSubmit}>
                         </div>
                         {/* radio button*/}
                         {/* conditional rendering */}
-                          {propertyLoanState &&  <div> 
+                          {values.propertyLoanradio=="Yes" &&  <div> 
                            {/* Row 1*/}
                            <div className="row">
                        <div className="col-md-6">
@@ -992,7 +1065,7 @@ onSubmit={onSubmit}>
                           <label htmlFor="annualRepayments" className="form-label">Annual Repayments</   label>
                           <Field readOnly={true} type="number" className="form-control shadow inputDesign" 
                           id="annualRepayments" name='annualRepayments' placeholder="Annual Repayments"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='annualRepayments'  />
+                          
                         </div>            
                             </div>
                         </div>
@@ -1195,8 +1268,8 @@ return(
         <td>{CurrentBalance}</td>
         <td>{AnnualRepayments}</td>
         <td >
-         {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-         <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+         <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+         <span  type='btn' onClick={(e)=>assetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
 
          </td> 
     
@@ -1214,7 +1287,7 @@ return(
 
 
 
-{/*main second row */}
+                          {/*main second row */}
                           <div className="row my-3">
                          <div className="col-md-6">
                               <div className="mb-3">
@@ -1247,7 +1320,7 @@ return(
                             </div>
                               </div>    
                         </div>
-                        {personalAssetsState &&
+                        {values.personalAssetsradio=="Yes" &&
                         <div className='col-md-6'>
                         <label  className="form-label">
                         Please Enter Detailed Information
@@ -1751,8 +1824,12 @@ return(
               <td>{Contents_Security}</td>
     
               <td >
-               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+              <td >
+              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+             <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+
+
+         </td> 
       
                </td> 
           
@@ -1781,8 +1858,9 @@ return(
               <td>{MotorVehicle1_Security}</td>
     
               <td >
-               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+
       
                </td> 
           
@@ -1796,8 +1874,7 @@ return(
      {/* motor 2  */}
    {  MotorVehicle2.map((elem,index)=>{
       let {MotorVehicle2_CurrentValue,MotorVehicle2_CentreLinkValue,MotorVehicle2_Security}=elem;
-      if(MotorVehicle2[0].MotorVehicle2_CurrentValue =='' || 
-      MotorVehicle2[0].MotorVehicle2_CentreLinkValue =='' ){
+      if(MotorVehicle2[0].MotorVehicle2_CurrentValue ==''){
        
       }
 
@@ -1805,14 +1882,15 @@ return(
      return(
     
           <tr key={index}>
-            <td className='fw-bold'>Motor Vehicle 2</td>
+            <td className='fw-bold'>Motor Vehicle 22</td>
               <td>{MotorVehicle2_CurrentValue}</td>
               <td>{MotorVehicle2_CentreLinkValue}</td>
               <td>{MotorVehicle2_Security}</td>
     
               <td >
-               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
+              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+
       
                </td> 
           
@@ -1842,9 +1920,9 @@ return(
               <td>{Boat_Security}</td>
     
               <td >
-               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
-      
+              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+
                </td> 
           
           </tr>
@@ -1872,9 +1950,9 @@ return(
               <td>{Caravan_Security}</td>
     
               <td >
-               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
-      
+              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+
                </td> 
           
           </tr>
@@ -1902,9 +1980,9 @@ return(
               <td>{Other_Security}</td>
     
               <td >
-               {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-               <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
-      
+              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+
                </td> 
           
           </tr>
@@ -1965,7 +2043,7 @@ return(
                               </div>    
                         </div>
                         {
-                        personalLoanState && 
+                        values.personalLoansradio=="Yes" && 
                         <div className='col-md-6'>
                         <label  className="form-label">
                         Please Enter Detailed Information
@@ -2075,7 +2153,6 @@ return(
                           <label htmlFor="debtAnnualRepayment1" className="form-label">Annual Repayment</   label>
                           <Field type="number" className="form-control shadow inputDesign" 
                           id="debtAnnualRepayment1" name='debtAnnualRepayment1' readOnly={true} />
-                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='debtAnnualRepayment1' /> */}
                         </div>            
                         </div>
                         </div>
@@ -2276,7 +2353,6 @@ return(
                           <label htmlFor="debtAnnualRepayment2" className="form-label">Annual Repayment</   label>
                           <Field type="number" className="form-control shadow inputDesign" 
                           id="debtAnnualRepayment2" name='debtAnnualRepayment2' readOnly={true} />
-                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='debtAnnualRepayment1' /> */}
                         </div>            
                         </div>
                         </div>
@@ -2477,7 +2553,6 @@ return(
                           <label htmlFor="debtAnnualRepayment3" className="form-label">Annual Repayment</   label>
                           <Field type="number" className="form-control shadow inputDesign" 
                           id="debtAnnualRepayment3" name='debtAnnualRepayment3' readOnly={true} />
-                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='debtAnnualRepayment1' /> */}
                         </div>            
                         </div>
                         </div>
@@ -2678,7 +2753,6 @@ return(
                           <label htmlFor="debtAnnualRepayment4" className="form-label">Annual Repayment</   label>
                           <Field type="number" className="form-control shadow inputDesign" 
                           id="debtAnnualRepayment4" name='debtAnnualRepayment4' readOnly={true} />
-                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='debtAnnualRepayment1' /> */}
                         </div>            
                         </div>
                         </div>
@@ -2981,4 +3055,4 @@ return(
   ) 
 }
 
-export default AssetsLiabilities
+export default AssetsLiabilities_Edit
