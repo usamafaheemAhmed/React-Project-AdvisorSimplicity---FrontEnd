@@ -385,7 +385,7 @@ console.log(ClientModalDetails)
   }
 
   let onSubmit=(values)=>{
-  // Navigate('/Assets-And-Liabilities')
+  Navigate('/Edit-Assets-And-Liabilities')
   let ProfessionalAdvisor1={
     Email: localStorage.getItem("EditClient"),
     ProfessionalAdvisor: values.ProfessionalAdvisors1radio

@@ -167,10 +167,10 @@ const AssetsLiabilities_Edit = () => {
         }
         let validationSchema = Yup.object({})
         
-        // let Navigate = useNavigate();
+        let Navigate = useNavigate();
 
         function BackFunction(){
-          // Navigate('/Professional-Advisors')
+          Navigate('/Edit-Professional-Advisors')
         }
         let onSubmit = (Values) => {
 
@@ -186,7 +186,7 @@ const AssetsLiabilities_Edit = () => {
           .then((res) => console.log("Assets Details Updated Successfully!"));
 
         console.log(AssetsDetails)
-        // Navigate('/Investments');
+        Navigate('/Edit-Investments');
         
         }
 
@@ -517,6 +517,9 @@ const AssetsLiabilities_Edit = () => {
             
         }
 
+        
+        setPersonalAssetsModal(ClientPersonalAssets) 
+
         setContentList([ClientPersonalAssets])
         setMotorVehicle1([ClientPersonalAssets])
         setMotorVehicle2([ClientPersonalAssets])
@@ -721,7 +724,7 @@ const AssetsLiabilities_Edit = () => {
                   PersonalLoan2_YearRemaining: Values.debtYearRemaining4,
                   
                     }
-
+                    setPersonalLoanModal(ClientPersonalDebts)
                     setCreditCardList1([ClientPersonalDebts])
                     setCreditCardList2([ClientPersonalDebts])
                     setPersonalLoanList1([ClientPersonalDebts])
@@ -761,7 +764,7 @@ const AssetsLiabilities_Edit = () => {
                 <div className='shadow py-4 px-4'>
                  <div>
                    
-                     <h3 className="text-center">Editable Assets & Liabilities</h3>
+                     <h3 className="text-center">Assets & Liabilities</h3>
                         <Formik 
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -1823,15 +1826,14 @@ return(
               <td>{Contents_CentreLinkValue}</td>
               <td>{Contents_Security}</td>
     
-              <td >
-              <td >
+             
+             <td >
               <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-             <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+               <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
 
-
-         </td> 
+           </td> 
       
-               </td> 
+               
           
           </tr>
           );
@@ -1951,7 +1953,7 @@ return(
     
               <td >
               <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+              <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
 
                </td> 
           
@@ -2936,6 +2938,7 @@ return(
                     <th>Current Belance</th>
                     <th>Annual Repayments</th>
                     <th>Interest Rate</th>
+                    <th>Operations</th>
                </tr>
        </thead>
 
@@ -2952,6 +2955,11 @@ return(
                     <td>{CreditCard1_CurrentBalance}</td>
                     <td>{CreditCard1_AnnualRepayment}</td>
                     <td>{CreditCard1_InterestRate}</td>
+                    <td >
+                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+               
+                     </td> 
               
                 
                 </tr>
@@ -2975,6 +2983,11 @@ return(
                     <td>{CreditCard2_CurrentBalance}</td>
                     <td>{CreditCard2_AnnualRepayment}</td>
                     <td>{CreditCard2_InterestRate}</td>
+                    <td >
+                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+               
+                     </td> 
                   </tr>
                 );
             }
@@ -2997,6 +3010,11 @@ return(
                     <td>{PersonalLoan1_CurrentBalance}</td>
                     <td>{PersonalLoan1_AnnualRepayment}</td>
                     <td>{PersonalLoan1_InterestRate}</td>
+                    <td >
+                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+               
+                     </td> 
                   </tr>
                 );
             }
@@ -3018,6 +3036,11 @@ return(
                     <td>{PersonalLoan2_CurrentBalance}</td>
                     <td>{PersonalLoan2_AnnualRepayment}</td>
                     <td>{PersonalLoan2_InterestRate}</td>
+                    <td >
+                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
+                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
+               
+                     </td> 
                   </tr>
                 );
             }

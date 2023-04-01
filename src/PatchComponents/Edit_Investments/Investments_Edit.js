@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
@@ -14,7 +14,7 @@ import axios from 'axios';
 
 
 
-function Investments() {
+function Investments_Edit() {
 
   const [BankAccountList, setBankAccountList] = useState([]);
   const [TermDepositList, setTermDepositList] = useState([]);
@@ -30,6 +30,146 @@ function Investments() {
   const [Bankshow, setBankShow] = useState(false);
   const BankhandleClose = () => setBankShow(false);
   const BankhandleShow = () => setBankShow(true);
+
+
+  // Using states to store APIs data 
+  const [investmentStateObj, setInvestmentStateObj] = useState([])
+  const [bankAccountStateObj, setbankAccountStateObj] = useState([])
+  const [termStateObj, setTermStateObj] = useState([])
+  const [AustralianShareStateObj, setAustralianShareStateObj] = useState([])
+  const [AustralianSharePortfolioStateObj, setAustralianSharePortfolioStateObj] = useState([])
+  const [managedFundStateObj, setManagedFundStateObj] = useState([])
+  const [ManagedFundsPortfolioStateObj, setManagedFundsPortfolioStateObj] = useState([])
+  const [InvestmentBondsStateObj, setInvestmentBondsStateObj] = useState([])
+  const [investmentPropertiesStateObj, setInvestmentPropertiesStateObj] = useState([])
+  // inner Modal state below
+  const [investmentPropertiesScheduleStateObj, setInvestmentPropertiesScheduleStateObj] = useState([])
+  const [OtherFundsStateObj, setOtherFundsStateObj] = useState([])
+  
+
+useEffect(() => {
+  let email=localStorage.getItem("EditClient");
+  console.log(email)
+
+  // Client-Investment
+  axios
+  .get(`http://localhost:7000/Client-Investment`)
+  .then((res) => {
+  let clientObj=(res.data)
+  let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  // setInvestmentStateObj(clientFilterObj[0])
+  console.log(res.data)
+    
+  })
+
+
+   // Client-BankAccounts
+   axios
+   .get(`http://localhost:7000/Client-BankAccounts`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  //  setbankAccountStateObj(clientFilterObj[0])
+   console.log(res.data)
+     
+   })
+
+   // Client-TermDeposit
+   axios
+   .get(`http://localhost:7000/Client-TermDeposit`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  //  setTermStateObj(clientFilterObj[0])
+   console.log(res.data)
+     
+   })
+
+   // Client-Australian-Market-Share
+   axios
+   .get(`http://localhost:7000/Client-Australian-Market-Share`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  //  setAustralianShareStateObj(clientFilterObj[0])
+   console.log(res.data)
+     
+   })
+
+  // Client-Australian-Share-Portfolio
+  axios
+  .get(`http://localhost:7000/Client-Australian-Share-Portfolio`)
+  .then((res) => {
+  let clientObj=(res.data)
+  let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  // setAustralianSharePortfolioStateObj(clientFilterObj[0])
+  console.log(res.data)
+    
+  })
+
+  
+
+   // Client-ManagedFunds
+   axios
+   .get(`http://localhost:7000/Client-ManagedFunds`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  //  setManagedFundStateObj(clientFilterObj[0])
+   console.log(res.data)
+     
+   })
+
+     // Client-ManagedFunds-Portfolio
+     axios
+     .get(`http://localhost:7000/Client-ManagedFunds-Portfolio`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    //  setManagedFundsPortfolioStateObj(clientFilterObj[0])
+     console.log(res.data)
+       
+     })
+
+   // Client-InvestmentBonds
+   axios
+   .get(`http://localhost:7000/Client-InvestmentBonds`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  //  setInvestmentBondsStateObj(clientFilterObj[0])
+   console.log(res.data)
+     
+   })
+
+   // Client-InvestmentProperties
+   axios
+   .get(`http://localhost:7000/Client-InvestmentProperties`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  //  setInvestmentPropertiesStateObj(clientFilterObj[0])
+   console.log(res.data)
+     
+   })
+
+
+  // other
+  axios
+  .get(`http://localhost:7000/Client-Others`)
+  .then((res) => {
+  let clientObj=(res.data)
+  let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+  // setOtherFundsStateObj(clientFilterObj[0])
+  console.log(res.data)
+    
+  })
+
+}, [])
+
+
+
+
   let BankAccountHandler=(elem)=>{
     if (elem==="No"){
       setBankAccount(false)
@@ -38,6 +178,7 @@ function Investments() {
       setBankAccount(true)
     }
   }
+
 
 
   const [TermDeposit, setTermDeposit] = useState(false);
@@ -165,139 +306,138 @@ function Investments() {
 
 
   let Client_initialValues={
-    BankCurrentValue: '',
-    BankFinancialInstitution: '',
-    BankIncomePA: '',
-    BankIncomePAType: '',
-    BankIncomeinDollars: '',
-    BankRegularSavings: '',
-    BankReinvestedIncome: 'No',
+
+    BankCurrentValue: bankAccountStateObj.BankCurrentValue,
+     BankFinancialInstitution: bankAccountStateObj.BankFinancialInstitution,
+     BankIncomePA: bankAccountStateObj.BankIncomePA,
+     BankIncomePAType: bankAccountStateObj.BankIncomePAType,
+    BankIncomeinDollars: bankAccountStateObj.BankIncomeinDollars,
+    BankRegularSavings: bankAccountStateObj.BankRegularSavings,
+    BankReinvestedIncome: bankAccountStateObj.BankReinvestedIncome,
     
-    Bank2CurrentValue: '',
-    Bank2FinancialInstitution: '',
-    Bank2IncomePA: '',
-    Bank2IncomePAType: '',
-    Bank2IncomeinDollars: '',
-    Bank2RegularSavings: '',
-    Bank2ReinvestedIncome: 'No',
+    Bank2CurrentValue: bankAccountStateObj.Bank2CurrentValue,
+    Bank2FinancialInstitution: bankAccountStateObj.Bank2FinancialInstitution,
+    Bank2IncomePA: bankAccountStateObj.Bank2IncomePA,
+    Bank2IncomePAType: bankAccountStateObj.Bank2IncomePAType,
+    Bank2IncomeinDollars: bankAccountStateObj.Bank2IncomeinDollars,
+    Bank2RegularSavings: bankAccountStateObj.Bank2RegularSavings,
+    Bank2ReinvestedIncome: bankAccountStateObj.Bank2ReinvestedIncome,
 
 
-    TermDepositCurrentValue: '',
-    TermDepositFinancialInstitution: '',
-    TermDepositIncomePA: '',
-    TermDepositIncomePAType: '',
-    TermDepositIncomeinDollars: '',
-    TermDepositRegularSavings: '',
-    TermDepositReinvestedIncome: 'No',
+    TermDepositCurrentValue: termStateObj.TermDepositCurrentValue,
+    TermDepositFinancialInstitution: termStateObj.TermDepositFinancialInstitution,
+    TermDepositIncomePA: termStateObj.TermDepositIncomePA,
+    TermDepositIncomePAType: termStateObj.TermDepositIncomePAType,
+    TermDepositIncomeinDollars: termStateObj.TermDepositIncomeinDollars,
+    TermDepositRegularSavings: termStateObj.TermDepositRegularSavings,
+    TermDepositReinvestedIncome: termStateObj.TermDepositReinvestedIncome,
     
-    TermDeposit2CurrentValue: '',
-    TermDeposit2FinancialInstitution: '',
-    TermDeposit2IncomePA: '',
-    TermDeposit2IncomePAType: '',
-    TermDeposit2IncomeinDollars: '',
-    TermDeposit2RegularSavings: '',
-    TermDeposit2ReinvestedIncome: 'No',
+    TermDeposit2CurrentValue: termStateObj.TermDeposit2CurrentValue,
+    TermDeposit2FinancialInstitution: termStateObj.TermDeposit2FinancialInstitution,
+    TermDeposit2IncomePA: termStateObj.TermDeposit2IncomePA,
+    TermDeposit2IncomePAType: termStateObj.TermDeposit2IncomePAType,
+    TermDeposit2IncomeinDollars: termStateObj.TermDeposit2IncomeinDollars,
+    TermDeposit2RegularSavings: termStateObj.TermDeposit2RegularSavings,
+    TermDeposit2ReinvestedIncome: termStateObj.TermDeposit2ReinvestedIncome,
 
-    AustralianMarketInvestmentName: '',
-    AustralianMarketNumberOfShares: '',
-    AustralianMarketSharePrice: '',
-    AustralianMarketTotalShareValue: '',
-    AustralianMarketCostBase: '',
-    AustralianMarketPurchaseDate: '',
-    AustralianMarketIncomePA: '',
-    AustralianMarketIncomePAType: '',
-    AustralianMarketTotalIncomePA: '',
-    AustralianMarketFrankedAmount: '',
-    AustralianMarketReinvestedIncome: 'No',
-    AustralianMarketRegInvestments: '',
+    AustralianMarketInvestmentName: AustralianShareStateObj.AustralianMarketInvestmentName,
+    AustralianMarketNumberOfShares: AustralianShareStateObj.AustralianMarketNumberOfShares,
+    AustralianMarketSharePrice: AustralianShareStateObj.AustralianMarketSharePrice,
+    AustralianMarketTotalShareValue: AustralianShareStateObj.AustralianMarketTotalShareValue,
+    AustralianMarketCostBase: AustralianShareStateObj.AustralianMarketCostBase,
+    AustralianMarketPurchaseDate: AustralianShareStateObj.AustralianMarketPurchaseDate,
+    AustralianMarketIncomePA: AustralianShareStateObj.AustralianMarketIncomePA,
+    AustralianMarketIncomePAType: AustralianShareStateObj.AustralianMarketIncomePAType,
+    AustralianMarketTotalIncomePA: AustralianShareStateObj.AustralianMarketTotalIncomePA,
+    AustralianMarketFrankedAmount: AustralianShareStateObj.AustralianMarketFrankedAmount,
+    AustralianMarketReinvestedIncome: AustralianShareStateObj.AustralianMarketReinvestedIncome,
+    AustralianMarketRegInvestments: AustralianShareStateObj.AustralianMarketRegInvestments,
 
-    AustralianPortfolioLoanType: '',
-    AustralianPortfolioCurrentBalance: '',
-    AustralianPortfolioLender: '',
-    AustralianInterestRatePA: '',
-    AustralianPortfolioLoanTerm: '',
-    AustralianPortfolioLoanType2: '',
-    AustralianPortfolioDeductibleLoanAmount: '',
-    AustralianPortfolioYearRemaining: '',
+    AustralianPortfolioLoanType: AustralianSharePortfolioStateObj.AustralianPortfolioLoanType,
+    AustralianPortfolioCurrentBalance: AustralianSharePortfolioStateObj.AustralianPortfolioCurrentBalance,
+    AustralianPortfolioLender: AustralianSharePortfolioStateObj.AustralianPortfolioLender,
+    AustralianInterestRatePA: AustralianSharePortfolioStateObj.AustralianInterestRatePA,
+    AustralianPortfolioLoanTerm: AustralianSharePortfolioStateObj.AustralianPortfolioLoanTerm,
+    AustralianPortfolioLoanType2: AustralianSharePortfolioStateObj.AustralianPortfolioLoanType2,
+    AustralianPortfolioDeductibleLoanAmount: AustralianSharePortfolioStateObj.AustralianPortfolioDeductibleLoanAmount,
+    AustralianPortfolioYearRemaining: AustralianSharePortfolioStateObj.AustralianPortfolioYearRemaining,
 
-    ManagedFundsPlatformName: '',
-    ManagedFundsInvestmentName: '',
-    ManagedFundsNumberOfShares: '',
-    ManagedFundsSharePrice: '',
-    ManagedFundsCurrentValue: '',
-    ManagedFundsOriginalInvestment: '',
-    ManagedFundsPurchaseDate: '',
-    ManagedFundsIncomePA: '',
-    ManagedFundsIncomePAType: '',
-    ManagedFundsTotalIncomePA: '',
-    ManagedFundsReinvestedIncome: 'No',
-    ManagedFundsRegInvestments: '',
+    ManagedFundsPlatformName: managedFundStateObj.ManagedFundsPlatformName,
+    ManagedFundsInvestmentName: managedFundStateObj.ManagedFundsInvestmentName,
+    ManagedFundsNumberOfShares: managedFundStateObj.ManagedFundsNumberOfShares,
+    ManagedFundsSharePrice: managedFundStateObj.ManagedFundsSharePrice,
+    ManagedFundsCurrentValue: managedFundStateObj.ManagedFundsCurrentValue,
+    ManagedFundsOriginalInvestment: managedFundStateObj.ManagedFundsOriginalInvestment,
+    ManagedFundsPurchaseDate: managedFundStateObj.ManagedFundsPurchaseDate,
+    ManagedFundsIncomePA: managedFundStateObj.ManagedFundsIncomePA,
+    ManagedFundsIncomePAType: managedFundStateObj.ManagedFundsIncomePAType,
+    ManagedFundsTotalIncomePA: managedFundStateObj.ManagedFundsTotalIncomePA,
+    ManagedFundsReinvestedIncome: managedFundStateObj.ManagedFundsReinvestedIncome,
+    ManagedFundsRegInvestments: managedFundStateObj.ManagedFundsRegInvestments,
 
-    ManagedFundsPortfolioLoanType: '',
-    ManagedFundsPortfolioCurrentBalance: '',
-    ManagedFundsPortfolioLender: '',
-    ManagedFundsPortfolioInterestRatePA: '',
-    ManagedFundsPortfolioLoanTerm: '',
-    ManagedFundsPortfolioLoanType2: '',
-    ManagedFundsPortfolioDeductibleLoanAmount: '',
-    ManagedFundsPortfolioYearRemaining: '',
+      ManagedFundsPortfolioLoanType: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioLoanType,
+      ManagedFundsPortfolioCurrentBalance: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioCurrentBalance,
+      ManagedFundsPortfolioLender: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioLender,
+      ManagedFundsPortfolioInterestRatePA: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioInterestRatePA,
+      ManagedFundsPortfolioLoanTerm: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioLoanTerm,
+      ManagedFundsPortfolioLoanType2: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioLoanType2,
+      ManagedFundsPortfolioDeductibleLoanAmount: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioDeductibleLoanAmount,
+      ManagedFundsPortfolioYearRemaining: ManagedFundsPortfolioStateObj.ManagedFundsPortfolioYearRemaining,
 
-    InvestmentBondsPlatformName: '',
-    InvestmentBondsInvestmentName: '',
-    InvestmentBondsNumberOfShares: '',
-    InvestmentBondsSharePrice: '',
-    InvestmentBondsCurrentValue: '',
-    InvestmentBondsOriginalInvestment: '',
-    InvestmentBondsPurchaseDate: '',
-    InvestmentBondsIncomePA: '',
-    InvestmentBondsIncomePAType: '',
-    InvestmentBondsTotalIncomePA: '',
-    InvestmentBondsReinvestedIncome: 'No',
-    InvestmentBondsRegInvestments: '',
+      InvestmentBondsPlatformName: InvestmentBondsStateObj.InvestmentBondsPlatformName,
+      InvestmentBondsInvestmentName: InvestmentBondsStateObj.InvestmentBondsInvestmentName,
+      InvestmentBondsNumberOfShares: InvestmentBondsStateObj.InvestmentBondsNumberOfShares,
+      InvestmentBondsSharePrice: InvestmentBondsStateObj.InvestmentBondsSharePrice,
+      InvestmentBondsCurrentValue: InvestmentBondsStateObj.InvestmentBondsCurrentValue,
+      InvestmentBondsOriginalInvestment: InvestmentBondsStateObj.InvestmentBondsOriginalInvestment,
+      InvestmentBondsPurchaseDate: InvestmentBondsStateObj.InvestmentBondsPurchaseDate,
+      InvestmentBondsIncomePA: InvestmentBondsStateObj.InvestmentBondsIncomePA,
+      InvestmentBondsIncomePAType: InvestmentBondsStateObj.InvestmentBondsIncomePAType,
+      InvestmentBondsTotalIncomePA: InvestmentBondsStateObj.InvestmentBondsTotalIncomePA,
+      InvestmentBondsReinvestedIncome: InvestmentBondsStateObj.InvestmentBondsReinvestedIncome,
+      InvestmentBondsRegInvestments: InvestmentBondsStateObj.InvestmentBondsRegInvestments,
+      
+      OtherInvestmentName: OtherFundsStateObj.OtherInvestmentName,
+      OtherCurrentValue: OtherFundsStateObj.OtherCurrentValue,
+      OtherCostBase: OtherFundsStateObj.OtherCostBase,
+      OtherPurchaseDate: OtherFundsStateObj.OtherPurchaseDate,
+      OtherIncomePA: OtherFundsStateObj.OtherIncomePA,
+      OtherIncomePAType: OtherFundsStateObj.OtherIncomePAType,
+      OtherTotalIncomePA: OtherFundsStateObj.OtherTotalIncomePA, //readOnly
+      OtherReinvestedIncome: OtherFundsStateObj.OtherReinvestedIncome,
+      OtherRegularInvestmentsPA: OtherFundsStateObj.OtherRegularInvestmentsPA,
+  
+      OtherInvestmentName2: OtherFundsStateObj.OtherInvestmentName2,
+      OtherCurrentValue2: OtherFundsStateObj.OtherCurrentValue2,
+      OtherCostBase2: OtherFundsStateObj.OtherCostBase2,
+      OtherPurchaseDate2: OtherFundsStateObj.OtherPurchaseDate2,
+      OtherIncomePA2: OtherFundsStateObj.OtherIncomePA2,
+      OtherIncomePAType2: OtherFundsStateObj.OtherIncomePAType2,
+      OtherTotalIncomePA2: OtherFundsStateObj.OtherTotalIncomePA2,
+      OtherReinvestedIncome2: OtherFundsStateObj.OtherReinvestedIncome2,
+      OtherRegularInvestmentsPA2: OtherFundsStateObj.OtherRegularInvestmentsPA2,
 
-    OtherInvestmentName: '',
-    OtherCurrentValue: '',
-    OtherCostBase: '',
-    OtherPurchaseDate: '',
-    OtherIncomePA: '',
-    OtherIncomePAType: '',
-    OtherTotalIncomePA: '',
-    OtherIncomePAType: '',
-    OtherReinvestedIncome: 'No',
-    OtherRegularInvestmentsPA: '',
-
-    OtherInvestmentName2: '',
-    OtherCurrentValue2: '',
-    OtherCostBase2: '',
-    OtherPurchaseDate2: '',
-    OtherIncomePA2: '',
-    OtherIncomePAType2: '',
-    OtherTotalIncomePA2: '',
-    OtherIncomePAType2: '',
-    OtherReinvestedIncome2: 'No',
-    OtherRegularInvestmentsPA2: '',
-
-    InvestmentPropertiesCurrentValue: '',
-    InvestmentPropertiesClientOwnership: '',
-    InvestmentPropertiesCostBase: '',
-    InvestmentPropertiesAddress: '',
-    InvestmentPropertiesPostcode: '',
-    InvestmentPropertiesRentalIncome: '',
-    InvestmentPropertiesFrequency: '',
-    InvestmentPropertiesTotalAnnualIncome: '',
-    InvestmentPropertiesExpensesPA: '',
-    InvestmentPropertiesLoanAttached: 'No',
-    InvestmentPropertiesCurrentBalance: '',
-    InvestmentPropertiesClientBorrowing: '',
-    InvestmentPropertiesLender: '',
-    InvestmentPropertiesRepaymentAmount: '',
-    InvestmentPropertiesFrequency2: '',
-    InvestmentPropertiesAnnualRepayment: '',
-    InvestmentPropertiesInterestRatePA: '',
-    InvestmentPropertiesLoanTerm: '',
-    InvestmentPropertiesLoanType: '',
-    InvestmentPropertiesDebtLoanAmount: '',
-    InvestmentPropertiesYearsRemaining: ''
+      InvestmentPropertiesCurrentValue: investmentPropertiesStateObj.InvestmentPropertiesCurrentValue,
+      InvestmentPropertiesClientOwnership: investmentPropertiesStateObj.InvestmentPropertiesClientOwnership,
+      InvestmentPropertiesCostBase: investmentPropertiesStateObj.InvestmentPropertiesCostBase,
+      InvestmentPropertiesAddress: investmentPropertiesStateObj.InvestmentPropertiesAddress,
+      InvestmentPropertiesPostcode: investmentPropertiesStateObj.InvestmentPropertiesPostcode,
+      InvestmentPropertiesRentalIncome: investmentPropertiesStateObj.InvestmentPropertiesRentalIncome,
+      InvestmentPropertiesFrequency: investmentPropertiesStateObj.InvestmentPropertiesFrequency,
+      InvestmentPropertiesTotalAnnualIncome: investmentPropertiesStateObj.InvestmentPropertiesTotalAnnualIncome,
+      InvestmentPropertiesExpensesPA: investmentPropertiesStateObj.InvestmentPropertiesExpensesPA,
+      InvestmentPropertiesLoanAttached: investmentPropertiesStateObj.InvestmentPropertiesLoanAttached,
+      InvestmentPropertiesCurrentBalance: investmentPropertiesStateObj.InvestmentPropertiesCurrentBalance,
+      InvestmentPropertiesClientBorrowing: investmentPropertiesStateObj.InvestmentPropertiesClientBorrowing,
+      InvestmentPropertiesLender: investmentPropertiesStateObj.InvestmentPropertiesLender,
+      InvestmentPropertiesRepaymentAmount: investmentPropertiesStateObj.InvestmentPropertiesRepaymentAmount,
+      InvestmentPropertiesFrequency2: investmentPropertiesStateObj.InvestmentPropertiesFrequency2,
+      InvestmentPropertiesAnnualRepayment: investmentPropertiesStateObj.InvestmentPropertiesAnnualRepayment,
+      InvestmentPropertiesInterestRatePA: investmentPropertiesStateObj.InvestmentPropertiesInterestRatePA,
+      InvestmentPropertiesLoanTerm: investmentPropertiesStateObj.InvestmentPropertiesLoanTerm,
+      InvestmentPropertiesLoanType: investmentPropertiesStateObj.InvestmentPropertiesLoanType,
+      InvestmentPropertiesDebtLoanAmount: investmentPropertiesStateObj.InvestmentPropertiesDebtLoanAmount,
+      InvestmentPropertiesYearsRemaining: investmentPropertiesStateObj.InvestmentPropertiesYearsRemaining
   }
 
   let Client_validationSchema = Yup.object({
@@ -504,8 +644,8 @@ function Investments() {
     BankhandleClose();
 
     axios
-    .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
-    .then((res) => console.log("Bank Accounts Added Successfully!"))
+    .patch(`http://localhost:7000/Client-BankAccounts/Update-Client-BankAccounts/${localStorage.getItem("EditClient")}`, BankDetails)
+    .then((res) => console.log("Bank Accounts Updated Successfully!"))
     console.log(BankDetails)
 
   }
@@ -535,8 +675,8 @@ function Investments() {
     TermDeposithandleClose();
 
     axios
-    .post('http://localhost:7000/Client-TermDeposit/Add-Client-TermDeposit', TermDepositDetails)
-    .then((res) => console.log("Term Deposit Added Successfully!"))
+    .patch(`http://localhost:7000/Client-TermDeposit/Update-Client-TermDeposit/${localStorage.getItem("EditClient")}`, TermDepositDetails)
+    .then((res) => console.log("Term Deposit Updated Successfully!"))
     console.log(TermDepositDetails)
 
   }
@@ -563,8 +703,8 @@ function Investments() {
     AustralianShareMarkethandleClose();
 
     axios
-    .post('http://localhost:7000/Client-Australian-Market-Share/Add-Client-Australian-Market-Share', AustralianShareMarketDetails)
-    .then((res) => console.log("Australian Share Market Added Successfully!"))
+    .patch(`http://localhost:7000/Client-Australian-Market-Share/Update-Client-Australian-Market-Share/${localStorage.getItem("EditClient")}`, AustralianShareMarketDetails)
+    .then((res) => console.log("Australian Share Market Updated Successfully!"))
     console.log(AustralianShareMarketDetails)
   }
 
@@ -586,8 +726,8 @@ function Investments() {
     AustralianSharePortfoliohandleClose();
 
     axios
-    .post('http://localhost:7000/Client-Australian-Share-Portfolio/Add-Client-Australian-Share-Portfolio', AustralianSharePortfolioDetails)
-    .then((res) => console.log("Australian Share Portfolio Added Successfully!"))
+    .patch(`http://localhost:7000/Client-Australian-Share-Portfolio/Update-Client-Australian-Share-Portfolio/${localStorage.getItem("EditClient")}`, AustralianSharePortfolioDetails)
+    .then((res) => console.log("Australian Share Portfolio Updated Successfully!"))
     console.log(AustralianSharePortfolioDetails)
   }
 
@@ -613,8 +753,8 @@ function Investments() {
     setManagedFundsList([ManagedFundsDetails]);
 
     axios
-    .post('http://localhost:7000/Client-ManagedFunds/Add-Client-ManagedFunds', ManagedFundsDetails)
-    .then((res) => console.log("Managed Funds Added Successfully!"))
+    .patch(`http://localhost:7000/Client-ManagedFunds/Update-Client-ManagedFunds/${localStorage.getItem("EditClient")}`, ManagedFundsDetails)
+    .then((res) => console.log("Managed Funds Updated Successfully!"))
     console.log(ManagedFundsDetails)
   }
 
@@ -635,8 +775,8 @@ function Investments() {
     setManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
 
     axios
-    .post('http://localhost:7000/Client-ManagedFunds-Portfolio/Add-Client-ManagedFunds-Portfolio', ManagedFundsPortfolioDetails)
-    .then((res) => console.log("Managed Funds Portfolio Added Successfully!"))
+    .patch(`http://localhost:7000/Client-ManagedFunds-Portfolio/Update-Client-ManagedFunds-Portfolio/${localStorage.getItem("EditClient")}`, ManagedFundsPortfolioDetails)
+    .then((res) => console.log("Managed Funds Portfolio Update Successfully!"))
     console.log(ManagedFundsPortfolioDetails)
   }
 
@@ -661,8 +801,8 @@ function Investments() {
     setInvestmentBondsList([InvestmentBondsDetails])
 
     axios
-    .post('http://localhost:7000/Client-InvestmentBonds/Add-Client-Investment-Bonds', InvestmentBondsDetails)
-    .then((res) => console.log("Investment Bonds Added Successfully!"))
+    .patch(`http://localhost:7000/Client-InvestmentBonds/Update-Client-Investment-Bonds/${localStorage.getItem("EditClient")}`, InvestmentBondsDetails)
+    .then((res) => console.log("Investment Bonds Updated Successfully!"))
     console.log(InvestmentBondsDetails)
 
   }
@@ -697,8 +837,8 @@ function Investments() {
     setInvestmentPropertiesList([InvestmentPropertiesDetails])
 
     axios
-    .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
-    .then((res) => console.log("Investment Properties Added Successfully!"))
+    .patch(`http://localhost:7000/Client-InvestmentProperties/Update-Client-Investment-Properties/${localStorage.getItem("EditClient")}`, InvestmentPropertiesDetails)
+    .then((res) => console.log("Investment Properties Updated Successfully!"))
     console.log(InvestmentPropertiesDetails)
   }
 
@@ -730,8 +870,8 @@ function Investments() {
     setOthersList([OthersDetails])
 
     axios
-    .post('http://localhost:7000/Client-Others/Add-Client-Others', OthersDetails)
-    .then((res) => console.log("Other Investments Added Successfully!"))
+    .patch(`http://localhost:7000/Client-Others/Update-Client-Others/${localStorage.getItem("EditClient")}`, OthersDetails)
+    .then((res) => console.log("Other Investments Updaded Successfully!"))
     console.log(OthersDetails)
   }
 
@@ -765,28 +905,32 @@ function Investments() {
     InvestmentModalAllOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
-  let InvestmentModal_onSubmit = (Values) => [
+  let InvestmentModal_onSubmit = (Values) => {
 
-  ]
+  }
+
+  
+
+
+
 
 
   let initialValues={
-    BankAccountRadio:'No',
-    TermDepositRadio:'No',
-    AustralianShareMarketRadio: 'No',
-    AustralianSharePortfolioRadio: 'No',
-    ManagedFundsRadio: 'No',
-    ManagedFundsPortfolioRadio: 'No',
-    InvestmentBondsRadio: 'No',
-    InvestmentPropertiesRadio: 'No',
-    OthersRadio: 'No'
+     BankAccountRadio: investmentStateObj.BankAccounts,
+     TermDepositRadio: investmentStateObj.TermDeposits,
+     AustralianShareMarketRadio: investmentStateObj.AustralianShareMarket,
+     AustralianSharePortfolioRadio: investmentStateObj.AustralianSharePortfolio,
+     ManagedFundsRadio: investmentStateObj.ManagedFunds,
+     ManagedFundsPortfolioRadio: investmentStateObj.ManagedFundsPortfolio,
+     InvestmentBondsRadio: investmentStateObj.InvestmentBonds,
+     InvestmentPropertiesRadio: investmentStateObj.InvestmentProperties,
+     OthersRadio: investmentStateObj.Others,
   }
   let Navigate = useNavigate();
   function BackFunction(){
-  Navigate('/Assets-And-Liabilities')
+  Navigate('/Edit-Assets-And-Liabilities')
   }
   let onSubmit=(values)=>{
-  console.log(values)
 
   let InvestmentDetails = {
     Email: localStorage.getItem("ClientEmail"),
@@ -799,13 +943,14 @@ function Investments() {
     InvestmentBonds: values.InvestmentBondsRadio,
     InvestmentProperties: values.InvestmentPropertiesRadio,
     Others: values.OthersRadio,
-  } 
+  }
+  console.log(InvestmentDetails)
 
   axios
-  .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
-  .then((res) => console.log("Investment Added Successfully!"))
+  .patch(`http://localhost:7000/Client-Investment/Update-Client-Investment/${localStorage.getItem("EditClient")}`, InvestmentDetails)
+  .then((res) => console.log("Investment Updated Successfully!"))
 
-  Navigate('/Estate-Planning');
+  Navigate('/Edit-Estate-Planning');
   }
 
   return (
@@ -813,7 +958,7 @@ function Investments() {
       <div className='shadow px-4 mx-4'>
         <div className='row my-5'>
       <div className='col-md-12 text-center'>
-      <h3 className='mt-3'>Investments</h3>
+      <h3 className='mt-3'> Investments</h3>
       </div>
         </div>
       
@@ -4401,4 +4546,4 @@ function Investments() {
   )
 }
 
-export default Investments
+export default Investments_Edit

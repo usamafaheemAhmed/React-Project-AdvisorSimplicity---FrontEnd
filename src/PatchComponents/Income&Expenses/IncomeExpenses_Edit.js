@@ -450,7 +450,7 @@ let currentlySalaryPackageHandler2=(elem)=>{
 
   let Navigate = useNavigate();
   function BackFunction(){
-    // Navigate('/Edit-Business-TextStucture')
+    Navigate('/Edit-Business-TextStucture')
   }
   const onSubmit= (values,action) => {
 
@@ -597,7 +597,7 @@ axios
     }
 
   
-  //  Navigate('/Edit-Professional-Advisors')
+   Navigate('/Edit-Professional-Advisors')
   }
   
 

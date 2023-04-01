@@ -25,6 +25,8 @@ import ProfessionalAdvisers_Edit from './PatchComponents/ProfessionalAdvisors/Pr
 import AllClients from './GetComponents/AllClients';
 import IncomeExpenses_Edit from './PatchComponents/Income&Expenses/IncomeExpenses_Edit';
 import AssetsLiabilities_Edit from './PatchComponents/Assets&Liabilities/AssetsLiabilities_Edit';
+import Investments_Edit from './PatchComponents/Edit_Investments/Investments_Edit';
+import EstatePlanning_Edit from './PatchComponents/Edit_EstatePlanning/EstatePlanning_Edit';
 
 function App() {
   return (
@@ -68,8 +70,8 @@ function App() {
         <Route path='/Edit-Income-And-Expenses' element={<IncomeExpenses_Edit/>} />
         <Route path='/Edit-Professional-Advisors' element={<ProfessionalAdvisers_Edit/>} />
         <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities_Edit/>} />
-        {/* <Route path='/Edit-Investments' element={<Investments/>} /> */}
-        {/* <Route path='/Edit-Estate-Planning' element={<EstatePlanning/>} /> */}
+        <Route path='/Edit-Investments' element={<Investments_Edit/>} />
+        <Route path='/Edit-Estate-Planning' element={<EstatePlanning_Edit/>} />
         {/* <Route path='/Edit-Super-And-Retirment' element={<SuperRetriement/>} /> */}
         {/* <Route path='/Edit-SMSF' element={<SMSF/>} /> */}
         {/* <Route path='/Edit-Investment-Trust' element={<InvestmentTrust/>} /> */}
@@ -80,6 +82,7 @@ function App() {
       </BrowserRouter>
       </div>
     </div>
+    
 
     </div>
   );

@@ -10,12 +10,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const EstatePlanning = () => {
+const EstatePlanning_Edit = () => {
     const [POA, setPOA] = useState(false)
     const [POA2, setPOA2] = useState(false)
-
-    
-    
 
     const [show2, setShow2] = useState(false);
     const handleClose2 = () => setShow2(false);
@@ -29,8 +26,14 @@ const EstatePlanning = () => {
     const [ClientPOAList, setClientPOAList] = useState([])
     const [ClientPOAList2, setClientPOAList2] = useState([])
 
+    // API States
+    const [clientData, setClientData] = useState([])
+    const [poaClientData, setPoaClientData] = useState([])
+    const [PartnerData, setPartnerData] = useState([])
+    const [poaPartnerData, setPoaPartnerData] = useState([])
 
     let partner= window.localStorage.getItem("partner");
+
     useEffect(() => {
       if(partner=="true"){
         setIsPartnered(true)
@@ -40,6 +43,55 @@ const EstatePlanning = () => {
         setIsPartnered(false)
      
       }
+
+      let email=localStorage.getItem("EditClient")
+
+      // client data
+      axios
+      .get(`http://localhost:7000/Client-EstatePlanning`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setClientData(clientFilterObj[0])
+        //  console.log(res.data)
+        
+      })
+
+      // client data Modal
+      axios
+      .get(`http://localhost:7000/Client-ModalEstatePlanning`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setPoaClientData(clientFilterObj[0])
+        //  console.log(res.data)
+        
+      })
+      
+      // Partner data
+      axios
+      .get(`http://localhost:7000/Partner-EstatePlanning`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setPartnerData(clientFilterObj[0])
+        //  console.log(res.data)
+        
+      })
+
+      // Partner data Modal
+      axios
+      .get(`http://localhost:7000/Partner-ModalEstatePlanning`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setPoaPartnerData(clientFilterObj[0])
+        //  console.log(res.data)
+        
+      })
+
+
+
       
        }, [])
 
@@ -119,31 +171,31 @@ const EstatePlanning = () => {
         document.getElementById(CDoB).value = setDate;
       }
     let initialValues={
-        haveWillsradio:'No',
-        reflectCurrentWishesradio:'No',
-        datePrepared:'',
-        lastReviewed:'',
-        LocationOfWill:'',
-        allowTestamentaryradio:'No',
-        funeralBondsradio:'No',
-        Executor:'',
-        specificEstatePlanningradio:'No',
-        POAradio:'No',
-        estatePlanningDetails:'',
+      AnyWill:clientData.haveWillsradio,
+      CurrentWill_Reflection: clientData.reflectCurrentWishesradio,
+      PreparationDate:clientData.datePrepared,
+      LastReviewDate: clientData.lastReviewed,
+      WillLocation: clientData.LocationOfWill,
+      TestamentaryTest:clientData.allowTestamentaryradio,
+      Executors: clientData.Executor,
+      FuneralBonds: clientData.funeralBondsradio,
+      SpecificEstateRequirements: clientData.specificEstatePlanningradio,
+      Details_SpecificRequirements: clientData.estatePlanningDetails,
+      POA: clientData.POAradio,
 
         // partner estate planning
 
-        haveWillsradio2:'No',
-        reflectCurrentWishesradio2:'No',
-        datePrepared2:'',
-        lastReviewed2:'',
-        LocationOfWill2:'',
-        allowTestamentaryradio2:'No',
-        funeralBondsradio2:'No',
-        Executor2:'',
-        estatePlanningDetails2:'',
-        specificEstatePlanningradio2:'No',
-        POAradio2:'No',
+        Partner_AnyWill:PartnerData.haveWillsradio2,
+        Partner_CurrentWill_Reflection:PartnerData.reflectCurrentWishesradio2,
+        Partner_PreparationDate:PartnerData.datePrepared2,
+        Partner_LastReviewDate:PartnerData.lastReviewed2,
+        Partner_WillLocation:PartnerData.LocationOfWill2,
+        Partner_TestamentaryTest:PartnerData.allowTestamentaryradio2,
+        Partner_Executors:PartnerData.Executor2,
+        Partner_FuneralBonds:PartnerData.funeralBondsradio2,
+        Partner_SpecificEstateRequirements:PartnerData.specificEstatePlanningradio2,
+        Partner_Details_SpecificRequirements:PartnerData.estatePlanningDetails2,
+        Partner_POA:PartnerData.POAradio2,
 
 
     }
@@ -267,11 +319,11 @@ then:Yup.string().required("Required"),
     
     let Navigate = useNavigate();
     function BackFunction(){
-      Navigate('/Investments')
+      Navigate('/Edit-Investments')
     }
 
     let onSubmit = (values) => {
-      Navigate('/Super-And-Retirment')
+      // Navigate('Edit-Super-And-Retirment')
 
 // partner estate planning
     let PartnerData={
@@ -311,19 +363,22 @@ then:Yup.string().required("Required"),
       console.log(clientData)
       console.log(PartnerData)
       axios
-      .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-      .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+      .patch(`http://localhost:7000/Client-EstatePlanning/Update-Client-EstatePlanning/${localStorage.getItem("EditClient")}`, clientData)
+      // .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
+      .then((res) =>  console.log("Client Estate Planning Updated Successfullly!"))
       axios
-      .post('http://localhost:7000/Partner-EstatePlanning/Add-Partner-EstatePlanning', PartnerData)
-      .then((res) =>  console.log("Partner Estate Planning Added Successfullly!"))
+      .patch(`http://localhost:7000/Partner-EstatePlanning/Update-Partner-EstatePlanning/${localStorage.getItem("EditClient")}`, PartnerData)
+      // .post('http://localhost:7000/Partner-EstatePlanning/Add-Partner-EstatePlanning', PartnerData)
+      .then((res) =>  console.log("Partner Estate Planning Updated Successfullly!"))
       
         }
         else{
         
           console.log(clientData)
           axios
-          .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-          .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+          .patch(`http://localhost:7000/Client-EstatePlanning/Update-Client-EstatePlanning/${localStorage.getItem("EditClient")}`, clientData)
+          // .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
+          .then((res) =>  console.log("Client Estate Planning Update Successfullly!"))
 
 
         }
@@ -331,20 +386,20 @@ then:Yup.string().required("Required"),
     }
 
     let POA_initialValues={
-      PowerofAttorney:'',
-      dateLastReviewed:'',
-      OtherDescription:'',
-      locationOfPOA:'',
-      POA1:'',
-      Relationship1:'',
-      POA2:'',
-      Relationship2:'',
-      POA3:'',
-      Relationship3:'',
-      POA4:'',
-      Relationship4:'',
-      POA5:'',
-      Relationship5:'',
+      POA_Type: poaClientData.PowerofAttorney,
+      POA_OtherDescription: poaClientData.OtherDescription,
+      POA_ReviewDate: poaClientData.dateLastReviewed,
+      POA_Location: poaClientData.locationOfPOA,
+      POA_1: poaClientData.POA1,
+      POA_2: poaClientData.POA2,
+      POA_3: poaClientData.POA3,
+      POA_4: poaClientData.POA4,
+      POA_5:  poaClientData.POA5,
+      Relationship_1: poaClientData.Relationship1,
+      Relationship_2: poaClientData.Relationship2,
+      Relationship_3:  poaClientData.Relationship3,
+      Relationship_4:  poaClientData.Relationship4,
+      Relationship_5: poaClientData.Relationship5,
     }
     let POA_validationSchema = Yup.object({
       PowerofAttorney:Yup.string().required("Required"),
@@ -397,8 +452,10 @@ then:Yup.string().required("Required"),
 
       
       axios
-      .post('http://localhost:7000/Client-ModalEstatePlanning/Add-Client-ModalEstatePlanning', client_Modal)
-      .then((res) =>  console.log("Client Estate Planning Modal Added Successfullly!"))
+      .patch(`http://localhost:7000/Client-ModalEstatePlanning/Update-Client-ModalEstatePlanning/${localStorage.getItem("EditClient")}`, client_Modal)
+
+      // .post('http://localhost:7000/Client-ModalEstatePlanning/Add-Client-ModalEstatePlanning', client_Modal)
+      .then((res) =>  console.log("Client Estate Planning Modal Updated Successfullly!"))
       
 
         
@@ -463,7 +520,7 @@ then:Yup.string().required("Required"),
             Relationship_5: values.Relationship52,
           }
           setClientPOAList2([...ClientPOAList2,Partnet_Modal])
-            console.log(Partnet_Modal)
+          console.log(Partnet_Modal)
             
             }
   return (
@@ -473,7 +530,7 @@ then:Yup.string().required("Required"),
                  <div className="col-md-12">
                      <div className='shadow py-4 px-4 my-5'>
                          <div>
-                              <h3 className="text-center">Estate Planning</h3>
+                              <h3 className="text-center"> Estate Planning</h3>
 
                     <Formik 
                         initialValues={initialValues}
@@ -1750,7 +1807,7 @@ then:Yup.string().required("Required"),
                       <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
                         </div>
                       </div>
                             </Form>
@@ -1764,4 +1821,4 @@ then:Yup.string().required("Required"),
   )
 }
 
-export default EstatePlanning
+export default EstatePlanning_Edit
