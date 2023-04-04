@@ -1,14 +1,14 @@
-import { React, useState } from 'react';
+import { React, useState , useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
-
+import axios from 'axios';
 import plus from './images/plus.svg'
 import lawyer from './images/lawyer.svg'
 import notebook from './images/notebook.svg'
 import { NavLink, useNavigate } from 'react-router-dom';
 
-function SMSF() {
+function SMSF_Edit() {
     const [Accumulation, setAccumulation] = useState(false);
     const [Accumulationshow, setAccumulationShow] = useState(false);
     const AccumulationhandleClose = () => setAccumulationShow(false);
@@ -113,14 +113,108 @@ function SMSF() {
     }
   }
 
+  // Apis States
+  const [clientData, setclientData] = useState([])
+  const [accumulationData, setAccumulationData] = useState([])
+  const [pensionData, setPensionData] = useState([])
+  const [bankData, setBankData] = useState([])
+  const [termDepositData, setTermDepositData] = useState([])
+  const [AustralianData, setAustralianData] = useState([])
+  const [managedFundData, setManagedFundData] = useState([])
+  const [investmentData, setInvestmentData] = useState([])
+
+  useEffect(() => {
+    let email=localStorage.getItem("EditClient")
+
+    // Client Data
+    axios
+      .get(`http://localhost:7000/Client-SMSF`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      // setclientData(clientFilterObj[0])  
+      })
+
+      //  Accumulation 
+    axios
+    .get(`http://localhost:7000/Client-SMSF`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setAccumulationData(clientFilterObj[0])  
+    })
+
+      //  Pension Account
+      axios
+      .get(`http://localhost:7000/Client-SMSF`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      // setPensionData(clientFilterObj[0])  
+      })
+
+          //  Bank Account
+          axios
+          .get(`http://localhost:7000/Client-SMSF`)
+          .then((res) => {
+          let clientObj=(res.data)
+          let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+          // setBankData(clientFilterObj[0])  
+          })
+
+            //  Term Deposit Accounts
+            axios
+            .get(`http://localhost:7000/Client-SMSF`)
+            .then((res) => {
+            let clientObj=(res.data)
+            let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+            // setTermDepositData(clientFilterObj[0])  
+            })
+
+              //  Australian Share Market
+              axios
+              .get(`http://localhost:7000/Client-SMSF`)
+              .then((res) => {
+              let clientObj=(res.data)
+              let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+              // setAustralianData(clientFilterObj[0])  
+              })
+
+              
+              //  Managed Funds
+              axios
+              .get(`http://localhost:7000/Client-SMSF`)
+              .then((res) => {
+              let clientObj=(res.data)
+              let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+              // setManagedFundData(clientFilterObj[0])  
+              })
+
+                //  Investment Properties
+                axios
+                .get(`http://localhost:7000/Client-SMSF`)
+                .then((res) => {
+                let clientObj=(res.data)
+                let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+                // setInvestmentData(clientFilterObj[0])  
+                })
+      
+
+  }, [])
+  
+
     let initialValues = {
-      PensionRadio: "No",
-      AccumulationRadio: "No",
-      BankAccountsRadio: "No",
-      TermDepositRadio: "No",
-      AustralianShareRadio: "No",
-      ManagedFundsRadio: "No",
-      InvestmentPropertiesRadio: 'No',
+      
+
+         PensionRadio:clientData.PensionAccount,
+         AccumulationRadio:clientData.Accumulation ,
+         BankAccountsRadio:clientData.BankAccount,
+         TermDepositRadio:clientData.TermDepositAccount,
+         AustralianShareRadio:clientData.AustralianShareMarket,
+         ManagedFundsRadio:clientData.ManagedFunds,
+         InvestmentPropertiesRadio:clientData.InvestmentProperties,
+
+     
       
       SMSFFundName: '',
       SMSFFundType: '',
@@ -150,89 +244,117 @@ function SMSF() {
 
     })
 
-    let Navigate = useNavigate();
+    // let Navigate = useNavigate();
     function BackFunction(){
-        Navigate('/Accumulation-And-Retirment');
+        // Navigate('/Accumulation-And-Retirment');
     }
     let onSubmit = (Values) => {
-      Navigate('/Investment-Trust')
+      // Navigate('/Investment-Trust')
 
-      console.log(Values)
-    }
+      let myData={
+        
+        PensionAccount:Values.PensionRadio,
+        Accumulation:Values. AccumulationRadio,
+        BankAccount:Values.BankAccountsRadio,
+        TermDepositAccount:Values.TermDepositRadio,
+        AustralianShareMarket:Values.AustralianShareRadio,
+        ManagedFunds:Values.ManagedFundsRadio,
+        InvestmentProperties:Values.InvestmentPropertiesRadio,
+      }
+      // Post Api
+
+      axios
+      .post('http://localhost:7000/Client-SMSF/Add-Client-SMSF', myData)
+      .then((res) => console.log('Client  Added Successfully!'))
+      console.log(clientData)
+
+
+      // patch
+      // axios
+      // .patch(`http://localhost:7000/Client-SMSF/Add-Client-SMSF/${localStorage.getItem("EditClient")}`, myData)
+      // .then((res) => {
+      // console.log("Client  Updated Successfully!");
+        
+      // })
+
+      }
 
     let Client_initialValues = {
 
-      BankAnnualIncome: '',
-      BankIncomeYield: '',
-      BankFinancialInstitution: '',
-      BankCurrentValue: '',
-      Bank2AnnualIncome: '',
-      Bank2IncomeYield: '',
-      Bank2FinancialInstitution: '',
-      Bank2CurrentValue: '',
+       BankCurrentValue:bankData.CurrentValue1,
+       BankFinancialInstitution:bankData.FinancialInstitution1,
+       BankIncomeYield:bankData.IncomeYield1,
+       BankAnnualIncome:bankData.AnnualIncome1,
+       Bank2CurrentValue:bankData.CurrentValue2,
+       Bank2FinancialInstitution:bankData.FinancialInstitution2,
+       Bank2IncomeYield:bankData.IncomeYield2,
+       Bank2AnnualIncome:bankData.AnnualIncome2,
         
-      TermDepositAnnualIncome: '',
-      TermDepositIncomeYield: '',
-      TermDepositFinancialInstitution: '',
-      TermDepositCurrentValue: '',
-      TermDeposit2AnnualIncome: '',
-      TermDeposit2IncomeYield: '',
-      TermDeposit2FinancialInstitution: '',
-      TermDeposit2CurrentValue: '',
-      TermDeposit3AnnualIncome: '',
-      TermDeposit3IncomeYield: '',
-      TermDeposit3FinancialInstitution: '',
-      TermDeposit3CurrentValue: '',
 
-      AccumulationMemberName: '',
-      AccumulationEligibleDate: '',
-      AccumulationCurrentBalance: '',
-      AccumulationTaxFree: '',
-      AccumulationTaxed: '',
-      AccumulationNonPreservedRestriction: '',
-      AccumulationNonPreservedUnRestriction: '',
-      AccumulationPreservedAmount: '',
+        TermDepositCurrentValue:termDepositData.CurrentValue1,
+        TermDepositFinancialInstitution:termDepositData.FinancialInstitution1,
+        TermDepositIncomeYield:termDepositData.IncomeYield1,
+        TermDepositAnnualIncome:termDepositData.AnnualIncome1,
 
-      PensionMemberName: '',
-      PensionType: '',
-      PensionCommencementDate: '',
-      PensionCurrentBalance: '',
-      PensionTaxFree: '',
-      PensionTaxed: '',
-      PensionPurchasePrice: '',
-      PensionFrequency: '',
-      PensionRegularIncomeDrawn: '',
-      PensionMinimumRequired: '',
-      PensionRelevantNumber: '',
-      PensionPurchasePrice: '',
-      PensionLumpsumTaken: '',
-      PensionDeductibleAmount: '',
+        TermDeposit2CurrentValue:termDepositData.CurrentValue2,
+        TermDeposit2FinancialInstitution:termDepositData.FinancialInstitution2,
+        TermDeposit2IncomeYield:termDepositData.IncomeYield2,
+        TermDeposit2AnnualIncome:termDepositData.AnnualIncome2,
 
-      AustralianShareInvestmentName: '',
-      AustralianShareNoOfShares: '',
-      AustralianShareCurrentPrice: '',
-      AustralianShareTotalValue: '',
-      AustralianShareCostBase: '',
-      AustralianSharePurchaseDate: '',
-      AustralianShareIncomePA: '',
-      AustralianShareIncomePA2: '',
-      AustralianShareTotalIncomePA: '',
-      AustralianShareReinvestIncome: 'No',
-      AustralianShareFrankedAmount: '',
-      AustralianShareRegInvestmentsPA: '',
+        TermDeposit3CurrentValue:termDepositData.CurrentValue3,
+        TermDeposit3FinancialInstitution:termDepositData.FinancialInstitution3,
+        TermDeposit3IncomeYield:termDepositData.IncomeYield3,
+        TermDeposit3AnnualIncome:termDepositData.AnnualIncome3,
 
-      ManagedFundsPlatformName: '',
-      ManagedFundsInvestmentName: '',
-      ManagedFundsNoOfShares: '',
-      ManagedFundsCurrentPrice: '',
-      ManagedFundsCurrentValue: '',
-      ManagedFundsOriginalInvestment: '',
-      ManagedFundsPurchaseDate: '',
-      ManagedFundsIncomePA: '',
-      ManagedFundsIncomePA2: '',
-      ManagedFundsTotalIncomePA: '',
-      ManagedFundsReinvestIncome: 'No',
-      ManagedFundsRegInvestmentsPA: '',
+     AccumulationMemberName:accumulationData.MemberName ,
+     AccumulationEligibleDate:accumulationData.EligibleDate  ,
+     AccumulationCurrentBalance:accumulationData.CurrentBalance ,
+     AccumulationTaxFree:accumulationData.TaxFree ,
+     AccumulationTaxed:accumulationData.Taxed ,
+     AccumulationNonPreservedRestriction:accumulationData.NonPreservedRestriction ,
+     AccumulationNonPreservedUnRestriction:accumulationData.NonPreservedUnRestriction ,
+     AccumulationPreservedAmount:accumulationData.PreservedAmount,
+
+      PensionMemberName:pensionData.MemberName,
+      PensionType:pensionData.PensionType,
+      PensionCommencementDate:pensionData.CommencementDateDate,
+      PensionCurrentBalance:pensionData.CurrentBalance,
+      PensionTaxFree:pensionData.TaxFree,
+      PensionTaxed:pensionData.Taxed,
+      PensionPurchasePrice:pensionData.OriginalPurchasePrice,
+      PensionFrequency:pensionData.Frequency,
+      PensionRegularIncomeDrawn:pensionData.RegularIncomeDrawn,
+      PensionMinimumRequired:pensionData.MinimumRequired,
+      PensionRelevantNumber:pensionData.RelevantNumber,
+      PensionLumpsumTaken:pensionData.LumpsumTaken,
+      PensionDeductibleAmount:pensionData.DeductibleAmount,
+
+
+       AustralianShareInvestmentName:AustralianData.InvestmentName,
+           AustralianShareNoOfShares:AustralianData.NoOfShares,
+           AustralianShareCurrentPrice:AustralianData.CurrentSharePrice,
+           AustralianShareTotalValue:AustralianData.TotalShareValue,
+           AustralianShareCostBase:AustralianData.CostBase,
+           AustralianSharePurchaseDate:AustralianData.PurchaseDate,
+           AustralianShareIncomePA:AustralianData.IncomePA,
+           AustralianShareIncomePA2:AustralianData.IncomePAType,
+           AustralianShareTotalIncomePA:AustralianData.TotalIncomePA,
+           AustralianShareReinvestIncome:AustralianData.ReinvestIncome,
+           AustralianShareFrankedAmount:AustralianData.FrankedAmount,
+           AustralianShareRegInvestmentsPA:AustralianData.RegInvestmentsPA,
+
+            ManagedFundsPlatformName:managedFundData.PlatformName,
+            ManagedFundsInvestmentName:managedFundData.InvestmentName,
+            ManagedFundsNoOfShares:managedFundData.NoOfShares,
+            ManagedFundsCurrentPrice:managedFundData.CurrentSharePrice,
+            ManagedFundsCurrentValue:managedFundData.CurrentShareValue,
+            ManagedFundsOriginalInvestment:managedFundData.ManagedFundsOriginalInvestment,
+            ManagedFundsPurchaseDate:managedFundData.PurchaseDate,
+            ManagedFundsIncomePA:managedFundData.IncomePA,
+            ManagedFundsIncomePA2:managedFundData.IncomePAType,
+            ManagedFundsTotalIncomePA:managedFundData.TotalIncomePA,
+            ManagedFundsReinvestIncome:managedFundData.ReinvestIncome,
+            ManagedFundsRegInvestmentsPA:managedFundData.RegInvestmentsPA,
       
       InvestmentPropertiesCurrentValue: '',
       InvestmentPropertiesCostBase: '',
@@ -256,9 +378,23 @@ function SMSF() {
       InvestmentPropertiesYearsRemaining: ''
     }
 
+    let Bank_validationSchema = Yup.object({   
+
+      BankAnnualIncome: Yup.number().required("Required")
+      .test("Is positive?", "Must be a positive value", (value) => value > 0),
+      BankIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      BankFinancialInstitution: Yup.string().required("Required"),
+      BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Bank2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Bank2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      Bank2FinancialInstitution: Yup.string().required("Required"),
+      Bank2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    })
+
     let Client_validationSchema = Yup.object({   
 
-      BankAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      BankAnnualIncome: Yup.number().required("Required")
+      .test("Is positive?", "Must be a positive value", (value) => value > 0),
       BankIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
       BankFinancialInstitution: Yup.string().required("Required"),
       BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -430,9 +566,232 @@ function SMSF() {
     InvestmentModalAllOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
-  let InvestmentModal_onSubmit = (Values) => [
+  let AccumulationModal_onSubmit = (Values) => {
 
-  ]
+   let myData= {
+    MemberName:Values. AccumulationMemberName,
+    EligibleDate:Values. AccumulationEligibleDate ,
+    CurrentBalance:Values. AccumulationCurrentBalance,
+    TaxFree:Values. AccumulationTaxFree,
+    Taxed:Values. AccumulationTaxed,
+    NonPreservedRestriction:Values. AccumulationNonPreservedRestriction,
+    NonPreservedUnRestriction:Values. AccumulationNonPreservedUnRestriction,
+    PreservedAmount:Values.AccumulationPreservedAmount
+  }
+
+     // Post Api
+      // axios
+      // .post('http://localhost:7000/Client-SMSF//Add-Client-Accumulation', myData)
+      // .then((res) => console.log('Client  Added Successfully!'))
+      // console.log(clientData)
+
+
+      // patch
+       axios
+      .patch(`http://localhost:7000/Client-SMSF/Update-Client-Accumulation/${localStorage.getItem("EditClient")}`, myData)
+      .then((res) => {
+       console.log("Client  Updated Successfully!");
+        
+      })
+
+  }
+
+  let PensionAccount_onSubmit = (Values) => {
+
+    let myData= {
+      MemberName:Values.PensionMemberName,
+      PensionType:Values.PensionType,
+      CommencementDateDate:Values.PensionCommencementDate,
+      CurrentBalance:Values.PensionCurrentBalance,
+      TaxFree:Values.PensionTaxFree,
+      Taxed:Values.PensionTaxed,
+      OriginalPurchasePrice:Values.PensionPurchasePrice,
+      Frequency:Values.PensionFrequency,
+      RegularIncomeDrawn:Values.PensionRegularIncomeDrawn,
+      MinimumRequired:Values.PensionMinimumRequired,
+      RelevantNumber:Values.PensionRelevantNumber,
+      LumpsumTaken:Values.PensionLumpsumTaken,
+      DeductibleAmount:Values.PensionDeductibleAmount,
+   
+   }
+ 
+      // Post Api
+       // axios
+       // .post('http:/localhost:7000/Client-SMSF/Add-Client-PensionAccounts', myData)
+       // .then((res) => console.log('Client  Added Successfully!'))
+       // console.log(clientData)
+ 
+ 
+       // patch
+        axios
+       .patch(`http://localhost:7000/Client-SMSF/Update-Client-PensionAccounts/${localStorage.getItem("EditClient")}`, myData)
+       .then((res) => {
+        console.log("Client  Updated Successfully!");
+         
+       })
+ 
+   }
+
+   let BankAccount_onSubmit = (Values) => {
+    
+        let myData= {
+          CurrentValue1:Values.BankCurrentValue,
+          FinancialInstitution1:Values.BankFinancialInstitution,
+          IncomeYield1:Values.BankIncomeYield,
+          AnnualIncome1:Values.BankAnnualIncome,
+          CurrentValue2:Values.Bank2CurrentValue,
+          FinancialInstitution2:Values.Bank2FinancialInstitution,
+          IncomeYield2:Values.Bank2IncomeYield,
+          AnnualIncome2:Values.Bank2AnnualIncome,
+       
+       }
+       console.log(myData)
+     
+          // Post Api
+           // axios
+           // .post('http:/localhost:7000/Client-SMSF/Add-Client-BankAccounts', myData)
+           // .then((res) => console.log('Client  Added Successfully!'))
+           // console.log(clientData)
+     
+     
+           // patch
+            axios
+           .patch(`http://localhost:7000/Client-SMSF/Update-Client-BankAccounts/${localStorage.getItem("EditClient")}`, myData)
+           .then((res) => {
+            console.log("Client  Updated Successfully!");
+             
+           })
+
+
+           BankAccountshandleClose();
+
+       }
+
+
+       let Term_onSubmit = (Values) => {
+    
+        let myData= {
+
+          CurrentValue1:Values.TermDepositCurrentValue,
+          FinancialInstitution1:Values.TermDepositFinancialInstitution,
+          IncomeYield1:Values.TermDepositIncomeYield,
+          AnnualIncome1:Values.TermDepositAnnualIncome,
+
+          CurrentValue2:Values.TermDeposit2CurrentValue,
+          FinancialInstitution2:Values.TermDeposit2FinancialInstitution,
+          IncomeYield2:Values.TermDeposit2IncomeYield,
+          AnnualIncome2:Values.TermDeposit2AnnualIncome,
+
+          CurrentValue3:Values.TermDeposit3CurrentValue,
+          FinancialInstitution3:Values.TermDeposit3FinancialInstitution,
+          IncomeYield3:Values.TermDeposit3IncomeYield,
+          AnnualIncome3:Values.TermDeposit3AnnualIncome,
+       
+       }
+       console.log(myData)
+     
+          // Post Api
+           axios
+           .post('http:/localhost:7000/Client-SMSF/Add-Client-TermDeposit', myData)
+           .then((res) => console.log(res.data))
+           
+     
+     
+           // patch
+          //   axios
+          //  .patch(`http://localhost:7000/Client-SMSF/Update-Client-TermDeposit/${localStorage.getItem("EditClient")}`, myData)
+          //  .then((res) => {
+          //   console.log("Client  Updated Successfully!");
+             
+          //  })
+
+
+           BankAccountshandleClose();
+
+       }
+
+       let Australian_onSubmit = (Values) => {
+    
+        let myData= {
+
+          InvestmentName :Values.AustralianShareInvestmentName,
+          NoOfShares:Values.AustralianShareNoOfShares,
+          CurrentSharePrice:Values.AustralianShareCurrentPrice,
+          TotalShareValue:Values.AustralianShareTotalValue,
+          CostBase:Values.AustralianShareCostBase,
+          PurchaseDate:Values.AustralianSharePurchaseDate,
+          IncomePA:Values.AustralianShareIncomePA,
+          IncomePAType:Values.AustralianShareIncomePA2,
+          TotalIncomePA:Values.AustralianShareTotalIncomePA,
+          ReinvestIncome:Values.AustralianShareReinvestIncome,
+          FrankedAmount:Values.AustralianShareFrankedAmount,
+          RegInvestmentsPA:Values.AustralianShareRegInvestmentsPA,
+       
+       }
+       console.log(myData)
+     
+          // Post Api
+          //  axios
+          //  .post('http:/localhost:7000/Client-SMSF/Add-Client-AustralianShareMarket', myData)
+          //  .then((res) => console.log(res.data))
+           
+     
+     
+          //  patch
+            axios
+           .patch(`http://localhost:7000/Client-SMSF/Update-Client-AustralianShareMarket/${localStorage.getItem("EditClient")}`, myData)
+           .then((res) => {
+            console.log("Client  Updated Successfully!");
+             
+           })
+
+
+           BankAccountshandleClose();
+
+       }
+
+       let Manage_onSubmit = (Values) => {
+    
+        let myData= {
+
+          PlatformName :Values.ManagedFundsPlatformName,
+          InvestmentName:Values.ManagedFundsInvestmentName,
+          NoOfShares:Values.ManagedFundsNoOfShares,
+          CurrentSharePrice:Values.ManagedFundsCurrentPrice,
+          CurrentShareValue:Values.ManagedFundsCurrentValue,
+          OriginalInvestment:Values.ManagedFundsOriginalInvestment,
+          PurchaseDate:Values.ManagedFundsPurchaseDate,
+          IncomePA:Values.ManagedFundsIncomePA,
+          IncomePAType:Values.ManagedFundsIncomePA2,
+          TotalIncomePA:Values.ManagedFundsTotalIncomePA,
+          ReinvestIncome:Values.ManagedFundsReinvestIncome,
+          RegInvestmentsPA:Values.ManagedFundsRegInvestmentsPA,
+          
+       
+       }
+       console.log(myData)
+     
+          // Post Api
+          //  axios
+          //  .post('http:/localhost:7000/Client-SMSF/Add-Client-ManagedFunds', myData)
+          //  .then((res) => console.log(res.data))
+           
+     
+     
+          //  patch
+            axios
+           .patch(`http://localhost:7000/Client-SMSF/Update-Client-ManagedFunds/${localStorage.getItem("EditClient")}`, myData)
+           .then((res) => {
+            console.log("Client  Updated Successfully!");
+             
+           })
+
+
+           BankAccountshandleClose();
+
+       }
+
+  let InvestmentModal_onSubmit = (Values) => {}
 
   return (
     <div className='container-fluid'>
@@ -445,7 +804,9 @@ function SMSF() {
       
         <div className='row my-3'>
           <div className='col-md-12'>
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} enableReinitialize>
+            <Formik initialValues={initialValues}
+             validationSchema={validationSchema}
+              onSubmit={onSubmit} enableReinitialize>
               {({ values, handleChange })=>
                 <Form>
 
@@ -729,7 +1090,7 @@ function SMSF() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={AccumulationModal_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -936,7 +1297,7 @@ function SMSF() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={PensionAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1201,8 +1562,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Bank_validationSchema}
+                                onSubmit={BankAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1311,17 +1672,17 @@ function SMSF() {
                                   <div className="col-md-12">
                                     <button
                                       className="float-end btn w-25  bgColor modalBtn"
-                                      // onClick={BankhandleClose}
+                                      // onClick={BankAccountshandleClose}
                                       type='submit'
                                     >
                                       Save
                                     </button>
-                                    <button
+                                    <span
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankAccountshandleClose}
                                     >
                                       Cancel
-                                    </button>
+                                    </span>
                                   </div>
                                 </Modal.Footer>
                                 </Form>
@@ -1416,8 +1777,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                // validationSchema={Client_validationSchema}
+                                onSubmit={Term_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1679,7 +2040,7 @@ function SMSF() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={Australian_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1944,7 +2305,7 @@ function SMSF() {
                               <Formik
                                 initialValues={Client_initialValues}
                                 validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                onSubmit={Manage_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -2745,4 +3106,4 @@ function SMSF() {
   )
 }
 
-export default SMSF
+export default SMSF_Edit

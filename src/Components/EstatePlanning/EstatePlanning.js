@@ -1750,7 +1750,7 @@ then:Yup.string().required("Required"),
                       <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction} >Back</button>
                         </div>
                       </div>
                             </Form>

@@ -786,8 +786,8 @@ function Investments() {
   Navigate('/Assets-And-Liabilities')
   }
   let onSubmit=(values)=>{
-  console.log(values)
-
+  
+// usama
   let InvestmentDetails = {
     Email: localStorage.getItem("ClientEmail"),
     BankAccounts: values.BankAccountRadio,
@@ -800,6 +800,7 @@ function Investments() {
     InvestmentProperties: values.InvestmentPropertiesRadio,
     Others: values.OthersRadio,
   } 
+  console.log(InvestmentDetails)
 
   axios
   .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
@@ -819,7 +820,8 @@ function Investments() {
       
         <div className='row my-3'>
         <div className='col-md-12'>
-        <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize>
+        <Formik initialValues={initialValues}
+         onSubmit={onSubmit} enableReinitialize>
           {({ values, handleChange })=>
           <Form>
                           {/* Bank Account Details */}

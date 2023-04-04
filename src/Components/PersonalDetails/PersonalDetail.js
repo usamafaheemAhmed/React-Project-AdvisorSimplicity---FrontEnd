@@ -345,7 +345,7 @@ let partnerAgeHandler=(Dob,Age)=>{
 const initialValues={
   titleID:'',
   maritalStatus:'',
-  givenNameID:'',
+  givenNameID:'zaid',
   employmentStatusID:'',
   surnameID:'',
   HealthID:'',
@@ -900,7 +900,8 @@ const initialValues2={
                           className="form-control inputDesign shadow inputDesign"
                           id="givenNameID"
                           placeholder="Given Name"
-                          value={values.clientName} onChange={(e)=>setFieldValue("givenNameID",e.target.value)}
+                          name="givenNameID"
+                        
                         />
                         <ErrorMessage component='div' className="text-danger fw-bold" name='givenNameID'/>
 

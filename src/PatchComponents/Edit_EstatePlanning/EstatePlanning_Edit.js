@@ -52,7 +52,7 @@ const EstatePlanning_Edit = () => {
       .then((res) => {
       let clientObj=(res.data)
       let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-      setClientData(clientFilterObj[0])
+      // setClientData(clientFilterObj[0])
         //  console.log(res.data)
         
       })
@@ -63,7 +63,7 @@ const EstatePlanning_Edit = () => {
       .then((res) => {
       let clientObj=(res.data)
       let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-      setPoaClientData(clientFilterObj[0])
+      // setPoaClientData(clientFilterObj[0])
         //  console.log(res.data)
         
       })
@@ -74,7 +74,7 @@ const EstatePlanning_Edit = () => {
       .then((res) => {
       let clientObj=(res.data)
       let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-      setPartnerData(clientFilterObj[0])
+      // setPartnerData(clientFilterObj[0])
         //  console.log(res.data)
         
       })
@@ -85,8 +85,8 @@ const EstatePlanning_Edit = () => {
       .then((res) => {
       let clientObj=(res.data)
       let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-      setPoaPartnerData(clientFilterObj[0])
-        //  console.log(res.data)
+      // setPoaPartnerData(clientFilterObj[0])
+      //  console.log(res.data)
         
       })
 
@@ -323,7 +323,7 @@ then:Yup.string().required("Required"),
     }
 
     let onSubmit = (values) => {
-      // Navigate('Edit-Super-And-Retirment')
+      Navigate('/Edit-Super-And-Retirment')
 
 // partner estate planning
     let PartnerData={

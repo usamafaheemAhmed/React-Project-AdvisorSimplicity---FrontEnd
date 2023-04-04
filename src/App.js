@@ -27,6 +27,8 @@ import IncomeExpenses_Edit from './PatchComponents/Income&Expenses/IncomeExpense
 import AssetsLiabilities_Edit from './PatchComponents/Assets&Liabilities/AssetsLiabilities_Edit';
 import Investments_Edit from './PatchComponents/Edit_Investments/Investments_Edit';
 import EstatePlanning_Edit from './PatchComponents/Edit_EstatePlanning/EstatePlanning_Edit';
+import Edit_SuperRetriement from './PatchComponents/Edit_Super&Retirement/Edit_SuperRetriement';
+import SMSF_Edit from './PatchComponents/SMSF/SMSF_Edit';
 
 function App() {
   return (
@@ -36,7 +38,7 @@ function App() {
     
     <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
-        <SideBar/>
+        {/* <SideBar/> */}
       </div>
 
       <div className="col-md-10 m-0 p-0"> 
@@ -72,8 +74,8 @@ function App() {
         <Route path='/Edit-Assets-And-Liabilities' element={<AssetsLiabilities_Edit/>} />
         <Route path='/Edit-Investments' element={<Investments_Edit/>} />
         <Route path='/Edit-Estate-Planning' element={<EstatePlanning_Edit/>} />
-        {/* <Route path='/Edit-Super-And-Retirment' element={<SuperRetriement/>} /> */}
-        {/* <Route path='/Edit-SMSF' element={<SMSF/>} /> */}
+        <Route path='/Edit-Super-And-Retirment' element={<Edit_SuperRetriement/>} />
+        <Route path='/Edit-SMSF' element={<SMSF_Edit/>} />
         {/* <Route path='/Edit-Investment-Trust' element={<InvestmentTrust/>} /> */}
         {/* <Route path='/Edit-Personal-Insurance' element={<PersonalInsurance/>} /> */}
         {/* <Route path='/Edit-Risk-Profile' element={<RiskProfile/>} /> */}

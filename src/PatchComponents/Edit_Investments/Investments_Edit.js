@@ -57,8 +57,8 @@ useEffect(() => {
   .then((res) => {
   let clientObj=(res.data)
   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  // setInvestmentStateObj(clientFilterObj[0])
-  console.log(res.data)
+  setInvestmentStateObj(clientFilterObj[0])
+  console.log(clientFilterObj)
     
   })
 
@@ -70,7 +70,7 @@ useEffect(() => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   //  setbankAccountStateObj(clientFilterObj[0])
-   console.log(res.data)
+  //  console.log(res.data)
      
    })
 
@@ -81,7 +81,7 @@ useEffect(() => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   //  setTermStateObj(clientFilterObj[0])
-   console.log(res.data)
+  //  console.log(res.data)
      
    })
 
@@ -92,7 +92,7 @@ useEffect(() => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   //  setAustralianShareStateObj(clientFilterObj[0])
-   console.log(res.data)
+  //  console.log(res.data)
      
    })
 
@@ -103,7 +103,7 @@ useEffect(() => {
   let clientObj=(res.data)
   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   // setAustralianSharePortfolioStateObj(clientFilterObj[0])
-  console.log(res.data)
+  // console.log(res.data)
     
   })
 
@@ -116,7 +116,7 @@ useEffect(() => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   //  setManagedFundStateObj(clientFilterObj[0])
-   console.log(res.data)
+  //  console.log(res.data)
      
    })
 
@@ -127,7 +127,7 @@ useEffect(() => {
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
     //  setManagedFundsPortfolioStateObj(clientFilterObj[0])
-     console.log(res.data)
+    //  console.log(res.data)
        
      })
 
@@ -138,7 +138,7 @@ useEffect(() => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   //  setInvestmentBondsStateObj(clientFilterObj[0])
-   console.log(res.data)
+  //  console.log(res.data)
      
    })
 
@@ -149,7 +149,7 @@ useEffect(() => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   //  setInvestmentPropertiesStateObj(clientFilterObj[0])
-   console.log(res.data)
+  //  console.log(res.data)
      
    })
 
@@ -161,7 +161,7 @@ useEffect(() => {
   let clientObj=(res.data)
   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   // setOtherFundsStateObj(clientFilterObj[0])
-  console.log(res.data)
+  // console.log(res.data)
     
   })
 
