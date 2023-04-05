@@ -729,7 +729,7 @@ const [partnerLifetimePensionData, setPartnerLifetimePensionData] = useState([])
     }
 
     let onSubmit = (Values) => {
-      // Navigate('/Edit-SMSF')
+      Navigate('/Edit-SMSF')
       let myData={
         SuperRadio: Values.SuperRadio,
         Super2Radio: Values.Super2Radio,

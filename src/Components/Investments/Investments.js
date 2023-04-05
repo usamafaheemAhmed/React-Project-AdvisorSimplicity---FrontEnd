@@ -501,7 +501,7 @@ function Investments() {
     }
 
     setBankAccountList([BankDetails])
-    BankhandleClose();
+    // BankhandleClose();
 
     axios
     .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
@@ -787,7 +787,7 @@ function Investments() {
   }
   let onSubmit=(values)=>{
   
-// usama
+
   let InvestmentDetails = {
     Email: localStorage.getItem("ClientEmail"),
     BankAccounts: values.BankAccountRadio,
@@ -806,7 +806,7 @@ function Investments() {
   .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
   .then((res) => console.log("Investment Added Successfully!"))
 
-  Navigate('/Estate-Planning');
+  // Navigate('/Estate-Planning');
   }
 
   return (
@@ -972,7 +972,7 @@ function Investments() {
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="BankIncomePAType" className="form-label">Income in $</   label>
-                              <Field type="text" className="form-control shadow inputDesign" 
+                              <Field type="number" className="form-control shadow inputDesign" 
                               id="BankIncomeinDollars" name='BankIncomeinDollars' placeholder="Income in $"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='BankIncomeinDollars' />
                             </div>            

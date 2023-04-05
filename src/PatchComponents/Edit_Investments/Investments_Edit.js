@@ -964,7 +964,10 @@ useEffect(() => {
       
         <div className='row my-3'>
         <div className='col-md-12'>
-        <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize>
+        <Formik 
+        initialValues={initialValues}
+         onSubmit={onSubmit}
+          enableReinitialize>
           {({ values, handleChange })=>
           <Form>
                           {/* Bank Account Details */}
