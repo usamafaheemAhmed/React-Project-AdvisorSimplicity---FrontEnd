@@ -668,8 +668,8 @@ function Investments() {
   }
 
   let InvestmentProperties_onSubmit = (values) => {
-
-    InvestmentPropertieshandleClose();
+// usama
+    // InvestmentPropertieshandleClose();
     let InvestmentPropertiesDetails = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentPropertiesCurrentValue: values.InvestmentPropertiesCurrentValue,
@@ -692,7 +692,9 @@ function Investments() {
       InvestmentPropertiesLoanTerm: values.InvestmentPropertiesLoanTerm,
       InvestmentPropertiesLoanType: values.InvestmentPropertiesLoanType,
       InvestmentPropertiesDebtLoanAmount: values.InvestmentPropertiesDebtLoanAmount,
-      InvestmentPropertiesYearsRemaining: values.InvestmentPropertiesYearsRemaining
+      InvestmentPropertiesYearsRemaining: values.InvestmentPropertiesYearsRemaining,
+
+     
     }
     setInvestmentPropertiesList([InvestmentPropertiesDetails])
 
@@ -765,9 +767,36 @@ function Investments() {
     InvestmentModalAllOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
-  let InvestmentModal_onSubmit = (Values) => [
+  let InvestmentModal_onSubmit = (values) => {
 
-  ]
+    // InvestmentPropertieshandleClose();
+    let InvestmentPropertiesDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+    
+      InvestmentModalTotalExpense:5000, // Read Only InvestmentModalTotalExpense
+      InvestmentModalCorporateFees:values.InvestmentModalCorporateFees,
+      InvestmentModalCouncilRates:values.InvestmentModalCouncilRates,
+      InvestmentModalLawnMoving:values.InvestmentModalLawnMoving,
+      InvestmentModalInsurance:values.InvestmentModalInsurance,
+      InvestmentModalLandTax:values.InvestmentModalLandTax,
+      InvestmentModalRepairs:values.InvestmentModalRepairs,
+      InvestmentModalWaterCharges:values.InvestmentModalWaterCharges,
+      InvestmentModalOthers:values.InvestmentModalOthers,
+      InvestmentModalTelephone:values.InvestmentModalTelephone,
+      InvestmentModalProfessionalFees:values.InvestmentModalProfessionalFees,
+      InvestmentModalAllOthers:values.InvestmentModalAllOthers,
+
+    }
+    
+
+    axios
+    .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
+    .then((res) => console.log("Investment Properties Added Successfully!"))
+    console.log(InvestmentPropertiesDetails)
+
+  }
+
+  
 
 
   let initialValues={
@@ -806,7 +835,7 @@ function Investments() {
   .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
   .then((res) => console.log("Investment Added Successfully!"))
 
-  // Navigate('/Estate-Planning');
+  Navigate('/Estate-Planning');
   }
 
   return (

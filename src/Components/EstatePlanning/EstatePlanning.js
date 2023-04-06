@@ -271,22 +271,22 @@ then:Yup.string().required("Required"),
     }
 
     let onSubmit = (values) => {
-      Navigate('/Super-And-Retirment')
+      // Navigate('/Super-And-Retirment')
 
 // partner estate planning
     let PartnerData={
       Email: localStorage.getItem("ClientEmail"),
-      Partner_AnyWill:values.haveWillsradio2,
-      Partner_CurrentWill_Reflection:values.reflectCurrentWishesradio2,
-      Partner_PreparationDate:values.datePrepared2,
-      Partner_LastReviewDate:values.lastReviewed2,
-      Partner_WillLocation:values.LocationOfWill2,
-      Partner_TestamentaryTest:values.allowTestamentaryradio2,
-      Partner_Executors:values.Executor2,
-      Partner_FuneralBonds:values.funeralBondsradio2,
-      Partner_SpecificEstateRequirements:values.specificEstatePlanningradio2,
-      Partner_Details_SpecificRequirements:values.estatePlanningDetails2,
-      Partner_POA:values.POAradio2,
+      AnyWill:values.haveWillsradio2,
+      CurrentWill_Reflection:values.reflectCurrentWishesradio2,
+      PreparationDate:values.datePrepared2,
+      LastReviewDate:values.lastReviewed2,
+      WillLocation:values.LocationOfWill2,
+      TestamentaryTest:values.allowTestamentaryradio2,
+      Executors:values.Executor2,
+      FuneralBonds:values.funeralBondsradio2,
+      SpecificEstateRequirements:values.specificEstatePlanningradio2,
+      Details_SpecificRequirements:values.estatePlanningDetails2,
+      POA:values.POAradio2,
 
 
     }
@@ -308,11 +308,11 @@ then:Yup.string().required("Required"),
     }
 
     if(isPartnered===true){
-      console.log(clientData)
+      // console.log(clientData)
       console.log(PartnerData)
-      axios
-      .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-      .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+      // axios
+      // .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
+      // .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
       axios
       .post('http://localhost:7000/Partner-EstatePlanning/Add-Partner-EstatePlanning', PartnerData)
       .then((res) =>  console.log("Partner Estate Planning Added Successfullly!"))
@@ -379,8 +379,8 @@ then:Yup.string().required("Required"),
         POA_Type: Values.PowerofAttorney,
         POA_OtherDescription: Values.OtherDescription,
         POA_ReviewDate: Values.dateLastReviewed,
-        POA_Location: Values.locationOfPOA,
-        POA_1: Values.POA1,
+        POA_Location: Values.locationOfPOA, 
+        POA_1: Values.POA1, 
         POA_2: Values.POA2,
         POA_3: Values.POA3,
         POA_4: Values.POA4,
@@ -446,9 +446,10 @@ then:Yup.string().required("Required"),
     
         let POA_onSubmit2 = (values) => {
           let Partnet_Modal={
+            Email: localStorage.getItem("ClientEmail"),
             POA_Type: values.PowerofAttorney2,
             POA_ReviewDate:  values.datelastReviewed2,
-            // values.OtherDescription2, to be added in backend
+            POA_OtherDescription:values.OtherDescription2,
             POA_Location: values.locationOfPOA2,
             POA_1:  values.POA12,
             POA_2:  values.POA22,
@@ -462,8 +463,17 @@ then:Yup.string().required("Required"),
             Relationship_4: values.Relationship42,
             Relationship_5: values.Relationship52,
           }
+
+          // uzair
+         
           setClientPOAList2([...ClientPOAList2,Partnet_Modal])
             console.log(Partnet_Modal)
+
+            axios
+            .post('http://localhost:7000/Partner-ModalEstatePlanning/Add-Partner-ModalEstatePlanning', Partnet_Modal)
+            .then((res) =>  console.log("Client Estate Planning Modal Added Successfullly!"))
+            
+      
             
             }
   return (

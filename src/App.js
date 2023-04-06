@@ -1,4 +1,7 @@
 import './App.css';
+
+
+
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import PersonalDetail from './Components/PersonalDetails/PersonalDetail';
