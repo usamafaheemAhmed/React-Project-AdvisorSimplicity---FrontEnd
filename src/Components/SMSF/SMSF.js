@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
-
+import axios from 'axios';
 import plus from './images/plus.svg'
 import lawyer from './images/lawyer.svg'
 import notebook from './images/notebook.svg'
@@ -155,10 +155,43 @@ function SMSF() {
         Navigate('/Accumulation-And-Retirment');
     }
     let onSubmit = (Values) => {
-      Navigate('/Investment-Trust')
+      // Navigate('/Edit-Investment-Trust')
 
-      console.log(Values)
-    }
+      // input values in backend are in different Api but is shoult be with radio buttons
+      // of modal so it will send to backend on the call of next button
+
+      let myObj={
+        FundName:Values.SMSFFundName,
+        FundType:Values.SMSFFundType,
+        ABN:Values.SMSFABN,
+        TrusteeType:Values.SMSFTrusteeType,
+        EstablishmentDate:Values.SMSFEstablishmentDate,
+        AssetsSegregated:Values.SMSFAssetsSegregated,
+        InvestmentBorrowing:Values.SMSFBorrowingInvestment,
+        AcquireInsurances:Values.SMSFAcquiringInsurances,
+        AccountantName:Values.SMSFAccountant,
+        AuditorName:Values.SMSFAuditor,
+        AccountingAuditing:Values.SMSFAccountingAuditing,
+        ATOLevy:Values.SMSFATOLevy,
+      }
+      let myData={
+        Email: localStorage.getItem("ClientEmail"),
+        PensionAccount:Values.PensionRadio,
+        Accumulation:Values. AccumulationRadio,
+        BankAccount:Values.BankAccountsRadio,
+        TermDepositAccount:Values.TermDepositRadio,
+        AustralianShareMarket:Values.AustralianShareRadio,
+        ManagedFunds:Values.ManagedFundsRadio,
+        InvestmentProperties:Values.InvestmentPropertiesRadio,
+      }
+      // Post Api
+
+      axios
+      .post('http://localhost:7000/Client-SMSF/Add-Client-SMSF', myData)
+      .then((res) => console.log('Client  Added Successfully!'))
+      console.log(myData)
+
+      }
 
     let Client_initialValues = {
 
@@ -258,76 +291,76 @@ function SMSF() {
 
     let Client_validationSchema = Yup.object({   
 
-      BankAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      BankIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      BankFinancialInstitution: Yup.string().required("Required"),
-      BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      Bank2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      Bank2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      Bank2FinancialInstitution: Yup.string().required("Required"),
-      Bank2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // BankAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // BankIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // BankFinancialInstitution: Yup.string().required("Required"),
+      // BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // Bank2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // Bank2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // Bank2FinancialInstitution: Yup.string().required("Required"),
+      // Bank2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
 
         
-      TermDepositAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDepositIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDepositFinancialInstitution: Yup.string().required("Required"),
-      TermDepositCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDeposit2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDeposit2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDeposit2FinancialInstitution: Yup.string().required("Required"),
-      TermDeposit2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDeposit3AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDeposit3IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      TermDeposit3FinancialInstitution: Yup.string().required("Required"),
-      TermDeposit3CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDepositAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDepositIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDepositFinancialInstitution: Yup.string().required("Required"),
+      // TermDepositCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDeposit2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDeposit2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDeposit2FinancialInstitution: Yup.string().required("Required"),
+      // TermDeposit2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDeposit3AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDeposit3IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // TermDeposit3FinancialInstitution: Yup.string().required("Required"),
+      // TermDeposit3CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         
-      AccumulationMemberName: Yup.string().required("Required"),
-      AccumulationEligibleDate: Yup.string().required("Required"),
-      AccumulationCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AccumulationTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AccumulationTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AccumulationNonPreservedRestriction: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AccumulationNonPreservedUnRestriction: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AccumulationPreservedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AccumulationMemberName: Yup.string().required("Required"),
+      // AccumulationEligibleDate: Yup.string().required("Required"),
+      // AccumulationCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AccumulationTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AccumulationTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AccumulationNonPreservedRestriction: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AccumulationNonPreservedUnRestriction: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AccumulationPreservedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
         
-      PensionMemberName: Yup.string().required("Required"),
-      PensionType: Yup.string().required("Required"),
-      PensionCommencementDate: Yup.string().required("Required"),
-      PensionCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionPurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionFrequency: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionRegularIncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionMinimumRequired: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionRelevantNumber: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionPurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionLumpsumTaken: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      PensionDeductibleAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionMemberName: Yup.string().required("Required"),
+      // PensionType: Yup.string().required("Required"),
+      // PensionCommencementDate: Yup.string().required("Required"),
+      // PensionCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionPurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionFrequency: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionRegularIncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionMinimumRequired: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionRelevantNumber: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionPurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionLumpsumTaken: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // PensionDeductibleAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
 
-      AustralianShareInvestmentName: Yup.string().required("Required"),
-      AustralianShareNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianShareCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianShareTotalValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianShareCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianSharePurchaseDate: Yup.string().required("Required"),
-      AustralianShareIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianShareIncomePA2: Yup.string().required("Required"),
-      AustralianShareTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianShareFrankedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      AustralianShareRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareInvestmentName: Yup.string().required("Required"),
+      // AustralianShareNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareTotalValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianSharePurchaseDate: Yup.string().required("Required"),
+      // AustralianShareIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareIncomePA2: Yup.string().required("Required"),
+      // AustralianShareTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareFrankedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // AustralianShareRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
 
-      ManagedFundsPlatformName: Yup.string().required("Required"),
-      ManagedFundsInvestmentName: Yup.string().required("Required"),
-      ManagedFundsNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      ManagedFundsCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      ManagedFundsPurchaseDate: Yup.string().required("Required"),
-      ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      ManagedFundsIncomePA2: Yup.string().required("Required"),
-      ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-      ManagedFundsRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsPlatformName: Yup.string().required("Required"),
+      // ManagedFundsInvestmentName: Yup.string().required("Required"),
+      // ManagedFundsNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsPurchaseDate: Yup.string().required("Required"),
+      // ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsIncomePA2: Yup.string().required("Required"),
+      // ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      // ManagedFundsRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
     
       InvestmentPropertiesCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
       InvestmentPropertiesClientOwnership: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -396,7 +429,8 @@ function SMSF() {
     })
 
     let Client_onSubmit = (Values) => {
-        
+        console.log("submited")
+        console.log(Values)
     }
 
     
@@ -430,10 +464,381 @@ function SMSF() {
     InvestmentModalAllOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
-  let InvestmentModal_onSubmit = (Values) => [
+  let InvestmentModal_onSubmit = (Values) => {
+    console.log("submited")
+    console.log(Values)
+}
 
-  ]
+let Accumulation_validationSchema = Yup.object({   
+  AccumulationMemberName: Yup.string().required("Required"),
+  AccumulationEligibleDate: Yup.string().required("Required"),
+  AccumulationCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AccumulationTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AccumulationTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AccumulationNonPreservedRestriction: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AccumulationNonPreservedUnRestriction: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AccumulationPreservedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0)
+})
+let AccumulationModal_onSubmit = (Values) => {
 
+  let myData= {
+   Email: localStorage.getItem("ClientEmail"),
+   MemberName:Values. AccumulationMemberName,
+   EligibleDate:Values. AccumulationEligibleDate ,
+   CurrentBalance:Values. AccumulationCurrentBalance,
+   TaxFree:Values. AccumulationTaxFree,
+   Taxed:Values. AccumulationTaxed,
+   NonPreservedRestriction:Values. AccumulationNonPreservedRestriction,
+   NonPreservedUnRestriction:Values. AccumulationNonPreservedUnRestriction,
+   PreservedAmount:Values.AccumulationPreservedAmount
+ }
+
+ console.log(myData)
+
+    // Post Api
+     axios
+     .post('http://localhost:7000/Client-SMSF/Add-Client-Accumulation', myData)
+     .then((res) => console.log('Client  Added Successfully!'))
+    
+    //  AccumulationhandleClose();
+
+ }
+
+ let PensionAccount_validationSchema = Yup.object({   
+  PensionMemberName: Yup.string().required("Required"),
+  PensionType: Yup.string().required("Required"),
+  PensionCommencementDate: Yup.string().required("Required"),
+  PensionCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionPurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionFrequency: Yup.string().required("Required"),
+  PensionRegularIncomeDrawn: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionMinimumRequired: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionRelevantNumber: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionPurchasePrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionLumpsumTaken: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  PensionDeductibleAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+
+})
+
+let PensionAccount_onSubmit = (Values) => {
+
+  let myData= {
+    Email: localStorage.getItem("ClientEmail"),
+    MemberName:Values.PensionMemberName,
+    PensionType:Values.PensionType,
+    CommencementDateDate:Values.PensionCommencementDate,
+    CurrentBalance:Values.PensionCurrentBalance,
+    TaxFree:Values.PensionTaxFree,
+    Taxed:Values.PensionTaxed,
+    OriginalPurchasePrice:Values.PensionPurchasePrice,
+    Frequency:Values.PensionFrequency,
+    RegularIncomeDrawn:Values.PensionRegularIncomeDrawn,
+    MinimumRequired:Values.PensionMinimumRequired,
+    RelevantNumber:Values.PensionRelevantNumber,
+    LumpsumTaken:Values.PensionLumpsumTaken,
+    DeductibleAmount:Values.PensionDeductibleAmount,
+ 
+ }
+
+ console.log(myData)
+    // Post Api
+     axios
+     .post('http://localhost:7000/Client-SMSF/Add-Client-PensionAccounts', myData)
+     .then((res) => console.log('Client  Added Successfully!'))
+     
+    //  PensionhandleClose();
+ }
+
+ let Bank_validationSchema = Yup.object({   
+
+  BankAnnualIncome: Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+  BankIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  BankFinancialInstitution: Yup.string().required("Required"),
+  BankCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  Bank2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  Bank2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  Bank2FinancialInstitution: Yup.string().required("Required"),
+  Bank2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+})
+let BankAccount_onSubmit = (Values) => {
+    
+  let myData= {
+    Email: localStorage.getItem("ClientEmail"),
+    CurrentValue1:Values.BankCurrentValue,
+    FinancialInstitution1:Values.BankFinancialInstitution,
+    IncomeYield1:Values.BankIncomeYield,
+    AnnualIncome1:Values.BankAnnualIncome,
+    CurrentValue2:Values.Bank2CurrentValue,
+    FinancialInstitution2:Values.Bank2FinancialInstitution,
+    IncomeYield2:Values.Bank2IncomeYield,
+    AnnualIncome2:Values.Bank2AnnualIncome,
+ 
+ }
+ console.log(myData)
+
+    // Post Api
+     axios
+     .post('http://localhost:7000/Client-SMSF/Add-Client-BankAccounts', myData)
+     .then((res) => console.log('Client  Added Successfully!'))
+     
+
+    //  BankAccountshandleClose();
+
+ }
+
+ let Term_validationSchema = Yup.object({   
+  TermDepositAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDepositIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDepositFinancialInstitution: Yup.string().required("Required"),
+  TermDepositCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDeposit2AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDeposit2IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDeposit2FinancialInstitution: Yup.string().required("Required"),
+  TermDeposit2CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDeposit3AnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDeposit3IncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  TermDeposit3FinancialInstitution: Yup.string().required("Required"),
+  TermDeposit3CurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  
+
+})
+
+
+ let Term_onSubmit = (Values) => {
+
+  let myData= {
+    Email: localStorage.getItem("ClientEmail"),
+    CurrentValue1:Values.TermDepositCurrentValue,
+    FinancialInstitution1:Values.TermDepositFinancialInstitution,
+    IncomeYield1:Values.TermDepositIncomeYield,
+    AnnualIncome1:Values.TermDepositAnnualIncome,
+
+    CurrentValue2:Values.TermDeposit2CurrentValue,
+    FinancialInstitution2:Values.TermDeposit2FinancialInstitution,
+    IncomeYield2:Values.TermDeposit2IncomeYield,
+    AnnualIncome2:Values.TermDeposit2AnnualIncome,
+
+    CurrentValue3:Values.TermDeposit3CurrentValue,
+    FinancialInstitution3:Values.TermDeposit3FinancialInstitution,
+    IncomeYield3:Values.TermDeposit3IncomeYield,
+    AnnualIncome3:Values.TermDeposit3AnnualIncome,
+ 
+ }
+ console.log(myData)
+
+    // Post Api
+     axios
+     .post('http://localhost:7000/Client-SMSF/Add-Client-TermDeposit', myData)
+     .then((res) => console.log("Data Added Successfully !"))
+    
+    //  TermDeposithandleClose();
+    
+ }
+
+ let Australian_validationSchema = Yup.object({   
+  AustralianShareInvestmentName: Yup.string().required("Required"),
+  AustralianShareNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianShareCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianShareTotalValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianShareCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianSharePurchaseDate: Yup.string().required("Required"),
+  AustralianShareIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianShareIncomePA2: Yup.string().required("Required"),
+  AustralianShareTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianShareFrankedAmount: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianShareRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+
+  
+})
+
+ let Australian_onSubmit = (Values) => {
+
+  let myData= {
+    Email: localStorage.getItem("ClientEmail"),
+    InvestmentName :Values.AustralianShareInvestmentName,
+    NoOfShares:Values.AustralianShareNoOfShares,
+    CurrentSharePrice:Values.AustralianShareCurrentPrice,
+    TotalShareValue:Values.AustralianShareTotalValue,
+    CostBase:Values.AustralianShareCostBase,
+    PurchaseDate:Values.AustralianSharePurchaseDate,
+    IncomePA:Values.AustralianShareIncomePA,
+    IncomePAType:Values.AustralianShareIncomePA2,
+    TotalIncomePA:Values.AustralianShareTotalIncomePA,
+    ReinvestIncome:Values.AustralianShareReinvestIncome,
+    FrankedAmount:Values.AustralianShareFrankedAmount,
+    RegInvestmentsPA:Values.AustralianShareRegInvestmentsPA,
+ 
+ }
+ console.log(myData)
+
+    // Post Api
+     axios
+     .post('http://localhost:7000/Client-SMSF/Add-Client-AustralianShareMarket', myData)
+     .then((res) => console.log("data added successfully"))
+   
+    //  AustralianSharehandleClose();
+
+ }
+
+ let Manage_validationSchema = Yup.object({   
+
+  ManagedFundsPlatformName: Yup.string().required("Required"),
+  ManagedFundsInvestmentName: Yup.string().required("Required"),
+  ManagedFundsNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  ManagedFundsCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  ManagedFundsPurchaseDate: Yup.string().required("Required"),
+  ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  ManagedFundsIncomePA2: Yup.string().required("Required"),
+  ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  ManagedFundsRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+
+})
+
+ let Manage_onSubmit = (Values) => {
+
+  let myData= {
+    Email: localStorage.getItem("ClientEmail"),
+    PlatformName :Values.ManagedFundsPlatformName,
+    InvestmentName:Values.ManagedFundsInvestmentName,
+    NoOfShares:Values.ManagedFundsNoOfShares,
+    CurrentSharePrice:Values.ManagedFundsCurrentPrice,
+    CurrentShareValue:Values.ManagedFundsCurrentValue,
+    OriginalInvestment:Values.ManagedFundsOriginalInvestment,
+    PurchaseDate:Values.ManagedFundsPurchaseDate,
+    IncomePA:Values.ManagedFundsIncomePA,
+    IncomePAType:Values.ManagedFundsIncomePA2,
+    TotalIncomePA:Values.ManagedFundsTotalIncomePA,
+    ReinvestIncome:Values.ManagedFundsReinvestIncome,
+    RegInvestmentsPA:Values.ManagedFundsRegInvestmentsPA,
+    
+ 
+ }
+ console.log(myData)
+
+    // Post Api
+     axios
+     .post('http://localhost:7000/Client-SMSF/Add-Client-ManagedFunds', myData)
+     .then((res) => console.log("data added successfully"))
+  
+    //  ManagedFundshandleClose();
+
+ }
+ let Investment_validationSchema = Yup.object({   
+
+  InvestmentPropertiesCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  // InvestmentPropertiesClientOwnership: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  InvestmentPropertiesCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  InvestmentPropertiesAddress: Yup.string().required("Required"),
+  InvestmentPropertiesPostcode: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  InvestmentPropertiesRentalIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  InvestmentPropertiesFrequency: Yup.string().required("Required"),
+  InvestmentPropertiesTotalAnnualIncome: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  InvestmentPropertiesExpensesPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  InvestmentPropertiesCurrentBalance: Yup.number().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    otherwise: Yup.number().notRequired()
+  }),
+
+  // InvestmentPropertiesClientBorrowing: Yup.number().when('InvestmentPropertiesLoanAttached',{
+  //   is: val => val && val.length === 3,
+  //   then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+  //   otherwise: Yup.number().notRequired()
+  // }),
+  InvestmentPropertiesLender: Yup.string().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.string().required("Required"),
+    otherwise: Yup.string().notRequired()
+  }),
+  InvestmentPropertiesRepaymentAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    otherwise: Yup.number().notRequired()
+  }),
+  InvestmentPropertiesFrequency2: Yup.string().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.string().required("Required"),
+    otherwise: Yup.string().notRequired()
+  }),
+  InvestmentPropertiesAnnualRepayment: Yup.number().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    otherwise: Yup.number().notRequired()
+  }),
+  InvestmentPropertiesInterestRatePA: Yup.number().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    otherwise: Yup.number().notRequired()
+  }),
+  InvestmentPropertiesLoanTerm: Yup.string().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.string().required("Required"),
+    otherwise: Yup.string().notRequired()
+  }),
+  InvestmentPropertiesLoanType: Yup.string().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.string().required("Required"),
+    otherwise: Yup.string().notRequired()
+  }),
+  InvestmentPropertiesDebtLoanAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+    otherwise: Yup.number().notRequired()
+  }),
+  InvestmentPropertiesYearsRemaining: Yup.string().when('InvestmentPropertiesLoanAttached',{
+    is: val => val && val.length === 3,
+    then: Yup.string().required("Required"),
+    otherwise: Yup.string().notRequired()
+  })
+
+})
+
+ let Investment_onSubmit = (Values) => {
+
+  
+  let myData= {
+
+    CurrentValue:Values.InvestmentPropertiesCurrentValue,
+    CostBase:Values.InvestmentPropertiesCostBase,
+    PropertyAddress:Values.InvestmentPropertiesAddress,
+    PostCode:Values.InvestmentPropertiesPostcode,
+    RentalIncome:Values.InvestmentPropertiesRentalIncome,
+    Frequency:Values.InvestmentPropertiesFrequency,
+    TotalAnnualIncome:Values.InvestmentPropertiesTotalAnnualIncome,
+    ExpensesPA:Values.InvestmentPropertiesExpensesPA,
+    abc:Values.InvestmentPropertiesLoanAttached, //not exist in backend
+    CurrentBalance:Values.InvestmentPropertiesCurrentBalance,
+    // InvestmentPropertiesClientBorrowing: '', not exist in this UI (Extra)
+    Lender:Values.InvestmentPropertiesLender,
+    RepaymentAmount:Values.InvestmentPropertiesRepaymentAmount,
+    Frequency2:Values.InvestmentPropertiesFrequency2,
+    AnnualRepayments:Values.InvestmentPropertiesAnnualRepayment,
+    InterestRatePA:Values.InvestmentPropertiesInterestRatePA,
+    LoanTerm:Values.InvestmentPropertiesLoanTerm,
+    LoanType:Values.InvestmentPropertiesLoanType,
+    DebtAmountLoan:Values.InvestmentPropertiesDebtLoanAmount,
+    YearsRemaining:Values.InvestmentPropertiesYearsRemaining
+    
+ 
+ }
+ console.log(myData)
+
+    // Post Api
+     axios
+     .post('http:/localhost:7000/Client-SMSF/Add-Client-InvestmentProperties', myData)
+     .then((res) => console.log(res.data))
+   
+
+// InvestmentPropertieshandleClose();
+ }
   return (
     <div className='container-fluid'>
       <div className='shadow px-4 mx-4'>
@@ -728,8 +1133,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Accumulation_validationSchema}
+                                onSubmit={AccumulationModal_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -935,8 +1340,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={PensionAccount_validationSchema}
+                                onSubmit={PensionAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1201,8 +1606,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Bank_validationSchema}
+                                onSubmit={BankAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1416,8 +1821,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Term_validationSchema}
+                                onSubmit={Term_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1678,8 +2083,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Australian_validationSchema}
+                                onSubmit={Australian_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -1943,8 +2348,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Manage_validationSchema}
+                                onSubmit={Manage_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -2217,8 +2622,8 @@ function SMSF() {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                validationSchema={Client_validationSchema}
-                                onSubmit={Client_onSubmit}>
+                                validationSchema={Investment_validationSchema}
+                                onSubmit={Investment_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>

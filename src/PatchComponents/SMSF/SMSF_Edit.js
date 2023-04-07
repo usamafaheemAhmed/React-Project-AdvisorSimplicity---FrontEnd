@@ -261,7 +261,8 @@ function SMSF_Edit() {
     let onSubmit = (Values) => {
       // Navigate('/Edit-Investment-Trust')
 
-      // input values backend attributes not found
+      // input values in backend are in different Api but is shoult be with radio buttons
+      // of modal so it will send to backend on the call of next button
 
       let myObj={
         FundName:Values.SMSFFundName,
@@ -367,6 +368,19 @@ function SMSF_Edit() {
            AustralianShareReinvestIncome:AustralianData.ReinvestIncome,
            AustralianShareFrankedAmount:AustralianData.FrankedAmount,
            AustralianShareRegInvestmentsPA:AustralianData.RegInvestmentsPA,
+
+           ManagedFundsPlatformName:managedFundData.PlatformName,
+           ManagedFundsInvestmentName:managedFundData.InvestmentName,
+           ManagedFundsNoOfShares:managedFundData.NoOfShares,
+           ManagedFundsCurrentPrice:managedFundData.CurrentSharePrice,
+           ManagedFundsCurrentValue:managedFundData.CurrentShareValue,
+           ManagedFundsOriginalInvestment:managedFundData.ManagedFundsOriginalInvestment,
+           ManagedFundsPurchaseDate:managedFundData.PurchaseDate,
+           ManagedFundsIncomePA:managedFundData.IncomePA,
+           ManagedFundsIncomePA2:managedFundData.IncomePAType,
+           ManagedFundsTotalIncomePA:managedFundData.TotalIncomePA,
+           ManagedFundsReinvestIncome:managedFundData.ReinvestIncome,
+           ManagedFundsRegInvestmentsPA:managedFundData.RegInvestmentsPA,
 
       
              InvestmentPropertiesCurrentValue:investmentData.CurrentValue,
@@ -687,18 +701,18 @@ function SMSF_Edit() {
 
        let Manage_validationSchema = Yup.object({   
 
-        ManagedFundsPlatformName:managedFundData.PlatformName,
-        ManagedFundsInvestmentName:managedFundData.InvestmentName,
-        ManagedFundsNoOfShares:managedFundData.NoOfShares,
-        ManagedFundsCurrentPrice:managedFundData.CurrentSharePrice,
-        ManagedFundsCurrentValue:managedFundData.CurrentShareValue,
-        ManagedFundsOriginalInvestment:managedFundData.ManagedFundsOriginalInvestment,
-        ManagedFundsPurchaseDate:managedFundData.PurchaseDate,
-        ManagedFundsIncomePA:managedFundData.IncomePA,
-        ManagedFundsIncomePA2:managedFundData.IncomePAType,
-        ManagedFundsTotalIncomePA:managedFundData.TotalIncomePA,
-        ManagedFundsReinvestIncome:managedFundData.ReinvestIncome,
-        ManagedFundsRegInvestmentsPA:managedFundData.RegInvestmentsPA,
+        ManagedFundsPlatformName: Yup.string().required("Required"),
+        ManagedFundsInvestmentName: Yup.string().required("Required"),
+        ManagedFundsNoOfShares: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        ManagedFundsCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        ManagedFundsPurchaseDate: Yup.string().required("Required"),
+        ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        ManagedFundsIncomePA2: Yup.string().required("Required"),
+        ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+        ManagedFundsRegInvestmentsPA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      
 
       })
 
