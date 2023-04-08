@@ -155,12 +155,11 @@ function SMSF() {
         Navigate('/Accumulation-And-Retirment');
     }
     let onSubmit = (Values) => {
-      // Navigate('/Edit-Investment-Trust')
+      Navigate('/Edit-Investment-Trust')
 
-      // input values in backend are in different Api but is shoult be with radio buttons
-      // of modal so it will send to backend on the call of next button
-
-      let myObj={
+     
+      let SMSF_Form={
+        Email:localStorage.getItem("ClientEmail"),
         FundName:Values.SMSFFundName,
         FundType:Values.SMSFFundType,
         ABN:Values.SMSFABN,
@@ -185,11 +184,17 @@ function SMSF() {
         InvestmentProperties:Values.InvestmentPropertiesRadio,
       }
       // Post Api
-
+      console.log(myData)
       axios
       .post('http://localhost:7000/Client-SMSF/Add-Client-SMSF', myData)
-      .then((res) => console.log('Client  Added Successfully!'))
-      console.log(myData)
+      .then((res) => console.log('Client  Added Successfully!')) 
+      
+
+      console.log(SMSF_Form)
+      axios
+      .post('http://localhost:7000/Client-SMSFForm/Add-Client-SMSFForm', SMSF_Form)
+      .then((res) => console.log('Client Form  Added Successfully!'))
+      
 
       }
 
@@ -435,7 +440,7 @@ function SMSF() {
 
     
   let InvestmentModal_initialValues = {
-    // InvestmentModalTotalExpense: '',
+    InvestmentModalTotalExpense: '',
     InvestmentModalCorporateFees: '',
     InvestmentModalCouncilRates: '',
     InvestmentModalLawnMoving: '',
@@ -450,7 +455,7 @@ function SMSF() {
   }
 
   let InvestmentModal_validationSchema = Yup.object({
-    // InvestmentModalTotalExpense: '',
+   
     InvestmentModalCorporateFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
     InvestmentModalCouncilRates: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
     InvestmentModalLawnMoving: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0).test("Is positive?", "Must be a positive value", (value) => value > 0) ,
@@ -803,9 +808,8 @@ let BankAccount_onSubmit = (Values) => {
 
  let Investment_onSubmit = (Values) => {
 
-  
   let myData= {
-
+    Email: localStorage.getItem("ClientEmail"),
     CurrentValue:Values.InvestmentPropertiesCurrentValue,
     CostBase:Values.InvestmentPropertiesCostBase,
     PropertyAddress:Values.InvestmentPropertiesAddress,
@@ -814,9 +818,9 @@ let BankAccount_onSubmit = (Values) => {
     Frequency:Values.InvestmentPropertiesFrequency,
     TotalAnnualIncome:Values.InvestmentPropertiesTotalAnnualIncome,
     ExpensesPA:Values.InvestmentPropertiesExpensesPA,
-    abc:Values.InvestmentPropertiesLoanAttached, //not exist in backend
+    LoanAttached:Values.InvestmentPropertiesLoanAttached,
     CurrentBalance:Values.InvestmentPropertiesCurrentBalance,
-    // InvestmentPropertiesClientBorrowing: '', not exist in this UI (Extra)
+    // // InvestmentPropertiesClientBorrowing: '', not exist in this UI (Extra)
     Lender:Values.InvestmentPropertiesLender,
     RepaymentAmount:Values.InvestmentPropertiesRepaymentAmount,
     Frequency2:Values.InvestmentPropertiesFrequency2,
@@ -833,7 +837,7 @@ let BankAccount_onSubmit = (Values) => {
 
     // Post Api
      axios
-     .post('http:/localhost:7000/Client-SMSF/Add-Client-InvestmentProperties', myData)
+     .post('http://localhost:7000/Client-SMSF/Add-Client-InvestmentProperties', myData)
      .then((res) => console.log(res.data))
    
 
@@ -1006,15 +1010,15 @@ let BankAccount_onSubmit = (Values) => {
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                     <label htmlFor="SMSFAccountant" className="form-label">Name of Accountant</   label>
-                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    <Field type="text" className="form-control shadow inputDesign" 
                                     id="SMSFAccountant" name='SMSFAccountant' placeholder="Accountant Name"/>
                                     <ErrorMessage component='div' className='text-danger fw-bold' name='SMSFAccountant' />
                                     </div>            
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="SMSFAuditor" className="form-label">Name of Accountant</   label>
-                                    <Field type="number" className="form-control shadow inputDesign" 
+                                    <label htmlFor="SMSFAuditor" className="form-label">Name of Auditor</   label>
+                                    <Field type="text" className="form-control shadow inputDesign" 
                                     id="SMSFAuditor" name='SMSFAuditor' placeholder="Auditor Name"/>
                                     <ErrorMessage component='div' className='text-danger fw-bold' name='SMSFAuditor' />
                                     </div>            
@@ -2806,7 +2810,7 @@ let BankAccount_onSubmit = (Values) => {
                                 <label htmlFor="InvestmentModalTotalExpense" className="form-label">Total Property Expenses</   label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalTotalExpense" name='InvestmentModalTotalExpense' readOnly/>
-                                <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalTotalExpense' />
+                                {/* <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalTotalExpense' /> */}
                               </div>            
                               </div>
                               <div className="col-md-6">

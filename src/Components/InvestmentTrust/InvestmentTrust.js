@@ -6,6 +6,7 @@ import plus from "./images/plus.svg"
 import notebook from './images/notebook.svg';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DatePicker from "react-datepicker";
+import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from 'react-router-dom';
 const InvestmentTrust = () => {
@@ -106,28 +107,38 @@ const handleShow8 = () => setShow8(true);
       Navigate('/SMSF')
     }
     let onSubmit = (values) => {
-      Navigate('/Personal-Insurance')
+      // Navigate('/Personal-Insurance')
 
       let AddData={
-        xyz:values.NameofFamilyTrust,
-        xyz:values.TypeofTrust,
-        xyz:values.ABN,
-        xyz:values.TrusteeType,
-        xyz:values.CorporateTrusteeName,
-        xyz:values.NumberofDirectors,
-        xyz:values.EstablishmentDate,
-        xyz:values.NameofAccountant,
-        xyz:values.DistributionCashradio,
-        xyz:values.DirectorName1,
-        xyz:values.DirectorName2,
-        xyz:values.DirectorName3,
-        xyz:values.DirectorName4,
-        xyz:values.loansAssociatedradio,
-        xyz:values.managedloansAssociatedradio,
+        Email: localStorage.getItem("ClientEmail"),
+        FamilyTrustName:values.NameofFamilyTrust,
+        TrustType:values.TypeofTrust,
+
+        ABN:values.ABN,
+        TrusteeType:values.TrusteeType,
+
+        // xyz:values.CorporateTrusteeName, miss in backend
+
+        TotalDirectors:values.NumberofDirectors,
+        EstablishmentDate:values.EstablishmentDate,
+        AccountantName:values.NameofAccountant,
+        CashDistribution:values.DistributionCashradio,
+        Director1Name:values.DirectorName1,
+        Director2Name:values.DirectorName2,
+        Director3Name:values.DirectorName3,
+        Director4Name:values.DirectorName4,
+
+        // xyz:values.loansAssociatedradio, miss in backend
+        // xyz:values.managedloansAssociatedradio, miss in backend
 
       }
-      console.log(values)
-    }
+      console.log(AddData)
+        // Post Api
+        
+        axios
+        .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentForm', AddData)
+        .then((res) => console.log('Client  Added Successfully!')) 
+   }
 
    let Bank_initialValues={
     CurrentValue1:'',
