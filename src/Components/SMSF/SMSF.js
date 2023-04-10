@@ -470,8 +470,30 @@ function SMSF() {
   })
 
   let InvestmentModal_onSubmit = (Values) => {
-    console.log("submited")
-    console.log(Values)
+       
+  let myObj = {
+    Email: localStorage.getItem("ClientEmail"),
+    // TotalExpense: Values.InvestmentModalTotalExpense,
+    TotalExpense: 5000, //Calculated value
+    CorporateFees: Values.InvestmentModalCorporateFees,
+    CouncilRates: Values.InvestmentModalCouncilRates,
+    LawnMoving: Values.InvestmentModalLawnMoving,
+    Insurance: Values.InvestmentModalInsurance,
+    LandTax: Values.InvestmentModalLandTax,
+    Repairs: Values.InvestmentModalRepairs,
+    WaterCharges: Values.InvestmentModalWaterCharges,
+    Others: Values.InvestmentModalOthers,
+    Telephone: Values.InvestmentModalTelephone,
+    ProfessionalFees: Values.InvestmentModalProfessionalFees,
+    AllOthers: Values.InvestmentModalAllOthers
+  }
+    console.log(myObj)
+
+        // Post Api
+        axios
+        .post('http://localhost:7000/Client-SMSF-Modal/Add-Client-InvestmentModal', myObj)
+        .then((res) => console.log('Client  Added Successfully!'))
+        AccumulationhandleClose();
 }
 
 let Accumulation_validationSchema = Yup.object({   

@@ -120,7 +120,7 @@ const handleShow8 = () => setShow8(true);
         // xyz:values.CorporateTrusteeName, miss in backend
 
         TotalDirectors:values.NumberofDirectors,
-        EstablishmentDate:values.EstablishmentDate,
+        // EstablishmentDate:values.EstablishmentDate,
         AccountantName:values.NameofAccountant,
         CashDistribution:values.DistributionCashradio,
         Director1Name:values.DirectorName1,
@@ -207,24 +207,36 @@ const handleShow8 = () => setShow8(true);
    let Bank_onSubmit = (values) => {
 
     let Bank_Data={
-      xyz:values.CurrentValue1,
-      xyz:values.FinancialInstituion1,
-      xyz:values.IncomeYield1,
-      xyz:values.AnnualIncome1,
-  
-      xyz:values.CurrentValue2,
-      xyz:values.FinancialInstituion2,
-      xyz:values.IncomeYield2,
-      xyz:values.AnnualIncome2,
-  
-      xyz:values.CurrentValue3,
-      xyz:values.FinancialInstituion3,
-      xyz:values.IncomeYield3,
-      xyz:values.AnnualIncome3,
-     }
-    console.log(values)
+      Email: localStorage.getItem("ClientEmail"),
 
-    // handleClose();
+      CurrentValue1:values.CurrentValue1,
+      FinancialInstitution1:values.FinancialInstituion1,
+      IncomeYield1:values.IncomeYield1,
+      // AnnualIncome1:values.AnnualIncome1,
+      AnnualIncome1:5000,
+
+  
+      CurrentValue2:values.CurrentValue2,
+      FinancialInstitution2:values.FinancialInstituion2,
+      IncomeYield2:values.IncomeYield2,
+      // AnnualIncome2:values.AnnualIncome2,
+      AnnualIncome2:5000,
+
+  
+      CurrentValue3:values.CurrentValue3,
+      FinancialInstitution3:values.FinancialInstituion3,
+      IncomeYield3:values.IncomeYield3,
+      // AnnualIncome3:values.AnnualIncome3,
+      AnnualIncome3:5000,
+
+     }
+     console.log(Bank_Data)
+
+     axios
+     .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-BankAccounts',Bank_Data)
+    .then((res)=> console.log("data added successfully"))
+
+    handleClose();
         }
 
         let Deposit_initialValues={
@@ -291,23 +303,35 @@ const handleShow8 = () => setShow8(true);
            })
 
         let Deposit_onSubmit = (values) => {
-          let Deposit_initialValues={
-            xyz:values.DepositCurrentValue1,
-            xyz:values.DepositFinancialInstituion1,
-            xyz:values.DepositIncomeYield1,
-            xyz:values.DepositAnnualIncome1,
+          let myObj={
+            Email: localStorage.getItem("ClientEmail"),
+
+            CurrentValue1:values.DepositCurrentValue1,
+            FinancialInstitution1:values.DepositFinancialInstituion1,
+            IncomeYield1:values.DepositIncomeYield1,
+            // AnnualIncome1:values.DepositAnnualIncome1,
+            AnnualIncome1:5000,
+
         
-            xyz:values.DepositCurrentValue2,
-            xyz:values.DepositFinancialInstituion2,
-            xyz:values.DepositIncomeYield2,
-            xyz:values.DepositAnnualIncome2,
+            CurrentValue2:values.DepositCurrentValue2,
+            FinancialInstitution2:values.DepositFinancialInstituion2,
+            IncomeYield2:values.DepositIncomeYield2,
+            // AnnualIncome2:values.DepositAnnualIncome2,
+            AnnualIncome2:5000,
+
         
-            xyz:values.DepositCurrentValue3,
-            xyz:values.DepositFinancialInstituion3,
-            xyz:values.DepositIncomeYield3,
-            xyz:values.DepositAnnualIncome3,
+            CurrentValue3:values.DepositCurrentValue3,
+            FinancialInstitution3:values.DepositFinancialInstituion3,
+            IncomeYield3:values.DepositIncomeYield3,
+            // AnnualIncome3:values.DepositAnnualIncome3,
+            AnnualIncome3:5000,
+
            } 
-            console.log(values)
+            console.log(myObj)
+
+            axios
+            .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-TermDeposit',myObj)
+            .then((res)=> console.log("data added successfully"))
             // handleShow2()
                 }
 
@@ -376,21 +400,34 @@ const handleShow8 = () => setShow8(true);
 
                 let Share_onSubmit = (values) => {
                   let AddData ={
-                    AustralianMarketInvestmentName:  values.ShareInvestmentName,
-                    AustralianMarketNumberOfShares: values.NoOfShares,
-                    AustralianMarketSharePrice:values.CurrentSharePrice,
-                    AustralianMarketTotalShareValue:'5000', //TotalShareValue:'', //read only
-                    AustralianMarketCostBase:values.CostBase,
-                    AustralianMarketPurchaseDate: values.PurchaseDate,
-                    AustralianMarketIncomePA: values.Incomepa,
-                    AustralianMarketIncomePAType:values.IncomepaType,
-                    AustralianMarketTotalIncomePA:'5000', //TotalIncomePa:'', //read only
-                    AustralianMarketFrankedAmount: values.FrankedAmount,
-                    AustralianMarketReinvestedIncome:values.Reinvestincomeradio,
-                    AustralianMarketRegInvestments: values.RegInvestmentsPA,
+                    Email: localStorage.getItem("ClientEmail"),
+                    InvestmentName:  values.ShareInvestmentName,
+                    NumberOfShares: values.NoOfShares,
+                    CurrentSharePrice:values.CurrentSharePrice,
+                    TotalShareValue:'5000', //TotalShareValue:'', read only
+                    CostBase:values.CostBase,
+                    PurchaseDate: values.PurchaseDate,
+                    IncomePA: values.Incomepa,
+
+                    IncomePAType:values.IncomepaType,
+
+                    TotalIncomePA:'5000', //TotalIncomePa:'', //read only
+
+                    FrankedAmount: values.FrankedAmount,
+
+                     ReinvestIncome:values.Reinvestincomeradio,
+
+
+                    RegInvestmentsPA: values.RegInvestmentsPA,
 
                   }
                     console.log(AddData)
+
+                    axios
+                    .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-Australian-Market-Share',AddData)
+                    .then((res)=> console.log("Data Added Successfully"))
+
+
                     handleClose3();
                   }
 
@@ -444,26 +481,30 @@ const handleShow8 = () => setShow8(true);
                     let Australian_loansAssociated_onSubmit = (values) => {
 
                       let myData ={
-
+                        Email: localStorage.getItem("ClientEmail"),
                         AustralianPortfolioLoanType:values.Typeofloan,
                         AustralianPortfolioCurrentBalance:values.CurrentBalance,
                         AustralianPortfolioLender:values.Lender,
                         AustralianInterestRatePA:values.InterestRatePA,
 
-                        // :values.RepaymentsAmount,
-                        // :values.Frequency,
-                        //AnnualRepayments:'', //readonly
+                        AustralianPortfolioRepaymentAmount:values.RepaymentsAmount,
+                        AustralianPortfolioFrequency:values.Frequency,
+                        AustralianPortfolioAnnualRepayment:5000, //AnnualRepayments:'', //readonly
 
                         AustralianPortfolioLoanTerm:values.LoanTermInYears,
                         AustralianPortfolioLoanType2:values.LoanType,
                         AustralianPortfolioDeductibleLoanAmount:values.DeductibleAmountofLoan,
-                        AustralianPortfolioYearRemaining:values.YearRemaning,
+                        // AustralianPortfolioYearRemaining:values.YearRemaning,
                       }
                     console.log(myData);
+
+                    axios
+                    .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-Australian-Market-Portfolio',myData)
+                    .then((res)=> console.log("data Added Successfully"))
                     handleClose4();
 
                         }
-// end Australian tab
+                        // end Australian tab
                         // managed funds tab start
 
                         // managed fund
