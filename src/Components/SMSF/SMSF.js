@@ -155,7 +155,6 @@ function SMSF() {
         Navigate('/Accumulation-And-Retirment');
     }
     let onSubmit = (Values) => {
-      Navigate('/Edit-Investment-Trust')
 
      
       let SMSF_Form={
@@ -193,7 +192,10 @@ function SMSF() {
       console.log(SMSF_Form)
       axios
       .post('http://localhost:7000/Client-SMSFForm/Add-Client-SMSFForm', SMSF_Form)
-      .then((res) => console.log('Client Form  Added Successfully!'))
+      .then((res) => {
+      Navigate('/Investment-Trust');
+        console.log('Client Form  Added Successfully!');
+      })
       
 
       }

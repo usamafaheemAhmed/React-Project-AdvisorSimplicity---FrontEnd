@@ -107,7 +107,7 @@ const handleShow8 = () => setShow8(true);
       Navigate('/SMSF')
     }
     let onSubmit = (values) => {
-      // Navigate('/Personal-Insurance')
+      
 
       let AddData={
         Email: localStorage.getItem("ClientEmail"),
@@ -117,10 +117,10 @@ const handleShow8 = () => setShow8(true);
         ABN:values.ABN,
         TrusteeType:values.TrusteeType,
 
-        // xyz:values.CorporateTrusteeName, miss in backend
+        CorporateTrusteeName:values.CorporateTrusteeName,  //miss in backend
 
         TotalDirectors:values.NumberofDirectors,
-        // EstablishmentDate:values.EstablishmentDate,
+        EstablishmentDate:values.EstablishmentDate,
         AccountantName:values.NameofAccountant,
         CashDistribution:values.DistributionCashradio,
         Director1Name:values.DirectorName1,
@@ -128,8 +128,8 @@ const handleShow8 = () => setShow8(true);
         Director3Name:values.DirectorName3,
         Director4Name:values.DirectorName4,
 
-        // xyz:values.loansAssociatedradio, miss in backend
-        // xyz:values.managedloansAssociatedradio, miss in backend
+        AustralianSharePortfolio:values.loansAssociatedradio, 
+        ManagedFunds:values.managedloansAssociatedradio,
 
       }
       console.log(AddData)
@@ -137,7 +137,10 @@ const handleShow8 = () => setShow8(true);
         
         axios
         .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentForm', AddData)
-        .then((res) => console.log('Client  Added Successfully!')) 
+        .then((res) => {
+          console.log('Client  Added Successfully!');
+          Navigate('/Personal-Insurance');
+        }) 
    }
 
    let Bank_initialValues={
@@ -332,7 +335,7 @@ const handleShow8 = () => setShow8(true);
             axios
             .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-TermDeposit',myObj)
             .then((res)=> console.log("data added successfully"))
-            // handleShow2()
+            handleClose2();
                 }
 
                 // start Australian tab
@@ -404,14 +407,14 @@ const handleShow8 = () => setShow8(true);
                     InvestmentName:  values.ShareInvestmentName,
                     NumberOfShares: values.NoOfShares,
                     CurrentSharePrice:values.CurrentSharePrice,
-                    TotalShareValue:'5000', //TotalShareValue:'', read only
+                    TotalShareValue:5000, //TotalShareValue:'', read only
                     CostBase:values.CostBase,
                     PurchaseDate: values.PurchaseDate,
                     IncomePA: values.Incomepa,
 
                     IncomePAType:values.IncomepaType,
 
-                    TotalIncomePA:'5000', //TotalIncomePa:'', //read only
+                    TotalIncomePA:5000, //TotalIncomePa:'', //read only
 
                     FrankedAmount: values.FrankedAmount,
 
@@ -567,26 +570,32 @@ const handleShow8 = () => setShow8(true);
 
                         })
                         
-                        let manageFund_onSubmit = (values) => {
-                          let myData ={
-
-
-                    ManagedFundsPlatformName:values.PlatformName, 
-                    ManagedFundsInvestmentName:values.InvestmentName, 
-                    ManagedFundsNumberOfShares:values.NoOfUnitsShares, 
-                    ManagedFundsSharePrice:values.CurrentShareUnitPrice, 
-                    ManagedFundsCurrentValue:'5000',//managedCurrentValue read only
-                    ManagedFundsOriginalInvestment:values.OriginalInvestment, 
-                    ManagedFundsPurchaseDate:values.managedPurchaseDate, 
-                    ManagedFundsIncomePA:values.managedIncomepa,
-                    ManagedFundsIncomePAType:values.managedIncomepaType, 
-                    ManagedFundsTotalIncomePA:'5000', //managedTotalIncomePA read only
-                    ManagedFundsReinvestedIncome:values.managedRegInvestmentsPA, 
-                    ManagedFundsRegInvestments:values.managedReinvestincomeradio,
+                  let manageFund_onSubmit = (values) => {
+                  let myData ={
+                    Email: localStorage.getItem("ClientEmail"),
+                    PlatformName:values.PlatformName, 
+                    InvestmentName:values.InvestmentName, 
+                    NoOfShares:values.NoOfUnitsShares, 
+                    CurrentSharePrice:values.CurrentShareUnitPrice, 
+                    CurrentShareValue:5000,//managedCurrentValue read only
+                    OriginalInvestment:values.OriginalInvestment, 
+                    PurchaseDate:values.managedPurchaseDate, 
+                    IncomePA:values.managedIncomepa,
+                    IncomePAType:values.managedIncomepaType, 
+                    TotalIncomePA:5000, //managedTotalIncomePA read only
+                    RegInvestmentsPA:values.managedRegInvestmentsPA, 
+                    ReinvestIncome:values.managedReinvestincomeradio,
+                    
   
                           }
 
-                          console.log(myData)
+      console.log(myData)
+
+      axios
+      .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds',myData)
+      .then((ref)=>{
+        console.log("Data Added Successfully !")
+      })
                           handleClose5();
                           }
 
@@ -644,23 +653,33 @@ const handleShow8 = () => setShow8(true);
                         })
 
                         let managed_onSubmit = (values) => {
-                          let MyData ={
+                          let myData ={
+                            Email: localStorage.getItem("ClientEmail"),
                             ManagedFundsPortfolioLoanType:values.Typeofloan,
                             ManagedFundsPortfolioCurrentBalance :values.CurrentBalance,
                             ManagedFundsPortfolioLender:values.Lender,
-                            ManagedFundsPortfolioInterestRatePA:values.InterestRatePA,
 
-                            A:values.RepaymentsAmount,
-                            B:values.Frequency,
-                            C:'5000',//  managedAnnualRepayments, //readonly
+
+                            ManagedFundsPortfolioRepaymentAmount:values.RepaymentsAmount,
+                            ManagedFundsPortfolioFrequency:values.Frequency,
+
+                            ManagedFundsPortfolioAnnualRepayments:5000,//  managedAnnualRepayments, //readonly
+                            ManagedFundsPortfolioInterestRatePA:values.InterestRatePA,
 
                             ManagedFundsPortfolioLoanTerm:values.LoanTermInYears,
                             ManagedFundsPortfolioLoanType2:values.LoanType,
                             ManagedFundsPortfolioDeductibleLoanAmount:values.DeductibleAmountofLoan,
                             ManagedFundsPortfolioYearRemaining:values.YearRemaning,
                           }
-                        console.log(MyData)
-                        handleShow6();
+                        console.log(myData)
+
+                        axios
+                        .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds-Portfolio',myData)
+                        .then((ref)=>{
+                          console.log("Managed Fund Portfolio Added Succeccfully!")
+                        })
+                        handleClose6();
+                        
                         }
                         // managed loan
 
@@ -670,28 +689,28 @@ const handleShow8 = () => setShow8(true);
 
                         //investment properties
 
-                        let Investment_initialValues={
-InvestmentCurrentValue:'', // num
-InvestmentCostBasePurchasePrice:'', // num
-InvestmentPropertyAddress:'',
-investmentPostcodeSuburb:'',
-InvestmentRentalIncome:'',
-InvestmentFrequency:'',
-InvestmentTotalAnnualIncome:'', // readonly
-InvestmentExpensesPA:'',
+                  let Investment_initialValues={
+                          InvestmentCurrentValue:'', // num
+                          InvestmentCostBasePurchasePrice:'', // num
+                          InvestmentPropertyAddress:'',
+                          investmentPostcodeSuburb:'',
+                          InvestmentRentalIncome:'',
+                          InvestmentFrequency:'',
+                          InvestmentTotalAnnualIncome:'', // readonly
+                          InvestmentExpensesPA:'',
 
-loanAttachedradio:'No', // radio
+                          loanAttachedradio:'No', // radio
 
-InvestmentCurrentBalance:'',
-InvestmentLender:'',
-InvestmentRepaymentsAmount:'',
-InvestmentFrequencyRadio:'',
-InvestmentAnnualRepayments:'', //readOnly
-InvestmentInterestRatePA:'',
-InvestmentLoanTermInYear:'',
-InvestmentLoanType:'',
-InvestmentDedAmountOfLoan:'', // num
-InvestmentYearsRemainingYear:'',  // select
+                          InvestmentCurrentBalance:'',
+                          InvestmentLender:'',
+                          InvestmentRepaymentsAmount:'',
+                          InvestmentFrequencyRadio:'',
+                          InvestmentAnnualRepayments:'', //readOnly
+                          InvestmentInterestRatePA:'',
+                          InvestmentLoanTermInYear:'',
+                          InvestmentLoanType:'',
+                          InvestmentDedAmountOfLoan:'', // num
+                          InvestmentYearsRemainingYear:'',  // select
 
                         }
                         let Investment_validationSchema = Yup.object({
@@ -820,32 +839,38 @@ InvestmentYearsRemainingYear:Yup.string()
                         let Investment_onSubmit = (values) => {
 
                           let myData={
-                            InvestmentPropertiesCurrentValue:values.InvestmentCurrentValue, // num
-                            InvestmentPropertiesCostBase:values.InvestmentCostBasePurchasePrice, // num
-                            InvestmentPropertiesAddress:values.InvestmentPropertyAddress,
-                            InvestmentPropertiesPostcode:values.investmentPostcodeSuburb,
-                            InvestmentPropertiesRentalIncome:values.InvestmentRentalIncome,
-                            InvestmentPropertiesFrequency:values.InvestmentFrequency,
-                            InvestmentPropertiesTotalAnnualIncome:'5000', //InvestmentTotalAnnualIncome readonly
-                            InvestmentPropertiesExpensesPA:values.InvestmentExpensesPA,
+                            Email: localStorage.getItem("ClientEmail"),
+                            CurrentValue:values.InvestmentCurrentValue, // num
+                            CostBase:values.InvestmentCostBasePurchasePrice, // num
+                            PropertyAddress:values.InvestmentPropertyAddress,
+                            PostCode:values.investmentPostcodeSuburb,
+                            RentalIncome:values.InvestmentRentalIncome,
+                            Frequency:values.InvestmentFrequency,
+                            TotalAnnualIncome:5000, //InvestmentTotalAnnualIncome readonly
+                            ExpensesPA:values.InvestmentExpensesPA,
 
-                            InvestmentPropertiesLoanAttached:values.loanAttachedradio,
+                            LoanAttached:values.loanAttachedradio,
 
-                            InvestmentPropertiesCurrentBalance:values.InvestmentCurrentBalance,
-                            InvestmentPropertiesLender:values.InvestmentLender,
-                            InvestmentPropertiesRepaymentAmount:values.InvestmentRepaymentsAmount,
-                            InvestmentPropertiesFrequency2:values.InvestmentFrequencyRadio,
-                            InvestmentPropertiesAnnualRepayment:'5000',   // InvestmentAnnualRepayments readOnly
-                            InvestmentPropertiesInterestRatePA:values.InvestmentInterestRatePA,
-                            InvestmentPropertiesLoanTerm:values.InvestmentLoanTermInYear,
-                            InvestmentPropertiesLoanType:values.InvestmentLoanType,
-                            InvestmentPropertiesDebtLoanAmount:values.InvestmentDedAmountOfLoan,
-                            InvestmentPropertiesYearsRemaining:values.InvestmentYearsRemainingYear,
+                            CurrentBalance:values.InvestmentCurrentBalance,
+                            Lender:values.InvestmentLender,
+                            RepaymentAmount:values.InvestmentRepaymentsAmount,
+                            Frequency2:values.InvestmentFrequencyRadio,
+                           AnnualRepayments:5000,   // InvestmentAnnualRepayments readOnly
+                            InterestRatePA:values.InvestmentInterestRatePA,
+                            LoanTerm:values.InvestmentLoanTermInYear,
+                            LoanType:values.InvestmentLoanType,
+                            DebtAmountLoan:values.InvestmentDedAmountOfLoan,
+                            YearsRemaining:values.InvestmentYearsRemainingYear,
 
 
                           }
                           console.log(myData)
-                          // handleClose7();
+                          axios
+                          .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentProperties',myData)
+                          .then((res)=>{
+                            console.log("Data added sussessfully!")
+                          })
+                          handleClose7();
                           }
                         //investment properties
 
@@ -939,21 +964,29 @@ InvestmentYearsRemainingYear:Yup.string()
                         })
                         let Investment_onSubmit_Modal = (values) => {
 
-                          // let myData={
-                          //     Abc:values.TotalPropertyExpenses2,   //readonly
-                          //     Abc:values.BodyCorporateFees2,
-                          //     Abc:values.CouncilRates2,
-                          //     Abc:values.GardeningAndLawnmowing2,
-                          //     Abc:values.Insurance2,
-                          //     Abc:values.LandTax2,
-                          //     Abc:values.RepairsAndMaintenance2,
-                          //     Abc:values.WaterCharges2,
-                          //     Abc:values.Other2,
-                          //     Abc:values.TelephoneAndInternet2,
-                          //     Abc:values.ProfessionalFees2,
-                          //     Abc:values.AllOther,
-                          //   }
-                          console.log(values)
+                          let myData={
+                            Email: localStorage.getItem("ClientEmail"),
+
+                             TotalPropertyExpenses:5000,   //readonly
+                              BodyCorporateFees:values.BodyCorporateFees2,
+                              CouncilRates:values.CouncilRates2,
+                              GardeningAndLawnMowing:values.GardeningAndLawnmowing2,
+                              Insurance:values.Insurance2,
+                              LandTax:values.LandTax2,
+                              RepairsAndMaintenance:values.RepairsAndMaintenance2,
+                              WaterCharges:values.WaterCharges2,
+                              Other:values.Other2,
+                              TelephoneAndInternet:values.TelephoneAndInternet2,
+                              ProfessionalFees:values.ProfessionalFees2,
+                              AllOther:values.AllOther,
+                            }
+                          console.log(myData)
+
+                          axios
+                          .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentPropertiesModal',myData)
+                          .then((res)=>{
+                            console.log("Data Added Successfully!")
+                          })
                           handleClose8();
                           }
 
@@ -2985,7 +3018,7 @@ InvestmentYearsRemainingYear:Yup.string()
                         <div className="row">
                         <div className='col-md-6'>
                         <label  className="form-label">
-                        Please Enter Details lastModal
+                        Please Enter Details
                             </label>
                             <br />
                           
@@ -3651,7 +3684,7 @@ InvestmentYearsRemainingYear:Yup.string()
                     <div className="row mt-5 mb-3">
                         <div className="col-md-12">
                           <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3">Back</button>
+                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
                         </div>
                     </div></Form>}
                      </Formik>

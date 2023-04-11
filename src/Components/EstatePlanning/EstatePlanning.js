@@ -310,9 +310,14 @@ then:Yup.string().required("Required"),
     if(isPartnered===true){
       // console.log(clientData)
       console.log(PartnerData)
-      // axios
-      // .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-      // .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+
+      axios
+      .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
+      .then((res) =>  {
+        Navigate('/Super-And-Retirment');
+        console.log("Client Estate Planning Added Successfullly!")
+      })
+
       axios
       .post('http://localhost:7000/Partner-EstatePlanning/Add-Partner-EstatePlanning', PartnerData)
       .then((res) =>  console.log("Partner Estate Planning Added Successfullly!"))
@@ -323,7 +328,10 @@ then:Yup.string().required("Required"),
           console.log(clientData)
           axios
           .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-          .then((res) =>  console.log("Client Estate Planning Added Successfullly!"))
+          .then((res) =>  {
+            Navigate('/Super-And-Retirment');
+            console.log("Client Estate Planning Added Successfullly!");
+          })
 
 
         }
@@ -398,10 +406,11 @@ then:Yup.string().required("Required"),
       
       axios
       .post('http://localhost:7000/Client-ModalEstatePlanning/Add-Client-ModalEstatePlanning', client_Modal)
-      .then((res) =>  console.log("Client Estate Planning Modal Added Successfullly!"))
+      .then((res) =>  {
+        handleClose();
+        console.log("Client Estate Planning Modal Added Successfullly!")
+      })
       
-
-        
         }
 
         let POA_initialValues2={
@@ -464,14 +473,17 @@ then:Yup.string().required("Required"),
             Relationship_5: values.Relationship52,
           }
 
-          // uzair
+          
          
           setClientPOAList2([...ClientPOAList2,Partnet_Modal])
             console.log(Partnet_Modal)
 
             axios
             .post('http://localhost:7000/Partner-ModalEstatePlanning/Add-Partner-ModalEstatePlanning', Partnet_Modal)
-            .then((res) =>  console.log("Client Estate Planning Modal Added Successfullly!"))
+            .then((res) => {
+              handleClose2();
+             console.log("Client Estate Planning Modal Added Successfullly!")
+            })
             
       
             

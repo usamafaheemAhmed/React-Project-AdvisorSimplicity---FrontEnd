@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-
+import axios from 'axios';
 import notsmoking from "./images/no-smoking.svg";
 import notebook from "./images/notebook.svg";
 import smoking from "./images/smoking.svg";
@@ -234,8 +234,34 @@ function PersonalInsurance() {
     function BackFunction(){
       Navigate('/Investment-Trust')
     }
-    let onSubmit = () => {
-      Navigate('/Risk-Profile')
+    let onSubmit = (values) => {
+      // Navigate('/Risk-Profile')
+
+      let clientData = {
+        Email: localStorage.getItem("ClientEmail"),
+        Weeks_without_PrimaryIncome:values.PersonalInsuranceWeeks,
+
+        ClaimedBenifit:values.PersonalInsuranceBenefitClaimedradio,
+        Details_ClaimedBenifit:values.PersonalInsuranceBenefitsDescription,
+
+        InusranceRejected:values.PersonalInsuranceApplicationInsuranceradio,
+        Details_InusranceRejected:values.PersonalInsuranceApplicationDescription,
+
+
+        Reason_Impediment_Disability:values.PersonalInsuranceImpedimentReasonradio,
+        Details_Reason_Impediment_Disability:values.PersonalInsuranceImpedimentReasonDescription,
+
+        PersonalInsuranceCover:values.PersonalInsuranceCoverRadio,
+
+      }
+      console.log(clientData)
+
+      axios
+      .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance',clientData)
+      .then((ref)=>{
+        console.log("Client Data Added Successfully!")
+      })
+
     }
 
     let Client_initialValues = {
@@ -319,8 +345,12 @@ function PersonalInsurance() {
       })
     })
 
-    let Client_onSubmit = () => {
+    let Client_onSubmit = (values) => {
 
+    }
+
+    let Client_onSubmit_Life = (values) => {
+    console.log(values)
     }
 
     let Partner_initialValues = {
@@ -680,8 +710,8 @@ function PersonalInsurance() {
                                           </Modal.Header>
                                         <Formik
                                           initialValues={Client_initialValues}
-                                          validationSchema={Client_validationSchema}
-                                          onSubmit={Client_onSubmit}>
+                                          // validationSchema={Client_validationSchema}
+                                          onSubmit={Client_onSubmit_Life}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
                                           <Form>
                                           <Modal.Body>
