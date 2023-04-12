@@ -1,4 +1,5 @@
-import { React, useState } from 'react';
+
+import { React, useState , useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import axios from 'axios';
@@ -13,6 +14,23 @@ import { useNavigate } from 'react-router-dom';
 
 
 function PersonalInsurance() {
+
+
+let partner= localStorage.getItem("partner");
+const [isPartnered, setIsPartnered] = useState()
+
+useEffect(() => {
+
+  
+  if(partner=="true"){
+    setIsPartnered(true)
+  }
+  else{
+    setIsPartnered(false)
+ 
+  }
+  
+   }, [])
 
   const [BenefitClaimed, setBenefitClaimed] = useState(false);
   let BenefitHandler=(e)=>{ 
@@ -104,71 +122,60 @@ function PersonalInsurance() {
     }
   }
 
-  const [PersonalInsuranceCover2, setPersonalInsuranceCover2] = useState(false);  
+  
   const [PersonalInsuranceCovershow2, setPersonalInsuranceCoverShow2] = useState(false);
   const PersonalInsuranceCover2handleClose = () => setPersonalInsuranceCoverShow2(false);
   const PersonalInsuranceCover2handleShow = () => setPersonalInsuranceCoverShow2(true);
- let PersonalInsuranceCover2Handler=(elem)=>{
-   if (elem==="No"){
-    setPersonalInsuranceCover2(false)
-   }
-   else{
-    setPersonalInsuranceCover2(true)
-   }
- }
+ 
 
- const [Partner_PersonalInsuranceCover2, setPartner_PersonalInsuranceCover2] = useState(false);  
   const [Partner_PersonalInsuranceCovershow2, setPartner_PersonalInsuranceCoverShow2] = useState(false);
   const Partner_PersonalInsuranceCover2handleClose = () => setPartner_PersonalInsuranceCoverShow2(false);
   const Partner_PersonalInsuranceCover2handleShow = () => setPartner_PersonalInsuranceCoverShow2(true);
- let Partner_PersonalInsuranceCover2Handler=(elem)=>{
-   if (elem==="No"){
-    setPartner_PersonalInsuranceCover2(false)
-   }
-   else{
-    setPartner_PersonalInsuranceCover2(true)
-   }
- }
+ 
 
   const [clientSmoker, setClientSmoker] = useState(true);
+  const [clientSmoker_Life, setClientSmoker_Life] = useState(true);
+  const [clientSmoker_Income, setClientSmoker_Income] = useState(true);
+  const [partnerSmoker_Life, setPartnerSmoker_Life] = useState(true);
+  const [partnerSmoker_Income, setPartnerSmoker_Income] = useState(true);
+
+
   let smokerHandler=(elem)=>{
     if(elem=="smoker"){
       // notSmokingID
       document.getElementById("YesSmokerID").classList.add('selectedimage');
       document.getElementById("notSmokingID").classList.add('notSelectedimage');
       document.getElementById("notSmokingID").classList.remove('selectedimage');
-      setClientSmoker("True")
+      setClientSmoker(true)
     }
       else{
         document.getElementById("notSmokingID").classList.add('selectedimage');
         document.getElementById("YesSmokerID").classList.remove('selectedimage');
         document.getElementById("YesSmokerID").classList.add('notSelectedimage');
-        setClientSmoker("False")
+        setClientSmoker(false)
 
       }
   }
 
-  const [Description1, setDescription1] = useState(false);
-  let Description1Handler=(e)=>{ 
-    if(e==="no"){
-      setDescription1(false)
+  let client_Life_smokerHandler=(elem)=>{
+    if(elem==true){
+      
+      document.getElementById("YesSmokerID_Life").classList.add('selectedimage');
+      document.getElementById("notSmokingID_Life").classList.add('notSelectedimage');
+      document.getElementById("notSmokingID_Life").classList.remove('selectedimage');
+      setClientSmoker_Life(true)
     }
-    else{
-      setDescription1(true)
-    }
-   }
+      else{
+  
+        document.getElementById("notSmokingID_Life").classList.add('selectedimage');
+        document.getElementById("YesSmokerID_Life").classList.remove('selectedimage');
+        document.getElementById("YesSmokerID_Life").classList.add('notSelectedimage');
+        setClientSmoker_Life(false)
 
-   const [Description2, setDescription2] = useState(false);
-  let Description2Handler=(e)=>{ 
-    if(e==="no"){
-      setDescription2(false)
-    }
-    else{
-      setDescription2(true)
-    }
-   }
+      }
+  }
 
-
+  
 
     let initialValues = {
       PersonalInsuranceWeeks: '',
@@ -191,6 +198,17 @@ function PersonalInsurance() {
       PersonalInsuranceBenefitsDescription2: '',
       PersonalInsuranceApplicationDescription2: '',
       PersonalInsuranceImpedimentReasonDescription2: '',
+    }
+
+    let OnlyClient_initialValues= {
+      PersonalInsuranceWeeks: '',
+      PersonalInsuranceBenefitClaimedradio: 'No',
+      PersonalInsuranceApplicationInsuranceradio: 'No',
+      PersonalInsuranceImpedimentReasonradio: 'No',
+      PersonalInsuranceCoverRadio: 'No',
+      PersonalInsuranceBenefitsDescription: '',
+      PersonalInsuranceApplicationDescription: '',
+      PersonalInsuranceImpedimentReasonDescription: '',
     }
 
     let validationSchema = Yup.object({
@@ -230,12 +248,32 @@ function PersonalInsurance() {
       })
     })
 
+    let OnlyClient_ValidationSchema = Yup.object({
+      PersonalInsuranceWeeks: Yup.number().required("Required"),
+
+      PersonalInsuranceBenefitsDescription: Yup.string().when('PersonalInsuranceBenefitClaimedradio',{
+        is: val => val && val.length === 3,
+        then: Yup.string().required("Required"),
+        otherwise: Yup.string().notRequired()
+      }),
+      PersonalInsuranceApplicationDescription:Yup.string().when('PersonalInsuranceApplicationInsuranceradio',{
+        is: val => val && val.length === 3,
+        then: Yup.string().required("Required"),
+        otherwise: Yup.string().notRequired()
+      }),
+      PersonalInsuranceImpedimentReasonDescription:Yup.string().when('PersonalInsuranceImpedimentReasonradio',{
+        is: val => val && val.length === 3,
+        then: Yup.string().required("Required"),
+        otherwise: Yup.string().notRequired()
+      }),
+    })
+
     let Navigate = useNavigate();
     function BackFunction(){
       Navigate('/Investment-Trust')
     }
     let onSubmit = (values) => {
-      // Navigate('/Risk-Profile')
+      Navigate('/Risk-Profile')
 
       let clientData = {
         Email: localStorage.getItem("ClientEmail"),
@@ -254,13 +292,60 @@ function PersonalInsurance() {
         PersonalInsuranceCover:values.PersonalInsuranceCoverRadio,
 
       }
-      console.log(clientData)
 
-      axios
+      let partnerData = {
+      Email: localStorage.getItem("ClientEmail"),
+      Weeks_without_PrimaryIncome:values.PersonalInsuranceWeeks2,
+      InusranceRejected:values.PersonalInsuranceApplicationInsurance2radio,
+      Details_InusranceRejected:values.PersonalInsuranceApplicationDescription2,
+      ClaimedBenifit:values.PersonalInsuranceBenefitClaimed2radio,
+      Details_ClaimedBenifit:values.PersonalInsuranceBenefitsDescription2,
+      Reason_Impediment_Disability:values.PersonalInsuranceImpedimentReason2radio,
+      Details_Reason_Impediment_Disability:values.PersonalInsuranceImpedimentReasonDescription2,
+      PersonalInsuranceCover:values.PersonalInsuranceCover2Radio,
+    }
+      // console.log("clientData",clientData)
+      // console.log("partnerData",partnerData)
+
+      if(isPartnered===true){
+
+       axios
       .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance',clientData)
-      .then((ref)=>{
+      .then((res)=>{
+       
         console.log("Client Data Added Successfully!")
       })
+
+      axios
+      .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance',partnerData)
+      .then((res)=>{
+        console.log("Partner Data Added Successfully!")
+      })
+
+      }
+
+      else{
+        axios
+        .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance',clientData)
+        .then(res => {
+          // const data = res.data;
+          console.log("Data Added Successfully")
+        })
+        .catch(err => {
+          if (err.response) {
+            console.log(err.response.status);
+            console.log(err.response.statusText);
+            console.log(err.message);
+            console.log(err.response.headers); // 👉️ {... response headers here}
+            console.log("ss",err.response.data); // 👉️ {... response data here}
+          }
+        });
+        
+
+      }
+
+
+     
 
     }
 
@@ -307,8 +392,10 @@ function PersonalInsurance() {
       PersonalInsurance2LoadingRadio: 'No',
       PersonalInsurance2LoadingDescription2: ''
     }
+    
+   
 
-    let Client_validationSchema = Yup.object({
+    let ClientLife_validationSchema = Yup.object({
       PersonalInsurancePolicyOwner: Yup.string().required("Required"),
       PersonalInsuranceLifeInsured: Yup.string().required("Required"),
       PersonalInsuranceInsuranceCompany: Yup.string().required("Required"),
@@ -324,6 +411,10 @@ function PersonalInsurance() {
         otherwise: Yup.string().notRequired(),
       }),
 
+    })
+    
+    let ClientIncome_validationSchema = Yup.object({
+     
       PersonalInsurance2PolicyOwner: Yup.string().required("Required"),
       PersonalInsurance2LifeInsured: Yup.string().required("Required"),
       PersonalInsurance2InsuranceCompany: Yup.string().required("Required"),
@@ -345,14 +436,7 @@ function PersonalInsurance() {
       })
     })
 
-    let Client_onSubmit = (values) => {
-
-    }
-
-    let Client_onSubmit_Life = (values) => {
-    console.log(values)
-    }
-
+    
     let Partner_initialValues = {
       PersonalInsurancePolicyNO1: '1',
       PersonalInsuranceLifeRadio: 'No',
@@ -396,47 +480,163 @@ function PersonalInsurance() {
       PersonalInsurance2LoadingRadio: 'No',
       PersonalInsurance2LoadingDescription2: ''
     }
+    
 
-    let Partner_validationSchema = Yup.object({
-      PersonalInsurancePolicyOwner: Yup.string().required("Required"),
-      PersonalInsuranceLifeInsured: Yup.string().required("Required"),
-      PersonalInsuranceInsuranceCompany: Yup.string().required("Required"),
-      PersonalInsuranceProductName: Yup.string().required("Required"),
-      PersonalInsurancePolicySrNo: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsuranceCommencedDate: Yup.string().required("Required"),
-      PersonalInsuranceRenewalDate: Yup.string().required("Required"),
-      PersonalInsurancePremiumPA: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsurancePremiumType: Yup.string().required("Required"),
-      PersonalInsuranceLoadingDescription1: Yup.string().when('PersonalInsuranceLoadingRadio',{
-        is: val => val && val.length === 3,
-        then: Yup.string().required("Required"),
-        otherwise: Yup.string().notRequired(),
-      }),
+    let Partner_onSubmit_Life = (values) => {
 
-      PersonalInsurance2PolicyOwner: Yup.string().required("Required"),
-      PersonalInsurance2LifeInsured: Yup.string().required("Required"),
-      PersonalInsurance2InsuranceCompany: Yup.string().required("Required"),
-      PersonalInsurance2ProductName: Yup.string().required("Required"),
-      PersonalInsurance2PolicySrNo: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsurance2CommencedDate: Yup.string().required("Required"),
-      PersonalInsurance2RenewalDate: Yup.string().required("Required"),
-      PersonalInsurance2MonthlyBenefit: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsurance2SuperContinuance: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsurance2WaitingPeriod: Yup.string().required("Required"),
-      PersonalInsurance2BenefitPeriod: Yup.string().required("Required"),
-      PersonalInsurance2IndemnityPeriod: Yup.string().required("Required"),
-      PersonalInsurance2PremiumPA: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsurance2PremiumType: Yup.string().required("Required"),
-      PersonalInsurance2LoadingDescription2: Yup.string().when('PersonalInsurance2LoadingRadio',{
-        is: val => val && val.length === 3,
-        then: Yup.string().required("Required"),
-        otherwise: Yup.string().notRequired(),
-      })
-    })
+  
+      let LifeData={
+        Email: localStorage.getItem("ClientEmail"),
+        Life_PolicyID:values.PersonalInsurancePolicyNO1, // read only
+        Life:values.PersonalInsuranceLifeRadio,
+        TPD:values.PersonalInsuranceTPDRadio,
+        Trauma:values.PersonalInsuranceTraumaRadio,
 
-    let Partner_onSubmit = () => {
+        Life_PolicyOwner:values.PersonalInsurancePolicyOwner,
+        Life_Insured:values.PersonalInsuranceLifeInsured,
+        Life_InsuranceCompany:values.PersonalInsuranceInsuranceCompany,
+        Life_InsuranceProduct:values.PersonalInsuranceProductName,
+        Life_PolicyNumber:values.PersonalInsurancePolicySrNo,
+        Life_PolicyDateCommenced:values.PersonalInsuranceCommencedDate,
+        Life_PolicyDateRenewal:values.PersonalInsuranceRenewalDate,
+        Life_Smoker:clientSmoker,
+        Life_PremiumPA:values.PersonalInsurancePremiumPA,
+        Life_PremiumType:values.PersonalInsurancePremiumType,
 
+        Life_CPI_Indexed:values.PersonalInsuranceCPIIndexedRadio,
+        Life_SuperannuationPolicy:values.PersonalInsuranceSuperannuationRadio,
+        Life_ContinuationPolicy:values.PersonalInsuranceContinuationRadio,
+        Life_LoadingExecutions:values.PersonalInsuranceLoadingRadio,
+        Life_Details_LoadingExecutions:values.PersonalInsuranceLoadingDescription1,
+      }
+     console.log(LifeData);
+
+     axios
+     .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance-Life',LifeData)
+     .then((ref)=>{
+      console.log("data Added successfully")
+      Partner_PersonalInsuranceCoverhandleClose();
+     })
+      } 
+       let Partner_onSubmit_Income = (values) => {
+        let partnerData={
+          Email: localStorage.getItem("ClientEmail"),
+          Income_PolicyID:values.PersonalInsurance2PolicyNO1,  // read only
+          Income_PolicyOwner:values.PersonalInsurance2PolicyOwner,
+          Income_LifeInsured:values.PersonalInsurance2LifeInsured,
+          Income_InsuranceCompany:values.PersonalInsurance2InsuranceCompany,
+          Income_InsuranceProduct:values.PersonalInsurance2ProductName,
+          Income_PolicyNumber:values.PersonalInsurance2PolicySrNo,
+          Income_PolicyDateCommenced:values.PersonalInsurance2CommencedDate,
+          Income_PolicyDateRenewal:values.PersonalInsurance2RenewalDate,
+          Income_Smoker:clientSmoker,
+          Income_MonthlyBenefit:values.PersonalInsurance2MonthlyBenefit,
+          Income_ContinuanceAmount:values.PersonalInsurance2SuperContinuance,
+          Income_WaitingPeriod:values.PersonalInsurance2WaitingPeriod,
+          Income_BenefitPeriod:values.PersonalInsurance2BenefitPeriod,
+          Income_Agreed:values.PersonalInsurance2IndemnityPeriod,
+          Income_PremiumPA:values.PersonalInsurance2PremiumPA,
+          Income_PremiumType:values.PersonalInsurance2PremiumType,
+          Income_SuperannuationPolicy:values.PersonalInsurance2SuperannuationRadio,
+          Income_Accident:values.PersonalInsurance2AccidentRadio,
+          Income_IncreasingClaim:values.PersonalInsurance2IncreasingClaimsRadio,
+          Income_TPD:values.PersonalInsurance2TPDRadio,
+          Income_BenefitIndexed:values.PersonalInsurance2BenefitIndexedRadio,
+          Income_LoadingExecutions:values.PersonalInsurance2LoadingRadio,
+          Income_Details_LoadingExecutions:values.PersonalInsurance2LoadingDescription2,
+          }
+        console.log(partnerData)
+
+        axios
+        .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance-Income',partnerData)
+        .then((res)=>{
+          console.log("Data Added Successfully!")
+          Partner_PersonalInsuranceCover2handleClose();
+        })
+        }
+
+    let Client_onSubmit_Life = (values) => {
+     
+      let LifeData={
+        Email: localStorage.getItem("ClientEmail"),
+        Life_PolicyID:values.PersonalInsurancePolicyNO1, // read only
+        Life:values.PersonalInsuranceLifeRadio,
+        TPD:values.PersonalInsuranceTPDRadio,
+        Trauma:values.PersonalInsuranceTraumaRadio,
+
+        Life_PolicyOwner:values.PersonalInsurancePolicyOwner,
+        Life_Insured:values.PersonalInsuranceLifeInsured,
+        Life_InsuranceCompany:values.PersonalInsuranceInsuranceCompany,
+        Life_InsuranceProduct:values.PersonalInsuranceProductName,
+        Life_PolicyNumber:values.PersonalInsurancePolicySrNo,
+        Life_PolicyDateCommenced:values.PersonalInsuranceCommencedDate,
+        Life_PolicyDateRenewal:values.PersonalInsuranceRenewalDate,
+        Life_Smoker:clientSmoker,
+        Life_PremiumPA:values.PersonalInsurancePremiumPA,
+        Life_PremiumType:values.PersonalInsurancePremiumType,
+
+        Life_CPI_Indexed:values.PersonalInsuranceCPIIndexedRadio,
+        Life_SuperannuationPolicy:values.PersonalInsuranceSuperannuationRadio,
+        Life_ContinuationPolicy:values.PersonalInsuranceContinuationRadio,
+        Life_LoadingExecutions:values.PersonalInsuranceLoadingRadio,
+        Life_Details_LoadingExecutions:values.PersonalInsuranceLoadingDescription1,
+      }
+     console.log(LifeData);
+
+     axios
+     .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance-Life',LifeData)
+     .then((ref)=>{
+      console.log("cliend life data added successfully!")
+      PersonalInsuranceCoverhandleClose();
+     })
+   
     }
+
+    let Client_onSubmit_Income = (values) => {
+
+      let clientData={
+      Email: localStorage.getItem("ClientEmail"),
+      Income_PolicyID:values.PersonalInsurance2PolicyNO1,  // read only
+      Income_PolicyOwner:values.PersonalInsurance2PolicyOwner,
+      Income_LifeInsured:values.PersonalInsurance2LifeInsured,
+      Income_InsuranceCompany:values.PersonalInsurance2InsuranceCompany,
+      Income_InsuranceProduct:values.PersonalInsurance2ProductName,
+      Income_PolicyNumber:values.PersonalInsurance2PolicySrNo,
+      Income_PolicyDateCommenced:values.PersonalInsurance2CommencedDate,
+      Income_PolicyDateRenewal:values.PersonalInsurance2RenewalDate,
+      Income_Smoker:clientSmoker,
+      Income_MonthlyBenefit:values.PersonalInsurance2MonthlyBenefit,
+      Income_ContinuanceAmount:values.PersonalInsurance2SuperContinuance,
+      Income_WaitingPeriod:values.PersonalInsurance2WaitingPeriod,
+      Income_BenefitPeriod:values.PersonalInsurance2BenefitPeriod,
+      Income_Agreed:values.PersonalInsurance2IndemnityPeriod,
+      Income_PremiumPA:values.PersonalInsurance2PremiumPA,
+      Income_PremiumType:values.PersonalInsurance2PremiumType,
+      Income_SuperannuationPolicy:values.PersonalInsurance2SuperannuationRadio,
+      Income_Accident:values.PersonalInsurance2AccidentRadio,
+      Income_IncreasingClaim:values.PersonalInsurance2IncreasingClaimsRadio,
+      Income_TPD:values.PersonalInsurance2TPDRadio,
+      Income_BenefitIndexed:values.PersonalInsurance2BenefitIndexedRadio,
+      Income_LoadingExecutions:values.PersonalInsurance2LoadingRadio,
+      Income_Details_LoadingExecutions:values.PersonalInsurance2LoadingDescription2,
+      }
+
+      console.log(clientData)
+
+      axios
+      .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance-Income',clientData)
+      .then((res)=>{
+        console.log("Data Added Successfully!")
+        PersonalInsuranceCover2handleClose();
+
+      })
+      }
+
+    
+
+   
+
+    
 
   return (
     
@@ -445,7 +645,7 @@ function PersonalInsurance() {
         {/* --------------------------Start client Form-------------------- */}
                   <Formik
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
+                    validationSchema={isPartnered ? validationSchema : OnlyClient_ValidationSchema}
                     onSubmit={onSubmit}
                     enableReinitialize
                     >
@@ -453,9 +653,9 @@ function PersonalInsurance() {
                       <Form>
                         <div className="container-fluid mt-4">
                           <div className="row m-0 p-0 ">
-                            <div className="col-md-2 m-0 p-0 "></div>
+                            <div className="col-md-2 "></div>
                             <div className="col-md-12">
-                              <h3 className="text-center">Personal Insurance</h3>
+                              <h3 className="text-center">Client Personal Insurance</h3>
 
                               <div className='row my-3'>
                                 <div className="col-md-6">
@@ -710,7 +910,7 @@ function PersonalInsurance() {
                                           </Modal.Header>
                                         <Formik
                                           initialValues={Client_initialValues}
-                                          // validationSchema={Client_validationSchema}
+                                          validationSchema={ClientLife_validationSchema}
                                           onSubmit={Client_onSubmit_Life}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
                                           <Form>
@@ -878,7 +1078,7 @@ function PersonalInsurance() {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurancePolicySrNo" className="form-label">Policy No.</   label>
-                                        <Field type="text" className="form-control shadow inputDesign" placeholder='Policy No'
+                                        <Field type="number" className="form-control shadow inputDesign" placeholder='Policy No'
                                         id="PersonalInsurancePolicySrNo" name='PersonalInsurancePolicySrNo'/>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurancePolicySrNo' />
                                       </div>            
@@ -904,22 +1104,22 @@ function PersonalInsurance() {
 
                                       <div className="col-md-6">
                                         <div className="mb-3">
-                                          <label className="form-label">Smoker</label>
+                                          <label className="form-label">client life Smoker</label>
                                           <div className="">
-                                            <div  id="YesSmokerID" className=" selectedimage" onClick={()=>smokerHandler("smoker")}>
+                                            <div  id="YesSmokerID_Life" className=" selectedimage" onClick={()=>client_Life_smokerHandler(true)}>
                                               <img
                                                 className="img-fluid imgPerson"
-                                                htmlFor="YesSmokerID"
+                                                htmlFor="YesSmokerID_Life"
                                                 src={smoking}
                                                 alt=""
                                               />
 
                                             </div>
                                           
-                                          <div id="notSmokingID"  className="mx-1 notSelectedimage  " onClick={()=>smokerHandler("notSmoker")}>
+                                          <div id="notSmokingID_Life"  className="mx-1 notSelectedimage  " onClick={()=>client_Life_smokerHandler(false)}>
                                               <img
                                                 className=" img-fluid imgPerson"
-                                                htmlFor="notSmokingID"
+                                                htmlFor="notSmokingID_Life"
                                                 src={notsmoking}
                                                 alt=""
                                               />
@@ -933,7 +1133,7 @@ function PersonalInsurance() {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurancePremiumPA" className="form-label">Premium P.A.</   label>
-                                        <Field type="text" className="form-control shadow inputDesign" placeholder='Premium P.A.'
+                                        <Field type="number" className="form-control shadow inputDesign" placeholder='Premium P.A.'
                                         id="PersonalInsurancePremiumPA" name='PersonalInsurancePremiumPA'/>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurancePremiumPA' />
                                       </div>            
@@ -1054,7 +1254,7 @@ function PersonalInsurance() {
                                         <div className="radiobutton">
                                           <input type="radio" name="PersonalInsuranceLoadingRadio"
                                           id="PersonalInsuranceLoadingOpt1" value="Yes" 
-                                          onClick={()=> Description1Handler("yes")} 
+                                        
                                           onChange={handleChange}
                                           checked={values.PersonalInsuranceLoadingRadio==="Yes"}
                                           />
@@ -1063,7 +1263,7 @@ function PersonalInsurance() {
                                           </label>
                                           <input type="radio" name="PersonalInsuranceLoadingRadio"
                                           id="PersonalInsuranceLoadingOpt2" value="No" 
-                                          onClick={()=> Description1Handler("no")} 
+                                         
                                           onChange={handleChange}
                                           checked={values.PersonalInsuranceLoadingRadio==="No"}
                                         />
@@ -1074,7 +1274,8 @@ function PersonalInsurance() {
                                           </div>
                                             </div>    
                                       </div>     
-                                      {Description1 && <div className='row'> <div className='col-md-6'></div>
+                                      {values.PersonalInsuranceLoadingRadio =="Yes"
+                                       && <div className='row'> <div className='col-md-6'></div>
                                       <div className="col-md-6" id="PersonalInsuranceLoadingDescription1">
                                     <div className="mb-5">
                                       <label htmlFor="PersonalInsuranceLoadingDescription1" className="form-label">
@@ -1142,8 +1343,8 @@ function PersonalInsurance() {
                                           </Modal.Header>
                                         <Formik
                                           initialValues={Client_initialValues}
-                                          validationSchema={Client_validationSchema}
-                                          onSubmit={Client_onSubmit}>
+                                          validationSchema={ClientIncome_validationSchema}
+                                          onSubmit={Client_onSubmit_Income}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
                                           <Form>
                                           <Modal.Body>
@@ -1344,7 +1545,7 @@ function PersonalInsurance() {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2PremiumPA" className="form-label">Premium P.A.</   label>
-                                        <Field type="text" className="form-control shadow inputDesign" placeholder='Premium P.A.'
+                                        <Field type="number" className="form-control shadow inputDesign" placeholder='Premium P.A.'
                                         id="PersonalInsurance2PremiumPA" name='PersonalInsurance2PremiumPA'/>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2PremiumPA' />
                                       </div>            
@@ -1523,7 +1724,7 @@ function PersonalInsurance() {
                                         <div className="radiobutton">
                                           <input type="radio" name="PersonalInsurance2LoadingRadio"
                                           id="PersonalInsurance2LoadingOpt1" value="Yes"
-                                          onClick={()=> Description2Handler("yes")} 
+                                        
                                           onChange={handleChange}
                                           checked={values.PersonalInsurance2LoadingRadio==="Yes"}
                                           />
@@ -1532,7 +1733,7 @@ function PersonalInsurance() {
                                           </label>
                                           <input type="radio" name="PersonalInsurance2LoadingRadio"
                                           id="PersonalInsurance2LoadingOpt2" value="No"
-                                          onClick={()=> Description2Handler("no")} 
+                                          
                                           onChange={handleChange}
                                           checked={values.PersonalInsurance2LoadingRadio==="No"}
                                         />
@@ -1543,7 +1744,8 @@ function PersonalInsurance() {
                                           </div>
                                             </div>    
                                       </div>                  
-                                      {Description2 && <div className="col-md-8" id="PersonalInsurance2LoadingDescription2">
+                                      {values.PersonalInsurance2LoadingRadio=="Yes"
+                                       && <div className="col-md-8" id="PersonalInsurance2LoadingDescription2">
                                     <div className="mb-5">
                                       <label htmlFor="PersonalInsurance2LoadingDescription2" className="form-label">
                                         Description
@@ -1597,6 +1799,7 @@ function PersonalInsurance() {
 
 
 
+                       {isPartnered &&
                         <div className="container-fluid mt-4">
                           <div className="row m-0 p-0 ">
                             <div className="col-md-2 m-0 p-0 "></div>
@@ -1855,9 +2058,10 @@ function PersonalInsurance() {
                                             </Modal.Title>
                                           </Modal.Header>
                                         <Formik
-                                          initialValues={Client_initialValues}
-                                          validationSchema={Client_validationSchema}
-                                          onSubmit={Client_onSubmit}>
+                                          initialValues={Partner_initialValues}
+                              
+                                          validationSchema={ClientLife_validationSchema}
+                                          onSubmit={Partner_onSubmit_Life}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
                                           <Form>
                                           <Modal.Body>
@@ -2024,7 +2228,7 @@ function PersonalInsurance() {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurancePolicySrNo" className="form-label">Policy No.</   label>
-                                        <Field type="text" className="form-control shadow inputDesign" placeholder='Policy No'
+                                        <Field type="number" className="form-control shadow inputDesign" placeholder='Policy No'
                                         id="PersonalInsurancePolicySrNo" name='PersonalInsurancePolicySrNo'/>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurancePolicySrNo' />
                                       </div>            
@@ -2079,7 +2283,7 @@ function PersonalInsurance() {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurancePremiumPA" className="form-label">Premium P.A.</   label>
-                                        <Field type="text" className="form-control shadow inputDesign" placeholder='Premium P.A.'
+                                        <Field type="number" className="form-control shadow inputDesign" placeholder='Premium P.A.'
                                         id="PersonalInsurancePremiumPA" name='PersonalInsurancePremiumPA'/>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurancePremiumPA' />
                                       </div>            
@@ -2200,7 +2404,6 @@ function PersonalInsurance() {
                                         <div className="radiobutton">
                                           <input type="radio" name="PersonalInsuranceLoadingRadio"
                                           id="PersonalInsuranceLoadingOpt1" value="Yes" 
-                                          onClick={()=> Description1Handler("yes")} 
                                           onChange={handleChange}
                                           checked={values.PersonalInsuranceLoadingRadio==="Yes"}
                                           />
@@ -2209,7 +2412,7 @@ function PersonalInsurance() {
                                           </label>
                                           <input type="radio" name="PersonalInsuranceLoadingRadio"
                                           id="PersonalInsuranceLoadingOpt2" value="No" 
-                                          onClick={()=> Description1Handler("no")} 
+                                          
                                           onChange={handleChange}
                                           checked={values.PersonalInsuranceLoadingRadio==="No"}
                                         />
@@ -2220,7 +2423,8 @@ function PersonalInsurance() {
                                           </div>
                                             </div>    
                                       </div>     
-                                      {Description1 && <div className='row'> <div className='col-md-6'></div>
+                                      {values.PersonalInsuranceLoadingRadio=="Yes"
+                                       && <div className='row'> <div className='col-md-6'></div>
                                       <div className="col-md-6" id="PersonalInsuranceLoadingDescription1">
                                     <div className="mb-5">
                                       <label htmlFor="PersonalInsuranceLoadingDescription1" className="form-label">
@@ -2287,9 +2491,11 @@ function PersonalInsurance() {
                                             </Modal.Title>
                                           </Modal.Header>
                                         <Formik
-                                          initialValues={Client_initialValues}
-                                          validationSchema={Client_validationSchema}
-                                          onSubmit={Client_onSubmit}>
+                                          initialValues={Partner_initialValues}
+                                          // partnerIncome
+                                          validationSchema={ClientIncome_validationSchema} 
+                                          onSubmit={Partner_onSubmit_Income}
+                                          >
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
                                           <Form>
                                           <Modal.Body>
@@ -2490,7 +2696,7 @@ function PersonalInsurance() {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2PremiumPA" className="form-label">Premium P.A.</   label>
-                                        <Field type="text" className="form-control shadow inputDesign" placeholder='Premium P.A.'
+                                        <Field type="number" className="form-control shadow inputDesign" placeholder='Premium P.A.'
                                         id="PersonalInsurance2PremiumPA" name='PersonalInsurance2PremiumPA'/>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2PremiumPA' />
                                       </div>            
@@ -2669,7 +2875,7 @@ function PersonalInsurance() {
                                         <div className="radiobutton">
                                           <input type="radio" name="PersonalInsurance2LoadingRadio"
                                           id="PersonalInsurance2LoadingOpt1" value="Yes"
-                                          onClick={()=> Description2Handler("yes")} 
+                                          
                                           onChange={handleChange}
                                           checked={values.PersonalInsurance2LoadingRadio==="Yes"}
                                           />
@@ -2678,7 +2884,7 @@ function PersonalInsurance() {
                                           </label>
                                           <input type="radio" name="PersonalInsurance2LoadingRadio"
                                           id="PersonalInsurance2LoadingOpt2" value="No"
-                                          onClick={()=> Description2Handler("no")} 
+                                          
                                           onChange={handleChange}
                                           checked={values.PersonalInsurance2LoadingRadio==="No"}
                                         />
@@ -2689,7 +2895,8 @@ function PersonalInsurance() {
                                           </div>
                                             </div>    
                                       </div>                  
-                                      {Description2 && <div className="col-md-8" id="PersonalInsurance2LoadingDescription2">
+                                      {values.PersonalInsurance2LoadingRadio=="Yes"
+                                       && <div className="col-md-8" id="PersonalInsurance2LoadingDescription2">
                                     <div className="mb-5">
                                       <label htmlFor="PersonalInsurance2LoadingDescription2" className="form-label">
                                         Description
@@ -2741,7 +2948,7 @@ function PersonalInsurance() {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div>}
 
 
 
