@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState , useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
@@ -14,6 +14,20 @@ import axios from 'axios';
 
 
 function SuperRetriement() {
+
+  let partner= window.localStorage.getItem("partner");
+  const [isPartnered, setIsPartnered] = useState()
+ 
+  useEffect(() => {
+ if(partner=="true"){
+   setIsPartnered(true)
+ }
+ else{
+   setIsPartnered(false)
+ 
+ }
+ 
+  }, [])
 
     const [Super, setSuper] = useState(false);
     const [Supershow, setSuperShow] = useState(false);
@@ -582,7 +596,7 @@ function SuperRetriement() {
       }
       
       axios
-      .post('http://localhost:7000/Client-Retirement/Add-Client-Lifetime-PensionAccount', ClientLifetimePensionDetails)
+      .post('http://localhost:7000/Client-Retirement/Add-Client-LifetimePension', ClientLifetimePensionDetails)
       .then((res) => console.log('Client Annuities Added Successfully!'))
       console.log(ClientLifetimePensionDetails)
     }
@@ -600,7 +614,7 @@ function SuperRetriement() {
       }
       
       axios
-      .post('http://localhost:7000/Partner-Retirement/Add-Partner-Lifetime-PensionAccount', PartnerLifetimePensionDetails)
+      .post('http://localhost:7000/Partner-Retirement/Add-Partner-LifetimePension', PartnerLifetimePensionDetails)
       .then((res) => console.log('Partner Annuities Added Successfully!'))
       console.log(PartnerLifetimePensionDetails)
     }
@@ -620,8 +634,51 @@ function SuperRetriement() {
     }
 
     let onSubmit = (Values) => {
-      Navigate('/SMSF')
-        console.log(Values)
+      // Navigate('/SMSF')
+      let clientData={
+        Email: localStorage.getItem("ClientEmail"),
+        Super:Values.SuperRadio,
+        AccountPension:Values.PensionRadio,
+        Annuities:Values.AnnuitiesRadio,
+        LifetimePension:Values.LifetimePensionRadio,
+      }
+
+      let partnerData={
+        Email: localStorage.getItem("ClientEmail"),
+        Super:Values.Super2Radio,
+        AccountPension:Values.Pension2Radio,
+        Annuities:Values.Annuities2Radio,
+        LifetimePension:Values.LifetimePension2Radio
+    }
+        console.log(clientData)
+        console.log(partnerData)
+
+        if(isPartnered==true){
+
+          axios
+          .post('http://localhost:7000/Client-Retirement/Add-Client-Retirement',clientData)
+          .then((ref)=>{
+          console.log("Client Data Added Successfully")
+          })
+  
+          axios
+          .post('http://localhost:7000/Partner-Retirement/Add-Partner',partnerData)
+          .then((res)=>{
+            console.log("Partner Data Added Successfully")
+          })
+
+        }
+        else{
+
+          axios
+          .post('http://localhost:7000/Client-Retirement/Add-Client-Retirement',clientData)
+          .then((ref)=>{
+          console.log("Client Data Added Successfully")
+          })
+
+        }
+
+       
     }
 
   return (
