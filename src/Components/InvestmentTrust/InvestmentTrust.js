@@ -143,6 +143,12 @@ const handleShow8 = () => setShow8(true);
         }) 
    }
 
+   const [bankAccountList, setBankAccountList] = useState([])
+   const [bankAccountList2, setBankAccountList2] = useState([])
+
+   const [isEdit_bankAccountList, set_isEdit_BankAccountList] = useState(false)
+
+
    let Bank_initialValues={
     CurrentValue1:'',
     FinancialInstituion1:'',
@@ -233,7 +239,60 @@ const handleShow8 = () => setShow8(true);
       AnnualIncome3:5000,
 
      }
-     console.log(Bank_Data)
+
+
+     let Bank_Data_Edit={
+      
+      CurrentValue1:values.CurrentValue1,
+      FinancialInstituion1:values.FinancialInstituion1,
+      IncomeYield1:values.IncomeYield1,
+      // AnnualIncome1:values.AnnualIncome1,
+      AnnualIncome1:5000,
+
+  
+      CurrentValue2:values.CurrentValue2,
+      FinancialInstituion2:values.FinancialInstituion2,
+      IncomeYield2:values.IncomeYield2,
+      // AnnualIncome2:values.AnnualIncome2,
+      AnnualIncome2:5000,
+
+  
+      CurrentValue3:values.CurrentValue3,
+      FinancialInstituion3:values.FinancialInstituion3,
+      IncomeYield3:values.IncomeYield3,
+      // AnnualIncome3:values.AnnualIncome3,
+      AnnualIncome3:5000,
+
+     }
+
+     setBankAccountList2([Bank_Data_Edit])
+
+    //  console.log(Bank_Data)
+
+    let bankAccount1={
+      CurrentValue:values.CurrentValue1,
+      FinancialInstitution:values.FinancialInstituion1,
+      IncomeYield:values.IncomeYield1,
+      // AnnualIncome1:values.AnnualIncome1,
+      AnnualIncome:5000,
+    }
+    let bankAccount2={
+      CurrentValue:values.CurrentValue2,
+      FinancialInstitution:values.FinancialInstituion2,
+      IncomeYield:values.IncomeYield2,
+      // AnnualIncome2:values.AnnualIncome2,
+      AnnualIncome:5000,
+    }
+    let bankAccount3={
+      CurrentValue:values.CurrentValue3,
+      FinancialInstitution:values.FinancialInstituion3,
+      IncomeYield:values.IncomeYield3,
+      // AnnualIncome3:values.AnnualIncome3,
+      AnnualIncome:5000,
+    }
+    setBankAccountList([bankAccount1,bankAccount2,bankAccount3]);
+
+     console.log(bankAccountList);
 
      axios
      .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-BankAccounts',Bank_Data)
@@ -241,6 +300,25 @@ const handleShow8 = () => setShow8(true);
 
     handleClose();
         }
+
+        let updateHandler_Bank=(elem)=>{
+          console.log(elem)
+          console.log(bankAccountList2)
+          set_isEdit_BankAccountList(true)
+          handleShow();
+        }
+
+        let deleteHandler_Bank=(e, index)=>{
+          // console.log(e)
+          console.log(index)
+
+        }
+
+        const [depositList, setdepositList] = useState([])
+        const [deposit_InitialValue2, setdeposit_InitialValue2] = useState([])
+
+        const [isEdit_deposit, set_isEdit_deposit] = useState(false)
+
 
         let Deposit_initialValues={
             DepositCurrentValue1:'',
@@ -306,7 +384,7 @@ const handleShow8 = () => setShow8(true);
            })
 
         let Deposit_onSubmit = (values) => {
-          let myObj={
+          let depositData={
             Email: localStorage.getItem("ClientEmail"),
 
             CurrentValue1:values.DepositCurrentValue1,
@@ -330,12 +408,79 @@ const handleShow8 = () => setShow8(true);
             AnnualIncome3:5000,
 
            } 
-            console.log(myObj)
+
+           let depositData2={
+          
+            DepositCurrentValue1:values.DepositCurrentValue1,
+            DepositFinancialInstituion1:values.DepositFinancialInstituion1,
+            DepositIncomeYield1:values.DepositIncomeYield1,
+            // AnnualIncome1:values.DepositAnnualIncome1,
+            DepositAnnualIncome1:5000,
+
+        
+            DepositCurrentValue2:values.DepositCurrentValue2,
+            DepositFinancialInstituion2:values.DepositFinancialInstituion2,
+            DepositIncomeYield2:values.DepositIncomeYield2,
+            // AnnualIncome2:values.DepositAnnualIncome2,
+            DepositAnnualIncome2:5000,
+
+        
+            DepositCurrentValue3:values.DepositCurrentValue3,
+            DepositFinancialInstituion3:values.DepositFinancialInstituion3,
+            DepositIncomeYield3:values.DepositIncomeYield3,
+            // AnnualIncome3:values.DepositAnnualIncome3,
+            DepositAnnualIncome3:5000,
+
+           } 
+
+
+           let deposit1={
+            DepositCurrentValue:values.DepositCurrentValue1,
+            DepositFinancialInstituion:values.DepositFinancialInstituion1,
+            DepositIncomeYield:values.DepositIncomeYield1,
+            // AnnualIncome1:values.DepositAnnualIncome1,
+            DepositAnnualIncome:5000,
+           }
+
+           let deposit2={
+            DepositCurrentValue:values.DepositCurrentValue2,
+            DepositFinancialInstituion:values.DepositFinancialInstituion2,
+            DepositIncomeYield:values.DepositIncomeYield2,
+            // AnnualIncome2:values.DepositAnnualIncome2,
+            DepositAnnualIncome:5000,
+           }
+
+           let deposit3={
+            DepositCurrentValue:values.DepositCurrentValue3,
+            DepositFinancialInstituion:values.DepositFinancialInstituion3,
+            DepositIncomeYield:values.DepositIncomeYield3,
+            // AnnualIncome:values.DepositAnnualIncome3,
+            DepositAnnualIncome:5000,
+           } 
+
+           setdepositList([deposit1,deposit2,deposit3])
+
+           setdeposit_InitialValue2([depositData2])
+
+
+            console.log(depositData)
 
             axios
-            .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-TermDeposit',myObj)
+            .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-TermDeposit',depositData)
             .then((res)=> console.log("data added successfully"))
             handleClose2();
+                }
+
+                let updateHandler_Deposit=(elem)=>{
+                 
+                  set_isEdit_deposit(true)
+                  handleShow2();
+                }
+        
+                let deleteHandler_Deposit=(e, index)=>{
+                  // console.log(e)
+                  console.log(index)
+        
                 }
 
                 // start Australian tab
@@ -991,6 +1136,9 @@ InvestmentYearsRemainingYear:Yup.string()
                           }
 
 
+
+
+
   return (
     <>
     <div className="container-fluid">
@@ -1295,7 +1443,7 @@ InvestmentYearsRemainingYear:Yup.string()
                               </Modal.Title>
                             </Modal.Header>
                            <Formik
-                            initialValues={Bank_initialValues}
+                            initialValues={isEdit_bankAccountList ? bankAccountList2[0] : Bank_initialValues}
                             validationSchema={Bank_validationSchema}
                             onSubmit={Bank_onSubmit}
                             >
@@ -1463,7 +1611,45 @@ InvestmentYearsRemainingYear:Yup.string()
                            </Formik>
                           </Modal>
                            {/* -------------bank accounts modal---------------------------- */}
-                          
+                          {/* bankTable */}
+                      <div   className='table-responsive my-3' id="childTable">
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Current Value</th>
+                                  <th>Financial Institution</th>
+                                  <th>Income Yield</th>
+                                  <th>Annual Income</th>
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  bankAccountList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.CurrentValue}</td>
+                                        <td>{elem.FinancialInstitution}</td>
+                                        <td>{elem.IncomeYield}</td>
+                                        <td>{elem.AnnualIncome}</td>
+                                        <td >
+                                        <button  type='btn' onClick={(e)=>deleteHandler_Bank(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='btn' onClick={(e)=>updateHandler_Bank(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                          {/* bankTable */}
+
 
                     </div>
                     {/* bank accounts */}
@@ -1514,7 +1700,7 @@ InvestmentYearsRemainingYear:Yup.string()
                               </Modal.Title>
                             </Modal.Header>
                            <Formik
-                            initialValues={Deposit_initialValues}
+                            initialValues={isEdit_deposit ?  deposit_InitialValue2[0] : Deposit_initialValues}
                             validationSchema={Deposit_validationSchema}
                             onSubmit={Deposit_onSubmit}
                             >
@@ -1682,7 +1868,45 @@ InvestmentYearsRemainingYear:Yup.string()
                            </Formik>
                           </Modal>
                            {/* -------------Deposit modal---------------------------- */}
-                          
+                        
+                                    {/* TermTable */}
+                      <div   className='table-responsive my-3' id="childTable">
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Current Value</th>
+                                  <th>Financial Institution</th>
+                                  <th>Income Yield</th>
+                                  <th>Annual Income</th>
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  depositList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.DepositCurrentValue}</td>
+                                        <td>{elem.DepositFinancialInstituion}</td>
+                                        <td>{elem.DepositIncomeYield}</td>
+                                        <td>{elem.DepositAnnualIncome}</td>
+                                        <td >
+                                        <button  type='btn' onClick={(e)=>deleteHandler_Deposit(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='btn' onClick={(e)=>updateHandler_Deposit(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                          {/* TermTable */}
 
                     </div>
                     {/* term deposit */}
