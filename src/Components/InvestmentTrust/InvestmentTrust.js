@@ -67,6 +67,18 @@ const handleShow8 = () => setShow8(true);
       }
       
       }
+      
+      const [AustralianShareList, setAustralianShareList] = useState([])
+      useEffect(() => {
+        // axios
+        // .get('http://localhost:7000/Client-InvestmentTrust/Australian-Market-Share')
+        // .then((res)=> {
+        //   console.log("Data get Successfully")
+        //   console.log(res.data)
+        //   setAustralianShareList(res.data)
+        // })
+      }, [])
+      
 
     let initialValues={
         NameofFamilyTrust:'',
@@ -215,9 +227,11 @@ const handleShow8 = () => setShow8(true);
 
    let Bank_onSubmit = (values) => {
 
+    set_isEdit_BankAccountList(true)
+    let emailasID=localStorage.getItem("ClientEmail");
     let Bank_Data={
       Email: localStorage.getItem("ClientEmail"),
-
+      
       CurrentValue1:values.CurrentValue1,
       FinancialInstitution1:values.FinancialInstituion1,
       IncomeYield1:values.IncomeYield1,
@@ -270,6 +284,7 @@ const handleShow8 = () => setShow8(true);
     //  console.log(Bank_Data)
 
     let bankAccount1={
+      id:1,
       CurrentValue:values.CurrentValue1,
       FinancialInstitution:values.FinancialInstituion1,
       IncomeYield:values.IncomeYield1,
@@ -277,6 +292,7 @@ const handleShow8 = () => setShow8(true);
       AnnualIncome:5000,
     }
     let bankAccount2={
+      id:2,
       CurrentValue:values.CurrentValue2,
       FinancialInstitution:values.FinancialInstituion2,
       IncomeYield:values.IncomeYield2,
@@ -284,6 +300,7 @@ const handleShow8 = () => setShow8(true);
       AnnualIncome:5000,
     }
     let bankAccount3={
+      id:3,
       CurrentValue:values.CurrentValue3,
       FinancialInstitution:values.FinancialInstituion3,
       IncomeYield:values.IncomeYield3,
@@ -298,19 +315,56 @@ const handleShow8 = () => setShow8(true);
      .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-BankAccounts',Bank_Data)
     .then((res)=> console.log("data added successfully"))
 
+    // axios
+    //  .put(` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts ${emailasID}` ,Bank_Data)
+    // .then((res)=> console.log("data Updated successfully"))
+    // .catch(err => {
+    //   if (err.response) {
+    //     console.log(err.response.status);
+    //     console.log(err.response.statusText);
+    //     console.log(err.message);
+    //     console.log(err.response.headers); // 👉️ {... response headers here}
+    //     console.log("ss",err.response.data); // 👉️ {... response data here}
+    //   }
+    // });
+
     handleClose();
         }
 
         let updateHandler_Bank=(elem)=>{
-          console.log(elem)
-          console.log(bankAccountList2)
           set_isEdit_BankAccountList(true)
           handleShow();
         }
 
         let deleteHandler_Bank=(e, index)=>{
-          // console.log(e)
-          console.log(index)
+          
+          setBankAccountList(bankAccountList.filter(object => {
+            return object.id !== e.id;
+          }));
+          
+         if(e.id==1){
+          bankAccountList2[0].CurrentValue1='';
+          bankAccountList2[0].FinancialInstituion1='';
+          bankAccountList2[0].IncomeYield1='';
+          bankAccountList2[0].AnnualIncome1='';
+
+         }
+
+         else if(e.id==2){
+          bankAccountList2[0].CurrentValue2='';
+          bankAccountList2[0].FinancialInstituion2='';
+          bankAccountList2[0].IncomeYield2='';
+          bankAccountList2[0].AnnualIncome2='';
+
+         }
+         else if(e.id==3){
+          bankAccountList2[0].CurrentValue3='';
+          bankAccountList2[0].FinancialInstituion3='';
+          bankAccountList2[0].IncomeYield3='';
+          bankAccountList2[0].AnnualIncome3='';
+
+         }
+          
 
         }
 
@@ -384,6 +438,8 @@ const handleShow8 = () => setShow8(true);
            })
 
         let Deposit_onSubmit = (values) => {
+          set_isEdit_deposit(true)
+
           let depositData={
             Email: localStorage.getItem("ClientEmail"),
 
@@ -435,6 +491,7 @@ const handleShow8 = () => setShow8(true);
 
 
            let deposit1={
+            id:1,
             DepositCurrentValue:values.DepositCurrentValue1,
             DepositFinancialInstituion:values.DepositFinancialInstituion1,
             DepositIncomeYield:values.DepositIncomeYield1,
@@ -443,6 +500,7 @@ const handleShow8 = () => setShow8(true);
            }
 
            let deposit2={
+            id:2,
             DepositCurrentValue:values.DepositCurrentValue2,
             DepositFinancialInstituion:values.DepositFinancialInstituion2,
             DepositIncomeYield:values.DepositIncomeYield2,
@@ -451,6 +509,7 @@ const handleShow8 = () => setShow8(true);
            }
 
            let deposit3={
+            id:3,
             DepositCurrentValue:values.DepositCurrentValue3,
             DepositFinancialInstituion:values.DepositFinancialInstituion3,
             DepositIncomeYield:values.DepositIncomeYield3,
@@ -478,10 +537,39 @@ const handleShow8 = () => setShow8(true);
                 }
         
                 let deleteHandler_Deposit=(e, index)=>{
-                  // console.log(e)
-                  console.log(index)
+                  // console.log(e)  
+                  setdepositList(depositList.filter(object => {
+                    return object.id !== e.id;
+                  }));
+
+
+                  if(e.id==1){
+                    deposit_InitialValue2[0].DepositCurrentValue1="";
+                    deposit_InitialValue2[0].DepositFinancialInstituion1="";
+                    deposit_InitialValue2[0].DepositIncomeYield1="";
+                  
+                  }
+                 
+                 else if(e.id==2){
+                    deposit_InitialValue2[0].DepositCurrentValue2="";
+                    deposit_InitialValue2[0].DepositFinancialInstituion2="";
+                    deposit_InitialValue2[0].DepositIncomeYield2="";
+                  
+                  }
+
+                  else if(e.id==3){
+                    deposit_InitialValue2[0].DepositCurrentValue3="";
+                    deposit_InitialValue2[0].DepositFinancialInstituion3="";
+                    deposit_InitialValue2[0].DepositIncomeYield3="";
+                  
+                  }
+
+                  
         
                 }
+
+                const [Share_initialValues2, setShare_initialValues2] = useState([])
+                const [is_Share, setIs_Share] = useState(false)
 
                 // start Australian tab
                 let Share_initialValues ={
@@ -569,6 +657,8 @@ const handleShow8 = () => setShow8(true);
                     RegInvestmentsPA: values.RegInvestmentsPA,
 
                   }
+
+                 
                     console.log(AddData)
 
                     axios
@@ -576,7 +666,45 @@ const handleShow8 = () => setShow8(true);
                     .then((res)=> console.log("Data Added Successfully"))
 
 
+                    axios
+                    .get('http://localhost:7000/Client-InvestmentTrust/Australian-Market-Share')
+                    .then((res)=> {
+                      console.log("Data get Successfully")
+                      console.log(res.data)
+                      setAustralianShareList(res.data)
+                    })
+
+                   
+
                     handleClose3();
+                  }
+
+                  let updateHandler_AustralianShare=(elem)=>{
+                    setIs_Share(true);
+                    let AddData2 ={
+                     
+                       ShareInvestmentName :elem.InvestmentName,
+                       NoOfShares: elem. NumberOfShares,
+                      CurrentSharePrice:elem.CurrentSharePrice,
+                       TotalShareValue:elem.TotalShareValue, //TotalShareValue:'', read only
+                       CostBase:elem.CostBase,
+                      //  PurchaseDate: elem.PurchaseDate,
+                       Incomepa: elem.IncomePA,
+                       IncomepaType:elem.IncomePAType,
+                       TotalIncomePa:elem.TotalIncomePA, //TotalIncomePa:'', //read only
+                       FrankedAmount: elem.FrankedAmount,
+                       Reinvestincomeradio:elem.ReinvestIncome,
+                       RegInvestmentsPA: elem.RegInvestmentsPA,
+  
+                    }
+                    setShare_initialValues2(AddData2)
+
+                    handleShow3()
+                  }
+
+                  let deleteHandler_AustralianShare=(elem)=>{
+                    set_isEdit_BankAccountList(true)
+                    handleShow3();
                   }
 
                         let Australian_loansAssociated_initialValues ={
@@ -1959,7 +2087,7 @@ InvestmentYearsRemainingYear:Yup.string()
                               </Modal.Title>
                             </Modal.Header>
                            <Formik
-                            initialValues={Share_initialValues}
+                            initialValues={is_Share ? Share_initialValues2 : Share_initialValues}
                             validationSchema={Share_validationSchema}
                             onSubmit={Share_onSubmit}
                             >
@@ -2189,6 +2317,52 @@ InvestmentYearsRemainingYear:Yup.string()
                            </Formik>
                           </Modal>
                     {/* Australian Share Market modal */}
+
+                    {/* Australian Table */}
+                      
+                        <div   className='table-responsive my-3' id="childTable">
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Company Name</th>
+                                  <th>Total Share Value</th>
+                                  <th>Cost Base</th>
+                                  <th>Income pa</th>
+                                  <th>Reinvest Income</th>
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  AustralianShareList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.InvestmentName}</td>
+                                        <td>{elem.TotalShareValue}</td>
+                                        <td>{elem.CostBase}</td>
+                                        <td>{elem.IncomePA}</td>
+                                        <td>{elem.ReinvestIncome}</td>
+                                        <td >
+                                        <button  type='btn' onClick={(e)=>deleteHandler_AustralianShare(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='btn' onClick={(e)=>updateHandler_AustralianShare(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                         
+                    {/* Australian Table */}
+
+
+                    
                     
                           
 
