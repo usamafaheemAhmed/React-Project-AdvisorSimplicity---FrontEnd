@@ -99,19 +99,19 @@ const handleShow8 = () => setShow8(true);
 
     }
     let validationSchema = Yup.object({
-      NameofFamilyTrust:Yup.string().matches(letters, "only letters").required('Required') ,
-      TypeofTrust:Yup.string().required("Required"),
-      ABN:Yup.string().required("required"),
-      TrusteeType:Yup.string().required("required"),
+      NameofFamilyTrust:Yup.string().matches(letters, "only letters"),
+      TypeofTrust:Yup.string() ,
+      ABN:Yup.string() ,
+      TrusteeType:Yup.string() ,
       CorporateTrusteeName:Yup.string()
       .when('TrusteeType',{
         is: val => val && val.length ==9,
-        then:Yup.string().required("Required"),
+        then:Yup.string() ,
         otherwise: Yup.string().notRequired()
       }),
-      EstablishmentDate:Yup.date().required("Required").nullable(),
-      NameofAccountant:Yup.string().matches(letters, "only letters").required('Required') ,
-      NumberofDirectors:Yup.string().required("Required"),
+      EstablishmentDate:Yup.date() .nullable(),
+      NameofAccountant:Yup.string().matches(letters, "only letters"),
+      NumberofDirectors:Yup.string() ,
     })
 
     let Navigate = useNavigate();
@@ -163,44 +163,29 @@ const handleShow8 = () => setShow8(true);
 
    let Bank_initialValues={
     CurrentValue1:'',
-    FinancialInstituion1:'',
+    FinancialInstitution1:'',
     IncomeYield1:'',
     AnnualIncome1:'',
 
     CurrentValue2:'',
-    FinancialInstituion2:'',
+    FinancialInstitution2:'',
     IncomeYield2:'',
     AnnualIncome2:'',
 
     CurrentValue3:'',
-    FinancialInstituion3:'',
+    FinancialInstitution3:'',
     IncomeYield3:'',
     AnnualIncome3:'',
    }
    let Bank_validationSchema = Yup.object({
-    CurrentValue1:Yup.number().required("Required")
+    CurrentValue1:Yup.number() 
     .test(
       "Is positive?",
       "Must be a positive number",
       (value) => value > 0
     ),
-    FinancialInstituion1: Yup.string().required('Required') ,
-    IncomeYield1:Yup.number().required("Required")
-    .test(
-      "Is positive?",
-      "Must be a positive number",
-
-      (value) => value > 0
-    ),
-
-    CurrentValue2:Yup.number().required("Required")
-    .test(
-      "Is positive?",
-      "Must be a positive number",
-      (value) => value > 0
-    ),
-    FinancialInstituion2: Yup.string().required('Required') ,
-    IncomeYield2:Yup.number().required("Required")
+    FinancialInstitution1: Yup.string(),
+    IncomeYield1:Yup.number() 
     .test(
       "Is positive?",
       "Must be a positive number",
@@ -208,14 +193,29 @@ const handleShow8 = () => setShow8(true);
       (value) => value > 0
     ),
 
-    CurrentValue3:Yup.number().required("Required")
+    CurrentValue2:Yup.number() 
     .test(
       "Is positive?",
       "Must be a positive number",
       (value) => value > 0
     ),
-    FinancialInstituion3: Yup.string().required('Required') ,
-    IncomeYield3:Yup.number().required("Required")
+    FinancialInstitution2: Yup.string(),
+    IncomeYield2:Yup.number() 
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+
+      (value) => value > 0
+    ),
+
+    CurrentValue3:Yup.number() 
+    .test(
+      "Is positive?",
+      "Must be a positive number",
+      (value) => value > 0
+    ),
+    FinancialInstitution3: Yup.string(),
+    IncomeYield3:Yup.number() 
     .test(
       "Is positive?",
       "Must be a positive number",
@@ -224,7 +224,7 @@ const handleShow8 = () => setShow8(true);
     ),
    })
 
-
+const [bankObj, setBankObj] = useState([])
    let Bank_onSubmit = (values) => {
 
     set_isEdit_BankAccountList(true)
@@ -233,21 +233,21 @@ const handleShow8 = () => setShow8(true);
       Email: localStorage.getItem("ClientEmail"),
       
       CurrentValue1:values.CurrentValue1,
-      FinancialInstitution1:values.FinancialInstituion1,
+      FinancialInstitution1:values.FinancialInstitution1,
       IncomeYield1:values.IncomeYield1,
       // AnnualIncome1:values.AnnualIncome1,
       AnnualIncome1:5000,
 
   
       CurrentValue2:values.CurrentValue2,
-      FinancialInstitution2:values.FinancialInstituion2,
+      FinancialInstitution2:values.FinancialInstitution2,
       IncomeYield2:values.IncomeYield2,
       // AnnualIncome2:values.AnnualIncome2,
       AnnualIncome2:5000,
 
   
       CurrentValue3:values.CurrentValue3,
-      FinancialInstitution3:values.FinancialInstituion3,
+      FinancialInstitution3:values.FinancialInstitution3,
       IncomeYield3:values.IncomeYield3,
       // AnnualIncome3:values.AnnualIncome3,
       AnnualIncome3:5000,
@@ -255,38 +255,15 @@ const handleShow8 = () => setShow8(true);
      }
 
 
-     let Bank_Data_Edit={
-      
-      CurrentValue1:values.CurrentValue1,
-      FinancialInstituion1:values.FinancialInstituion1,
-      IncomeYield1:values.IncomeYield1,
-      // AnnualIncome1:values.AnnualIncome1,
-      AnnualIncome1:5000,
 
-  
-      CurrentValue2:values.CurrentValue2,
-      FinancialInstituion2:values.FinancialInstituion2,
-      IncomeYield2:values.IncomeYield2,
-      // AnnualIncome2:values.AnnualIncome2,
-      AnnualIncome2:5000,
-
-  
-      CurrentValue3:values.CurrentValue3,
-      FinancialInstituion3:values.FinancialInstituion3,
-      IncomeYield3:values.IncomeYield3,
-      // AnnualIncome3:values.AnnualIncome3,
-      AnnualIncome3:5000,
-
-     }
-
-     setBankAccountList2([Bank_Data_Edit])
+     setBankAccountList2([Bank_Data])
 
     //  console.log(Bank_Data)
 
     let bankAccount1={
       id:1,
       CurrentValue:values.CurrentValue1,
-      FinancialInstitution:values.FinancialInstituion1,
+      FinancialInstitution:values.FinancialInstitution1,
       IncomeYield:values.IncomeYield1,
       // AnnualIncome1:values.AnnualIncome1,
       AnnualIncome:5000,
@@ -294,7 +271,7 @@ const handleShow8 = () => setShow8(true);
     let bankAccount2={
       id:2,
       CurrentValue:values.CurrentValue2,
-      FinancialInstitution:values.FinancialInstituion2,
+      FinancialInstitution:values.FinancialInstitution2,
       IncomeYield:values.IncomeYield2,
       // AnnualIncome2:values.AnnualIncome2,
       AnnualIncome:5000,
@@ -302,7 +279,7 @@ const handleShow8 = () => setShow8(true);
     let bankAccount3={
       id:3,
       CurrentValue:values.CurrentValue3,
-      FinancialInstitution:values.FinancialInstituion3,
+      FinancialInstitution:values.FinancialInstitution3,
       IncomeYield:values.IncomeYield3,
       // AnnualIncome3:values.AnnualIncome3,
       AnnualIncome:5000,
@@ -310,23 +287,31 @@ const handleShow8 = () => setShow8(true);
     setBankAccountList([bankAccount1,bankAccount2,bankAccount3]);
 
      console.log(bankAccountList);
-
-     axios
+     set_isEdit_BankAccountList(true)
+     if( isEdit_bankAccountList== false)
+     {
+  axios
      .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-BankAccounts',Bank_Data)
     .then((res)=> console.log("data added successfully"))
 
-    // axios
-    //  .put(` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts ${emailasID}` ,Bank_Data)
-    // .then((res)=> console.log("data Updated successfully"))
-    // .catch(err => {
-    //   if (err.response) {
-    //     console.log(err.response.status);
-    //     console.log(err.response.statusText);
-    //     console.log(err.message);
-    //     console.log(err.response.headers); // 👉️ {... response headers here}
-    //     console.log("ss",err.response.data); // 👉️ {... response data here}
-    //   }
-    // });
+     }
+   
+     else
+     {
+      axios
+      .patch(` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,Bank_Data)
+     .then((res)=> console.log("data Updated successfully"))
+     .catch(err => {
+       if (err.response) {
+         console.log(err.response.status);
+         console.log(err.response.statusText);
+         console.log(err.message);
+         console.log(err.response.headers); // 👉️ {... response headers here}
+         console.log("ss",err.response.data); // 👉️ {... response data here}
+       }
+     })
+     }
+   
 
     handleClose();
         }
@@ -337,34 +322,38 @@ const handleShow8 = () => setShow8(true);
         }
 
         let deleteHandler_Bank=(e, index)=>{
+        let emailasID=localStorage.getItem("ClientEmail");
+        console.log(bankAccountList2)
           
           setBankAccountList(bankAccountList.filter(object => {
             return object.id !== e.id;
           }));
           
          if(e.id==1){
-          bankAccountList2[0].CurrentValue1='';
-          bankAccountList2[0].FinancialInstituion1='';
-          bankAccountList2[0].IncomeYield1='';
-          bankAccountList2[0].AnnualIncome1='';
-
+          bankAccountList2[0].CurrentValue1="";
+          bankAccountList2[0].FinancialInstitution1='';
+          bankAccountList2[0].IncomeYield1="";
+          bankAccountList2[0].AnnualIncome1="";
          }
 
          else if(e.id==2){
           bankAccountList2[0].CurrentValue2='';
-          bankAccountList2[0].FinancialInstituion2='';
+          bankAccountList2[0].FinancialInstitution2='';
           bankAccountList2[0].IncomeYield2='';
           bankAccountList2[0].AnnualIncome2='';
 
          }
          else if(e.id==3){
           bankAccountList2[0].CurrentValue3='';
-          bankAccountList2[0].FinancialInstituion3='';
+          bankAccountList2[0].FinancialInstitution3='';
           bankAccountList2[0].IncomeYield3='';
           bankAccountList2[0].AnnualIncome3='';
 
          }
-          
+       
+         axios
+         .patch(` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,bankAccountList2[0])
+         .then((res)=> console.log("data Updated successfully"))
 
         }
 
@@ -376,44 +365,29 @@ const handleShow8 = () => setShow8(true);
 
         let Deposit_initialValues={
             DepositCurrentValue1:'',
-            DepositFinancialInstituion1:'',
+            DepositFinancialInstitution1:'',
             DepositIncomeYield1:'',
             DepositAnnualIncome1:'',
         
             DepositCurrentValue2:'',
-            DepositFinancialInstituion2:'',
+            DepositFinancialInstitution2:'',
             DepositIncomeYield2:'',
             DepositAnnualIncome2:'',
         
             DepositCurrentValue3:'',
-            DepositFinancialInstituion3:'',
+            DepositFinancialInstitution3:'',
             DepositIncomeYield3:'',
             DepositAnnualIncome3:'',
            }    
         let Deposit_validationSchema = Yup.object({
-            DepositCurrentValue1:Yup.number().required("Required")
+            DepositCurrentValue1:Yup.number() 
             .test(
               "Is positive?",
               "Must be a positive number",
               (value) => value > 0
             ),
-            DepositFinancialInstituion1: Yup.string().required('Required') ,
-            DepositIncomeYield1:Yup.number().required("Required")
-            .test(
-              "Is positive?",
-              "Must be a positive number",
-        
-              (value) => value > 0
-            ),
-        
-            DepositCurrentValue2:Yup.number().required("Required")
-            .test(
-              "Is positive?",
-              "Must be a positive number",
-              (value) => value > 0
-            ),
-            DepositFinancialInstituion2: Yup.string().required('Required') ,
-            DepositIncomeYield2:Yup.number().required("Required")
+            DepositFinancialInstitution1: Yup.string(),
+            DepositIncomeYield1:Yup.number() 
             .test(
               "Is positive?",
               "Must be a positive number",
@@ -421,14 +395,29 @@ const handleShow8 = () => setShow8(true);
               (value) => value > 0
             ),
         
-            DepositCurrentValue3:Yup.number().required("Required")
+            DepositCurrentValue2:Yup.number() 
             .test(
               "Is positive?",
               "Must be a positive number",
               (value) => value > 0
             ),
-            DepositFinancialInstituion3: Yup.string().required('Required') ,
-            DepositIncomeYield3:Yup.number().required("Required")
+            DepositFinancialInstitution2: Yup.string(),
+            DepositIncomeYield2:Yup.number() 
+            .test(
+              "Is positive?",
+              "Must be a positive number",
+        
+              (value) => value > 0
+            ),
+        
+            DepositCurrentValue3:Yup.number() 
+            .test(
+              "Is positive?",
+              "Must be a positive number",
+              (value) => value > 0
+            ),
+            DepositFinancialInstitution3: Yup.string(),
+            DepositIncomeYield3:Yup.number() 
             .test(
               "Is positive?",
               "Must be a positive number",
@@ -444,21 +433,21 @@ const handleShow8 = () => setShow8(true);
             Email: localStorage.getItem("ClientEmail"),
 
             CurrentValue1:values.DepositCurrentValue1,
-            FinancialInstitution1:values.DepositFinancialInstituion1,
+            FinancialInstitution1:values.DepositFinancialInstitution1,
             IncomeYield1:values.DepositIncomeYield1,
             // AnnualIncome1:values.DepositAnnualIncome1,
             AnnualIncome1:5000,
 
         
             CurrentValue2:values.DepositCurrentValue2,
-            FinancialInstitution2:values.DepositFinancialInstituion2,
+            FinancialInstitution2:values.DepositFinancialInstitution2,
             IncomeYield2:values.DepositIncomeYield2,
             // AnnualIncome2:values.DepositAnnualIncome2,
             AnnualIncome2:5000,
 
         
             CurrentValue3:values.DepositCurrentValue3,
-            FinancialInstitution3:values.DepositFinancialInstituion3,
+            FinancialInstitution3:values.DepositFinancialInstitution3,
             IncomeYield3:values.DepositIncomeYield3,
             // AnnualIncome3:values.DepositAnnualIncome3,
             AnnualIncome3:5000,
@@ -468,21 +457,21 @@ const handleShow8 = () => setShow8(true);
            let depositData2={
           
             DepositCurrentValue1:values.DepositCurrentValue1,
-            DepositFinancialInstituion1:values.DepositFinancialInstituion1,
+            DepositFinancialInstitution1:values.DepositFinancialInstitution1,
             DepositIncomeYield1:values.DepositIncomeYield1,
             // AnnualIncome1:values.DepositAnnualIncome1,
             DepositAnnualIncome1:5000,
 
         
             DepositCurrentValue2:values.DepositCurrentValue2,
-            DepositFinancialInstituion2:values.DepositFinancialInstituion2,
+            DepositFinancialInstitution2:values.DepositFinancialInstitution2,
             DepositIncomeYield2:values.DepositIncomeYield2,
             // AnnualIncome2:values.DepositAnnualIncome2,
             DepositAnnualIncome2:5000,
 
         
             DepositCurrentValue3:values.DepositCurrentValue3,
-            DepositFinancialInstituion3:values.DepositFinancialInstituion3,
+            DepositFinancialInstitution3:values.DepositFinancialInstitution3,
             DepositIncomeYield3:values.DepositIncomeYield3,
             // AnnualIncome3:values.DepositAnnualIncome3,
             DepositAnnualIncome3:5000,
@@ -493,7 +482,7 @@ const handleShow8 = () => setShow8(true);
            let deposit1={
             id:1,
             DepositCurrentValue:values.DepositCurrentValue1,
-            DepositFinancialInstituion:values.DepositFinancialInstituion1,
+            DepositFinancialInstituion:values.DepositFinancialInstitution1,
             DepositIncomeYield:values.DepositIncomeYield1,
             // AnnualIncome1:values.DepositAnnualIncome1,
             DepositAnnualIncome:5000,
@@ -502,7 +491,7 @@ const handleShow8 = () => setShow8(true);
            let deposit2={
             id:2,
             DepositCurrentValue:values.DepositCurrentValue2,
-            DepositFinancialInstituion:values.DepositFinancialInstituion2,
+            DepositFinancialInstituion:values.DepositFinancialInstitution2,
             DepositIncomeYield:values.DepositIncomeYield2,
             // AnnualIncome2:values.DepositAnnualIncome2,
             DepositAnnualIncome:5000,
@@ -511,7 +500,7 @@ const handleShow8 = () => setShow8(true);
            let deposit3={
             id:3,
             DepositCurrentValue:values.DepositCurrentValue3,
-            DepositFinancialInstituion:values.DepositFinancialInstituion3,
+            DepositFinancialInstituion:values.DepositFinancialInstitution3,
             DepositIncomeYield:values.DepositIncomeYield3,
             // AnnualIncome:values.DepositAnnualIncome3,
             DepositAnnualIncome:5000,
@@ -545,21 +534,21 @@ const handleShow8 = () => setShow8(true);
 
                   if(e.id==1){
                     deposit_InitialValue2[0].DepositCurrentValue1="";
-                    deposit_InitialValue2[0].DepositFinancialInstituion1="";
+                    deposit_InitialValue2[0].DepositFinancialInstitution1="";
                     deposit_InitialValue2[0].DepositIncomeYield1="";
                   
                   }
                  
                  else if(e.id==2){
                     deposit_InitialValue2[0].DepositCurrentValue2="";
-                    deposit_InitialValue2[0].DepositFinancialInstituion2="";
+                    deposit_InitialValue2[0].DepositFinancialInstitution2="";
                     deposit_InitialValue2[0].DepositIncomeYield2="";
                   
                   }
 
                   else if(e.id==3){
                     deposit_InitialValue2[0].DepositCurrentValue3="";
-                    deposit_InitialValue2[0].DepositFinancialInstituion3="";
+                    deposit_InitialValue2[0].DepositFinancialInstitution3="";
                     deposit_InitialValue2[0].DepositIncomeYield3="";
                   
                   }
@@ -587,46 +576,46 @@ const handleShow8 = () => setShow8(true);
                   Reinvestincomeradio:'No',
                 }
                 let Share_validationSchema = Yup.object({
-                  ShareInvestmentName:Yup.string().required("Required"),
-                  NoOfShares:Yup.number().required("Required")
+                  ShareInvestmentName:Yup.string() ,
+                  NoOfShares:Yup.number() 
                   .test(
                     "Is positive?",
                     "Must be positive number",
 
                     (value) => value > 0
                   ),
-                  CurrentSharePrice:Yup.number().required("Required")
+                  CurrentSharePrice:Yup.number() 
                   .test(
                     "Is positive?",
                     "Must be positive number",
                     (value) => value > 0
                   ),
                   
-                  CostBase:Yup.number().required("Required")
+                  CostBase:Yup.number() 
                   .test(
                     "Is positive?",
                     "Must be positive number",
 
                     (value) => value > 0
                   ),
-                  PurchaseDate:Yup.date().required("Required").nullable(),
-                  Incomepa:Yup.number().required("Required")
+                  PurchaseDate:Yup.date() .nullable(),
+                  Incomepa:Yup.number() 
                   .test(
                     "Is positive?",
                     "Must be positive number",
 
                     (value) => value > 0
                   ),
-                  IncomepaType:Yup.string().required("Required"),
+                  IncomepaType:Yup.string() ,
                  
-                  FrankedAmount:Yup.number().required("Required")
+                  FrankedAmount:Yup.number() 
                   .test(
                     "Is positive?",
                     "Must be positive number",
 
                     (value) => value > 0
                   ),
-                  RegInvestmentsPA:Yup.number().required("Required")
+                  RegInvestmentsPA:Yup.number() 
                   .test(
                     "Is positive?",
                     "Must be positive number",
@@ -722,36 +711,36 @@ const handleShow8 = () => setShow8(true);
                           YearRemaning:'',
                         }
                         let Australian_loansAssociated_validationSchema = Yup.object({
-                          Typeofloan:Yup.string().required("Required"),
-                          CurrentBalance:Yup.number().required("Required")
+                          Typeofloan:Yup.string() ,
+                          CurrentBalance:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Lender:Yup.string().required("Required"),
-                          RepaymentsAmount:Yup.number().required("Required")
+                          Lender:Yup.string() ,
+                          RepaymentsAmount:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Frequency:Yup.string().required("Required"),
-                          InterestRatePA:Yup.number().required("Required")
+                          Frequency:Yup.string() ,
+                          InterestRatePA:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          LoanTermInYears:Yup.string().required("Required"),
-                          LoanType:Yup.string().required("Required"),
-                          DeductibleAmountofLoan:Yup.number().required("Required")
+                          LoanTermInYears:Yup.string() ,
+                          LoanType:Yup.string() ,
+                          DeductibleAmountofLoan:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          YearRemaning:Yup.string().required("Required"),
+                          YearRemaning:Yup.string() ,
 
                         })
                     let Australian_loansAssociated_onSubmit = (values) => {
@@ -802,38 +791,38 @@ const handleShow8 = () => setShow8(true);
                         }
 
                         let manageFund_validationSchema= Yup.object({
-                          PlatformName:Yup.string().required("Required"),
-                          InvestmentName:Yup.string().required("Required"),
-                          NoOfUnitsShares:Yup.number().required("Required")
+                          PlatformName:Yup.string() ,
+                          InvestmentName:Yup.string() ,
+                          NoOfUnitsShares:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
                           
-                          CurrentShareUnitPrice:Yup.number().required("Required")
+                          CurrentShareUnitPrice:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
 
-                          OriginalInvestment:Yup.number().required("Required")
+                          OriginalInvestment:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          managedPurchaseDate:Yup.date().required("Required").nullable(),
+                          managedPurchaseDate:Yup.date() .nullable(),
 
-                          managedIncomepa:Yup.number().required("Required")
+                          managedIncomepa:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          managedIncomepaType:Yup.string().required("Required").nullable(),
-                          managedRegInvestmentsPA:Yup.number().required("Required")
+                          managedIncomepaType:Yup.string() .nullable(),
+                          managedRegInvestmentsPA:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
@@ -892,36 +881,36 @@ const handleShow8 = () => setShow8(true);
                         }
 
                         let managed_validationSchema = Yup.object({
-                          Typeofloan:Yup.string().required("Required"),
-                          CurrentBalance:Yup.number().required("Required")
+                          Typeofloan:Yup.string() ,
+                          CurrentBalance:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Lender:Yup.string().required("Required"),
-                          RepaymentsAmount:Yup.number().required("Required")
+                          Lender:Yup.string() ,
+                          RepaymentsAmount:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Frequency:Yup.string().required("Required"),
-                          InterestRatePA:Yup.number().required("Required")
+                          Frequency:Yup.string() ,
+                          InterestRatePA:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          LoanTermInYears:Yup.string().required("Required"),
-                          LoanType:Yup.string().required("Required"),
-                          DeductibleAmountofLoan:Yup.number().required("Required")
+                          LoanTermInYears:Yup.string() ,
+                          LoanType:Yup.string() ,
+                          DeductibleAmountofLoan:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          YearRemaning:Yup.string().required("Required"),
+                          YearRemaning:Yup.string() ,
 
                         })
 
@@ -988,28 +977,28 @@ const handleShow8 = () => setShow8(true);
                         }
                         let Investment_validationSchema = Yup.object({
                         
-                          InvestmentCurrentValue:Yup.number().required("Required")
+                          InvestmentCurrentValue:Yup.number() 
     .test(
       "Is positive?",
       "Must be a positive number",
       (value) => value > 0
     ),
-InvestmentCostBasePurchasePrice:Yup.number().required("Required")
+InvestmentCostBasePurchasePrice:Yup.number() 
     .test(
       "Is positive?",
       "Must be a positive number",
       (value) => value > 0
     ),
-InvestmentPropertyAddress:Yup.string().required("Required"),
-investmentPostcodeSuburb:Yup.string().required("Required"),
-InvestmentRentalIncome:Yup.number().required("Required")
+InvestmentPropertyAddress:Yup.string() ,
+investmentPostcodeSuburb:Yup.string() ,
+InvestmentRentalIncome:Yup.number() 
 .test(
   "Is positive?",
   "Must be a positive number",
   (value) => value > 0
 ),
-InvestmentFrequency:Yup.string().required("Required"),
-InvestmentExpensesPA:Yup.number().required("Required")
+InvestmentFrequency:Yup.string() ,
+InvestmentExpensesPA:Yup.number() 
 .test(
   "Is positive?",
   "Must be a positive number",
@@ -1021,7 +1010,7 @@ InvestmentExpensesPA:Yup.number().required("Required")
 InvestmentCurrentBalance:Yup.number()
 .when('loanAttachedradio',{
   is: val => val && val.length ===3,
-  then:Yup.number().required("Required")
+  then:Yup.number() 
   .test(
     "Is positive?",
     "Must be a positive number",
@@ -1034,7 +1023,7 @@ InvestmentCurrentBalance:Yup.number()
 InvestmentLender:Yup.string()
 .when("loanAttachedradio",{
   is: val => val && val.length==3,
-  then:Yup.string().required("Required")
+  then:Yup.string() 
   ,otherwise: Yup.string()
   .notRequired()
 }),
@@ -1042,7 +1031,7 @@ InvestmentLender:Yup.string()
 InvestmentRepaymentsAmount:Yup.number()
 .when('loanAttachedradio',{
   is: val => val && val.length ===3,
-  then:Yup.number().required("Required")
+  then:Yup.number() 
   .test(
     "Is positive?",
     "Must be a positive number",
@@ -1054,7 +1043,7 @@ InvestmentRepaymentsAmount:Yup.number()
 InvestmentFrequencyRadio:Yup.string()
 .when("loanAttachedradio",{
   is: val => val && val.length==3,
-  then:Yup.string().required("Required")
+  then:Yup.string() 
   ,otherwise: Yup.string()
   .notRequired()
 }),
@@ -1062,7 +1051,7 @@ InvestmentFrequencyRadio:Yup.string()
 InvestmentInterestRatePA:Yup.number()
 .when('loanAttachedradio',{
   is: val => val && val.length ===3,
-  then:Yup.number().required("Required")
+  then:Yup.number() 
   .test(
     "Is positive?",
     "Must be a positive number",
@@ -1074,7 +1063,7 @@ InvestmentInterestRatePA:Yup.number()
 InvestmentLoanTermInYear:Yup.string()
 .when("loanAttachedradio",{
   is: val => val && val.length==3,
-  then:Yup.string().required("Required")
+  then:Yup.string() 
   ,otherwise: Yup.string()
   .notRequired()
 }),
@@ -1082,7 +1071,7 @@ InvestmentLoanTermInYear:Yup.string()
 InvestmentLoanType:Yup.string()
 .when("loanAttachedradio",{
   is: val => val && val.length==3,
-  then:Yup.string().required("Required")
+  then:Yup.string() 
   ,otherwise: Yup.string()
   .notRequired()
 }),
@@ -1090,7 +1079,7 @@ InvestmentLoanType:Yup.string()
 InvestmentDedAmountOfLoan:Yup.number()
 .when('loanAttachedradio',{
   is: val => val && val.length ===3,
-  then:Yup.number().required("Required")
+  then:Yup.number() 
   .test(
     "Is positive?",
     "Must be a positive number",
@@ -1102,7 +1091,7 @@ InvestmentDedAmountOfLoan:Yup.number()
 InvestmentYearsRemainingYear:Yup.string()
 .when("loanAttachedradio",{
   is: val => val && val.length==3,
-  then:Yup.string().required("Required")
+  then:Yup.string() 
   ,otherwise: Yup.string()
   .notRequired()
 }),
@@ -1166,68 +1155,68 @@ InvestmentYearsRemainingYear:Yup.string()
                         }
                         let Investment_validationSchema_Modal = Yup.object({
                           
-                          BodyCorporateFees2:Yup.number().required("Required")
+                          BodyCorporateFees2:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          CouncilRates2:Yup.number().required("Required")
+                          CouncilRates2:Yup.number() 
                             .test(
                               "Is positive?",
                               "Must be a positive number",
                               (value) => value > 0
                             ),
-                          GardeningAndLawnmowing2:Yup.number().required("Required")
+                          GardeningAndLawnmowing2:Yup.number() 
                               .test(
                                 "Is positive?",
                                 "Must be a positive number",
                                 (value) => value > 0
                               ),
-                          Insurance2:Yup.number().required("Required")
+                          Insurance2:Yup.number() 
                               .test(
                                 "Is positive?",
                                 "Must be a positive number",
                                 (value) => value > 0
                               ),
-                          LandTax2:Yup.number().required("Required")
+                          LandTax2:Yup.number() 
                             .test(
                               "Is positive?",
                               "Must be a positive number",
                               (value) => value > 0
                             ),
-                          RepairsAndMaintenance2:Yup.number().required("Required")
+                          RepairsAndMaintenance2:Yup.number() 
                             .test(
                               "Is positive?",
                               "Must be a positive number",
                               (value) => value > 0
                             ),
-                          WaterCharges2:Yup.number().required("Required")
+                          WaterCharges2:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Other2:Yup.number().required("Required")
+                          Other2:Yup.number() 
                             .test(
                               "Is positive?",
                               "Must be a positive number",
                               (value) => value > 0
                             ),
-                            TelephoneAndInternet2:Yup.number().required("Required")
+                            TelephoneAndInternet2:Yup.number() 
                               .test(
                                 "Is positive?",
                                 "Must be a positive number",
                                 (value) => value > 0
                               ),
-                                ProfessionalFees2:Yup.number().required("Required")
+                                ProfessionalFees2:Yup.number() 
                                 .test(
                                   "Is positive?",
                                   "Must be a positive number",
                                   (value) => value > 0
                                 ),
 
-                                AllOther2:Yup.number().required("Required")
+                                AllOther2:Yup.number() 
                                 .test(
                                   "Is positive?",
                                   "Must be a positive number",
@@ -1596,10 +1585,10 @@ InvestmentYearsRemainingYear:Yup.string()
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="FinancialInstituion1" className="form-label">Financial Instituion</   label>
+                          <label htmlFor="FinancialInstitution1" className="form-label">Financial Instituion</   label>
                           <Field type="text" className="form-control shadow inputDesign"
-                           id="FinancialInstituion1" name='FinancialInstituion1' placeholder="Financial Instituion"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='FinancialInstituion1' />
+                           id="FinancialInstitution1" name='FinancialInstitution1' placeholder="Financial Instituion"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='FinancialInstitution1' />
                         </div>            
                         </div>
 
@@ -1638,10 +1627,10 @@ InvestmentYearsRemainingYear:Yup.string()
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="FinancialInstituion2" className="form-label">Financial Instituion</   label>
+                          <label htmlFor="FinancialInstitution2" className="form-label">Financial Instituion</   label>
                           <Field type="text" className="form-control shadow inputDesign"
-                           id="FinancialInstituion2" name='FinancialInstituion2' placeholder="Financial Instituion"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='FinancialInstituion2' />
+                           id="FinancialInstitution2" name='FinancialInstitution2' placeholder="Financial Instituion"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='FinancialInstitution2' />
                         </div>            
                         </div>
 
@@ -1681,10 +1670,10 @@ InvestmentYearsRemainingYear:Yup.string()
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="FinancialInstituion3" className="form-label">Financial Instituion</   label>
+                          <label htmlFor="FinancialInstitution3" className="form-label">Financial Instituion</   label>
                           <Field type="text" className="form-control shadow inputDesign"
-                           id="FinancialInstituion3" name='FinancialInstituion3' placeholder="Financial Instituion"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='FinancialInstituion3' />
+                           id="FinancialInstitution3" name='FinancialInstitution3' placeholder="Financial Instituion"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='FinancialInstitution3' />
                         </div>            
                         </div>
 
@@ -1763,8 +1752,8 @@ InvestmentYearsRemainingYear:Yup.string()
                                         <td>{elem.IncomeYield}</td>
                                         <td>{elem.AnnualIncome}</td>
                                         <td >
-                                        <button  type='btn' onClick={(e)=>deleteHandler_Bank(elem,index)} className='btn btn-danger btn-sm'>delete</button>
-                                        <button  type='btn' onClick={(e)=>updateHandler_Bank(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                        <button  type='button' onClick={(e)=>deleteHandler_Bank(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_Bank(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                         </td> 
                                     
@@ -1853,10 +1842,10 @@ InvestmentYearsRemainingYear:Yup.string()
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="DepositFinancialInstituion1" className="form-label">Financial Instituion</   label>
+                          <label htmlFor="DepositFinancialInstitution1" className="form-label">Financial Instituion</   label>
                           <Field type="text" className="form-control shadow inputDesign"
-                           id="DepositFinancialInstituion1" name='DepositFinancialInstituion1' placeholder="Financial Instituion"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='DepositFinancialInstituion1' />
+                           id="DepositFinancialInstitution1" name='DepositFinancialInstitution1' placeholder="Financial Instituion"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='DepositFinancialInstitution1' />
                         </div>            
                         </div>
 
@@ -1895,10 +1884,10 @@ InvestmentYearsRemainingYear:Yup.string()
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="DepositFinancialInstituion2" className="form-label">Financial Instituion</   label>
+                          <label htmlFor="DepositFinancialInstitution2" className="form-label">Financial Instituion</   label>
                           <Field type="text" className="form-control shadow inputDesign"
-                           id="DepositFinancialInstituion2" name='DepositFinancialInstituion2' placeholder="Financial Instituion"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='DepositFinancialInstituion2' />
+                           id="DepositFinancialInstitution2" name='DepositFinancialInstitution2' placeholder="Financial Instituion"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='DepositFinancialInstitution2' />
                         </div>            
                         </div>
 
@@ -1938,10 +1927,10 @@ InvestmentYearsRemainingYear:Yup.string()
                         </div>
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="DepositFinancialInstituion3" className="form-label">Financial Instituion</   label>
+                          <label htmlFor="DepositFinancialInstitution3" className="form-label">Financial Instituion</   label>
                           <Field type="text" className="form-control shadow inputDesign"
-                           id="DepositFinancialInstituion3" name='DepositFinancialInstituion3' placeholder="Financial Instituion"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='DepositFinancialInstituion3' />
+                           id="DepositFinancialInstitution3" name='DepositFinancialInstitution3' placeholder="Financial Instituion"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='DepositFinancialInstitution3' />
                         </div>            
                         </div>
 
