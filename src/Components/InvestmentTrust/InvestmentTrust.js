@@ -343,9 +343,8 @@ const [bankObj, setBankObj] = useState([])
          }
        
          axios
-         .patch(` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,bankAccountList2[0])
+         .patch(`http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,bankAccountList2[0])
          .then((res)=> console.log("data Updated successfully"))
-
         }
 
         const [depositList, setdepositList] = useState([])
