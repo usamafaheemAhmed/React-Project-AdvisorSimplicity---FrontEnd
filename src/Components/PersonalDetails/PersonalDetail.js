@@ -45,6 +45,10 @@ const PersonalDetail = () => {
   const [isChildTable, setIsChildTable] = useState(false)
 
 
+  const [UpdateChild, setUpdateChild] = useState([]);
+  const [SubmitFlag, setSubmitFlag] = useState(false);
+
+  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -623,14 +627,18 @@ const initialValues2={
   }
   const onSubmit2= (values,action) => {
   
-    let age=document.getElementById("childAge").value;
-    
+
+
+
+    let age= parseFloat(document.getElementById("childAge").value);
+    console.log(age);
+
     let ChildDetails={
       Email: localStorage.getItem("ClientEmail"),
-      ChildNO: parseFloat(checkNumber),
+      ChildNO: parseFloat(numOfChild),
       ChildName:values.childNameID,
       ChildDOB:values.childDoBID,
-      ChildAge:parseFloat(age),
+      ChildAge:values.childAge,
       ChildGender:childGender,
       ChildRelation:values.childRelationship,
       ChildFinancialyDependent:values.childDependentradio,
@@ -643,33 +651,54 @@ const initialValues2={
       ChildUniversityEducationCost:parseFloat(values.CostofUniEducation)||0,
       ChildCourseYear:parseFloat(values.courseYears)||0,    
     }
-    console.log(ChildDetails)
-    setListOfChild([...listOfChild, ChildDetails])
-
-    axios
-  .post('http://localhost:7000/Child/Add-Child', ChildDetails)
-  .then((res) => console.log("Child Successfully Added!"))
-
-
-     console.log(listOfChild)
-   
-    setChildGender("female")
-    //  handleClose ();
-    if(numOfChild==checkNumber){
+    
+    if(SubmitFlag){
+      console.log("true")
       handleClose ();
-      setNumOfChild(1)
-      setIsChildTable(true)
+
+      console.log(listOfChild)
+
+      setListOfChild((current) =>current.filter((listOfChild) => listOfChild.ChildNO !== numOfChild));
+      
+      setListOfChild(listOfChild=>[...listOfChild, ChildDetails]);
+
+      setSubmitFlag(false);
+
+
     }
     else{
-      setNumOfChild(numOfChild+1)
-      handleClose ();
-      setIsChildTable(true)
-
-      // setShow(true)
-      setTimeout(() => {
-        handleShow();
-      }, 600);
+      console.log("false")
+      console.log(ChildDetails)
+      setListOfChild([...listOfChild, ChildDetails])
+  
+      axios
+    .post('http://localhost:7000/Child/Add-Child', ChildDetails)
+    .then((res) => console.log("Child Successfully Added!"))
+  
+  
+       console.log(listOfChild)
+     
+      setChildGender("female")
+      //  handleClose ();
+      if(numOfChild==checkNumber){
+        handleClose ();
+        setNumOfChild(1)
+        setIsChildTable(true)
+      }
+      else{
+        setNumOfChild(numOfChild+1)
+        
+        handleClose ();
+        setIsChildTable(true)
+  
+        // setShow(true)
+        setTimeout(() => {
+          handleShow();
+        }, 600);
+      }
     }
+
+  
 
    
   
@@ -791,11 +820,57 @@ const initialValues2={
    }
 
    let deleteHandler=(e)=>{
-    console.log("delete",e)
+    // console.log("delete",e)
+
+    let ChildNO = e.ChildNO;
+
+    setListOfChild((current) => 
+    current.filter((listOfChild) => listOfChild.ChildNO !== ChildNO));
+
+
+    setTimeout(() => {
+          console.log(listOfChild);
+    }, 500);
+
+
    }
 
    let updateHandler=(e)=>{
-    console.log("update",e)
+    // console.log("update",e);
+    setNumOfChild(e.ChildNO);
+    let data = {
+      ChildNO: parseFloat(numOfChild),
+      childNameID:e.ChildName,
+      childDoBID:e.ChildDOB,
+      childAge : e.ChildAge,
+      childRelationship:e.ChildRelation,
+      childDependentradio:e.ChildFinancialyDependent,
+      DependantUntilAge:e.ChildDependentAge,
+      childSupportReceived:e.ChildSupportRecieved,
+      AmountPaidReceivedID:e.ChildAmountRecieved,
+      significantEducationRadio:e.ChildSignificantEducationCost,
+      CostofPrimaryEducation:e.ChildPrimaryEducationCost,
+      CostofSecondaryEducation:e.ChildSecondaryEducationCost,
+      CostofUniEducation:e.ChildUniversityEducationCost,
+      courseYears:e.ChildCourseYear,
+    };
+   
+
+
+
+
+
+
+    setUpdateChild([data]);
+    setSubmitFlag(true);
+    setTimeout(() => {
+      setShow(true);
+
+      // console.log("UpdateChild",UpdateChild);
+      // console.log("setSubmitFlag",SubmitFlag);
+
+
+    }, 1000);
    }
 
   return (
@@ -1119,12 +1194,12 @@ const initialValues2={
                         />
                         <div className="input-group-append">
                           <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='ClientDoBID' type='date' id="HiddenDate"
+                            <input className="HiddenDate" type='date' id="HiddenDate"
                              onChange={()=>ChangeDateFormat("ClientDoBID","HiddenDate")}/>
                           </span>
                         </div>
                       </div>
-                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID" />
+                      <ErrorMessage component='div' className="text-danger fw-bold" name="ClientDoBID" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -1141,7 +1216,7 @@ const initialValues2={
                           // onChange={(e) => setFieldValue("employeeAgeID", e.target.value)}
                           // value={values.employeeAgeID}
                         />
-                        <ErrorMessage component='div' className="text-danger fw-bold"name="employeeAgeID" />
+                        <ErrorMessage component='div' className="text-danger fw-bold" name="employeeAgeID" />
 
                       </div>
                     </div>
@@ -1869,7 +1944,7 @@ const initialValues2={
                           </Modal.Header>
 
                           <Formik 
-                           initialValues={initialValues2}
+                           initialValues={SubmitFlag? UpdateChild[0] : initialValues2}
                            validationSchema={validationSchema2}
                            onSubmit={onSubmit2}
                            
@@ -1928,7 +2003,7 @@ const initialValues2={
                                     htmlFor="childDoBID"
                                     className="form-label"
                                   >
-                                    Date of Birth
+                                    Date of Birth child
                                   </label>
 
                                   {/* <Field
@@ -1945,8 +2020,7 @@ const initialValues2={
                           id="childDoBID"
                           name='childDoBID'
                           onBlur={(e)=>ageHandler("childDoBID","childAge")}
-                          value={values.DoBID}
-                          max="2023-1-31"
+                          
                         />
                         <div className="input-group-append">
                           <span className="input-group-text" id="CalenderIcon">
@@ -1969,12 +2043,13 @@ const initialValues2={
                                     htmlFor="childAge"
                                     className="form-label"
                                   >
-                                    Age
+                                    Age Child
                                   </label>
-                                  <input
+                                  <Field
                                     type="text"
                                     className="form-control inputDesign shadow"
                                     id="childAge"
+                                    name="childAge"
                                     placeholder="Age"
                                     readOnly
                                   />
@@ -2513,10 +2588,11 @@ return(
         <td>{elem.ChildGender}</td>
         <td>{elem.ChildRelation}</td>
         <td >
-         {/* <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-         <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button> */}
 
-         </td> 
+         <button  type='button' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+         <button  type='button' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+         </td>
     
     </tr>
     );

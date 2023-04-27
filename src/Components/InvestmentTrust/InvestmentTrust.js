@@ -68,16 +68,7 @@ const handleShow8 = () => setShow8(true);
       
       }
       
-      const [AustralianShareList, setAustralianShareList] = useState([])
-      useEffect(() => {
-        // axios
-        // .get('http://localhost:7000/Client-InvestmentTrust/Australian-Market-Share')
-        // .then((res)=> {
-        //   console.log("Data get Successfully")
-        //   console.log(res.data)
-        //   setAustralianShareList(res.data)
-        // })
-      }, [])
+
       
 
     let initialValues={
@@ -559,6 +550,8 @@ const [bankObj, setBankObj] = useState([])
 
                 const [Share_initialValues2, setShare_initialValues2] = useState([])
                 const [is_Share, setIs_Share] = useState(false)
+                const [AustralianShareList, setAustralianShareList] = useState([])
+
 
                 // start Australian tab
                 let Share_initialValues ={
@@ -624,6 +617,15 @@ const [bankObj, setBankObj] = useState([])
                 }) 
 
                 let Share_onSubmit = (values) => {
+
+                  let myDate=values.PurchaseDate;
+                  let day = myDate.getDate();
+                  let month = myDate.getMonth();
+                  let year = myDate.getFullYear();
+
+                  let PurchaseDate= day +"/"+ month +"/"+ year
+
+                  console.log(PurchaseDate)
                   let AddData ={
                     Email: localStorage.getItem("ClientEmail"),
                     InvestmentName:  values.ShareInvestmentName,
@@ -631,7 +633,7 @@ const [bankObj, setBankObj] = useState([])
                     CurrentSharePrice:values.CurrentSharePrice,
                     TotalShareValue:5000, //TotalShareValue:'', read only
                     CostBase:values.CostBase,
-                    PurchaseDate: values.PurchaseDate,
+                    PurchaseDate: PurchaseDate,
                     IncomePA: values.Incomepa,
 
                     IncomePAType:values.IncomepaType,
@@ -664,7 +666,7 @@ const [bankObj, setBankObj] = useState([])
                     })
 
                    
-
+                    setIs_Share(false);
                     handleClose3();
                   }
 
@@ -692,74 +694,83 @@ const [bankObj, setBankObj] = useState([])
                   }
 
                   let deleteHandler_AustralianShare=(elem)=>{
-                    set_isEdit_BankAccountList(true)
+                    // set_isEdit_BankAccountList(true)
                     handleShow3();
                   }
 
+                  const [loan_initialValues2, setLoan_initialValues2] = useState([])
+                  const [is_Loan, setIs_Loan] = useState(false)
+                  const [AustralianLoanList, setAustralianLoanList] = useState([])
+
+
                         let Australian_loansAssociated_initialValues ={
 
-                          Typeofloan:'',
-                          CurrentBalance:'',
-                          Lender:'',
-                          RepaymentsAmount:'',
-                          Frequency:'',
-                          AnnualRepayments:'', //readonly
-                          InterestRatePA:'',
-                          LoanTermInYears:'',
-                          LoanType:'',
-                          DeductibleAmountofLoan:'',
-                          YearRemaning:'',
+                          AustralianPortfolioLoanType:"",
+                          AustralianPortfolioCurrentBalance:"",
+                          AustralianPortfolioLender:"",
+                          AustralianInterestRatePA:"",
+  
+                          AustralianPortfolioRepaymentAmount:"",
+                          AustralianPortfolioFrequency:"",
+                          AustralianPortfolioAnnualRepayment:'', //readonly
+  
+                          AustralianPortfolioLoanTerm:"",
+                          AustralianPortfolioLoanType2:"",
+                          AustralianPortfolioDeductibleLoanAmount:"",
+                          AustralianPortfolioYearRemaining:"",
                         }
                         let Australian_loansAssociated_validationSchema = Yup.object({
-                          Typeofloan:Yup.string() ,
-                          CurrentBalance:Yup.number() 
+                          AustralianPortfolioLoanType:Yup.string() ,
+                          AustralianPortfolioCurrentBalance:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Lender:Yup.string() ,
-                          RepaymentsAmount:Yup.number() 
+                          AustralianPortfolioLender:Yup.string() ,
+                          AustralianPortfolioRepaymentAmount:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          Frequency:Yup.string() ,
-                          InterestRatePA:Yup.number() 
+                          AustralianPortfolioFrequency:Yup.string() ,
+                          AustralianInterestRatePA:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          LoanTermInYears:Yup.string() ,
-                          LoanType:Yup.string() ,
-                          DeductibleAmountofLoan:Yup.number() 
+                          AustralianPortfolioLoanTerm:Yup.string() ,
+                          AustralianPortfolioLoanType2:Yup.string() ,
+                          AustralianPortfolioDeductibleLoanAmount:Yup.number() 
                           .test(
                             "Is positive?",
                             "Must be a positive number",
                             (value) => value > 0
                           ),
-                          YearRemaning:Yup.string() ,
+                          AustralianPortfolioYearRemaining:Yup.string() ,
 
                         })
                     let Australian_loansAssociated_onSubmit = (values) => {
 
                       let myData ={
+                        // myloan
+                      
                         Email: localStorage.getItem("ClientEmail"),
-                        AustralianPortfolioLoanType:values.Typeofloan,
-                        AustralianPortfolioCurrentBalance:values.CurrentBalance,
-                        AustralianPortfolioLender:values.Lender,
-                        AustralianInterestRatePA:values.InterestRatePA,
+                        AustralianPortfolioLoanType:values.AustralianPortfolioLoanType,
+                        AustralianPortfolioCurrentBalance:values.AustralianPortfolioCurrentBalance,
+                        AustralianPortfolioLender:values.AustralianPortfolioLender,
+                        AustralianInterestRatePA:values.AustralianInterestRatePA,
 
-                        AustralianPortfolioRepaymentAmount:values.RepaymentsAmount,
-                        AustralianPortfolioFrequency:values.Frequency,
-                        AustralianPortfolioAnnualRepayment:5000, //AnnualRepayments:'', //readonly
+                        AustralianPortfolioRepaymentAmount:values.AustralianPortfolioRepaymentAmount,
+                        AustralianPortfolioFrequency:values.AustralianPortfolioFrequency,
+                        AustralianPortfolioAnnualRepayment:5000, //AustralianPortfolioAnnualRepayment:'', //readonly
 
-                        AustralianPortfolioLoanTerm:values.LoanTermInYears,
-                        AustralianPortfolioLoanType2:values.LoanType,
-                        AustralianPortfolioDeductibleLoanAmount:values.DeductibleAmountofLoan,
-                        // AustralianPortfolioYearRemaining:values.YearRemaning,
+                        AustralianPortfolioLoanTerm:values.AustralianPortfolioLoanTerm,
+                        AustralianPortfolioLoanType2:values.AustralianPortfolioLoanType2,
+                        AustralianPortfolioDeductibleLoanAmount:values.AustralianPortfolioDeductibleLoanAmount,
+                        AustralianPortfolioYearRemaining:values.AustralianPortfolioYearRemaining,
                       }
                     console.log(myData);
 
@@ -768,12 +779,37 @@ const [bankObj, setBankObj] = useState([])
                     .then((res)=> console.log("data Added Successfully"))
                     handleClose4();
 
+
+                    axios
+                    .get('http://localhost:7000/Client-InvestmentTrust/Australian-Market-Portfolio')
+                    .then((res)=> {
+                      console.log("Data get Successfully")
+                      console.log(res.data)
+                      setAustralianLoanList(res.data)
+                    })
+
                         }
+
+                        let updateHandler_AustralianLoan=(elem)=>{
+                          setIs_Share(true);
+                        
+                          handleShow4()
+                        }
+      
+                        let deleteHandler_AustralianLoan=(elem)=>{
+
+                          handleShow4();
+                        }
+
+                   
                         // end Australian tab
                         // managed funds tab start
 
                         // managed fund
 
+                        const [manageFund_initialValues2, setManageFund_initialValues2] = useState([])
+                        const [is_manageFund, setIs_manageFund] = useState(false)
+                        const [manageFundList, setManageFundList] = useState([])
                         let manageFund_initialValues ={
                           PlatformName:'', 
                           InvestmentName:'', 
@@ -857,7 +893,10 @@ const [bankObj, setBankObj] = useState([])
       .post('http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds',myData)
       .then((ref)=>{
         console.log("Data Added Successfully !")
+        setManageFundList([...manageFundList,myData])
       })
+
+
                           handleClose5();
                           }
 
@@ -866,6 +905,10 @@ const [bankObj, setBankObj] = useState([])
 
 
                         // managed loan
+                       
+                  const [manageloan_initialValues2, setmanageLoan_initialValues2] = useState([])
+                  const [is_manageLoan, setIs_manageLoan] = useState(false)
+                  const [  manageLoanList , setManageLoanList] = useState([])
                         let managed_initialValues ={
                           Typeofloan:'',
                           CurrentBalance:'',
@@ -940,8 +983,20 @@ const [bankObj, setBankObj] = useState([])
                         .then((ref)=>{
                           console.log("Managed Fund Portfolio Added Succeccfully!")
                         })
+                        setManageLoanList([...manageFundList,myData])
                         handleClose6();
                         
+                        }
+
+                        let updateHandler_ManageLoan=(elem)=>{
+                          setIs_manageLoan(true);
+                        
+                          // handleShow4()
+                        }
+      
+                        let deleteHandler_ManageLoan=(elem)=>{
+
+                        alert("delete")
                         }
                         // managed loan
 
@@ -951,7 +1006,12 @@ const [bankObj, setBankObj] = useState([])
 
                         //investment properties
 
-                  let Investment_initialValues={
+
+                  const [investment_initialValues2, setInvestment_initialValues2] = useState([])
+                  const [is_investment, setIs_investment] = useState(false)
+                  const [investmentList , setInvestmentList] = useState([])
+
+                        let Investment_initialValues={
                           InvestmentCurrentValue:'', // num
                           InvestmentCostBasePurchasePrice:'', // num
                           InvestmentPropertyAddress:'',
@@ -1132,7 +1192,20 @@ InvestmentYearsRemainingYear:Yup.string()
                           .then((res)=>{
                             console.log("Data added sussessfully!")
                           })
+
+                          setInvestmentList([...investmentList,myData])
                           handleClose7();
+                          }
+
+                          let updateHandler_Investment=(elem)=>{
+                            setIs_investment(true);
+                          
+                            // handleShow4()
+                          }
+        
+                          let deleteHandler_Investment=(elem)=>{
+  
+                          alert("delete")
                           }
                         //investment properties
 
@@ -1729,7 +1802,7 @@ InvestmentYearsRemainingYear:Yup.string()
                           </Modal>
                            {/* -------------bank accounts modal---------------------------- */}
                           {/* bankTable */}
-                      <div   className='table-responsive my-3' id="childTable">
+                      <div   className='table-responsive my-3'>
                          <table className="table table-bordered table-hover text-center">
                             <thead className="text-light" id="tableHead">
                             <tr>
@@ -1987,7 +2060,7 @@ InvestmentYearsRemainingYear:Yup.string()
                            {/* -------------Deposit modal---------------------------- */}
                         
                                     {/* TermTable */}
-                      <div   className='table-responsive my-3' id="childTable">
+                      <div   className='table-responsive my-3'>
                          <table className="table table-bordered table-hover text-center">
                             <thead className="text-light" id="tableHead">
                             <tr>
@@ -2010,8 +2083,8 @@ InvestmentYearsRemainingYear:Yup.string()
                                         <td>{elem.DepositIncomeYield}</td>
                                         <td>{elem.DepositAnnualIncome}</td>
                                         <td >
-                                        <button  type='btn' onClick={(e)=>deleteHandler_Deposit(elem,index)} className='btn btn-danger btn-sm'>delete</button>
-                                        <button  type='btn' onClick={(e)=>updateHandler_Deposit(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                        <button  type='button' onClick={(e)=>deleteHandler_Deposit(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_Deposit(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                         </td> 
                                     
@@ -2143,7 +2216,7 @@ InvestmentYearsRemainingYear:Yup.string()
                                 <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="PurchaseDate" className="form-label">
-                        Purchase Date
+                        Purchase Date Aus
                         </label>
                         <div>
                             
@@ -2309,7 +2382,7 @@ InvestmentYearsRemainingYear:Yup.string()
 
                     {/* Australian Table */}
                       
-                        <div   className='table-responsive my-3' id="childTable">
+                        <div   className='table-responsive my-3'>
                          <table className="table table-bordered table-hover text-center">
                             <thead className="text-light" id="tableHead">
                             <tr>
@@ -2334,8 +2407,8 @@ InvestmentYearsRemainingYear:Yup.string()
                                         <td>{elem.IncomePA}</td>
                                         <td>{elem.ReinvestIncome}</td>
                                         <td >
-                                        <button  type='btn' onClick={(e)=>deleteHandler_AustralianShare(elem,index)} className='btn btn-danger btn-sm'>delete</button>
-                                        <button  type='btn' onClick={(e)=>updateHandler_AustralianShare(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                        <button  type='button' onClick={(e)=>deleteHandler_AustralianShare(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_AustralianShare(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                         </td> 
                                     
@@ -2451,32 +2524,32 @@ InvestmentYearsRemainingYear:Yup.string()
                         <div className="row">
                                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="Typeofloan" className="form-label">
-                        Type of loan
+                        <label htmlFor="AustralianPortfolioLoanType" className="form-label">
+                        Type of loan aus loan
                         </label>
                         <Field
                         as='select'
-                          id="Typeofloan"
+                          id="AustralianPortfolioLoanType"
                           className="form-select shadow  inputDesign"
-                          name="Typeofloan"
+                          name="AustralianPortfolioLoanType"
                         >
                           <option value="">Select</option>
                           <option value="InvestmentLoan">Investment Loan</option>
                         </Field>
-                        <ErrorMessage className="text-danger fw-bold" component="div"   name="Typeofloan" />
+                        <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioLoanType" />
 
                       </div>
                                    </div>
 
                                 <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="CurrentBalance" className="form-label">Current Balance</   label>
+                                    <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
                                     <Field type="number" className="form-control shadow inputDesign"
-                                        id="CurrentBalance"
-                                        name="CurrentBalance"
+                                        id="AustralianPortfolioCurrentBalance"
+                                        name="AustralianPortfolioCurrentBalance"
                                      placeholder="Current Balance"
                                         />
-                              <ErrorMessage className="text-danger fw-bold" component="div"   name="CurrentBalance" />
+                              <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioCurrentBalance" />
 
                                     </div>
                                 </div>
@@ -2485,19 +2558,19 @@ InvestmentYearsRemainingYear:Yup.string()
                          <div className="row">
                        <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="Lender" className="form-label">Lender</   label>
+                          <label htmlFor="AustralianPortfolioLender" className="form-label">Lender</   label>
                           <Field type="text" className="form-control shadow inputDesign" 
-                          id="Lender" name='Lender' placeholder="Lender"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='Lender' />
+                          id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
+                          <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
                         </div>            
                        </div>
 
                         <div className="col-md-6">
                         <div className="mb-3">
-                          <label htmlFor="RepaymentsAmount" className="form-label">Repayments Amount</   label>
+                          <label htmlFor="AustralianPortfolioRepaymentAmount" className="form-label">Repayments Amount</   label>
                           <Field type="number" className="form-control shadow inputDesign"
-                           id="RepaymentsAmount" name='RepaymentsAmount' placeholder="Repayments Amount"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='RepaymentsAmount' />
+                           id="AustralianPortfolioRepaymentAmount" name='AustralianPortfolioRepaymentAmount' placeholder="Repayments Amount"/>
+                           <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioRepaymentAmount' />
                         </div>            
                         </div>
 
@@ -2508,14 +2581,14 @@ InvestmentYearsRemainingYear:Yup.string()
                         <div className="row">
                                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="Frequency" className="form-label">
+                        <label htmlFor="AustralianPortfolioFrequency" className="form-label">
                         Frequency
                         </label>
                         <Field
                         as='select'
-                          id="Frequency"
+                          id="AustralianPortfolioFrequency"
                           className="form-select shadow  inputDesign"
-                          name="Frequency"
+                          name="AustralianPortfolioFrequency"
                         >
                           <option value="">Select</option>
                           <option value="Weekly"> Weekly</option>
@@ -2523,7 +2596,7 @@ InvestmentYearsRemainingYear:Yup.string()
                           <option value="Monthly">Monthly</option>
                           <option value="Annually">Annually</option>
                         </Field>
-                        <ErrorMessage className="text-danger fw-bold" component="div"   name="Frequency" />
+                        <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioFrequency" />
 
                       </div>
                                    </div>
@@ -2532,8 +2605,8 @@ InvestmentYearsRemainingYear:Yup.string()
                                     <div className="mb-3">
                                     <label htmlFor="" className="form-label">Annual Repayments</   label>
                                     <Field type="number" className="form-control shadow inputDesign"
-                                        id="AnnualRepayments"
-                                        name="AnnualRepayments"
+                                        id="AustralianPortfolioAnnualRepayment"
+                                        name="AustralianPortfolioAnnualRepayment"
                                         placeholder="Annual Repayments"
                                         readOnly={true}
                                         />
@@ -2546,26 +2619,26 @@ InvestmentYearsRemainingYear:Yup.string()
                         <div className="row">
                           <div className="col-md-6">
                                       <div className="mb-3">
-                                      <label htmlFor="InterestRatePA" className="form-label">Interest Rate (p.a)</   label>
+                                      <label htmlFor="AustralianInterestRatePA" className="form-label">Interest Rate (p.a)</   label>
                                       <Field type="number" className="form-control shadow inputDesign"
-                                          id="InterestRatePA"
-                                          name="InterestRatePA"
+                                          id="AustralianInterestRatePA"
+                                          name="AustralianInterestRatePA"
                                       placeholder="Current Balance"
                                           />
-                                <ErrorMessage className="text-danger fw-bold" component="div"   name="InterestRatePA" />
+                                <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianInterestRatePA" />
 
                                       </div>
                           </div>
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="LoanTermInYears" className="form-label">
+                              <label htmlFor="AustralianPortfolioLoanTerm" className="form-label">
                               Loan Term (1-30 Years)
                               </label>
                               <Field
                               as='select'
-                                id="LoanTermInYears"
+                                id="AustralianPortfolioLoanTerm"
                                 className="form-select shadow  inputDesign"
-                                name="LoanTermInYears"
+                                name="AustralianPortfolioLoanTerm"
                               >
                                <option value="">Select</option>
                                <option value="1">1</option>
@@ -2600,7 +2673,7 @@ InvestmentYearsRemainingYear:Yup.string()
                                <option value="30">30</option>
 
                               </Field>
-                              <ErrorMessage className="text-danger fw-bold" component="div"   name="LoanTermInYears" />
+                              <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioLoanTerm" />
 
                             </div>
                           </div>      
@@ -2609,33 +2682,33 @@ InvestmentYearsRemainingYear:Yup.string()
                         <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="LoanType" className="form-label">
+                        <label htmlFor="AustralianPortfolioLoanType2" className="form-label">
                         Loan Type
                         </label>
                         <Field
                         as='select'
-                          id="LoanType"
+                          id="AustralianPortfolioLoanType2"
                           className="form-select shadow  inputDesign"
-                          name="LoanType"
+                          name="AustralianPortfolioLoanType2"
                         >
                           <option value="">Select</option>
                           <option value="IByOnly">I/Only</option>
                           <option value="P&I">P&I</option>
 
                         </Field>
-                        <ErrorMessage className="text-danger fw-bold" component="div"   name="LoanType" />
+                        <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioLoanType2" />
 
                       </div>
                     </div>
                         <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="DeductibleAmountofLoan" className="form-label">Deductible Amount of Loan (%)</   label>
+                                    <label htmlFor="AustralianPortfolioDeductibleLoanAmount" className="form-label">Deductible Amount of Loan (%)</   label>
                                     <Field type="number" className="form-control shadow inputDesign"
-                                        id="DeductibleAmountofLoan"
-                                        name="DeductibleAmountofLoan"
+                                        id="AustralianPortfolioDeductibleLoanAmount"
+                                        name="AustralianPortfolioDeductibleLoanAmount"
                                      placeholder="Deductible Amount of Loan"
                                         />
-                              <ErrorMessage className="text-danger fw-bold" component="div"   name="DeductibleAmountofLoan" />
+                              <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioDeductibleLoanAmount" />
 
                                     </div>
                     
@@ -2647,14 +2720,14 @@ InvestmentYearsRemainingYear:Yup.string()
                         <div className="row">
                         <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="YearRemaning" className="form-label">
+                              <label htmlFor="AustralianPortfolioYearRemaining" className="form-label">
                               Year Remaning (1-30 Years)
                               </label>
                               <Field
                               as='select'
-                                id="YearRemaning"
+                                id="AustralianPortfolioYearRemaining"
                                 className="form-select shadow  inputDesign"
-                                name="YearRemaning"
+                                name="AustralianPortfolioYearRemaining"
                               >
                                 <option value="">Select</option>
                                <option value="1">1</option>
@@ -2689,7 +2762,7 @@ InvestmentYearsRemainingYear:Yup.string()
                                <option value="30">30</option>
 
                               </Field>
-                              <ErrorMessage className="text-danger fw-bold" component="div"   name="YearRemaning" />
+                              <ErrorMessage className="text-danger fw-bold" component="div"   name="AustralianPortfolioYearRemaining" />
 
                             </div>
                         </div>
@@ -2723,6 +2796,49 @@ InvestmentYearsRemainingYear:Yup.string()
                            </Formik>
                           </Modal>
                    {/* loans associated modal */}
+
+                     {/* Australian Table */}
+                      
+                     <div   className='table-responsive my-3'>
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Type of Loan</th>
+                                  <th>Current Balance</th>
+                                  <th>Lender</th>
+                                  <th>Annual Repayments</th>
+                                  <th>Interest Rate (p.a)</th>
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  AustralianLoanList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.AustralianPortfolioLoanType}</td>
+                                        <td>{elem.AustralianPortfolioCurrentBalance}</td>
+                                        <td>{elem.AustralianPortfolioLender}</td>
+                                        <td>{elem.AustralianPortfolioRepaymentAmount}</td>
+                                        <td>{elem.AustralianInterestRatePA}</td>
+                                        <td >
+                                        <button  type='button' onClick={(e)=>deleteHandler_AustralianLoan(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_AustralianLoan(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                         
+                    {/* Australian TableLoan */}
 
                     </div>
                      {/*  loans associated */}
@@ -2876,7 +2992,7 @@ InvestmentYearsRemainingYear:Yup.string()
                                 <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="managedPurchaseDate" className="form-label">
-                        Purchase Date
+                        Purchase Date 123
                         </label>
                         <div>
                             
@@ -3020,6 +3136,46 @@ InvestmentYearsRemainingYear:Yup.string()
                            </Formik>
                           </Modal>
                     {/* managed modal */}
+
+                       {/* manageFund Table */}
+                      
+                       <div   className='table-responsive my-3'>
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Platform Name</th>
+                                  <th>Total Portfolio Value</th>
+                                  <th>Total Cost Base</th>
+                                  
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  manageFundList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.PlatformName}</td>
+                                        <td>{elem.CurrentShareValue}</td>
+                                        <td>{elem.OriginalInvestment}</td>
+                                        <td >
+                                        <button  type='button' onClick={(e)=>deleteHandler_AustralianLoan(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_AustralianLoan(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                         
+                    {/* manageFund table */}
                     
                           
 
@@ -3120,7 +3276,7 @@ InvestmentYearsRemainingYear:Yup.string()
                                     <div className="col-md-6">
                       <div className="mb-3">
                         <label htmlFor="Typeofloan" className="form-label">
-                        Type of loan
+                        Type of loan Manage loan
                         </label>
                         <Field
                         as='select'
@@ -3394,6 +3550,51 @@ InvestmentYearsRemainingYear:Yup.string()
 
                     </div>
                      {/* Manage loans associated */}
+
+                       {/* manageLoan Table */}
+                      
+                       <div   className='table-responsive'>
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Type of Loan</th>
+                                  <th>Current Balance</th>
+                                  <th>Lender</th>
+                                  <th>Annual Repayments</th>
+                                  <th>Interest Rate (p.a)</th>
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  manageLoanList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.ManagedFundsPortfolioLoanType}</td>
+                                        <td>{elem.ManagedFundsPortfolioCurrentBalance}</td>
+                                        <td>{elem.ManagedFundsPortfolioLender}</td>
+                                        <td>{elem.ManagedFundsPortfolioRepaymentAmount}</td>
+                                        <td>{elem.ManagedFundsPortfolioInterestRatePA}</td>
+                                        <td >
+                                        <button  type='button' onClick={(e)=>deleteHandler_ManageLoan(elem,index)} className='btn btn-danger btn-sm mt-1'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_ManageLoan(elem)} className='btn btn-warning btn-sm mx-2 mt-1'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                         
+                    {/* manageLoan TableLoan */}
+
+
                     </div>
                    {/*Manage Funds */}
 
@@ -3409,17 +3610,18 @@ InvestmentYearsRemainingYear:Yup.string()
                             </label>
                             <br />
                           
-                          <span
-                            className=" btn h-50 w-50
+                          <button
+                            className=" btn
                             btn-outline-success "
+                            type='button'
                             onClick={handleShow7}
                           >
                             <div className="iconContainer mx-1">
                             <img className="img-fluid" src={plus} alt="" />
 
                             </div>
-                            Enter Details
-                          </span>
+                            Enter Details lastmodal
+                          </button>
                         </div>
 
                         </div>
@@ -3865,13 +4067,59 @@ InvestmentYearsRemainingYear:Yup.string()
                            {/* -------------investment Properties modal---------------------------- */}
                           
 
+                    {/* InvestMent properties Table Table */}
+                      
+                    <div   className='table-responsive my-3'>
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>Property Address</th>
+                                  <th>Value</th>
+                                  <th>Rent p.a</th>
+                                  <th>Annual Expenses</th>
+                                  <th>Current Loan Balance</th>
+                                  <th>Repayments p.a</th>
+
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  investmentList.map((elem,index)=>{
+                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{elem.PropertyAddress}</td>
+                                        <td>{elem.CurrentValue}</td>
+                                        <td>{elem.RentalIncome}</td>
+                                        <td>{elem.AnnualRepayments}</td>
+                                        <td>{elem.CurrentBalance}</td>
+                                       <td>{elem.RepaymentAmount}</td>
+                                       
+                                        <td >
+                                        <button  type='button' onClick={(e)=>deleteHandler_Investment(elem,index)} className='btn btn-danger btn-sm mt-1'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_Investment(elem)} className='btn btn-warning btn-sm mx-2 mt-1'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                         
+                    {/* InvestMent properties Table */}
                     </div>
                    {/* investment Properties */}
 
                    {/* ModalInMOdal */}
                     {/* -------------Deposit modal---------------------------- */}
 
-                    <Modal
+                          <Modal
                             show={show8}
                             onHide={handleClose8}
                             backdrop="static"
@@ -4057,15 +4305,6 @@ InvestmentYearsRemainingYear:Yup.string()
                            {/* -------------Deposit modal---------------------------- */}
 
                    {/* ModalInMOdal */}
-
-
-
-
-
-
-
-
-
 
 
                     <div className="row mt-5 mb-3">

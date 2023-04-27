@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState , useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
@@ -16,6 +16,7 @@ import axios from 'axios';
 
 function Investments() {
 
+
   const [BankAccountList, setBankAccountList] = useState([]);
   const [TermDepositList, setTermDepositList] = useState([]);
   const [AustralianShareMarketList, setAustralianShareMarketList] = useState([]);
@@ -25,11 +26,15 @@ function Investments() {
   const [InvestmentBondsList, setInvestmentBondsList] = useState([]);
   const [InvestmentPropertiesList, setInvestmentPropertiesList] = useState([]);
   const [OthersList, setOthersList] = useState([]);
+
+  const [BankEdit, setBankEdit] = useState(false);
     
   const [BankAccount, setBankAccount] = useState(false);
   const [Bankshow, setBankShow] = useState(false);
+  const [Bankshow2, setBankShow2] = useState(false);
   const BankhandleClose = () => setBankShow(false);
   const BankhandleShow = () => setBankShow(true);
+ 
   let BankAccountHandler=(elem)=>{
     if (elem==="No"){
       setBankAccount(false)
@@ -39,6 +44,7 @@ function Investments() {
     }
   }
 
+  const [TermDepositEdit, setTermDepositEdit] = useState(false);
 
   const [TermDeposit, setTermDeposit] = useState(false);
   const [TermDepositshow, setTermDepositShow] = useState(false);
@@ -53,6 +59,7 @@ function Investments() {
     }
   }
 
+  const [AustralianShareMarketEdit, setAustralianShareMarketEdit] = useState(false);
 
   const [AustralianShareMarket, setAustralianShareMarket] = useState(false);
   const [AustralianShareMarketshow, setAustralianShareMarketShow] = useState(false);
@@ -66,6 +73,9 @@ function Investments() {
       setAustralianShareMarket(true)
     }
   }
+
+
+  const [AustralianSharePortfolioEdit, setAustralianSharePortfolioEdit] = useState(false);
 
   const [AustralianSharePortfolio, setAustralianSharePortfolio] = useState(false);
   const [AustralianSharePortfolioshow, setAustralianSharePortfolioShow] = useState(false);
@@ -81,6 +91,7 @@ function Investments() {
   }
 
 
+  const [ManagedFundsEdit, setManagedFundsEdit] = useState(false);
 
   const [ManagedFunds, setManagedFunds] = useState(false);
   const [ManagedFundsshow, setManagedFundsShow] = useState(false);
@@ -95,6 +106,8 @@ function Investments() {
     }
   }
 
+  const [ManagedFundsLoanEdit, setManagedFundsLoanEdit] = useState(false);
+
   const [ManagedFundsPortfolio, setManagedFundsPortfolio] = useState(false);
   const [ManagedFundsPortfolioshow, setManagedFundsPortfolioShow] = useState(false);
   const ManagedFundsPortfoliohandleClose = () => setManagedFundsPortfolioShow(false);
@@ -107,6 +120,8 @@ function Investments() {
       setManagedFundsPortfolio(true)
     }
   }
+
+  const [InvestmentBondsEdit, setInvestmentBondsEdit] = useState(false);
 
   const [InvestmentBonds, setInvestmentBonds] = useState(false);
   const [InvestmentBondsshow, setInvestmentBondsShow] = useState(false);
@@ -121,6 +136,9 @@ function Investments() {
     }
   }
 
+  
+  const [OthersEdit, setOthersEdit] = useState(false);
+
   const [Others, setOthers] = useState(false);
   const [Othersshow, setOthersShow] = useState(false);
   const OthershandleClose = () => setOthersShow(false);
@@ -134,6 +152,8 @@ function Investments() {
     }
   }
 
+  const [InvestmentPropertiesEdit, setInvestmentPropertiesEdit] = useState(false);
+
   const [InvestmentProperties, setInvestmentProperties] = useState(false);
   const [InvestmentPropertiesshow, setInvestmentPropertiesShow] = useState(false);
   const InvestmentPropertieshandleClose = () => setInvestmentPropertiesShow(false);
@@ -146,6 +166,8 @@ function Investments() {
       setInvestmentProperties(true)
     }
   }
+
+
 
   const [InvestmentProperties2, setInvestmentProperties2] = useState(false);
   const [InvestmentProperties2show, setInvestmentProperties2Show] = useState(false);
@@ -300,92 +322,9 @@ function Investments() {
     InvestmentPropertiesYearsRemaining: ''
   }
 
-  let Client_validationSchema = Yup.object({
-    BankCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    BankFinancialInstitution: Yup.string() ,
-    BankIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    BankIncomePAType: Yup.string(),
-    BankIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    BankRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-
-    Bank2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    Bank2FinancialInstitution: Yup.string() ,
-    Bank2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    Bank2IncomePAType: Yup.string(),
-    Bank2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    Bank2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+  let Client_validationSchemaOtherFunds = Yup.object({
 
 
-
-    TermDepositCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDepositFinancialInstitution: Yup.string() ,
-    TermDepositIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    TermDepositIncomePAType: Yup.string(),
-    TermDepositIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDepositRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-
-    TermDeposit2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDeposit2FinancialInstitution: Yup.string() ,
-    TermDeposit2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    TermDeposit2IncomePAType: Yup.string(),
-    TermDeposit2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    TermDeposit2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-
-
-
-    AustralianMarketInvestmentName: Yup.string(),
-    AustralianMarketNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketTotalShareValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketPurchaseDate: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketIncomePAType: Yup.string(),
-    AustralianMarketTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketFrankedAmount: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-    AustralianPortfolioLoanType: Yup.string(),
-    AustralianPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianPortfolioLender: Yup.string(),
-    AustralianInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianPortfolioLoanTerm: Yup.string(),
-    AustralianPortfolioLoanType2: Yup.string(),
-    AustralianPortfolioDeductibleLoanAmount: Yup.string(),
-    AustralianPortfolioYearRemaining: Yup.string(),
-
-    ManagedFundsPlatformName: Yup.string(),
-    ManagedFundsInvestmentName: Yup.string(),
-    ManagedFundsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPurchaseDate: Yup.string(),
-    ManagedFundsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsIncomePAType: Yup.string(),
-    ManagedFundsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-    ManagedFundsPortfolioLoanType: Yup.string(),
-    ManagedFundsPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPortfolioLender: Yup.string(),
-    ManagedFundsPortfolioInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPortfolioLoanTerm: Yup.string(),
-    ManagedFundsPortfolioLoanType2: Yup.string(),
-    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string(),
-    ManagedFundsPortfolioYearRemaining: Yup.string(),
-
-    InvestmentBondsPlatformName: Yup.string(),
-    InvestmentBondsInvestmentName: Yup.string(),
-    InvestmentBondsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsPurchaseDate: Yup.string(),
-    InvestmentBondsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsIncomePAType: Yup.string(),
-    InvestmentBondsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
 
     OtherInvestmentName: Yup.string(),
     OtherCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -412,6 +351,114 @@ function Investments() {
     // OtherTotalIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     OtherIncomePAType2: Yup.string(),
     OtherRegularInvestmentsPA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+   
+  })
+
+  let Client_validationSchemaBankAccountDetails = Yup.object({
+
+    BankCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankFinancialInstitution: Yup.string().required("This field is required"),
+    BankIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    BankIncomePAType: Yup.string(),
+    BankIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+    Bank2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2FinancialInstitution: Yup.string().required("This field is required"),
+    Bank2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    Bank2IncomePAType: Yup.string(),
+    Bank2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+  })
+
+  let Client_validationSchemaTermDeposit = Yup.object({
+    TermDepositCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositFinancialInstitution: Yup.string() ,
+    TermDepositIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDepositIncomePAType: Yup.string(),
+    TermDepositIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+    TermDeposit2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2FinancialInstitution: Yup.string() ,
+    TermDeposit2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDeposit2IncomePAType: Yup.string(),
+    TermDeposit2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) , 
+  })
+
+  let Client_validationSchemaAustralianMarket = Yup.object({
+    AustralianMarketInvestmentName: Yup.string(),
+    AustralianMarketNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketTotalShareValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    // AustralianMarketPurchaseDate: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketPurchaseDate:  Yup.date(),
+    AustralianMarketIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketIncomePAType: Yup.string(),
+    AustralianMarketTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketFrankedAmount: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+  })
+
+  let Client_validationSchemaAssociatedLoan = Yup.object({
+    AustralianPortfolioLoanType: Yup.string(),
+    AustralianPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLender: Yup.string(),
+    AustralianInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLoanTerm: Yup.string(),
+    AustralianPortfolioLoanType2: Yup.string(),
+    AustralianPortfolioDeductibleLoanAmount: Yup.string(),
+    AustralianPortfolioYearRemaining: Yup.string(),
+  })
+
+  let Client_validationSchemaManagedFunds = Yup.object({
+
+    ManagedFundsPlatformName: Yup.string(),
+    ManagedFundsInvestmentName: Yup.string(),
+    ManagedFundsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPurchaseDate: Yup.string(),
+    ManagedFundsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsIncomePAType: Yup.string(),
+    ManagedFundsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+
+  })
+  
+  let Client_validationSchemaManagedFundsLoan = Yup.object({
+    ManagedFundsPortfolioLoanType: Yup.string(),
+    ManagedFundsPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLender: Yup.string(),
+    ManagedFundsPortfolioInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLoanTerm: Yup.string(),
+    ManagedFundsPortfolioLoanType2: Yup.string(),
+    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string(),
+    ManagedFundsPortfolioYearRemaining: Yup.string(),
+  })
+ 
+  let Client_validationSchemaInvestmentBonds = Yup.object({
+
+    InvestmentBondsPlatformName: Yup.string(),
+    InvestmentBondsInvestmentName: Yup.string(),
+    InvestmentBondsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsPurchaseDate: Yup.string(),
+    InvestmentBondsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsIncomePAType: Yup.string(),
+    InvestmentBondsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+  })
+ 
+  let Client_validationSchemaInvestmentProperties= Yup.object({
 
     InvestmentPropertiesCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentPropertiesClientOwnership: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -479,6 +526,12 @@ function Investments() {
     })
   })
 
+
+
+
+
+  // let Client_validationSchemaAssociatedLoan= Yup.object({})
+
   let BankAccount_onSubmit = (values) => {
     
     let BankDetails = {
@@ -501,13 +554,13 @@ function Investments() {
     }
 
     setBankAccountList([BankDetails])
-    // BankhandleClose();
+    BankhandleClose();
+    setBankEdit(true);
 
     axios
     .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
     .then((res) => console.log("Bank Accounts Added Successfully!"))
     console.log(BankDetails)
-
   }
 
   let TermDeposit_onSubmit = (values) => {
@@ -533,12 +586,13 @@ function Investments() {
 
     setTermDepositList([TermDepositDetails])
     TermDeposithandleClose();
+    setTermDepositEdit(true);
 
     axios
     .post('http://localhost:7000/Client-TermDeposit/Add-Client-TermDeposit', TermDepositDetails)
     .then((res) => console.log("Term Deposit Added Successfully!"))
     console.log(TermDepositDetails)
-
+  TermDeposithandleClose();
   }
 
   let AustralianShareMarket_onSubmit = (values) => {
@@ -561,6 +615,8 @@ function Investments() {
 
     setAustralianShareMarketList([AustralianShareMarketDetails])
     AustralianShareMarkethandleClose();
+
+    setAustralianShareMarketEdit(true);
 
     axios
     .post('http://localhost:7000/Client-Australian-Market-Share/Add-Client-Australian-Market-Share', AustralianShareMarketDetails)
@@ -585,6 +641,7 @@ function Investments() {
     setAustralianSharePortfolioList([AustralianSharePortfolioDetails])
     AustralianSharePortfoliohandleClose();
 
+    setAustralianSharePortfolioEdit(true);
     axios
     .post('http://localhost:7000/Client-Australian-Share-Portfolio/Add-Client-Australian-Share-Portfolio', AustralianSharePortfolioDetails)
     .then((res) => console.log("Australian Share Portfolio Added Successfully!"))
@@ -611,6 +668,7 @@ function Investments() {
     }
 
     setManagedFundsList([ManagedFundsDetails]);
+    setManagedFundsEdit(true);
 
     axios
     .post('http://localhost:7000/Client-ManagedFunds/Add-Client-ManagedFunds', ManagedFundsDetails)
@@ -633,6 +691,9 @@ function Investments() {
     }
 
     setManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
+
+    setManagedFundsLoanEdit(true);
+
 
     axios
     .post('http://localhost:7000/Client-ManagedFunds-Portfolio/Add-Client-ManagedFunds-Portfolio', ManagedFundsPortfolioDetails)
@@ -659,7 +720,7 @@ function Investments() {
       InvestmentBondsRegInvestments: values.InvestmentBondsRegInvestments,
     }
     setInvestmentBondsList([InvestmentBondsDetails])
-
+    setInvestmentBondsEdit(true);
     axios
     .post('http://localhost:7000/Client-InvestmentBonds/Add-Client-Investment-Bonds', InvestmentBondsDetails)
     .then((res) => console.log("Investment Bonds Added Successfully!"))
@@ -669,7 +730,7 @@ function Investments() {
 
   let InvestmentProperties_onSubmit = (values) => {
 // usama
-    // InvestmentPropertieshandleClose();
+    InvestmentPropertieshandleClose();
     let InvestmentPropertiesDetails = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentPropertiesCurrentValue: values.InvestmentPropertiesCurrentValue,
@@ -697,6 +758,10 @@ function Investments() {
      
     }
     setInvestmentPropertiesList([InvestmentPropertiesDetails])
+
+    setInvestmentPropertiesEdit(true);
+
+
 
     axios
     .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
@@ -730,6 +795,9 @@ function Investments() {
       OtherRegularInvestmentsPA2: values.OtherRegularInvestmentsPA2,
     }
     setOthersList([OthersDetails])
+
+    setOthersEdit(true);
+
 
     axios
     .post('http://localhost:7000/Client-Others/Add-Client-Others', OthersDetails)
@@ -769,7 +837,8 @@ function Investments() {
 
   let InvestmentModal_onSubmit = (values) => {
 
-    // InvestmentPropertieshandleClose();
+    InvestmentProperties2handleClose();
+  
     let InvestmentPropertiesDetails = {
       Email: localStorage.getItem("ClientEmail"),
     
@@ -793,7 +862,6 @@ function Investments() {
     .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
     .then((res) => console.log("Investment Properties Added Successfully!"))
     console.log(InvestmentPropertiesDetails)
-
   }
 
   
@@ -810,10 +878,12 @@ function Investments() {
     InvestmentPropertiesRadio: 'No',
     OthersRadio: 'No'
   }
+
   let Navigate = useNavigate();
   function BackFunction(){
   Navigate('/Assets-And-Liabilities')
   }
+
   let onSubmit=(values)=>{
   
 
@@ -838,6 +908,269 @@ function Investments() {
   Navigate('/Estate-Planning');
   }
 
+    // Bank delete and Update
+
+  let deleteHandler1 =(e)=>{
+    // console.log(e);
+    let data = e;
+    data.BankCurrentValue= '';
+    data.BankFinancialInstitution= '';
+    data.BankIncomePA= '';
+    data.BankIncomePAType= '';
+    data.BankIncomeinDollars= '';
+    data.BankRegularSavings= '';
+    data.BankReinvestedIncome= '';
+    // console.log(data);
+    setBankAccountList([data]);
+
+   }
+   let deleteHandler2 =(e)=>{ 
+        let data = e;
+        data.Bank2CurrentValue= '';
+        data.Bank2FinancialInstitution= '';
+        data.Bank2IncomePA= '';
+        data.Bank2IncomePAType= '';
+        data.Bank2IncomeinDollars= '';
+        data.Bank2RegularSavings= '';
+        data.Bank2ReinvestedIncome= '';
+        // console.log(data);
+        setBankAccountList([data]);
+
+   }
+   let updateHandler=(e)=>{
+        // console.log("update",e)
+        setBankEdit(true);
+    
+        console.log(BankEdit);
+        setTimeout(() => {
+    
+          BankhandleShow();
+    
+        }, 500);
+   }
+    // Bank delete and Update end
+
+    // TeamsD delete and Update start
+
+   let TeamDepositDeleteHandler1 =(e)=>{   
+      
+        // console.log(e);
+        let data = e;
+        data.TermDepositCurrentValue= '';
+        data.TermDepositFinancialInstitution= '';
+        data.TermDepositIncomePA= '';
+        data.TermDepositIncomePAType= '';
+        data.TermDepositIncomeinDollars= '';
+        data.TermDepositRegularSavings= '';
+        data.TermDepositReinvestedIncome= '';
+        // console.log(data);
+        setTermDepositList([data]);
+
+      }
+   let TeamDepositDeleteHandler2 =(e)=>{ 
+
+       // console.log(e);
+        let data = e;
+        data.TermDeposit2CurrentValue= '';
+        data.TermDeposit2FinancialInstitution= '';
+        data.TermDeposit2IncomePA= '';
+        data.TermDeposit2IncomePAType= '';
+        data.TermDeposit2IncomeinDollars= '';
+        data.TermDeposit2RegularSavings= '';
+        data.TermDeposit2ReinvestedIncome= '';
+
+        setTermDepositList([data]);
+      }
+   let TeamDepositUpdateHandler=()=>{
+
+        setTermDepositEdit(true);
+
+        console.log(TermDepositEdit);
+        setTimeout(() => {
+
+         TermDeposithandleShow();
+    
+        }, 500);
+
+      }
+    
+    // TeamsD delete and Update end 
+
+    // AustralianDeleteHandler delete start
+
+    let AustralianDeleteHandler=(e)=>{
+            //  console.log(e);
+            let data = e;
+            data.AustralianMarketCostBase= '';
+            data.AustralianMarketFrankedAmount= '';
+            data.AustralianMarketIncomePA= '';
+            data.AustralianMarketIncomePAType= '';
+            data.AustralianMarketInvestmentName= '';
+            data.AustralianMarketPurchaseDate= '';
+            data.AustralianMarketRegInvestments= '';
+            data.AustralianMarketReinvestedIncome= '';
+            data.AustralianMarketSharePrice= '';
+            data.AustralianMarketTotalIncomePA= '';
+            data.AustralianMarketTotalShareValue= '';
+    
+            setAustralianShareMarketList([data]);
+    }
+    // AustralianDeleteHandler delete end
+    
+    // AustralianLoanDeleteHandler delete start
+      let AustralianLoanDeleteHandler =(e)=>{
+        console.log(e)
+        let data = e;
+              data.AustralianInterestRatePA= '';
+              data.AustralianPortfolioCurrentBalance= '';
+              data.AustralianPortfolioDeductibleLoanAmount= '';
+              data.AustralianPortfolioLender= '';
+              data.AustralianPortfolioLoanTerm= '';
+              data.AustralianPortfolioLoanType= '';
+              data.AustralianPortfolioLoanType2= '';
+              data.AustralianPortfolioYearRemaining= '';
+              setAustralianSharePortfolioList([data]);
+      }
+    // AustralianLoanDeleteHandler delete end
+
+   // ManagedFundsDeleteHandler delete start
+
+    let ManagedFundsDeleteHandler=(e)=>{
+        // console.log(e);
+        let data = e;
+        data.ManagedFundsCurrentValue= '';
+        data.ManagedFundsIncomePA= '';
+        data.ManagedFundsIncomePAType= '';
+        data.ManagedFundsInvestmentName= '';
+        data.ManagedFundsNumberOfShares= '';
+        data.ManagedFundsOriginalInvestment= '';
+        data.ManagedFundsPlatformName= '';
+        data.ManagedFundsPurchaseDate= '';
+        data.ManagedFundsRegInvestments= '';
+        data.ManagedFundsReinvestedIncome= '';
+        data.ManagedFundsSharePrice= '';
+        data.ManagedFundsTotalIncomePA= '';
+
+        setManagedFundsList([data]);
+    }
+   // ManagedFundsDeleteHandler delete end
+
+
+   // ManagedFundsLoanDeleteHandler delete start
+
+   let ManagedFundsLoanDeleteHandler=(e)=>{
+    // console.log(e);
+    let data = e;
+    data.ManagedFundsPortfolioCurrentBalance= '';
+    data.ManagedFundsPortfolioDeductibleLoanAmount= '';
+    data.ManagedFundsPortfolioInterestRatePA= '';
+    data.ManagedFundsPortfolioLender= '';
+    data.ManagedFundsPortfolioLoanTerm= '';
+    data.ManagedFundsPortfolioLoanType= '';
+    data.ManagedFundsPortfolioLoanType2= '';
+    data.ManagedFundsPortfolioYearRemaining= '';
+
+
+    setManagedFundsPortfolioList([data]);
+}
+// ManagedFundsLoanDeleteHandler delete end
+
+
+// InvestmentBondsDeleteHandler delete start
+
+    let InvestmentBondsDeleteHandler =(e)=>{
+      console.log(e);
+        let data = e;
+        data.InvestmentBondsCurrentValue='';
+        data.InvestmentBondsIncomePA='';
+        data.InvestmentBondsIncomePAType='';
+        data.InvestmentBondsInvestmentName='';
+        data.InvestmentBondsNumberOfShares='';
+        data.InvestmentBondsOriginalInvestment='';
+        data.InvestmentBondsPlatformName='';
+        data.InvestmentBondsPurchaseDate='';
+        data.InvestmentBondsRegInvestments='';
+        data.InvestmentBondsReinvestedIncome='';
+        data.InvestmentBondsSharePrice='';
+        data.InvestmentBondsTotalIncomePA='';
+
+
+        setInvestmentBondsList([data]);
+
+
+    }
+// InvestmentBondsDeleteHandler delete end
+
+
+// InvestmentPropertiesDeleteHandler delete start
+
+let InvestmentPropertiesDeleteHandler =(e)=>{
+  // console.log(e);
+    let data = e;
+    data.InvestmentPropertiesAddress='';
+    data.InvestmentPropertiesAnnualRepaym='';
+    data.InvestmentPropertiesClientBorrowing='';
+    data.InvestmentPropertiesClientOwnership='';
+    data.InvestmentPropertiesCostBase='';
+    data.InvestmentPropertiesCurrentBalance='';
+    data.InvestmentPropertiesCurrentValue='';
+    data.InvestmentPropertiesDebtLoanAmount='';
+    data.InvestmentPropertiesExpensesPA='';
+    data.InvestmentPropertiesFrequency='';
+    data.InvestmentPropertiesFrequency2='';
+    data.InvestmentPropertiesInterestRatePA='';
+    data.InvestmentPropertiesLender='';
+    data.InvestmentPropertiesLoanAttached='';
+    data.InvestmentPropertiesLoanTerm='';
+    data.InvestmentPropertiesLoanType='';
+    data.InvestmentPropertiesPostcode='';
+    data.InvestmentPropertiesRentalIncome='';
+    data.InvestmentPropertiesRepaymentAmount='';
+    data.InvestmentPropertiesTotalAnnualIncome='';
+    data.InvestmentPropertiesYearsRemaining='';
+
+    setInvestmentPropertiesList([data]);
+}
+// InvestmentPropertiesDeleteHandler delete end
+
+
+
+// OtherDeleteHandler delete start
+
+let OtherDeleteHandler =(e)=>{
+
+    let data = e;
+    data.OtherCostBase="";
+    data.OtherCurrentValue="";
+    data.OtherIncomePA="";
+    data.OtherIncomePATyp="";
+    data.OtherInvestmentName="";
+    data.OtherPurchaseDate="";
+    data.OtherRegularInvestmentsPA="";
+    data.OtherReinvestedIncome="";
+    data.OtherTotalIncomePA="";
+    setOthersList([data]);
+}
+
+
+let OtherDeleteHandler2 =(e)=>{
+
+
+    let data = e;
+    
+    data.OtherCostBase2="";
+    data.OtherCurrentValue2="";
+    data.OtherIncomePA2="";
+    data.OtherIncomePATyp2="";
+    data.OtherInvestmentName2="";
+    data.OtherPurchaseDate2="";
+    data.OtherRegularInvestmentsPA2="";
+    data.OtherReinvestedIncome2="";
+    data.OtherTotalIncomePA2="";
+    setOthersList([data]);
+}
+// OtherDeleteHandler delete end
+
   return (
     <div className='container-fluid'>
       <div className='shadow px-4 mx-4'>
@@ -852,6 +1185,7 @@ function Investments() {
         <Formik initialValues={initialValues}
          onSubmit={onSubmit} enableReinitialize>
           {({ values, handleChange })=>
+          
           <Form>
                           {/* Bank Account Details */}
                           <div className='mb-5'>
@@ -886,10 +1220,6 @@ function Investments() {
                                   <span>NO</span>
                                 </label>
                               </div>
-
-
-
-                                  
                                 </div>
                                   </div>    
                             </div>
@@ -936,9 +1266,11 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
-                                onSubmit={BankAccount_onSubmit}>
+                                initialValues={BankEdit ? BankAccountList[0] : Client_initialValues }
+                                validationSchema={Client_validationSchemaBankAccountDetails}
+                                onSubmit={BankAccount_onSubmit}
+                                enableReinitialize
+                                >
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
                                 <Modal.Body>
@@ -957,7 +1289,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="BankCurrentValue" className="form-label">Current Value</   label>
+                              <label htmlFor="BankCurrentValue" className="form-label">Current Value </label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="BankCurrentValue" name='BankCurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='BankCurrentValue' />
@@ -965,7 +1297,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="BankFinancialInstitution" className="form-label">Financial Institution</   label>
+                              <label htmlFor="BankFinancialInstitution" className="form-label">Financial Institution </label>
                               <Field type="text" className="form-control shadow inputDesign"
                               id="BankFinancialInstitution" name='BankFinancialInstitution' placeholder="Financial Institution"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='BankFinancialInstitution' />
@@ -974,7 +1306,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="BankIncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="BankIncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -1000,7 +1332,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="BankIncomePAType" className="form-label">Income in $</   label>
+                              <label htmlFor="BankIncomePAType" className="form-label">Income in $</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="BankIncomeinDollars" name='BankIncomeinDollars' placeholder="Income in $"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='BankIncomeinDollars' />
@@ -1008,7 +1340,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="BankFinancialInstitution" className="form-label">Regular Savings</   label>
+                              <label htmlFor="BankFinancialInstitution" className="form-label">Regular Savings</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="BankRegularSavings" name='BankRegularSavings' placeholder="Regular Savings"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='BankRegularSavings' />
@@ -1065,7 +1397,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="Bank2CurrentValue" className="form-label">Current Value</   label>
+                              <label htmlFor="Bank2CurrentValue" className="form-label">Current Value</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="Bank2CurrentValue" name='Bank2CurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2CurrentValue' />
@@ -1073,7 +1405,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="Bank2FinancialInstitution" className="form-label">Financial Institution</   label>
+                              <label htmlFor="Bank2FinancialInstitution" className="form-label">Financial Institution </label>
                               <Field type="text" className="form-control shadow inputDesign"
                               id="Bank2FinancialInstitution" name='Bank2FinancialInstitution' placeholder="Financial Institution"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2FinancialInstitution' />
@@ -1082,7 +1414,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="Bank2IncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="Bank2IncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -1108,7 +1440,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="Bank2IncomePAType" className="form-label">Income in $</   label>
+                              <label htmlFor="Bank2IncomePAType" className="form-label">Income in $</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="Bank2IncomeinDollars" name='Bank2IncomeinDollars' placeholder="Income in $"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2IncomeinDollars' />
@@ -1116,7 +1448,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="Bank2FinancialInstitution" className="form-label">Regular Savings</   label>
+                              <label htmlFor="Bank2FinancialInstitution" className="form-label">Regular Savings</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="Bank2RegularSavings" name='Bank2RegularSavings' placeholder="Regular Savings"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='Bank2RegularSavings' />
@@ -1165,14 +1497,14 @@ function Investments() {
                                 </Modal.Body>
                                 <Modal.Footer>
                                   <div className="col-md-12">
-                                    <button
+                                    <button type="submit"
                                       className="float-end btn w-25  bgColor modalBtn"
                                       // onClick={BankhandleClose}
-                                      type='submit'
+                                     
                                     >
                                       Save
                                     </button>
-                                    <button
+                                    <button type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankhandleClose}
                                     >
@@ -1184,6 +1516,7 @@ function Investments() {
                                 }
                               </Formik>
                               </Modal>
+
                               {/* ---------------------------------------------------- */}
 
                               <div   className='table-responsive my-3'>
@@ -1194,6 +1527,7 @@ function Investments() {
                                         <th>Financial Institution</th>
                                         <th>Income</th>
                                         <th>Reinvest Income</th>  
+                                        <th>Operations</th>
                                       </tr>
                                     </thead>
 
@@ -1211,11 +1545,11 @@ function Investments() {
                                             <td>{BankFinancialInstitution}</td>
                                             <td>{BankIncomePA}</td>
                                             <td>{BankReinvestedIncome}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                             <td >
+                                            <span type='button'  onClick={()=>deleteHandler1(elem)} className='btn btn-danger btn-sm'>delete</span>
+                                            <span type='button'  onClick={updateHandler} className='btn btn-warning btn-sm mx-2 my-1'>update</span>
                                     
-                                            </td>  */}
+                                            </td> 
                                         
                                         </tr>
                                         );
@@ -1239,11 +1573,11 @@ function Investments() {
                                             <td>{Bank2FinancialInstitution}</td>
                                             <td>{Bank2IncomePA}</td>
                                             <td>{Bank2ReinvestedIncome}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                             <td >
+                                            <span  type='button' onClick={()=>deleteHandler2(elem)}  className='btn btn-danger btn-sm'>delete</span>
+                                            <span  type='button' onClick={updateHandler}  className='btn btn-warning btn-sm mx-2 my-1'>update</span>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -1260,7 +1594,6 @@ function Investments() {
                                </div>
                           </div>
                           {/* Bank Account Details */}
-
 
 
                           {/* Term Deposit Details */}
@@ -1346,8 +1679,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={TermDepositEdit ? TermDepositList[0]  : Client_initialValues}
+                                validationSchema={Client_validationSchemaTermDeposit}
                                 onSubmit={TermDeposit_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -1367,7 +1700,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositCurrentValue" className="form-label">Current Value</   label>
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Current Value</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="TermDepositCurrentValue" name='TermDepositCurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositCurrentValue' />
@@ -1375,7 +1708,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Financial Institution</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Financial Institution</label>
                               <Field type="text" className="form-control shadow inputDesign"
                               id="TermDepositFinancialInstitution" name='TermDepositFinancialInstitution' placeholder="Financial Institution"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositFinancialInstitution' />
@@ -1384,7 +1717,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="TermDepositIncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -1410,7 +1743,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositIncomePAType" className="form-label">Income in $</   label>
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Income in $</label>
                               <Field type="text" className="form-control shadow inputDesign" 
                               id="TermDepositIncomeinDollars" name='TermDepositIncomeinDollars' placeholder="Income in $"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositIncomeinDollars' />
@@ -1418,7 +1751,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Regular Savings</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Regular Savings</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="TermDepositRegularSavings" name='TermDepositRegularSavings' placeholder="Regular Savings"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDepositRegularSavings' />
@@ -1475,7 +1808,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDeposit2CurrentValue" className="form-label">Current Value</   label>
+                              <label htmlFor="TermDeposit2CurrentValue" className="form-label">Current Value</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="TermDeposit2CurrentValue" name='TermDeposit2CurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2CurrentValue' />
@@ -1483,7 +1816,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Financial Institution</   label>
+                              <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Financial Institution</label>
                               <Field type="text" className="form-control shadow inputDesign"
                               id="TermDeposit2FinancialInstitution" name='TermDeposit2FinancialInstitution' placeholder="Financial Institution"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2FinancialInstitution' />
@@ -1492,7 +1825,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="TermDeposit2IncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="TermDeposit2IncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -1518,7 +1851,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDeposit2IncomePAType" className="form-label">Income in $</   label>
+                              <label htmlFor="TermDeposit2IncomePAType" className="form-label">Income in $</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="TermDeposit2IncomeinDollars" name='TermDeposit2IncomeinDollars' placeholder="Income in $"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2IncomeinDollars' />
@@ -1526,7 +1859,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Regular Savings</   label>
+                              <label htmlFor="TermDeposit2FinancialInstitution" className="form-label">Regular Savings</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="TermDeposit2RegularSavings" name='TermDeposit2RegularSavings' placeholder="Regular Savings"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='TermDeposit2RegularSavings' />
@@ -1604,6 +1937,7 @@ function Investments() {
                                         <th>Financial Institution</th>
                                         <th>Income</th>
                                         <th>Reinvest Income</th>  
+                                        <th>Operations</th>  
                                       </tr>
                                     </thead>
 
@@ -1621,11 +1955,11 @@ function Investments() {
                                             <td>{TermDepositFinancialInstitution}</td>
                                             <td>{TermDepositIncomePA}</td>
                                             <td>{TermDepositReinvestedIncome}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <td>
+                                            <button  type='button' onClick={(e)=>TeamDepositDeleteHandler1(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={TeamDepositUpdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -1649,11 +1983,11 @@ function Investments() {
                                             <td>{TermDeposit2FinancialInstitution}</td>
                                             <td>{TermDeposit2IncomePA}</td>
                                             <td>{TermDeposit2ReinvestedIncome}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                           <td >
+                                            <button  type='button' onClick={(e)=>TeamDepositDeleteHandler2(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={TeamDepositUpdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -1670,7 +2004,6 @@ function Investments() {
                                </div>
                           </div>
                           {/* Term Deposit Details */}
-
 
 
                           {/* Australian Share Market Details */}
@@ -1755,8 +2088,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={AustralianShareMarketEdit?  AustralianShareMarketList[0] :  Client_initialValues}
+                                validationSchema={Client_validationSchemaAustralianMarket}
                                 onSubmit={AustralianShareMarket_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -1775,7 +2108,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</label>
                               <Field
                                       as='select'
                                       name="AustralianMarketInvestmentName"
@@ -1793,7 +2126,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="AustralianMarketNumberOfShares" className="form-label">No. of Shares</   label>
+                              <label htmlFor="AustralianMarketNumberOfShares" className="form-label">No. of Shares</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="AustralianMarketNumberOfShares" name='AustralianMarketNumberOfShares' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketNumberOfShares' />
@@ -1802,7 +2135,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share Price</   label>
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share Price</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="AustralianMarketSharePrice" name='AustralianMarketSharePrice' placeholder="Share Price"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketSharePrice' />
@@ -1811,7 +2144,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositIncomePAType" className="form-label">Total Share Value</   label>
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Total Share Value</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="AustralianMarketTotalShareValue" name='AustralianMarketTotalShareValue' placeholder="Income in $"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketTotalShareValue' />
@@ -1819,7 +2152,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Cost Base</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Cost Base</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="AustralianMarketCostBase" name='AustralianMarketCostBase' placeholder="Cost Base"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketCostBase' />
@@ -1827,7 +2160,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</label>
                               <Field type="date" className="form-control shadow inputDesign"
                               id="AustralianMarketPurchaseDate" name='AustralianMarketPurchaseDate'/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketPurchaseDate' />
@@ -1835,7 +2168,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="AustralianMarketIncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="AustralianMarketIncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -1860,7 +2193,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="AustralianMarketTotalIncomePA" name='AustralianMarketTotalIncomePA' placeholder="Total Income P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketTotalIncomePA' />
@@ -1868,7 +2201,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Franked Amount %</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Franked Amount %</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="AustralianMarketFrankedAmount" name='AustralianMarketFrankedAmount' placeholder="Total Income P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketFrankedAmount' />
@@ -1908,7 +2241,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="AustralianMarketRegInvestments" name='AustralianMarketRegInvestments' placeholder="Reg Investments P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketRegInvestments' />
@@ -1955,6 +2288,7 @@ function Investments() {
                                         <th>Cost Base</th>
                                         <th>Income P.A.</th>
                                         <th>Reinvest Income</th>  
+                                        <th>Operations</th>  
                                       </tr>
                                     </thead>
 
@@ -1974,11 +2308,11 @@ function Investments() {
                                             <td>{AustralianMarketCostBase}</td>
                                             <td>{AustralianMarketIncomePA}</td>
                                             <td>{AustralianMarketReinvestedIncome}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                           <td >
+                                            <button  type='button' onClick={(e)=>AustralianDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={()=>{AustralianShareMarkethandleShow()}} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -2073,8 +2407,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={AustralianSharePortfolioEdit?  AustralianSharePortfolioList[0] :Client_initialValues}
+                                validationSchema={Client_validationSchemaAssociatedLoan}
                                 onSubmit={AustralianSharePortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -2093,7 +2427,7 @@ function Investments() {
                                     <div className="row">
                                   <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</label>
                                       <Field
                                               as='select'
                                               name="AustralianPortfolioLoanType"
@@ -2109,7 +2443,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</   label>
+                                      <label htmlFor="AustralianPortfolioCurrentBalance" className="form-label">Current Balance</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="AustralianPortfolioCurrentBalance" name='AustralianPortfolioCurrentBalance' placeholder="Current Balance"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioCurrentBalance' />
@@ -2118,7 +2452,7 @@ function Investments() {
 
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
+                                    <label htmlFor="TermDepositIncomePA" className="form-label">Lender</label>
                                       <Field type="text" className="form-control shadow inputDesign"
                                       id="AustralianPortfolioLender" name='AustralianPortfolioLender' placeholder="Lender"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianPortfolioLender' />
@@ -2127,7 +2461,7 @@ function Investments() {
 
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
+                                      <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</label>
                                       <Field type="number" className="form-control shadow inputDesign" 
                                       id="AustralianInterestRatePA" name='AustralianInterestRatePA' placeholder="Interest Rate P.A."/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianInterestRatePA' />
@@ -2135,7 +2469,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</label>
                                       <Field
                                               as='select'
                                               name="AustralianPortfolioLoanTerm"
@@ -2179,7 +2513,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                       <div className="mb-3">
-                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</label>
                                         <Field
                                                 as='select'
                                                 name="AustralianPortfolioLoanType2"
@@ -2195,7 +2529,7 @@ function Investments() {
                                       </div>
                                       <div className="col-md-6">
                                       <div className="mb-3">
-                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</label>
                                         <Field name="AustralianPortfolioDeductibleLoanAmount" 
                                         placeholder='Deductible Loan Amount'
                                         id="AustralianPortfolioDeductibleLoanAmount"
@@ -2206,7 +2540,7 @@ function Investments() {
                                       </div>
                                       <div className="col-md-6">
                                         <div className="mb-3">
-                                          <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
+                                          <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</label>
                                           <Field
                                                   as='select'
                                                   name="AustralianPortfolioYearRemaining"
@@ -2288,6 +2622,7 @@ function Investments() {
                                         <th>Current Balance</th>
                                         <th>Lender</th>
                                         <th>Interest Rate P.A.</th>  
+                                        <th>Operations</th>  
                                       </tr>
                                     </thead>
 
@@ -2306,11 +2641,11 @@ function Investments() {
                                             <td>{AustralianPortfolioCurrentBalance}</td>
                                             <td>{AustralianPortfolioLender}</td>
                                             <td>{AustralianInterestRatePA}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
-                                    
-                                            </td>  */}
+                                           <td >
+                                            <button  type='button' onClick={(e)=>AustralianLoanDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={()=>AustralianSharePortfoliohandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                
+                                            </td> 
                                         
                                         </tr>
                                         );
@@ -2395,7 +2730,7 @@ function Investments() {
                               
                               <Modal
                                 show={ManagedFundsshow}
-                                onHide={ManagedFundshandleClose}
+                                onHide={ManagedFundshandleClose}  
                                 backdrop="static"
                                 className="modal-lg"
                                 keyboard={false}
@@ -2413,8 +2748,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={ManagedFundsEdit? ManagedFundsList[0] : Client_initialValues}
+                                validationSchema={Client_validationSchemaManagedFunds}
                                 onSubmit={ManagedFunds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -2433,7 +2768,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</   label>
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</label>
                               <Field
                                       as='select'
                                       name="ManagedFundsPlatformName"
@@ -2451,7 +2786,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</label>
                               <Field
                                       as='select'
                                       name="ManagedFundsInvestmentName"
@@ -2469,7 +2804,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="ManagedFundsNumberOfShares" className="form-label">No. of Unit/Shares</   label>
+                              <label htmlFor="ManagedFundsNumberOfShares" className="form-label">No. of Unit/Shares</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="ManagedFundsNumberOfShares" name='ManagedFundsNumberOfShares' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsNumberOfShares' />
@@ -2478,7 +2813,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</   label>
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="ManagedFundsSharePrice" name='ManagedFundsSharePrice' placeholder="Share Price"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsSharePrice' />
@@ -2487,7 +2822,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</   label>
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="ManagedFundsCurrentValue" name='ManagedFundsCurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsCurrentValue' />
@@ -2495,7 +2830,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="ManagedFundsOriginalInvestment" name='ManagedFundsOriginalInvestment' placeholder="Original Investments"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsOriginalInvestment' />
@@ -2503,7 +2838,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</label>
                               <Field type="date" className="form-control shadow inputDesign"
                               id="ManagedFundsPurchaseDate" name='ManagedFundsPurchaseDate'/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPurchaseDate' />
@@ -2511,7 +2846,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="ManagedFundsIncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="ManagedFundsIncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -2536,7 +2871,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="ManagedFundsTotalIncomePA" name='ManagedFundsTotalIncomePA' placeholder="Total Income P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsTotalIncomePA' />
@@ -2576,7 +2911,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="ManagedFundsRegInvestments" name='ManagedFundsRegInvestments' placeholder="Reg Investments P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsRegInvestments' />
@@ -2620,6 +2955,8 @@ function Investments() {
                                       <tr>
                                         <th>Platform Name</th>
                                         <th>Current Value</th>
+                                        <th>Operations</th>
+
                                       </tr>
                                     </thead>
 
@@ -2635,11 +2972,11 @@ function Investments() {
                                           {/* <td className='fw-bold'>Bank #1</td> */}
                                             <td>{ManagedFundsPlatformName}</td>
                                             <td>{ManagedFundsCurrentValue}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                             <td >
+                                            <button  type='button' onClick={(e)=>ManagedFundsDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={(e)=>{ManagedFundshandleShow()}} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -2734,8 +3071,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={ManagedFundsLoanEdit ? ManagedFundsPortfolioList[0] :   Client_initialValues}
+                                validationSchema={Client_validationSchemaManagedFundsLoan}
                                 onSubmit={ManagedFundsPortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -2754,7 +3091,7 @@ function Investments() {
                                     <div className="row">
                                   <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</   label>
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Type of Loan</label>
                                       <Field
                                               as='select'
                                               name="ManagedFundsPortfolioLoanType"
@@ -2770,7 +3107,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="ManagedFundsPortfolioCurrentBalance" className="form-label">Current Balance</   label>
+                                      <label htmlFor="ManagedFundsPortfolioCurrentBalance" className="form-label">Current Balance</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="ManagedFundsPortfolioCurrentBalance" name='ManagedFundsPortfolioCurrentBalance' placeholder="Current Balance"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPortfolioCurrentBalance' />
@@ -2779,7 +3116,7 @@ function Investments() {
 
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="TermDepositIncomePA" className="form-label">Lender</   label>
+                                    <label htmlFor="TermDepositIncomePA" className="form-label">Lender</label>
                                       <Field type="text" className="form-control shadow inputDesign"
                                       id="ManagedFundsPortfolioLender" name='ManagedFundsPortfolioLender' placeholder="Lender"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPortfolioLender' />
@@ -2788,7 +3125,7 @@ function Investments() {
 
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</   label>
+                                      <label htmlFor="TermDepositIncomePAType" className="form-label">Interest Rate P.A.</label>
                                       <Field type="number" className="form-control shadow inputDesign" 
                                       id="ManagedFundsPortfolioInterestRatePA" name='ManagedFundsPortfolioInterestRatePA' placeholder="Interest Rate P.A."/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPortfolioInterestRatePA' />
@@ -2796,7 +3133,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</   label>
+                                      <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Term (1-30 Years)</label>
                                       <Field
                                               as='select'
                                               name="ManagedFundsPortfolioLoanTerm"
@@ -2840,7 +3177,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                       <div className="mb-3">
-                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</   label>
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Loan Type</label>
                                         <Field
                                                 as='select'
                                                 name="ManagedFundsPortfolioLoanType2"
@@ -2856,7 +3193,7 @@ function Investments() {
                                       </div>
                                       <div className="col-md-6">
                                       <div className="mb-3">
-                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</   label>
+                                        <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</label>
                                         <Field name="ManagedFundsPortfolioDeductibleLoanAmount" 
                                         placeholder='Deductible Loan Amount'
                                         id="ManagedFundsPortfolioDeductibleLoanAmount"
@@ -2867,7 +3204,7 @@ function Investments() {
                                       </div>
                                       <div className="col-md-6">
                                         <div className="mb-3">
-                                          <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</   label>
+                                          <label htmlFor="TermDepositCurrentValue" className="form-label">Year Remaining (1-30 Years)</label>
                                           <Field
                                                   as='select'
                                                   name="ManagedFundsPortfolioYearRemaining"
@@ -2949,6 +3286,7 @@ function Investments() {
                                         <th>Current Value</th>
                                         <th>Lender</th>
                                         <th>Interest Rate P.A.</th>
+                                        <th>Operations</th>
                                       </tr>
                                     </thead>
 
@@ -2967,11 +3305,11 @@ function Investments() {
                                             <td>{ManagedFundsPortfolioCurrentBalance}</td>
                                             <td>{ManagedFundsPortfolioLender}</td>
                                             <td>{ManagedFundsPortfolioInterestRatePA}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                           <td >
+                                            <button  type='button' onClick={(e)=>ManagedFundsLoanDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={()=>ManagedFundsPortfoliohandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -3074,8 +3412,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={InvestmentBondsEdit? InvestmentBondsList[0] :Client_initialValues}
+                                validationSchema={Client_validationSchemaInvestmentBonds}
                                 onSubmit={InvestmentBonds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -3094,7 +3432,7 @@ function Investments() {
                             <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</   label>
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Platform Name</label>
                               <Field
                                       as='select'
                                       name="InvestmentBondsPlatformName"
@@ -3112,7 +3450,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</   label>
+                              <label htmlFor="TermDepositCurrentValue" className="form-label">Investment Name</label>
                               <Field
                                       as='select'
                                       name="InvestmentBondsInvestmentName"
@@ -3130,7 +3468,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentBondsNumberOfShares" className="form-label">No. of Unit/Shares</   label>
+                              <label htmlFor="InvestmentBondsNumberOfShares" className="form-label">No. of Unit/Shares</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentBondsNumberOfShares" name='InvestmentBondsNumberOfShares' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsNumberOfShares' />
@@ -3139,7 +3477,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</   label>
+                            <label htmlFor="TermDepositIncomePA" className="form-label">Current Share/Unit Price</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentBondsSharePrice" name='InvestmentBondsSharePrice' placeholder="Share Price"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsSharePrice' />
@@ -3148,7 +3486,7 @@ function Investments() {
 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</   label>
+                              <label htmlFor="TermDepositIncomePAType" className="form-label">Current Value</label>
                               <Field type="number" className="form-control shadow inputDesign" 
                               id="InvestmentBondsCurrentValue" name='InvestmentBondsCurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsCurrentValue' />
@@ -3156,7 +3494,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Original Investment</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentBondsOriginalInvestment" name='InvestmentBondsOriginalInvestment' placeholder="Original Investments"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsOriginalInvestment' />
@@ -3164,7 +3502,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</label>
                               <Field type="date" className="form-control shadow inputDesign"
                               id="InvestmentBondsPurchaseDate" name='InvestmentBondsPurchaseDate'/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsPurchaseDate' />
@@ -3172,7 +3510,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                            <label htmlFor="InvestmentBondsIncomePA" className="form-label">Income P.A.</   label>
+                            <label htmlFor="InvestmentBondsIncomePA" className="form-label">Income P.A.</label>
                             <div className='row'>
                             <div className='col-md-8'>
                               <Field type="number" className="form-control shadow inputDesign"
@@ -3197,7 +3535,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Total Income P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentBondsTotalIncomePA" name='InvestmentBondsTotalIncomePA' placeholder="Total Income P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsTotalIncomePA' />
@@ -3237,7 +3575,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</   label>
+                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Reg Investments P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentBondsRegInvestments" name='InvestmentBondsRegInvestments' placeholder="Reg Investments P.A."/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsRegInvestments' />
@@ -3281,6 +3619,7 @@ function Investments() {
                                       <tr>
                                         <th>Platform Name</th>
                                         <th>Current Value</th>
+                                        <th>Operations</th>
                                       </tr>
                                     </thead>
 
@@ -3296,12 +3635,10 @@ function Investments() {
                                           {/* <td className='fw-bold'>Bank #1</td> */}
                                             <td>{InvestmentBondsPlatformName}</td>
                                             <td>{InvestmentBondsCurrentValue}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
-                                    
-                                            </td>  */}
-                                        
+                                            <td>
+                                            <button  type='button' onClick={(e)=>InvestmentBondsDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={()=>InvestmentBondshandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            </td>
                                         </tr>
                                         );
                                     }
@@ -3403,8 +3740,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={InvestmentPropertiesEdit? InvestmentPropertiesList[0] : Client_initialValues}
+                                validationSchema={Client_validationSchemaInvestmentProperties}
                                 onSubmit={InvestmentProperties_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -3423,7 +3760,7 @@ function Investments() {
                             <div className="row">
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesCurrentValue" className="form-label">Current Value</   label>
+                              <label htmlFor="InvestmentPropertiesCurrentValue" className="form-label">Current Value</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesCurrentValue" name='InvestmentPropertiesCurrentValue' placeholder="Current Value"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesCurrentValue' />
@@ -3431,7 +3768,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesClientOwnership" className="form-label">Client % of Ownership</   label>
+                              <label htmlFor="InvestmentPropertiesClientOwnership" className="form-label">Client % of Ownership</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesClientOwnership" name='InvestmentPropertiesClientOwnership' placeholder="Client Ownership Percentage"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesClientOwnership' />
@@ -3439,7 +3776,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesCostBase" className="form-label">Cost Base</   label>
+                              <label htmlFor="InvestmentPropertiesCostBase" className="form-label">Cost Base</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesCostBase" name='InvestmentPropertiesCostBase' placeholder="Cost Base"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesCostBase' />
@@ -3447,7 +3784,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesAddress" className="form-label">Property Address</   label>
+                              <label htmlFor="InvestmentPropertiesAddress" className="form-label">Property Address</label>
                               <Field type="text" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesAddress" name='InvestmentPropertiesAddress' placeholder="Property Address"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesAddress' />
@@ -3455,7 +3792,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesPostcode" className="form-label">Postcode</   label>
+                              <label htmlFor="InvestmentPropertiesPostcode" className="form-label">Postcode</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesPostcode" name='InvestmentPropertiesPostcode' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesPostcode' />
@@ -3463,7 +3800,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesRentalIncome" className="form-label">Rental Income</   label>
+                              <label htmlFor="InvestmentPropertiesRentalIncome" className="form-label">Rental Income</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesRentalIncome" name='InvestmentPropertiesRentalIncome' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesRentalIncome' />
@@ -3471,7 +3808,7 @@ function Investments() {
                             </div>
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesFrequency" className="form-label">Frequency</   label>
+                              <label htmlFor="InvestmentPropertiesFrequency" className="form-label">Frequency</label>
                               <Field
                                       as='select'
                                       name="InvestmentPropertiesFrequency"
@@ -3486,7 +3823,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesTotalAnnualIncome" className="form-label">Total Annual Income</   label>
+                              <label htmlFor="InvestmentPropertiesTotalAnnualIncome" className="form-label">Total Annual Income</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesTotalAnnualIncome" name='InvestmentPropertiesTotalAnnualIncome' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesTotalAnnualIncome' />
@@ -3494,7 +3831,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesExpensesPA" className="form-label">Expenses P.A.</   label>
+                              <label htmlFor="InvestmentPropertiesExpensesPA" className="form-label">Expenses P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesExpensesPA" name='InvestmentPropertiesExpensesPA' placeholder="No. of shares"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesExpensesPA' />
@@ -3593,7 +3930,7 @@ function Investments() {
                             <div className="row">
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalTotalExpense" className="form-label">Total Property Expenses</   label>
+                                <label htmlFor="InvestmentModalTotalExpense" className="form-label">Total Property Expenses</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalTotalExpense" name='InvestmentModalTotalExpense' readOnly/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalTotalExpense' />
@@ -3601,7 +3938,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalCorporateFees" className="form-label">Body Corporate Fees</   label>
+                                <label htmlFor="InvestmentModalCorporateFees" className="form-label">Body Corporate Fees</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalCorporateFees" name='InvestmentModalCorporateFees' placeholder='Body Corporate Fees'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalCorporateFees' />
@@ -3609,7 +3946,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalCouncilRates" className="form-label">Council Rates</   label>
+                                <label htmlFor="InvestmentModalCouncilRates" className="form-label">Council Rates</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalCouncilRates" name='InvestmentModalCouncilRates' placeholder='Council Rates'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalCouncilRates' />
@@ -3617,7 +3954,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalLawnMoving" className="form-label">Gardening and Lawn Moving</   label>
+                                <label htmlFor="InvestmentModalLawnMoving" className="form-label">Gardening and Lawn Moving</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalLawnMoving" name='InvestmentModalLawnMoving' placeholder='Gardening and Lawn Moving'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalLawnMoving' />
@@ -3625,7 +3962,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalInsurance" className="form-label">Insurance</   label>
+                                <label htmlFor="InvestmentModalInsurance" className="form-label">Insurance</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalInsurance" name='InvestmentModalInsurance' placeholder='Insurance'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalInsurance' />
@@ -3633,7 +3970,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalLandTax" className="form-label">Land Tax</   label>
+                                <label htmlFor="InvestmentModalLandTax" className="form-label">Land Tax</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalLandTax" name='InvestmentModalLandTax' placeholder='Land Tax'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalLandTax' />
@@ -3641,7 +3978,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalRepairs" className="form-label">Repairs and Maintenance</   label>
+                                <label htmlFor="InvestmentModalRepairs" className="form-label">Repairs and Maintenance</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalRepairs" name='InvestmentModalRepairs' placeholder='Repairs and Maintenance'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalRepairs' />
@@ -3649,7 +3986,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalWaterCharges" className="form-label">Water Charges</   label>
+                                <label htmlFor="InvestmentModalWaterCharges" className="form-label">Water Charges</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalWaterCharges" name='InvestmentModalWaterCharges' placeholder='Water Charges'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalWaterCharges' />
@@ -3657,7 +3994,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalOthers" className="form-label">Other</   label>
+                                <label htmlFor="InvestmentModalOthers" className="form-label">Other</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalOthers" name='InvestmentModalOthers' placeholder='Other'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalOthers' />
@@ -3665,7 +4002,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalTelephone" className="form-label">Telephone & Internet</   label>
+                                <label htmlFor="InvestmentModalTelephone" className="form-label">Telephone & Internet</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalTelephone" name='InvestmentModalTelephone' placeholder='Telephone & Internet'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalTelephone' />
@@ -3673,7 +4010,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalProfessionalFees" className="form-label">Professional Fees</   label>
+                                <label htmlFor="InvestmentModalProfessionalFees" className="form-label">Professional Fees</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalProfessionalFees" name='InvestmentModalProfessionalFees' placeholder='Professional Fees'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalProfessionalFees' />
@@ -3681,7 +4018,7 @@ function Investments() {
                               </div>
                               <div className="col-md-6">
                               <div className="mb-3">
-                                <label htmlFor="InvestmentModalAllOthers" className="form-label">All Other</   label>
+                                <label htmlFor="InvestmentModalAllOthers" className="form-label">All Other</label>
                                 <Field type="number" className="form-control shadow inputDesign"
                                 id="InvestmentModalAllOthers" name='InvestmentModalAllOthers' placeholder='All Others'/>
                                 <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentModalAllOthers' />
@@ -3723,7 +4060,7 @@ function Investments() {
                                 
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesCurrentBalance" className="form-label">Current Balance</   label>
+                              <label htmlFor="InvestmentPropertiesCurrentBalance" className="form-label">Current Balance</label>
                               <Field type="number" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesCurrentBalance" name='InvestmentPropertiesCurrentBalance' placeholder="Current Balance"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesCurrentBalance' />
@@ -3731,7 +4068,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesClientBorrowing" className="form-label">Client % Borrowing</   label>
+                              <label htmlFor="InvestmentPropertiesClientBorrowing" className="form-label">Client % Borrowing</label>
                               <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesClientBorrowing" 
                               name='InvestmentPropertiesClientBorrowing' placeholder="Client Borrowing Percentage"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesClientBorrowing' />
@@ -3739,7 +4076,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesLender" className="form-label">Lender</   label>
+                              <label htmlFor="InvestmentPropertiesLender" className="form-label">Lender</label>
                               <Field type="text" className="form-control shadow inputDesign"
                               id="InvestmentPropertiesLender" name='InvestmentPropertiesLender' placeholder="Lender"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesLender' />
@@ -3747,7 +4084,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesRepaymentAmount" className="form-label">Repayment Amount</   label>
+                              <label htmlFor="InvestmentPropertiesRepaymentAmount" className="form-label">Repayment Amount</label>
                               <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesRepaymentAmount" 
                               name='InvestmentPropertiesRepaymentAmount' placeholder="Repayment Amount"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesRepaymentAmount' />
@@ -3755,7 +4092,7 @@ function Investments() {
                             </div>
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesFrequency2" className="form-label">Frequency</   label>
+                              <label htmlFor="InvestmentPropertiesFrequency2" className="form-label">Frequency</label>
                               <Field
                                       as='select'
                                       name="InvestmentPropertiesFrequency2"
@@ -3771,7 +4108,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesAnnualRepayment" className="form-label">Annual Repayments</   label>
+                              <label htmlFor="InvestmentPropertiesAnnualRepayment" className="form-label">Annual Repayments</label>
                               <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesAnnualRepayment" 
                               name='InvestmentPropertiesAnnualRepayment' placeholder="Annual Repayment"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesAnnualRepayment' />
@@ -3779,7 +4116,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesInterestRatePA" className="form-label">Interest Rate P.A.</   label>
+                              <label htmlFor="InvestmentPropertiesInterestRatePA" className="form-label">Interest Rate P.A.</label>
                               <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesInterestRatePA" 
                               name='InvestmentPropertiesInterestRatePA' placeholder="Repayment Amount"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesInterestRatePA' />
@@ -3787,7 +4124,7 @@ function Investments() {
                             </div>
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesLoanTerm" className="form-label">Loan Term (1-30 Years)</   label>
+                              <label htmlFor="InvestmentPropertiesLoanTerm" className="form-label">Loan Term (1-30 Years)</label>
                               <Field
                                       as='select'
                                       name="InvestmentPropertiesLoanTerm"
@@ -3831,7 +4168,7 @@ function Investments() {
                             </div>
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesLoanType" className="form-label">Loan Type</   label>
+                              <label htmlFor="InvestmentPropertiesLoanType" className="form-label">Loan Type</label>
                               <Field
                                       as='select'
                                       name="InvestmentPropertiesLoanType"
@@ -3847,7 +4184,7 @@ function Investments() {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesDebtLoanAmount" className="form-label">Debt Amount of Loan</   label>
+                              <label htmlFor="InvestmentPropertiesDebtLoanAmount" className="form-label">Debt Amount of Loan</label>
                               <Field type="number" className="form-control shadow inputDesign" id="InvestmentPropertiesDebtLoanAmount" 
                               name='InvestmentPropertiesDebtLoanAmount' placeholder="Debt Loan Amount"/>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentPropertiesDebtLoanAmount' />
@@ -3855,7 +4192,7 @@ function Investments() {
                             </div>
                           <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="InvestmentPropertiesYearsRemaining" className="form-label">Years Remaining (1-30 Years)</   label>
+                              <label htmlFor="InvestmentPropertiesYearsRemaining" className="form-label">Years Remaining (1-30 Years)</label>
                               <Field
                                       as='select'
                                       name="InvestmentPropertiesYearsRemaining"
@@ -3940,6 +4277,7 @@ function Investments() {
                                         <th>Rent P.A.</th>
                                         <th>Annual Expenses</th>
                                         <th>Repayments P.A.</th>
+                                        <th>Operations</th>
                                       </tr>
                                     </thead>
 
@@ -3961,11 +4299,11 @@ function Investments() {
                                             <td>{InvestmentPropertiesRentalIncome}</td>
                                             <td>{InvestmentPropertiesExpensesPA}</td>
                                             <td>{InvestmentPropertiesRepaymentAmount}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <td >
+                                            <button  type='button' onClick={(e)=>InvestmentPropertiesDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={()=>InvestmentPropertieshandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td> 
                                         
                                         </tr>
                                         );
@@ -4068,8 +4406,8 @@ function Investments() {
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                initialValues={OthersEdit? OthersList[0] :Client_initialValues}
+                                validationSchema={Client_validationSchemaOtherFunds}
                                 onSubmit={Others_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -4089,7 +4427,7 @@ function Investments() {
                                     <div className="row">
                                   <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherInvestmentName" className="form-label">Name of Investment</   label>
+                                      <label htmlFor="OtherInvestmentName" className="form-label">Name of Investment</label>
                                       <Field type="text" className="form-control shadow inputDesign" 
                                       id="OtherInvestmentName" name='OtherInvestmentName' placeholder="Name of Investment"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherInvestmentName' />
@@ -4097,7 +4435,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherCurrentValue" className="form-label">Current Value</   label>
+                                      <label htmlFor="OtherCurrentValue" className="form-label">Current Value</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherCurrentValue" name='OtherCurrentValue' placeholder="Current Value"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCurrentValue' />
@@ -4105,7 +4443,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherCostBase" className="form-label">Cost Base</   label>
+                                      <label htmlFor="OtherCostBase" className="form-label">Cost Base</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherCostBase" name='OtherCostBase' placeholder="Cost Base"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCostBase' />
@@ -4113,7 +4451,7 @@ function Investments() {
                                     </div>                            
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherPurchaseDate" className="form-label">Purchase Date</   label>
+                                      <label htmlFor="OtherPurchaseDate" className="form-label">Purchase Date</label>
                                       <Field type="date" className="form-control shadow inputDesign"
                                       id="OtherPurchaseDate" name='OtherPurchaseDate' />
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate' />
@@ -4122,7 +4460,7 @@ function Investments() {
 
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="OtherIncomePA" className="form-label">Income P.A.</   label>
+                                    <label htmlFor="OtherIncomePA" className="form-label">Income P.A.</label>
                                     <div className='row'>
                                     <div className='col-md-8'>
                                       <Field type="number" className="form-control shadow inputDesign"
@@ -4147,7 +4485,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherTotalIncomePA" className="form-label">Total Income P.A.</   label>
+                                      <label htmlFor="OtherTotalIncomePA" className="form-label">Total Income P.A.</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherTotalIncomePA" name='OtherTotalIncomePA' readOnly/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherTotalIncomePA' />
@@ -4183,7 +4521,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherRegularInvestmentsPA" className="form-label">Regular Investments P.A.</   label>
+                                      <label htmlFor="OtherRegularInvestmentsPA" className="form-label">Regular Investments P.A.</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherRegularInvestmentsPA" name='OtherRegularInvestmentsPA' placeholder="Regular Investments P.A."/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherRegularInvestmentsPA' />
@@ -4208,7 +4546,7 @@ function Investments() {
                                     <div className="row">
                                   <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherInvestmentName2" className="form-label">Name of Investment</   label>
+                                      <label htmlFor="OtherInvestmentName2" className="form-label">Name of Investment</label>
                                       <Field type="text" className="form-control shadow inputDesign" 
                                       id="OtherInvestmentName2" name='OtherInvestmentName2' placeholder="Name of Investment"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherInvestmentName2' />
@@ -4216,7 +4554,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherCurrentValue2" className="form-label">Current Value</   label>
+                                      <label htmlFor="OtherCurrentValue2" className="form-label">Current Value</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherCurrentValue2" name='OtherCurrentValue2' placeholder="Current Value"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCurrentValue2' />
@@ -4224,7 +4562,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherCostBase2" className="form-label">Cost Base</   label>
+                                      <label htmlFor="OtherCostBase2" className="form-label">Cost Base</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherCostBase2" name='OtherCostBase2' placeholder="Cost Base"/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherCostBase2' />
@@ -4232,7 +4570,7 @@ function Investments() {
                                     </div>                            
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherPurchaseDate2" className="form-label">Purchase Date</   label>
+                                      <label htmlFor="OtherPurchaseDate2" className="form-label">Purchase Date</label>
                                       <Field type="date" className="form-control shadow inputDesign"
                                       id="OtherPurchaseDate2" name='OtherPurchaseDate2' />
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate2' />
@@ -4241,7 +4579,7 @@ function Investments() {
 
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                    <label htmlFor="OtherIncomePA2" className="form-label">Income P.A.</   label>
+                                    <label htmlFor="OtherIncomePA2" className="form-label">Income P.A.</label>
                                     <div className='row'>
                                     <div className='col-md-8'>
                                       <Field type="number" className="form-control shadow inputDesign"
@@ -4266,7 +4604,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherTotalIncomePA2" className="form-label">Total Income P.A.</   label>
+                                      <label htmlFor="OtherTotalIncomePA2" className="form-label">Total Income P.A.</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherTotalIncomePA2" name='OtherTotalIncomePA2' readOnly/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherTotalIncomePA22' />
@@ -4302,7 +4640,7 @@ function Investments() {
                                     </div>
                                     <div className="col-md-6">
                                     <div className="mb-3">
-                                      <label htmlFor="OtherRegularInvestmentsPA2" className="form-label">Regular Investments P.A.</   label>
+                                      <label htmlFor="OtherRegularInvestmentsPA2" className="form-label">Regular Investments P.A.</label>
                                       <Field type="number" className="form-control shadow inputDesign"
                                       id="OtherRegularInvestmentsPA2" name='OtherRegularInvestmentsPA2' placeholder="Regular Investments P.A."/>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherRegularInvestmentsPA2' />
@@ -4348,6 +4686,7 @@ function Investments() {
                                         <th>Current Value</th>
                                         <th>Income P.A.</th>
                                         <th>Reinvest Income</th>
+                                        <th>Operations</th>
                                       </tr>
                                     </thead>
 
@@ -4365,11 +4704,11 @@ function Investments() {
                                             <td>{OtherCurrentValue}</td>
                                             <td>{OtherIncomePA}</td>
                                             <td>{OtherReinvestedIncome}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                             <td >
+                                            <button  type='button' onClick={(e)=>OtherDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button' onClick={()=>OthershandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td>  
                                         
                                         </tr>
                                         );
@@ -4393,11 +4732,11 @@ function Investments() {
                                             <td>{OtherCurrentValue2}</td>
                                             <td>{OtherIncomePA2}</td>
                                             <td>{OtherReinvestedIncome2}</td>
-                                            {/* <td >
-                                            <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                           <td >
+                                            <button  type='button' onClick={(e)=>OtherDeleteHandler2(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                            <button  type='button'  onClick={()=>OthershandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
-                                            </td>  */}
+                                            </td> 
                                         
                                         </tr>
                                         );
