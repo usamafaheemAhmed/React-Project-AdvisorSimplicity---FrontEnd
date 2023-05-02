@@ -439,7 +439,7 @@ function Investments() {
     ManagedFundsPortfolioInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsPortfolioLoanTerm: Yup.string(),
     ManagedFundsPortfolioLoanType2: Yup.string(),
-    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string(),
+    ManagedFundsPortfolioDeductibleLoanAmount: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsPortfolioYearRemaining: Yup.string(),
   })
  
@@ -3195,6 +3195,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       <div className="mb-3">
                                         <label htmlFor="TermDepositCurrentValue" className="form-label">Deductible Amount of Loan %</label>
                                         <Field name="ManagedFundsPortfolioDeductibleLoanAmount" 
+                                        type="number"
                                         placeholder='Deductible Loan Amount'
                                         id="ManagedFundsPortfolioDeductibleLoanAmount"
                                         className="form-control shadow  inputDesign">

@@ -148,7 +148,6 @@ const handleShow8 = () => setShow8(true);
 
    const [bankAccountList, setBankAccountList] = useState([])
    const [bankAccountList2, setBankAccountList2] = useState([])
-
    const [isEdit_bankAccountList, set_isEdit_BankAccountList] = useState(false)
 
 
@@ -751,7 +750,7 @@ const [bankObj, setBankObj] = useState([])
                           AustralianPortfolioYearRemaining:Yup.string() ,
 
                         })
-                    let Australian_loansAssociated_onSubmit = (values) => {
+                       let Australian_loansAssociated_onSubmit = (values) => {
 
                       let myData ={
                         // myloan
@@ -898,6 +897,16 @@ const [bankObj, setBankObj] = useState([])
 
                           handleClose5();
                           }
+                          let updateHandler_ManageFund=(elem)=>{
+                            setIs_Share(true);
+                          
+                            handleShow4()
+                          }
+        
+                          let deleteHandler_ManageFund=(elem)=>{
+  
+                            handleShow4();
+                          }
 
                         // managed fund
 
@@ -982,7 +991,7 @@ const [bankObj, setBankObj] = useState([])
                         .then((ref)=>{
                           console.log("Managed Fund Portfolio Added Succeccfully!")
                         })
-                        setManageLoanList([...manageFundList,myData])
+                        setManageLoanList([...manageLoanList,myData])
                         handleClose6();
                         
                         }
@@ -2419,7 +2428,7 @@ InvestmentYearsRemainingYear:Yup.string()
                           </table>
                       </div>
 
-                         
+              
                     {/* Australian Table */}
 
 
@@ -2430,7 +2439,7 @@ InvestmentYearsRemainingYear:Yup.string()
                    
                     
 
-                    {/*  loans associated */}
+                    {/* Aus loans portfolio associated */}
 
                     <div className=' my-5'>
                         <div className="row">
@@ -2812,7 +2821,6 @@ InvestmentYearsRemainingYear:Yup.string()
                             </thead>
                               <tbody>
                                   {  AustralianLoanList.map((elem,index)=>{
-                                        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
                                       
                                   return(
                                     
@@ -2840,7 +2848,8 @@ InvestmentYearsRemainingYear:Yup.string()
                     {/* Australian TableLoan */}
 
                     </div>
-                     {/*  loans associated */}
+                     {/*  Aus loans portfolio associated */}
+
                     </div>
                    {/* Australian Share Market */}
 
@@ -3160,8 +3169,8 @@ InvestmentYearsRemainingYear:Yup.string()
                                         <td>{elem.CurrentShareValue}</td>
                                         <td>{elem.OriginalInvestment}</td>
                                         <td >
-                                        <button  type='button' onClick={(e)=>deleteHandler_AustralianLoan(elem,index)} className='btn btn-danger btn-sm'>delete</button>
-                                        <button  type='button' onClick={(e)=>updateHandler_AustralianLoan(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                        <button  type='button' onClick={(e)=>deleteHandler_ManageFund(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_ManageFund(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                         </td> 
                                     
@@ -3185,7 +3194,7 @@ InvestmentYearsRemainingYear:Yup.string()
 
                     <div className=' my-5'>
                         <div className="row">
-                        <div className="col-md-12">
+                        <div className="col-md-6">
                     <div className="mb-3">
                       <label  className="form-label">
                       Do you managed funds have any loan associated with them?
@@ -4108,7 +4117,7 @@ InvestmentYearsRemainingYear:Yup.string()
                                     }) }
                             </tbody>
                           </table>
-                      </div>
+                    </div>
 
                          
                     {/* InvestMent properties Table */}

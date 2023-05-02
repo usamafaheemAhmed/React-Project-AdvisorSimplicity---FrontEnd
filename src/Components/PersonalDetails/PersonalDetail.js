@@ -394,7 +394,7 @@ let Navigate = useNavigate();
 const onSubmit= (values,action) => {
   localStorage.setItem("ClientEmail", values.emailID);
 
-  Navigate('/Business-Tax-Structure');
+  // Navigate('/Business-Tax-Structure');
 
 let ClientDetails={
     Title:values.titleID,

@@ -658,18 +658,20 @@ const AssetsLiabilities = () => {
       CreditCard1_YearRemaining: Values.CreditCard1_YearRemaining,
 
 
-      // // 2
+      // 2
+
       CreditCard2_CurrentBalance: Values.CreditCard2_CurrentBalance,
       CreditCard2_RepaymentAmount: Values.CreditCard2_RepaymentAmount,
       CreditCard2_Frequency: Values.CreditCard2_Frequency,
-      debtAnnualRepayment2: 5000,
+      CreditCard2_AnnualRepayment: 5000,
       CreditCard2_InterestRate: Values.CreditCard2_InterestRate,
       CreditCard2_LoanTerm: Values.CreditCard2_LoanTerm,
       CreditCard2_LoanType: Values.CreditCard2_LoanType,
       CreditCard2_YearRemaining: Values.CreditCard2_YearRemaining,
 
 
-      // // 3
+       // 3
+
       PersonalLoan1_CurrentBalance: Values.PersonalLoan1_CurrentBalance,
       PersonalLoan1_RepaymentAmount: Values.PersonalLoan1_RepaymentAmount,
       PersonalLoan1_Frequency: Values.PersonalLoan1_Frequency,
@@ -680,6 +682,7 @@ const AssetsLiabilities = () => {
       PersonalLoan1_YearRemaining: Values.PersonalLoan1_YearRemaining,
 
       // // 4
+
       PersonalLoan2_CurrentBalance: Values.PersonalLoan2_CurrentBalance,
       PersonalLoan2_RepaymentAmount: Values.PersonalLoan2_RepaymentAmount,
       PersonalLoan2_Frequency: Values.PersonalLoan2_Frequency,
