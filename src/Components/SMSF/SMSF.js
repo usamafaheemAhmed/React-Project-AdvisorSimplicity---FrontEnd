@@ -714,6 +714,30 @@ console.log(bankAccountList2)
  .then((res)=> console.log("data Updated successfully"))
 }
 
+let updateHandler_Beneficiaries=(elem)=>{
+  alert("delete handler")
+  
+}
+
+let deleteHandler_Beneficiaries=(e, index)=>{
+let emailasID=localStorage.getItem("ClientEmail");
+alert("update handler")
+
+}
+
+
+
+let deleteHandler_accumulation=(elem)=>{
+  alert("delete handler")
+  
+}
+
+let updateHandler_accumulation=(e, index)=>{
+let emailasID=localStorage.getItem("ClientEmail");
+alert("update handler")
+
+}
+
    const [termAccountList, setTermAccountList] = useState([])
    const [termAccountList2, setTermAccountList2] = useState([])
    const [isEdit_TermList, set_isEdit_TermList] = useState(false)
@@ -1325,6 +1349,7 @@ alert("delete")
 
     beneficiariesAttached: "No",
     NomiationTypeBeneficiary: "",
+    BeneficiariesOptionDetailsBeneficiaries:'',
 
     Beneficiary1: "",
     ShareofBenefit1: "",
@@ -1349,6 +1374,7 @@ alert("delete")
   }
   let validateYupSchemaBeneficiariesOptionDetails = Yup.object({
     NomiationTypeBeneficiary:Yup.string().required("Required"),
+    BeneficiariesOptionDetailsBeneficiaries:Yup.string().required("Required"),
     Beneficiary1: Yup.string().required("*Required"),
     ShareofBenefit1: Yup.number("only Numbers allowed").required("*Required"),
     RelationshipOptionDetailsRelationship1: Yup.string().required("*Required"),
@@ -1375,33 +1401,42 @@ alert("delete")
     handleClose3();
     let BeneficiaryData = {
 
-      beneficiariesAttached: values.beneficiariesAttached,
-      NomiationTypeBeneficiary: values.NomiationTypeBeneficiary,
+      Email:localStorage.getItem("ClientEmail"),
+
+      NominatedBeneficiary: values.beneficiariesAttached,
+      NominationType: values.NomiationTypeBeneficiary,
+      No_ofBeneficiaries:values.BeneficiariesOptionDetailsBeneficiaries,
 
       Beneficiary1: values.Beneficiary1,
-      ShareofBenefit1: values.ShareofBenefit1,
-      RelationshipOptionDetailsRelationship1: values.RelationshipOptionDetailsRelationship1,
-
+      BenefitShare1: values.ShareofBenefit1,
+      Relationship1: values.RelationshipOptionDetailsRelationship1,
+      
       Beneficiary2: values.Beneficiary2,
-      ShareofBenefit2: values.ShareofBenefit2,
-      RelationshipOptionDetailsRelationship2: values.RelationshipOptionDetailsRelationship2,
+      BenefitShare2: values.ShareofBenefit2,
+      Relationship2: values.RelationshipOptionDetailsRelationship2,
 
       Beneficiary3: values.Beneficiary3,
-      ShareofBenefit3: values.ShareofBenefit3,
-      RelationshipOptionDetailsRelationship3: values.RelationshipOptionDetailsRelationship3,
+      BenefitShare3: values.ShareofBenefit3,
+      Relationship3: values.RelationshipOptionDetailsRelationship3,
 
       Beneficiary4: values.Beneficiary4,
-      ShareofBenefit4: values.ShareofBenefit4,
-      RelationshipOptionDetailsRelationship4: values.RelationshipOptionDetailsRelationship4,
+      BenefitShare4: values.ShareofBenefit4,
+      Relationship4: values.RelationshipOptionDetailsRelationship4,
 
       Beneficiary5: values.Beneficiary5,
-      ShareofBenefit5: values.ShareofBenefit5,
-      RelationshipOptionDetailsRelationship5: values.RelationshipOptionDetailsRelationship5
+      BenefitShare5: values.ShareofBenefit5,
+      Relationship5: values.RelationshipOptionDetailsRelationship5
 
     }
 
+    axios
+    .post("http://localhost:7000/Client-SMSF-Beneficiary/Add-Client-Beneficiary",BeneficiaryData)
+    .then((res)=>{
+      console.log("BeneficiaryData added successfully")
+    })
+
     console.log(BeneficiaryData)
-    setBeneficiaryDataList([BeneficiaryDataList])
+    setBeneficiaryDataList([...BeneficiaryDataList,BeneficiaryData])
   }
 
   // NESTED CONTRIBUTIONS MODAL STATES
@@ -1450,7 +1485,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
   contributionHandleClose();
   // console.log(values)
 
-  let ContributionOptionDetailsData = {
+  let ContributionData = {
     contributeFundRadio:values.contributeFundRadio,
     Non_Concessional1: values.Non_Concessional1,
     Other1: values.Other1,
@@ -1468,8 +1503,19 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
     SalarySacAndPersonalDed3: values.SalarySacAndPersonalDed3
 
   }
-  setcontributionModal([ContributionOptionDetailsData]);
-  console.log(ContributionOptionDetailsData);
+  setcontributionModal([...contributionModal,ContributionData]);
+  console.log(ContributionData);
+}
+
+let updateHandler_Contribution=(elem)=>{
+  alert("delete handler")
+  
+}
+
+let deleteHandler_Contribution=(e, index)=>{
+let emailasID=localStorage.getItem("ClientEmail");
+alert("update handler")
+
 }
 
 
@@ -1774,7 +1820,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                 <Modal.Body>
                                     {/* Professional Advisor Detail Form */}
                                     
-                                    {/* Solicitor */}
+                                    
                                     <div className=' '>
                                     <h3 className=''>
                                     <div className="iconContainerLg mx-1">
@@ -1796,6 +1842,8 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                             >
                                             <option value=''>Select</option>
                                             <option value="Client">Client</option>
+                                            <option value="Partner">Partner</option>
+
                                             </Field>
                                             <ErrorMessage name="AccumulationMemberName" component='div' className="text-danger fw-bold"/>
                                     </div>
@@ -1879,7 +1927,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                 </Modal.Header>
                                 <Formik
                                   initialValues={initialValuesBeneficiariesOptionDetails}
-                                  validationSchema={validateYupSchemaBeneficiariesOptionDetails}
+                                  // validationSchema={validateYupSchemaBeneficiariesOptionDetails}
                                   onSubmit={On_submit_validateYupSchemaBeneficiariesOptionDetails}
                                   enableReinitialize
                                 >
@@ -1975,7 +2023,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                             <div className="col-md-4">
                                               <div className="mb-3">
                                                 <label htmlFor="Beneficiary1" className="form-label">Beneficiary 1</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
+                                                <Field type="text" className="form-control shadow inputDesign"
                                                   id="Beneficiary1" name='Beneficiary1' placeholder="Beneficiary 1" />
                                                 <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary1' />
                                               </div>
@@ -2021,7 +2069,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                             <div className="col-md-4">
                                               <div className="mb-3">
                                                 <label htmlFor="Beneficiary2" className="form-label">Beneficiary 2</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
+                                                <Field type="text" className="form-control shadow inputDesign"
                                                   id="Beneficiary2" name='Beneficiary2' placeholder="Beneficiary 2" />
                                                 <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary4' />
                                               </div>
@@ -2069,7 +2117,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                             <div className="col-md-4">
                                               <div className="mb-3">
                                                 <label htmlFor="Beneficiary3" className="form-label">Beneficiary 3</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
+                                                <Field type="text" className="form-control shadow inputDesign"
                                                   id="Beneficiary3" name='Beneficiary3' placeholder="Beneficiary 3" />
                                                 <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary 3' />
                                               </div>
@@ -2117,7 +2165,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                             <div className="col-md-4">
                                               <div className="mb-3">
                                                 <label htmlFor="Beneficiary4" className="form-label">Beneficiary 4</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
+                                                <Field type="text" className="form-control shadow inputDesign"
                                                   id="Beneficiary4" name='Beneficiary4' placeholder="Beneficiary 4" />
                                                 <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary4' />
                                               </div>
@@ -2165,7 +2213,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                             <div className="col-md-4">
                                               <div className="mb-3">
                                                 <label htmlFor="Beneficiary5" className="form-label">Beneficiary 5</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
+                                                <Field type="text" className="form-control shadow inputDesign"
                                                   id="Beneficiary5" name='Beneficiary5' placeholder="Beneficiary 5" />
                                                 <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary5' />
                                               </div>
@@ -2260,7 +2308,7 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                 </Modal.Header>
                                 <Formik
                                   initialValues={initialValuesContributionOptionDetails}
-                                  validationSchema={validateYupSchemaContributionOptionDetails}
+                                  // validationSchema={validateYupSchemaContributionOptionDetails}
                                   onSubmit={On_submit_validateYupSchemaContributionOptionDetails}
                                   enableReinitialize
                                 >
@@ -2489,15 +2537,16 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                               </Formik>
                               </Modal>
                               {/* ---------------------------------------------------- */}
-                               {/* AccumulationTable */}
+                      {/* AccumulationTable */}
+
                       <div   className='table-responsive my-3'>
                          <table className="table table-bordered table-hover text-center">
                             <thead className="text-light" id="tableHead">
                             <tr>
+                            <th>No</th>
+
                                   <th>MemberName</th>
                                   <th>Current Value</th>
-                                  <th>Contributions</th>
-                                  <th>Beneficiaries</th>
                                 <th>Operations</th>
                               </tr>
                             </thead>
@@ -2507,13 +2556,13 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                                   return(
                                     
                                     <tr key={index}>
+                                    <td>{index+1}</td>
+                                      
                                         <td>{elem.MemberName}</td>
                                         <td>{elem.CurrentBalance}</td>
-                                        <td></td>
-                                        <td></td>
                                         <td >
-                                        <button  type='button' onClick={(e)=>deleteHandler_Bank(elem,index)} className='btn btn-danger btn-sm'>delete</button>
-                                        <button  type='button' onClick={(e)=>updateHandler_Bank(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+                                        <button  type='button' onClick={(e)=>deleteHandler_accumulation(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_accumulation(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                         </td> 
                                     
@@ -2526,6 +2575,83 @@ let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
                       </div>
 
                       {/* AccumulationTable */}
+
+                       {/* BeneficiariesTable */}
+                      <h3>Beneficiaries</h3>
+                       <div   className='table-responsive my-3'>
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>No</th>
+                                  <th>Beneficiaries</th>
+                                  
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  BeneficiaryDataList.map((elem,index)=>{
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{index+1}</td>
+                                        <td>{elem.beneficiariesAttached}</td>
+                                        
+                                        <td >
+                                        <button  type='button' onClick={(e)=>deleteHandler_Beneficiaries(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_Beneficiaries(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                      {/* BeneficiariesTable */}
+
+                      
+                       {/* ContributionTable */}
+                       <h3>Contribution</h3>
+                       <div   className='table-responsive my-3'>
+                         <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                            <tr>
+                                  <th>No</th>
+                                  <th>Contribution</th>
+                                  
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                  {  contributionModal.map((elem,index)=>{
+                                      
+                                  return(
+                                    
+                                    <tr key={index}>
+                                        <td>{index+1}</td>
+                                        <td>{elem.contributeFundRadio}</td>
+                                        
+                                        <td >
+                                        <button  type='button' onClick={(e)=>deleteHandler_Contribution(elem,index)} className='btn btn-danger btn-sm'>delete</button>
+                                        <button  type='button' onClick={(e)=>updateHandler_Contribution(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+                                        </td> 
+                                    
+                                    </tr>
+                                    );
+                                        
+                                    }) }
+                            </tbody>
+                          </table>
+                      </div>
+
+                      {/* ContributionTable */}
+
+
                    
                     </div>
                   {/* Accumulation Details */}
