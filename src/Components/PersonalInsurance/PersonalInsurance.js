@@ -15,6 +15,48 @@ import { useNavigate } from 'react-router-dom';
 
 function PersonalInsurance() {
 
+  //Array States to Store Data Temporarily 
+  //Client Arrays
+
+  const [isClientListLifeTPD, setIsClientListLifeTPD] = useState([]);
+  const [isClientListIncomeProtection, setIsClientListIncomeProtection] = useState([]);
+
+  //Client Arrays
+  //Partner Arrays
+  
+  const [isPartnerListLifeTPD, setIsPartnerListLifeTPD] = useState([]);
+  const [isPartnerListIncomeProtection, setIsPartnerListIncomeProtection] = useState([]);
+
+  //Partner Arrays
+  // two states for Changing Modal Number
+  const [isClientNumber , setIsClientNumber] = useState(1);
+  const [isClientNumber2 , setIsClientNumber2] = useState(1);
+  
+  const [isPartnerNumber , setIsPartnerNumber] = useState(1);
+  const [isPartnerNumber2 , setIsPartnerNumber2] = useState(1);
+  // two states for Changing Modal Number
+  
+  //Flags 
+  const [ClientLifeTPDUpdateFlag , setClientLifeTPDUpdateFlag] = useState(false);
+  const [ClientListLifeTPDTOUpdate, setClientListLifeTPDTOUpdate] = useState([]);
+
+  const [ClientIncomeProtectionUpdateFlag , setClientIncomeProtectionUpdateFlag] = useState(false);
+  const [ClientListIncomeProtectionUpdate, setClientListIncomeProtectionUpdate] = useState([]);
+
+
+  const [PartnerLifeTPDUpdateFlag , setPartnerLifeTPDUpdateFlag] = useState(false);
+  const [PartnerListLifeTPDTOUpdate, setPartnerListLifeTPDTOUpdate] = useState([]);
+
+  const [PartnerIncomeProtectionUpdateFlag , setPartnerIncomeProtectionUpdateFlag] = useState(false);
+  const [PartnerListIncomeProtectionUpdate, setPartnerListIncomeProtectionUpdate] = useState([]);
+
+
+
+  //Update Index()
+  
+  const [updateIndex, setUpdateIndex] = useState();
+
+
 
 let partner= localStorage.getItem("partner");
 const [isPartnered, setIsPartnered] = useState()
@@ -30,6 +72,8 @@ useEffect(() => {
  
   }
   
+  setIsClientListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
+
    }, [])
 
   const [BenefitClaimed, setBenefitClaimed] = useState(false);
@@ -350,7 +394,7 @@ useEffect(() => {
     }
 
     let Client_initialValues = {
-      PersonalInsurancePolicyNO1: '1',
+      PersonalInsurancePolicyNO1: isClientNumber,
       PersonalInsuranceLifeRadio: 'No',
       PersonalInsuranceTPDRadio: 'No',
       PersonalInsuranceTraumaRadio: 'No',
@@ -369,7 +413,7 @@ useEffect(() => {
       PersonalInsuranceLoadingRadio: 'No',
       PersonalInsuranceLoadingDescription1: '',
 
-      PersonalInsurance2PolicyNO1: '1',
+      PersonalInsurance2PolicyNO1: isClientNumber2,
       PersonalInsurance2PolicyOwner: '',
       PersonalInsurance2LifeInsured: '',
       PersonalInsurance2InsuranceCompany: '',
@@ -438,7 +482,7 @@ useEffect(() => {
 
     
     let Partner_initialValues = {
-      PersonalInsurancePolicyNO1: '1',
+      PersonalInsurancePolicyNO1: isPartnerNumber,
       PersonalInsuranceLifeRadio: 'No',
       PersonalInsuranceTPDRadio: 'No',
       PersonalInsuranceTraumaRadio: 'No',
@@ -457,7 +501,7 @@ useEffect(() => {
       PersonalInsuranceLoadingRadio: 'No',
       PersonalInsuranceLoadingDescription1: '',
 
-      PersonalInsurance2PolicyNO1: '1',
+      PersonalInsurance2PolicyNO1: isPartnerNumber2,
       PersonalInsurance2PolicyOwner: '',
       PersonalInsurance2LifeInsured: '',
       PersonalInsurance2InsuranceCompany: '',
@@ -509,51 +553,181 @@ useEffect(() => {
         Life_LoadingExecutions:values.PersonalInsuranceLoadingRadio,
         Life_Details_LoadingExecutions:values.PersonalInsuranceLoadingDescription1,
       }
-     console.log(LifeData);
 
-     axios
-     .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance-Life',LifeData)
-     .then((ref)=>{
-      console.log("data Added successfully")
-      Partner_PersonalInsuranceCoverhandleClose();
-     })
+
+      if(PartnerLifeTPDUpdateFlag){
+        setIsPartnerListLifeTPD(isPartnerListLifeTPD.filter((isPartnerListLifeTPD, index) => index !== updateIndex));
+        setIsPartnerListLifeTPD(isPartnerListLifeTPD =>[...isPartnerListLifeTPD, LifeData]);
+        setIsPartnerListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
+        Partner_PersonalInsuranceCoverhandleClose();
+        setPartnerLifeTPDUpdateFlag(false);
+      }
+      else{
+        setIsPartnerListLifeTPD([...isPartnerListLifeTPD, LifeData]);
+        setIsPartnerNumber(isPartnerNumber+1);
+        Partner_PersonalInsuranceCoverhandleClose();
+  
+      //  console.log(LifeData);
+  
+      //  axios
+      //  .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance-Life',LifeData)
+      //  .then((ref)=>{
+      //   console.log("data Added successfully")
+      //   Partner_PersonalInsuranceCoverhandleClose();
+      //  })
+      }
+
+
+
       } 
-       let Partner_onSubmit_Income = (values) => {
-        let partnerData={
-          Email: localStorage.getItem("ClientEmail"),
-          Income_PolicyID:values.PersonalInsurance2PolicyNO1,  // read only
-          Income_PolicyOwner:values.PersonalInsurance2PolicyOwner,
-          Income_LifeInsured:values.PersonalInsurance2LifeInsured,
-          Income_InsuranceCompany:values.PersonalInsurance2InsuranceCompany,
-          Income_InsuranceProduct:values.PersonalInsurance2ProductName,
-          Income_PolicyNumber:values.PersonalInsurance2PolicySrNo,
-          Income_PolicyDateCommenced:values.PersonalInsurance2CommencedDate,
-          Income_PolicyDateRenewal:values.PersonalInsurance2RenewalDate,
-          Income_Smoker:clientSmoker,
-          Income_MonthlyBenefit:values.PersonalInsurance2MonthlyBenefit,
-          Income_ContinuanceAmount:values.PersonalInsurance2SuperContinuance,
-          Income_WaitingPeriod:values.PersonalInsurance2WaitingPeriod,
-          Income_BenefitPeriod:values.PersonalInsurance2BenefitPeriod,
-          Income_Agreed:values.PersonalInsurance2IndemnityPeriod,
-          Income_PremiumPA:values.PersonalInsurance2PremiumPA,
-          Income_PremiumType:values.PersonalInsurance2PremiumType,
-          Income_SuperannuationPolicy:values.PersonalInsurance2SuperannuationRadio,
-          Income_Accident:values.PersonalInsurance2AccidentRadio,
-          Income_IncreasingClaim:values.PersonalInsurance2IncreasingClaimsRadio,
-          Income_TPD:values.PersonalInsurance2TPDRadio,
-          Income_BenefitIndexed:values.PersonalInsurance2BenefitIndexedRadio,
-          Income_LoadingExecutions:values.PersonalInsurance2LoadingRadio,
-          Income_Details_LoadingExecutions:values.PersonalInsurance2LoadingDescription2,
-          }
-        console.log(partnerData)
 
-        axios
-        .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance-Income',partnerData)
-        .then((res)=>{
-          console.log("Data Added Successfully!")
-          Partner_PersonalInsuranceCover2handleClose();
-        })
+      let PartnerListLifeTPDDeleteHandler = (elem, ind)=>{
+
+        setIsPartnerListLifeTPD(isPartnerListLifeTPD.filter((isPartnerListLifeTPD, index) => index !== ind));
+        setIsPartnerNumber(isPartnerNumber-1);
+      }
+
+      let PartnerListLifeTPDUpdateHandler = (elem, ind)=>{
+        // alert("PartnerListLifeTPDUpdateHandler");
+  
+  
+        setPartnerLifeTPDUpdateFlag(true);
+  
+        let LifeData={
+          Email: localStorage.getItem("ClientEmail"),
+          PersonalInsurancePolicyNO1:elem.Life_PolicyID, // read only
+          PersonalInsuranceLifeRadio:elem.Life,
+          PersonalInsuranceTPDRadio:elem.TPD,
+          PersonalInsuranceTraumaRadio:elem.Trauma,
+  
+          PersonalInsurancePolicyOwner:elem.Life_PolicyOwner,
+          PersonalInsuranceLifeInsured:elem.Life_Insured,
+          PersonalInsuranceInsuranceCompany:elem.Life_InsuranceCompany,
+          PersonalInsuranceProductName:elem.Life_InsuranceProduct,
+          PersonalInsurancePolicySrNo:elem.Life_PolicyNumber,
+          PersonalInsuranceCommencedDate:elem.Life_PolicyDateCommenced,
+          PersonalInsuranceRenewalDate:elem.Life_PolicyDateRenewal,
+          // Life_Smoker:clientSmoker,
+          PersonalInsurancePremiumPA:elem.Life_PremiumPA,
+          PersonalInsurancePremiumType:elem.Life_PremiumType,
+  
+          PersonalInsuranceCPIIndexedRadio:elem.Life_CPI_Indexed,
+          PersonalInsuranceSuperannuationRadio:elem.Life_SuperannuationPolicy,
+          PersonalInsuranceContinuationRadio:elem.Life_ContinuationPolicy,
+          PersonalInsuranceLoadingRadio:elem.Life_LoadingExecutions,
+          PersonalInsuranceLoadingDescription1:elem.Life_Details_LoadingExecutions,
         }
+  
+  
+        // console.log(LifeData);
+        // console.log(PartnerLifeTPDUpdateFlag);
+        
+        setPartnerListLifeTPDTOUpdate([LifeData]);
+        // console.log(PartnerListLifeTPDTOUpdate);
+        setUpdateIndex(ind);
+        Partner_PersonalInsuranceCoverhandleShow();
+      }
+
+
+    let Partner_onSubmit_Income = (values) => {
+    
+    let partnerData={
+      Email: localStorage.getItem("ClientEmail"),
+      Income_PolicyID:values.PersonalInsurance2PolicyNO1,  // read only
+      Income_PolicyOwner:values.PersonalInsurance2PolicyOwner,
+      Income_LifeInsured:values.PersonalInsurance2LifeInsured,
+      Income_InsuranceCompany:values.PersonalInsurance2InsuranceCompany,
+      Income_InsuranceProduct:values.PersonalInsurance2ProductName,
+      Income_PolicyNumber:values.PersonalInsurance2PolicySrNo,
+      Income_PolicyDateCommenced:values.PersonalInsurance2CommencedDate,
+      Income_PolicyDateRenewal:values.PersonalInsurance2RenewalDate,
+      Income_Smoker:clientSmoker,
+      Income_MonthlyBenefit:values.PersonalInsurance2MonthlyBenefit,
+      Income_ContinuanceAmount:values.PersonalInsurance2SuperContinuance,
+      Income_WaitingPeriod:values.PersonalInsurance2WaitingPeriod,
+      Income_BenefitPeriod:values.PersonalInsurance2BenefitPeriod,
+      Income_Agreed:values.PersonalInsurance2IndemnityPeriod,
+      Income_PremiumPA:values.PersonalInsurance2PremiumPA,
+      Income_PremiumType:values.PersonalInsurance2PremiumType,
+      Income_SuperannuationPolicy:values.PersonalInsurance2SuperannuationRadio,
+      Income_Accident:values.PersonalInsurance2AccidentRadio,
+      Income_IncreasingClaim:values.PersonalInsurance2IncreasingClaimsRadio,
+      Income_TPD:values.PersonalInsurance2TPDRadio,
+      Income_BenefitIndexed:values.PersonalInsurance2BenefitIndexedRadio,
+      Income_LoadingExecutions:values.PersonalInsurance2LoadingRadio,
+      Income_Details_LoadingExecutions:values.PersonalInsurance2LoadingDescription2,
+      }
+
+      if(PartnerIncomeProtectionUpdateFlag){
+
+        setIsPartnerListIncomeProtection(isPartnerListIncomeProtection.filter((isPartnerListIncomeProtection, index) => index !== updateIndex));
+        setIsPartnerListIncomeProtection(isPartnerListIncomeProtection =>[...isPartnerListIncomeProtection, partnerData]);
+        setIsPartnerListIncomeProtection(prevState => [...prevState].sort((a, b) => (a.Income_PolicyID > b.Income_PolicyID) ? 1 : -1));
+        
+        Partner_PersonalInsuranceCover2handleClose();
+        setClientIncomeProtectionUpdateFlag(false);
+
+      }
+      else{
+        setIsPartnerListIncomeProtection([...isPartnerListIncomeProtection, partnerData]);
+        setIsPartnerNumber2(isPartnerNumber2+1);
+        Partner_PersonalInsuranceCover2handleClose();
+
+    // console.log(partnerData)
+
+    // axios
+    // .post('http://localhost:7000/Partner-Insurance/Add-Partner-Insurance-Income',partnerData)
+    // .then((res)=>{
+    //   console.log("Data Added Successfully!")
+    //   Partner_PersonalInsuranceCover2handleClose();
+    // })
+      }
+    }
+
+    let PartnerListIncomeProtectionDeleteHandler = (elem, ind)=>{
+
+      setIsPartnerListIncomeProtection(isPartnerListIncomeProtection.filter((isPartnerListIncomeProtection, index) => index !== ind));
+      setIsPartnerNumber2(isPartnerNumber2-1);
+
+    }
+
+    let PartnerListIncomeProtectionUpdateHandler = (elem, ind)=>{
+      setPartnerIncomeProtectionUpdateFlag(true);
+
+      let clientData={
+      Email: localStorage.getItem("ClientEmail"),
+      PersonalInsurance2PolicyNO1:elem.Income_PolicyID,  // read only
+      PersonalInsurance2PolicyOwner:elem.Income_PolicyOwner,
+      PersonalInsurance2LifeInsured:elem.Income_LifeInsured,
+      PersonalInsurance2InsuranceCompany:elem.Income_InsuranceCompany,
+      PersonalInsurance2ProductName:elem.Income_InsuranceProduct,
+      PersonalInsurance2PolicySrNo:elem.Income_PolicyNumber,
+      PersonalInsurance2CommencedDate:elem.Income_PolicyDateCommenced,
+      PersonalInsurance2RenewalDate:elem.Income_PolicyDateRenewal,
+      // Income_Smoker:clientSmoker,Income_Smoker
+      PersonalInsurance2MonthlyBenefit:elem.Income_MonthlyBenefit,
+      PersonalInsurance2SuperContinuance:elem.Income_ContinuanceAmount,
+      PersonalInsurance2WaitingPeriod:elem.Income_WaitingPeriod,
+      PersonalInsurance2BenefitPeriod:elem.Income_BenefitPeriod,
+      PersonalInsurance2IndemnityPeriod:elem.Income_Agreed,
+      PersonalInsurance2PremiumPA:elem.Income_PremiumPA,
+      PersonalInsurance2PremiumType:elem.Income_PremiumType,
+      PersonalInsurance2SuperannuationRadio:elem.Income_SuperannuationPolicy,
+      PersonalInsurance2AccidentRadio:elem.Income_Accident,
+      PersonalInsurance2IncreasingClaimsRadio:elem.Income_IncreasingClaim,
+      PersonalInsurance2TPDRadio:elem.Income_TPD,
+      PersonalInsurance2BenefitIndexedRadio:elem.Income_BenefitIndexed,
+      PersonalInsurance2LoadingRadio:elem.Income_LoadingExecutions,
+      PersonalInsurance2LoadingDescription2:elem.Income_Details_LoadingExecutions,
+      }
+
+      setPartnerListIncomeProtectionUpdate([clientData]);
+      setUpdateIndex(ind);
+      Partner_PersonalInsuranceCover2handleShow();
+    }
+    
+
+
 
     let Client_onSubmit_Life = (values) => {
      
@@ -581,15 +755,33 @@ useEffect(() => {
         Life_LoadingExecutions:values.PersonalInsuranceLoadingRadio,
         Life_Details_LoadingExecutions:values.PersonalInsuranceLoadingDescription1,
       }
-     console.log(LifeData);
 
-     axios
-     .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance-Life',LifeData)
-     .then((ref)=>{
-      console.log("cliend life data added successfully!")
-      PersonalInsuranceCoverhandleClose();
-     })
+      if(ClientLifeTPDUpdateFlag){
+
+
+        setIsClientListLifeTPD(isClientListLifeTPD.filter((isClientListLifeTPD, index) => index !== updateIndex));
+        setIsClientListLifeTPD(isClientListLifeTPD =>[...isClientListLifeTPD, LifeData]);
+        setIsClientListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
+        PersonalInsuranceCoverhandleClose();
+        setClientLifeTPDUpdateFlag(false);
+
+      }
+      else{
+        setIsClientListLifeTPD([...isClientListLifeTPD, LifeData]);
+        setIsClientNumber(isClientNumber+1);
+         PersonalInsuranceCoverhandleClose();
    
+       //  axios
+       //  .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance-Life',LifeData)
+       //  .then((ref)=>{
+       //   console.log("cliend life data added successfully!")
+       //   PersonalInsuranceCoverhandleClose();
+       //  })
+
+      }
+
+
+
     }
 
     let Client_onSubmit_Income = (values) => {
@@ -621,21 +813,118 @@ useEffect(() => {
       Income_Details_LoadingExecutions:values.PersonalInsurance2LoadingDescription2,
       }
 
-      console.log(clientData)
+    
+      if(ClientIncomeProtectionUpdateFlag)
+      {
 
-      axios
-      .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance-Income',clientData)
-      .then((res)=>{
-        console.log("Data Added Successfully!")
-        PersonalInsuranceCover2handleClose();
+      setIsClientListIncomeProtection(isClientListIncomeProtection.filter((isClientListIncomeProtection, index) => index !== updateIndex));
+      setIsClientListIncomeProtection(isClientListIncomeProtection =>[...isClientListIncomeProtection, clientData]);
+      setIsClientListIncomeProtection(prevState => [...prevState].sort((a, b) => (a.Income_PolicyID > b.Income_PolicyID) ? 1 : -1));
+      PersonalInsuranceCover2handleClose();
+      setClientIncomeProtectionUpdateFlag(false);
 
-      })
+      }
+      else{
+
+      setIsClientListIncomeProtection([...isClientListIncomeProtection, clientData]);
+      setIsClientNumber2(isClientNumber2+1);
+      PersonalInsuranceCover2handleClose();
+      // axios
+      // .post('http://localhost:7000/Client-Insurance/Add-Client-Insurance-Income',clientData)
+      // .then((res)=>{
+      //   console.log("Data Added Successfully!")
+      //   PersonalInsuranceCover2handleClose();
+      // })
+
+      }
       }
 
-    
+    let ClientListLifeTPDDeleteHandler = (elem, ind)=>{
+      // alert("ClientListLifeTPDDeleteHandler");
+      setIsClientListLifeTPD(isClientListLifeTPD.filter((isClientListLifeTPD, index) => index !== ind));
+      setIsClientNumber(isClientNumber-1);
+    }
+    let ClientListLifeTPDUpdateHandler = (elem, ind)=>{
+      // alert("ClientListLifeTPDDeleteHandler");
+
+
+      setClientLifeTPDUpdateFlag(true);
+
+      let LifeData={
+        Email: localStorage.getItem("ClientEmail"),
+        PersonalInsurancePolicyNO1:elem.Life_PolicyID, // read only
+        PersonalInsuranceLifeRadio:elem.Life,
+        PersonalInsuranceTPDRadio:elem.TPD,
+        PersonalInsuranceTraumaRadio:elem.Trauma,
+
+        PersonalInsurancePolicyOwner:elem.Life_PolicyOwner,
+        PersonalInsuranceLifeInsured:elem.Life_Insured,
+        PersonalInsuranceInsuranceCompany:elem.Life_InsuranceCompany,
+        PersonalInsuranceProductName:elem.Life_InsuranceProduct,
+        PersonalInsurancePolicySrNo:elem.Life_PolicyNumber,
+        PersonalInsuranceCommencedDate:elem.Life_PolicyDateCommenced,
+        PersonalInsuranceRenewalDate:elem.Life_PolicyDateRenewal,
+        // Life_Smoker:clientSmoker,
+        PersonalInsurancePremiumPA:elem.Life_PremiumPA,
+        PersonalInsurancePremiumType:elem.Life_PremiumType,
+
+        PersonalInsuranceCPIIndexedRadio:elem.Life_CPI_Indexed,
+        PersonalInsuranceSuperannuationRadio:elem.Life_SuperannuationPolicy,
+        PersonalInsuranceContinuationRadio:elem.Life_ContinuationPolicy,
+        PersonalInsuranceLoadingRadio:elem.Life_LoadingExecutions,
+        PersonalInsuranceLoadingDescription1:elem.Life_Details_LoadingExecutions,
+      }
+
+
+      // console.log(LifeData);
+
+      setClientListLifeTPDTOUpdate([LifeData]);
+      setUpdateIndex(ind);
+      PersonalInsuranceCoverhandleShow();
+    }
 
    
+    let ClientListIncomeProtectionDeleteHandler = (elem, ind)=>{
 
+      setIsClientListIncomeProtection(isClientListIncomeProtection.filter((isClientListIncomeProtection, index) => index !== ind));
+      setIsClientNumber2(isClientNumber2-1);
+
+    }
+
+    let ClientListIncomeProtectionUpdateHandler = (elem, ind)=>{
+      setClientIncomeProtectionUpdateFlag(true);
+
+      let clientData={
+      Email: localStorage.getItem("ClientEmail"),
+      PersonalInsurance2PolicyNO1:elem.Income_PolicyID,  // read only
+      PersonalInsurance2PolicyOwner:elem.Income_PolicyOwner,
+      PersonalInsurance2LifeInsured:elem.Income_LifeInsured,
+      PersonalInsurance2InsuranceCompany:elem.Income_InsuranceCompany,
+      PersonalInsurance2ProductName:elem.Income_InsuranceProduct,
+      PersonalInsurance2PolicySrNo:elem.Income_PolicyNumber,
+      PersonalInsurance2CommencedDate:elem.Income_PolicyDateCommenced,
+      PersonalInsurance2RenewalDate:elem.Income_PolicyDateRenewal,
+      // Income_Smoker:clientSmoker,Income_Smoker
+      PersonalInsurance2MonthlyBenefit:elem.Income_MonthlyBenefit,
+      PersonalInsurance2SuperContinuance:elem.Income_ContinuanceAmount,
+      PersonalInsurance2WaitingPeriod:elem.Income_WaitingPeriod,
+      PersonalInsurance2BenefitPeriod:elem.Income_BenefitPeriod,
+      PersonalInsurance2IndemnityPeriod:elem.Income_Agreed,
+      PersonalInsurance2PremiumPA:elem.Income_PremiumPA,
+      PersonalInsurance2PremiumType:elem.Income_PremiumType,
+      PersonalInsurance2SuperannuationRadio:elem.Income_SuperannuationPolicy,
+      PersonalInsurance2AccidentRadio:elem.Income_Accident,
+      PersonalInsurance2IncreasingClaimsRadio:elem.Income_IncreasingClaim,
+      PersonalInsurance2TPDRadio:elem.Income_TPD,
+      PersonalInsurance2BenefitIndexedRadio:elem.Income_BenefitIndexed,
+      PersonalInsurance2LoadingRadio:elem.Income_LoadingExecutions,
+      PersonalInsurance2LoadingDescription2:elem.Income_Details_LoadingExecutions,
+      }
+
+      setClientListIncomeProtectionUpdate([clientData]);
+      setUpdateIndex(ind);
+      PersonalInsuranceCover2handleShow();
+    }
     
 
   return (
@@ -850,45 +1139,136 @@ useEffect(() => {
                                           </div>
                                             </div>    
                                       </div>
-                                      {PersonalInsuranceCover && <div className='col-md-3 my-4'>
-                                      <label  className="form-label">
-                                      Life/TPD/Trauma
-                                          </label>
-                                          <br />
-                                        
-                                        <span
-                                          className=" btn h-50 w-100
-                                          btn-outline-success "
-                                          onClick={PersonalInsuranceCoverhandleShow}
-                                        >
-                                          <div className="iconContainer mx-1">
-                                          <img className="img-fluid" src={plus} alt="" />
+                                      {PersonalInsuranceCover && <div className='col-md-12 my-4'>
+                                        <div className='col-md-3'>
+                                            <label  className="form-label">
+                                            Life/TPD/Trauma
+                                                </label>
+                                                <br />
+                                              
+                                              <span
+                                                className=" btn h-50 w-100
+                                                btn-outline-success "
+                                                onClick={PersonalInsuranceCoverhandleShow}
+                                              >
+                                                <div className="iconContainer mx-1">
+                                                <img className="img-fluid" src={plus} alt="" />
 
+                                                </div>
+                                                Enter Details
+                                              </span>      
+                                        </div>
+                                        <div className='col-md-12'>
+                                          <div className="table-responsive my-3">
+                                            <table className="table table-bordered table-hover text-center">
+                                              <thead className="text-light" id="tableHead">
+                                              <tr>
+                                                <th>Policy Owner</th>
+                                                <th>Life/TPD/Trauma</th>
+                                                <th>Life Insured</th>
+                                                <th>Insurance Company</th>
+                                                <th>Name of Product</th>
+                                                <th>Policy Number</th>
+                                                <th>Operation</th>
+                                              </tr>
+                                              </thead>
+                                              <tbody>
+                                                  {isClientListLifeTPD.map((elem,index) => {
+                                                    return (
+                                                      <tr key={index}>
+                                                        <td className="fw-bold">{elem.Life_PolicyOwner}</td>
+                                                        <td>Cal</td>
+                                                        <td>{elem.Life_Insured}</td>
+                                                        <td>{elem.Life_InsuranceCompany}</td>
+                                                        <td>{elem.Life_InsuranceProduct}</td>
+                                                        <td>{elem.Life_PolicyNumber}</td>
+                                                        <td>
+                                                          <button type="button" onClick={(e) => {ClientListLifeTPDDeleteHandler(elem,index)}}
+                                                            className="btn btn-danger btn-sm">
+                                                            delete
+                                                          </button>
+                                                          <button type="button" onClick={(e) => {ClientListLifeTPDUpdateHandler(elem,index) }}
+                                                            className="btn btn-warning btn-sm mx-2">
+                                                            update
+                                                          </button>
+                                                        </td>
+                                                      </tr>
+                                                    );  
+                                                  })}
+                                              </tbody>
+                                            </table>
                                           </div>
-                                          Enter Details
-                                        </span>
+                                        </div>
+
+
+
                                       </div>}
-                                      {PersonalInsuranceCover && <div className='col-md-3 my-4'>
-                                      <label  className="form-label">
-                                      Income Protection
-                                          </label>
-                                          <br />
-                                        
-                                        <span
-                                          className=" btn h-50 w-100
-                                          btn-outline-success "
-                                          onClick={PersonalInsuranceCover2handleShow}
-                                        >
-                                          <div className="iconContainer mx-1">
-                                          <img className="img-fluid" src={plus} alt="" />
+                                      {PersonalInsuranceCover && <div className='col-md-12 my-4'>
+                                        <div className='col-md-3'>
+                                          <label  className="form-label">
+                                          Income Protection
+                                              </label>
+                                              <br />
+                                            
+                                            <span
+                                              className=" btn h-50 w-100
+                                              btn-outline-success "
+                                              onClick={PersonalInsuranceCover2handleShow}
+                                            >
+                                              <div className="iconContainer mx-1">
+                                              <img className="img-fluid" src={plus} alt="" />
 
-                                          </div>
-                                          Enter Details
-                                        </span>
+                                              </div>
+                                              Enter Details
+                                            </span>
+                                        </div>
+                                      <div className='col-md-12'>
+                                        <div className="table-responsive my-3">
+                                          <table className="table table-bordered table-hover text-center">
+                                            <thead className="text-light" id="tableHead">
+                                            <tr>
+                                              <th>Policy Owner</th>
+                                              <th>Life/TPD/Trauma</th>
+                                              <th>Life Insured</th>
+                                              <th>Insurance Company</th>
+                                              <th>Name of Product</th>
+                                              <th>Policy Number</th>
+                                              <th>Operation</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                  {isClientListIncomeProtection.map((elem,index) => {
+                                                    return (
+                                                      <tr key={index}>
+                                                        <td className="fw-bold">{elem.Income_PolicyOwner}</td>
+                                                        <td>Cal</td>
+                                                        <td>{elem.Income_LifeInsured}</td>
+                                                        <td>{elem.Income_InsuranceCompany}</td>
+                                                        <td>{elem.Income_InsuranceProduct}</td>
+                                                        <td>{elem.Income_PolicyNumber}</td>
+                                                        <td>
+                                                          <button type="button" onClick={(e) => {ClientListIncomeProtectionDeleteHandler(elem,index)}}
+                                                            className="btn btn-danger btn-sm">
+                                                            delete
+                                                          </button>
+                                                          <button type="button" onClick={(e) => {ClientListIncomeProtectionUpdateHandler(elem,index)}}
+                                                            className="btn btn-warning btn-sm mx-2">
+                                                            update
+                                                          </button>
+                                                        </td>
+                                                      </tr>
+                                                    );  
+                                                  })}
+                                              </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
                                       </div>}
                                         </div>
                                         {/* 1 row */}
-                              
+                                        
+                                        
+                                        {/* Client LifeTPD */}
                                         <Modal
                                           show={PersonalInsuranceCovershow}
                                           onHide={PersonalInsuranceCoverhandleClose}
@@ -909,7 +1289,7 @@ useEffect(() => {
                                             </Modal.Title>
                                           </Modal.Header>
                                         <Formik
-                                          initialValues={Client_initialValues}
+                                          initialValues={ ClientLifeTPDUpdateFlag ? ClientListLifeTPDTOUpdate[0] : Client_initialValues}
                                           validationSchema={ClientLife_validationSchema}
                                           onSubmit={Client_onSubmit_Life}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -1321,7 +1701,9 @@ useEffect(() => {
                                           }
                                         </Formik>
                                         </Modal>
+                                         {/* Client LifeTPD end */}
 
+                                         {/* Client IncomeProtection  */}
                                         <Modal
                                           show={PersonalInsuranceCovershow2}
                                           onHide={PersonalInsuranceCover2handleClose}
@@ -1342,7 +1724,7 @@ useEffect(() => {
                                             </Modal.Title>
                                           </Modal.Header>
                                         <Formik
-                                          initialValues={Client_initialValues}
+                                          initialValues={ClientIncomeProtectionUpdateFlag ? ClientListIncomeProtectionUpdate[0] : Client_initialValues}
                                           validationSchema={ClientIncome_validationSchema}
                                           onSubmit={Client_onSubmit_Income}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -1789,6 +2171,8 @@ useEffect(() => {
                                           }
                                         </Formik>
                                         </Modal>
+                                         {/* Client IncomeProtection  */}
+
                                     {/* ---------------------------------------------------- */}
                                   </div>
 
@@ -1999,45 +2383,135 @@ useEffect(() => {
                                           </div>
                                             </div>    
                                       </div>
-                                      {Partner_PersonalInsuranceCover && <div className='col-md-3 my-4'>
-                                      <label  className="form-label">
-                                      Life/TPD/Trauma
-                                          </label>
-                                          <br />
-                                        
-                                        <span
-                                          className=" btn h-50 w-100
-                                          btn-outline-success "
-                                          onClick={Partner_PersonalInsuranceCoverhandleShow}
-                                        >
-                                          <div className="iconContainer mx-1">
-                                          <img className="img-fluid" src={plus} alt="" />
+                                      {Partner_PersonalInsuranceCover && 
+                                      <div className='col-md-12  my-4'>
+                                      <div className='col-md-3'>
+                                          <label  className="form-label">
+                                          Life/TPD/Trauma
+                                              </label>
+                                              <br />
+                                            
+                                            <span
+                                              className=" btn h-50 w-100
+                                              btn-outline-success "
+                                              onClick={Partner_PersonalInsuranceCoverhandleShow} >
+                                              <div className="iconContainer mx-1">
+                                              <img className="img-fluid" src={plus} alt="" />
 
+                                              </div>
+                                              Enter Details
+                                            </span>
+                                        </div>
+                                        <div className='col-md-12'>
+                                          <div className="table-responsive my-3">
+                                            <table className="table table-bordered table-hover text-center">
+                                              <thead className="text-light" id="tableHead">
+                                              <tr>
+                                                <th>Policy Owner</th>
+                                                <th>Life/TPD/Trauma</th>
+                                                <th>Life Insured</th>
+                                                <th>Insurance Company</th>
+                                                <th>Name of Product</th>
+                                                <th>Policy Number</th>
+                                                <th>Operation</th>
+                                              </tr>
+                                              </thead>
+                                              <tbody>
+                                                  {isPartnerListLifeTPD.map((elem,index) => {
+                                                    return (
+                                                      <tr key={index}>
+                                                        <td className="fw-bold">{elem.Life_PolicyOwner}</td>
+                                                        <td>Cal</td>
+                                                        <td>{elem.Life_Insured}</td>
+                                                        <td>{elem.Life_InsuranceCompany}</td>
+                                                        <td>{elem.Life_InsuranceProduct}</td>
+                                                        <td>{elem.Life_PolicyNumber}</td>
+                                                        <td>
+                                                          <button type="button" onClick={(e) => {PartnerListLifeTPDDeleteHandler(elem, index)}}
+                                                            className="btn btn-danger btn-sm">
+                                                            delete
+                                                          </button>
+                                                          <button type="button" onClick={(e) => {PartnerListLifeTPDUpdateHandler(elem, index)}}
+                                                            className="btn btn-warning btn-sm mx-2">
+                                                            update
+                                                          </button>
+                                                        </td>
+                                                      </tr>
+                                                    );  
+                                                  })}
+                                              </tbody>
+                                            </table>
                                           </div>
-                                          Enter Details
-                                        </span>
+                                        </div>
+
+
                                       </div>}
-                                      {Partner_PersonalInsuranceCover && <div className='col-md-3 my-4'>
-                                      <label  className="form-label">
-                                      Income Protection
-                                          </label>
-                                          <br />
-                                        
-                                        <span
-                                          className=" btn h-50 w-100
-                                          btn-outline-success "
-                                          onClick={Partner_PersonalInsuranceCover2handleShow}
-                                        >
-                                          <div className="iconContainer mx-1">
-                                          <img className="img-fluid" src={plus} alt="" />
+                                      {Partner_PersonalInsuranceCover && <div className='col-md-12 my-4'>
+                                        <div className='col-md-3'>
+                                            <label  className="form-label">
+                                            Income Protection
+                                                </label>
+                                                <br />
+                                              
+                                              <span
+                                                className=" btn h-50 w-100
+                                                btn-outline-success "
+                                                onClick={Partner_PersonalInsuranceCover2handleShow}
+                                              >
+                                                <div className="iconContainer mx-1">
+                                                <img className="img-fluid" src={plus} alt="" />
 
-                                          </div>
-                                          Enter Details
-                                        </span>
+                                                </div>
+                                                Enter Details
+                                              </span>
+                                        </div>
+                                        <div className='col-md-12'>
+                                        <div className="table-responsive my-3">
+                                          <table className="table table-bordered table-hover text-center">
+                                            <thead className="text-light" id="tableHead">
+                                            <tr>
+                                              <th>Policy Owner</th>
+                                              <th>Life/TPD/Trauma</th>
+                                              <th>Life Insured</th>
+                                              <th>Insurance Company</th>
+                                              <th>Name of Product</th>
+                                              <th>Policy Number</th>
+                                              <th>Operation</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                  {isPartnerListIncomeProtection.map((elem,index) => {
+                                                    return (
+                                                      <tr key={index}>
+                                                        <td className="fw-bold">{elem.Income_PolicyOwner}</td>
+                                                        <td>Cal</td>
+                                                        <td>{elem.Income_LifeInsured}</td>
+                                                        <td>{elem.Income_InsuranceCompany}</td>
+                                                        <td>{elem.Income_InsuranceProduct}</td>
+                                                        <td>{elem.Income_PolicyNumber}</td>
+                                                        <td>
+                                                          <button type="button" onClick={(e) => {PartnerListIncomeProtectionDeleteHandler(elem,index)}}
+                                                            className="btn btn-danger btn-sm">
+                                                            delete
+                                                          </button>
+                                                          <button type="button" onClick={(e) => {PartnerListIncomeProtectionUpdateHandler(elem,index)}}
+                                                            className="btn btn-warning btn-sm mx-2">
+                                                            update
+                                                          </button>
+                                                        </td>
+                                                      </tr>
+                                                    );  
+                                                  })}
+                                              </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+
                                       </div>}
                                         </div>
                                         {/* 1 row */}
-                              
+                                        
+                                        {/* Partner List Protection end */}
                                         <Modal
                                           show={Partner_PersonalInsuranceCovershow}
                                           onHide={Partner_PersonalInsuranceCoverhandleClose}
@@ -2058,8 +2532,7 @@ useEffect(() => {
                                             </Modal.Title>
                                           </Modal.Header>
                                         <Formik
-                                          initialValues={Partner_initialValues}
-                              
+                                          initialValues={PartnerLifeTPDUpdateFlag ? PartnerListLifeTPDTOUpdate[0]:Partner_initialValues}                              
                                           validationSchema={ClientLife_validationSchema}
                                           onSubmit={Partner_onSubmit_Life}>
                                         {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -2470,7 +2943,9 @@ useEffect(() => {
                                           }
                                         </Formik>
                                         </Modal>
-
+                                        {/* Partner List Protection end */}
+                                        
+                                        {/* Partner  Income Protection*/}
                                         <Modal
                                           show={Partner_PersonalInsuranceCovershow2}
                                           onHide={Partner_PersonalInsuranceCover2handleClose}
@@ -2491,7 +2966,7 @@ useEffect(() => {
                                             </Modal.Title>
                                           </Modal.Header>
                                         <Formik
-                                          initialValues={Partner_initialValues}
+                                          initialValues={PartnerIncomeProtectionUpdateFlag ? PartnerListIncomeProtectionUpdate[0] :Partner_initialValues}
                                           // partnerIncome
                                           validationSchema={ClientIncome_validationSchema} 
                                           onSubmit={Partner_onSubmit_Income}
@@ -2940,6 +3415,7 @@ useEffect(() => {
                                           }
                                         </Formik>
                                         </Modal>
+                                        {/*  Partner  Income Protection end */}
                               
                                         
                                     {/* ---------------------------------------------------- */}

@@ -1226,7 +1226,11 @@ AustralianPortfolioYearRemaining:values.AustralianPortfolioYearRemaining,
 }
 console.log(myData);
 
-
+axios
+.post("http://localhost:7000/Client-SMSF-AustralianSharePortfolio/Add-Client-Australian-Market-Portfolio",myData)
+.then((res)=>{
+  console.log("Australian Share Portfolio Added Successfully ...!")
+})
 setAustralianLoanList([...AustralianLoanList,myData])
 handleClose4();
 }
@@ -1317,6 +1321,12 @@ const [manageloan_initialValues2, setmanageLoan_initialValues2] = useState([])
                             ManagedFundsPortfolioDeductibleLoanAmount:values.DeductibleAmountofLoan,
                             ManagedFundsPortfolioYearRemaining:values.YearRemaning,
                           }
+
+                          axios
+.post("http://localhost:7000/Client-SMSF-ManagedFundsPortfolio/Add-Client-ManagedFunds-Portfolio",myData)
+.then((res)=>{
+  console.log("ManagedFunds Portfolio Added Successfully ...!")
+})
                         console.log(myData)
 
                       
@@ -1345,7 +1355,7 @@ alert("delete")
 
 
    // CLIENT SUPER ACCOUNT --> BENEFICIARIES
-   let initialValuesBeneficiariesOptionDetails = {
+   let initialValues_Beneficiaries = {
 
     beneficiariesAttached: "No",
     NomiationTypeBeneficiary: "",
@@ -1372,32 +1382,160 @@ alert("delete")
     RelationshipOptionDetailsRelationship5: ""
 
   }
-  let validateYupSchemaBeneficiariesOptionDetails = Yup.object({
-    NomiationTypeBeneficiary:Yup.string().required("Required"),
-    BeneficiariesOptionDetailsBeneficiaries:Yup.string().required("Required"),
-    Beneficiary1: Yup.string().required("*Required"),
-    ShareofBenefit1: Yup.number("only Numbers allowed").required("*Required"),
-    RelationshipOptionDetailsRelationship1: Yup.string().required("*Required"),
+  let validateSchema_Beneficiaries = Yup.object({
+    NomiationTypeBeneficiary:Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    BeneficiariesOptionDetailsBeneficiaries:Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    Beneficiary1:Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ShareofBenefit1: Yup.number()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Amount must be a positive number",
+        (value) => value > 0
+      )
+      ,otherwise: Yup.number()
+      .notRequired()
+    }),
+    RelationshipOptionDetailsRelationship1: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
 
-    Beneficiary2: Yup.string().required("*Required"),
-    ShareofBenefit2: Yup.number("only Numbers allowed").required("*Required"),
-    RelationshipOptionDetailsRelationship2: Yup.string().required("*Required"),
+    Beneficiary2: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ShareofBenefit2: Yup.number()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Amount must be a positive number",
+        (value) => value > 0
+      )
+      ,otherwise: Yup.number()
+      .notRequired()
+    }),
+    RelationshipOptionDetailsRelationship2: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
 
 
-    Beneficiary3: Yup.string().required("*Required"),
-    ShareofBenefit3: Yup.number("only Numbers allowed").required("*Required"),
-    RelationshipOptionDetailsRelationship3: Yup.string().required("*Required"),
+    Beneficiary3: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ShareofBenefit3: Yup.number()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Amount must be a positive number",
+        (value) => value > 0
+      )
+      ,otherwise: Yup.number()
+      .notRequired()
+    }),
+    RelationshipOptionDetailsRelationship3: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
 
-    Beneficiary4: Yup.string().required("*Required"),
-    ShareofBenefit4: Yup.number("only Numbers allowed").required("*Required"),
-    RelationshipOptionDetailsRelationship4: Yup.string().required("*Required"),
+    Beneficiary4: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ShareofBenefit4: Yup.number()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Amount must be a positive number",
+        (value) => value > 0
+      )
+      ,otherwise: Yup.number()
+      .notRequired()
+    }),
+    RelationshipOptionDetailsRelationship4:Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
 
-    Beneficiary5: Yup.string().required("*Required"),
-    ShareofBenefit5: Yup.number("only Numbers allowed").required("*Required"),
-    RelationshipOptionDetailsRelationship5: Yup.string().required("*Required")
+    Beneficiary5: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
+    ShareofBenefit5: Yup.number()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.number().required("Required")
+      .test(
+        "Is positive?",
+        "Amount must be a positive number",
+        (value) => value > 0
+      )
+      ,otherwise: Yup.number()
+      .notRequired()
+    }),
+
+    RelationshipOptionDetailsRelationship5: Yup.string()
+    .when("beneficiariesAttached",{
+      is: val => val && val.length==3,
+      then:Yup.string().required("Required")
+      ,otherwise: Yup.string()
+      .notRequired()
+    }),
 
   })
-  let On_submit_validateYupSchemaBeneficiariesOptionDetails = (values) => {
+  let onSubmit_Beneficiaries = (values) => {
     handleClose3();
     let BeneficiaryData = {
 
@@ -1445,7 +1583,7 @@ alert("delete")
   const handlecontributionShow = () => setcontributionShow(true);
   const [contributionModal, setcontributionModal] = useState([]);
 // CLIENT SUPER ACCOUNT --> CONTRIBUTIONS
-let initialValuesContributionOptionDetails = {
+let initialValues_Contribution = {
   contributeFundRadio:'No',
   Non_Concessional1: "",
   Other1: "",
@@ -1462,47 +1600,190 @@ let initialValuesContributionOptionDetails = {
   EmployerContributions3: "",
   SalarySacAndPersonalDed3: "",
 }
-let validateYupSchemaContributionOptionDetails = Yup.object({
+let validateSchema_Contribution = Yup.object({
 
-  Non_Concessional1: Yup.number().required("*Required"),
-  Other1: Yup.number().required("*Required"),
-  EmployerContributions1: Yup.number().required("*Required"),
-  SalarySacAndPersonalDed1: Yup.number().required("*Required"),
+  Non_Concessional1: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
 
-  Non_Concessional2: Yup.number().required("*Required"),
-  Other2: Yup.number().required("*Required"),
-  EmployerContributions2: Yup.number().required("*Required"),
-  SalarySacAndPersonalDed2: Yup.number().required("*Required"),
+  Other1: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  EmployerContributions1: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  SalarySacAndPersonalDed1: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
 
-  Non_Concessional3: Yup.number().required("*Required"),
-  Other3: Yup.number().required("*Required"),
-  EmployerContributions3: Yup.number().required("*Required"),
-  SalarySacAndPersonalDed3: Yup.number().required("*Required")
+  Non_Concessional2: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  Other2: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  EmployerContributions2: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  SalarySacAndPersonalDed2: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+
+  Non_Concessional3: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  Other3: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  EmployerContributions3: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
+  SalarySacAndPersonalDed3: Yup.number()
+  .when("contributeFundRadio",{
+    is: val => val && val.length==3,
+    then:Yup.number().required("Required")
+    .test(
+      "Is positive?",
+      "Amount must be a positive number",
+      (value) => value > 0
+    )
+    ,otherwise: Yup.number()
+    .notRequired()
+  }),
 });
 
-let On_submit_validateYupSchemaContributionOptionDetails = (values) => {
+let on_Submit_Contribution = (values) => {
+
+
 
   contributionHandleClose();
   // console.log(values)
 
   let ContributionData = {
-    contributeFundRadio:values.contributeFundRadio,
-    Non_Concessional1: values.Non_Concessional1,
+    Email:localStorage.getItem("ClientEmail"),
+    ContributeFund:values.contributeFundRadio,
+    NonConcessional1: values.Non_Concessional1,
     Other1: values.Other1,
     EmployerContributions1: values.EmployerContributions1,
-    SalarySacAndPersonalDed1: values.SalarySacAndPersonalDed1,
+    SalaryPersonalDed1: values.SalarySacAndPersonalDed1,
 
-    Non_Concessional2: values.Non_Concessional2,
+    NonConcessional2: values.Non_Concessional2,
     Other2: values.Other2,
     EmployerContributions2: values.EmployerContributions2,
-    SalarySacAndPersonalDed2: values.SalarySacAndPersonalDed2,
+    SalaryPersonalDed2: values.SalarySacAndPersonalDed2,
 
-    Non_Concessional3: values.Non_Concessional3,
+    NonConcessional3: values.Non_Concessional3,
     Other3: values.Other3,
     EmployerContributions3: values.EmployerContributions3,
-    SalarySacAndPersonalDed3: values.SalarySacAndPersonalDed3
+    SalaryPersonalDed3: values.SalarySacAndPersonalDed3
 
   }
+
+  axios
+  .post("http://localhost:7000/Client-SMSF-Contribution/Add-Client-Contribution",ContributionData)
+  .then((res)=>{
+    console.log("Contribution Data Added Successfully...!")
+  } )
+
   setcontributionModal([...contributionModal,ContributionData]);
   console.log(ContributionData);
 }
@@ -1926,9 +2207,9 @@ alert("update handler")
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Formik
-                                  initialValues={initialValuesBeneficiariesOptionDetails}
-                                  // validationSchema={validateYupSchemaBeneficiariesOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaBeneficiariesOptionDetails}
+                                  initialValues={initialValues_Beneficiaries}
+                                  validationSchema={validateSchema_Beneficiaries}
+                                  onSubmit={onSubmit_Beneficiaries}
                                   enableReinitialize
                                 >
                                   {({ values, handleChange, setFieldValue, formik }) =>
@@ -2004,14 +2285,14 @@ alert("update handler")
                                                   //onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
                                                   value={values.BeneficiariesOptionDetailsBeneficiaries}
                                                 >
-                                                  <option value="Select">Select</option>
+                                                  <option value="">Select</option>
                                                   <option value="1">1</option>
                                                   <option value="2">2</option>
                                                   <option value="3">3</option>
                                                   <option value="4">4</option>
                                                   <option value="5">5</option>
                                                 </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="Frequency" />
+                                                <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
 
                                               </div>
                                             </div>
@@ -2048,15 +2329,15 @@ alert("update handler")
                                                   name="RelationshipOptionDetailsRelationship1"
                                                   className="form-select shadow  inputDesign"
                                                 //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship1", e.target.value)}
-                                                // value={values.RelationshipOptionDetailsRelationship1}
+                                                value={values.RelationshipOptionDetailsRelationship1}
                                                 >
-                                                  <option value="Select">Select</option>
+                                                  <option value="">Select</option>
                                                   <option value="Spouse">Spouse</option>
                                                   <option value="Child">Child</option>
                                                   <option value="Other">Other</option>
                                                   <option value="Interdependency">Interdependency</option>
                                                 </Field>
-                                                {/* <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship" /> */}
+                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship1" />
 
                                               </div>
                                             </div>
@@ -2094,15 +2375,15 @@ alert("update handler")
                                                   name="RelationshipOptionDetailsRelationship2"
                                                   className="form-select shadow  inputDesign"
                                                 //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship2", e.target.value)}
-                                                // value={values.RelationshipOptionDetailsRelationship2}
+                                                value={values.RelationshipOptionDetailsRelationship2}
                                                 >
-                                                  <option value="Select">Select</option>
+                                                  <option value="">Select</option>
                                                   <option value="Spouse">Spouse</option>
                                                   <option value="Child">Child</option>
                                                   <option value="Other">Other</option>
                                                   <option value="Interdependency">Interdependency</option>
                                                 </Field>
-                                                {/* <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship" /> */}
+                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship2" />
 
                                               </div>
                                             </div>
@@ -2142,15 +2423,15 @@ alert("update handler")
                                                   name="RelationshipOptionDetailsRelationship3"
                                                   className="form-select shadow  inputDesign"
                                                 //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship3", e.target.value)}
-                                                // value={values.RelationshipOptionDetailsRelationship3}
+                                                value={values.RelationshipOptionDetailsRelationship3}
                                                 >
-                                                  <option value="Select">Select</option>
+                                                  <option value="">Select</option>
                                                   <option value="Spouse">Spouse</option>
                                                   <option value="Child">Child</option>
                                                   <option value="Other">Other</option>
                                                   <option value="Interdependency">Interdependency</option>
                                                 </Field>
-                                                {/* <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship3" /> */}
+                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship3" />
 
                                               </div>
                                             </div>
@@ -2190,15 +2471,15 @@ alert("update handler")
                                                   name="RelationshipOptionDetailsRelationship4"
                                                   className="form-select shadow  inputDesign"
                                                 //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship4", e.target.value)}
-                                                // value={values.RelationshipOptionDetailsRelationship4}
+                                                value={values.RelationshipOptionDetailsRelationship4}
                                                 >
-                                                  <option value="Select">Select</option>
+                                                  <option value="">Select</option>
                                                   <option value="Spouse">Spouse</option>
                                                   <option value="Child">Child</option>
                                                   <option value="Other">Other</option>
                                                   <option value="Interdependency">Interdependency</option>
                                                 </Field>
-                                                {/* <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship" /> */}
+                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship4" />
 
                                               </div>
                                             </div>
@@ -2238,15 +2519,15 @@ alert("update handler")
                                                   name="RelationshipOptionDetailsRelationship5"
                                                   className="form-select shadow  inputDesign"
                                                 //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship5", e.target.value)}
-                                                // value={values.RelationshipOptionDetailsRelationship5}
+                                                value={values.RelationshipOptionDetailsRelationship5}
                                                 >
-                                                  <option value="Select">Select</option>
+                                                  <option value="">Select</option>
                                                   <option value="Spouse">Spouse</option>
                                                   <option value="Child">Child</option>
                                                   <option value="Other">Other</option>
                                                   <option value="Interdependency">Interdependency</option>
                                                 </Field>
-                                                {/* <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship" /> */}
+                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship5" />
 
                                               </div>
                                             </div>
@@ -2307,9 +2588,9 @@ alert("update handler")
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Formik
-                                  initialValues={initialValuesContributionOptionDetails}
-                                  // validationSchema={validateYupSchemaContributionOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaContributionOptionDetails}
+                                  initialValues={initialValues_Contribution}
+                                  validationSchema={validateSchema_Contribution}
+                                  onSubmit={on_Submit_Contribution}
                                   enableReinitialize
                                 >
                                   {({ values, handleChange, setFieldValue, formik }) =>
@@ -2633,7 +2914,7 @@ alert("update handler")
                                     
                                     <tr key={index}>
                                         <td>{index+1}</td>
-                                        <td>{elem.contributeFundRadio}</td>
+                                        <td>{elem.ContributeFund}</td>
                                         
                                         <td >
                                         <button  type='button' onClick={(e)=>deleteHandler_Contribution(elem,index)} className='btn btn-danger btn-sm'>delete</button>
