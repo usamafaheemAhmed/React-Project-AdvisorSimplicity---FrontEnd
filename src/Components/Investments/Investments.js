@@ -859,8 +859,8 @@ function Investments() {
     
 
     axios
-    .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
-    .then((res) => console.log("Investment Properties Added Successfully!"))
+    .post('http://localhost:7000/Client-Inner-InvestmentProperties/Add-Client-Inner-Investment-Properties', InvestmentPropertiesDetails)
+    .then((res) => console.log("Investment Inner Modala data Added Successfully!"))
     console.log(InvestmentPropertiesDetails)
   }
 

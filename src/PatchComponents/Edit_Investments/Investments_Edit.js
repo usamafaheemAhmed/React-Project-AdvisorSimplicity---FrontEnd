@@ -42,10 +42,8 @@ function Investments_Edit() {
   const [ManagedFundsPortfolioStateObj, setManagedFundsPortfolioStateObj] = useState([])
   const [InvestmentBondsStateObj, setInvestmentBondsStateObj] = useState([])
   const [investmentPropertiesStateObj, setInvestmentPropertiesStateObj] = useState([])
-  // inner Modal state below
-  const [investmentPropertiesScheduleStateObj, setInvestmentPropertiesScheduleStateObj] = useState([])
+  const [investmentInnerModal, setInvestmentInnerModal] = useState([])
   const [OtherFundsStateObj, setOtherFundsStateObj] = useState([])
-  
 
 useEffect(() => {
   let email=localStorage.getItem("EditClient");
@@ -58,7 +56,7 @@ useEffect(() => {
   let clientObj=(res.data)
   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
   setInvestmentStateObj(clientFilterObj[0])
-  console.log(clientFilterObj)
+  // console.log(clientFilterObj)
     
   })
 
@@ -69,7 +67,7 @@ useEffect(() => {
    .then((res) => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  //  setbankAccountStateObj(clientFilterObj[0])
+   setbankAccountStateObj(clientFilterObj[0])
   //  console.log(res.data)
      
    })
@@ -80,7 +78,7 @@ useEffect(() => {
    .then((res) => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  //  setTermStateObj(clientFilterObj[0])
+   setTermStateObj(clientFilterObj[0])
   //  console.log(res.data)
      
    })
@@ -91,8 +89,10 @@ useEffect(() => {
    .then((res) => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  //  setAustralianShareStateObj(clientFilterObj[0])
-  //  console.log(res.data)
+   setAustralianShareStateObj(clientFilterObj[0])
+   console.log(res.data);
+   console.log("setAustralianShareStateObj",AustralianShareStateObj);
+
      
    })
 
@@ -102,7 +102,7 @@ useEffect(() => {
   .then((res) => {
   let clientObj=(res.data)
   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  // setAustralianSharePortfolioStateObj(clientFilterObj[0])
+  setAustralianSharePortfolioStateObj(clientFilterObj[0])
   // console.log(res.data)
     
   })
@@ -114,9 +114,10 @@ useEffect(() => {
    .get(`http://localhost:7000/Client-ManagedFunds`)
    .then((res) => {
    let clientObj=(res.data)
-   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  //  setManagedFundStateObj(clientFilterObj[0])
+   let clientFilterObj=clientObj.filter((item) => item.Email == email);
+   setManagedFundStateObj(clientFilterObj[0])
   //  console.log(res.data)
+   console.log(clientObj)
      
    })
 
@@ -126,7 +127,7 @@ useEffect(() => {
      .then((res) => {
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    //  setManagedFundsPortfolioStateObj(clientFilterObj[0])
+     setManagedFundsPortfolioStateObj(clientFilterObj[0])
     //  console.log(res.data)
        
      })
@@ -137,7 +138,7 @@ useEffect(() => {
    .then((res) => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  //  setInvestmentBondsStateObj(clientFilterObj[0])
+   setInvestmentBondsStateObj(clientFilterObj[0])
   //  console.log(res.data)
      
    })
@@ -148,10 +149,21 @@ useEffect(() => {
    .then((res) => {
    let clientObj=(res.data)
    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  //  setInvestmentPropertiesStateObj(clientFilterObj[0])
+   setInvestmentPropertiesStateObj(clientFilterObj[0])
   //  console.log(res.data)
      
    })
+
+    // Client-InvestmentProperties innerModal
+    axios
+    .get(`http://localhost:7000/Client-Inner-InvestmentProperties`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setInvestmentInnerModal(clientFilterObj[0])
+   //  console.log(res.data)
+      
+    })
 
 
   // other
@@ -160,7 +172,7 @@ useEffect(() => {
   .then((res) => {
   let clientObj=(res.data)
   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-  // setOtherFundsStateObj(clientFilterObj[0])
+  setOtherFundsStateObj(clientFilterObj[0])
   // console.log(res.data)
     
   })
@@ -877,17 +889,18 @@ useEffect(() => {
 
   let InvestmentModal_initialValues = {
     // InvestmentModalTotalExpense: '',
-    InvestmentModalCorporateFees: '',
-    InvestmentModalCouncilRates: '',
-    InvestmentModalLawnMoving: '',
-    InvestmentModalInsurance: '',
-    InvestmentModalLandTax: '',
-    InvestmentModalRepairs: '',
-    InvestmentModalWaterCharges: '',
-    InvestmentModalOthers: '',
-    InvestmentModalTelephone: '',
-    InvestmentModalProfessionalFees: '',
-    InvestmentModalAllOthers: ''
+    InvestmentModalTotalExpense:investmentInnerModal.InvestmentModalTotalExpense,
+    InvestmentModalCorporateFees:investmentInnerModal.InvestmentModalCorporateFees,
+    InvestmentModalCouncilRates:investmentInnerModal.InvestmentModalCouncilRates,
+    InvestmentModalLawnMoving:investmentInnerModal.InvestmentModalLawnMoving,
+    InvestmentModalInsurance:investmentInnerModal.InvestmentModalInsurance,
+    InvestmentModalLandTax:investmentInnerModal.InvestmentModalLandTax,
+    InvestmentModalRepairs:investmentInnerModal.InvestmentModalRepairs,
+    InvestmentModalWaterCharges:investmentInnerModal.InvestmentModalWaterCharges,
+    InvestmentModalOthers:investmentInnerModal.InvestmentModalOthers,
+    InvestmentModalTelephone:investmentInnerModal.InvestmentModalTelephone,
+    InvestmentModalProfessionalFees:investmentInnerModal.InvestmentModalProfessionalFees,
+    InvestmentModalAllOthers:investmentInnerModal.InvestmentModalAllOthers,
   }
 
   let InvestmentModal_validationSchema = Yup.object({
@@ -905,7 +918,33 @@ useEffect(() => {
     InvestmentModalAllOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
-  let InvestmentModal_onSubmit = (Values) => {
+  let InvestmentModal_onSubmit = (values) => {
+    InvestmentProperties2handleClose();
+  
+    let InvestmentPropertiesDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+    
+      InvestmentModalTotalExpense:5000, // Read Only InvestmentModalTotalExpense
+      InvestmentModalCorporateFees:values.InvestmentModalCorporateFees,
+      InvestmentModalCouncilRates:values.InvestmentModalCouncilRates,
+      InvestmentModalLawnMoving:values.InvestmentModalLawnMoving,
+      InvestmentModalInsurance:values.InvestmentModalInsurance,
+      InvestmentModalLandTax:values.InvestmentModalLandTax,
+      InvestmentModalRepairs:values.InvestmentModalRepairs,
+      InvestmentModalWaterCharges:values.InvestmentModalWaterCharges,
+      InvestmentModalOthers:values.InvestmentModalOthers,
+      InvestmentModalTelephone:values.InvestmentModalTelephone,
+      InvestmentModalProfessionalFees:values.InvestmentModalProfessionalFees,
+      InvestmentModalAllOthers:values.InvestmentModalAllOthers,
+
+    }
+    
+
+    // axios
+    // .post('http://localhost:7000/Client-Inner-InvestmentProperties/Add-Client-Inner-Investment-Properties', InvestmentPropertiesDetails)
+    // .then((res) => console.log("Investment Inner Modala data Added Successfully!"))
+    // console.log(InvestmentPropertiesDetails)
+
 
   }
 
