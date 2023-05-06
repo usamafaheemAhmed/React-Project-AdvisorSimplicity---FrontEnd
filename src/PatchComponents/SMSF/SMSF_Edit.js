@@ -41,7 +41,7 @@ let email=localStorage.getItem("EditClient")
        let clientObj=(res.data)
        let clientFilterObj=clientObj.filter((item) => item.Email ==email);
        setSMSFData(clientFilterObj[0])
-          console.log("SMSFData",clientFilterObj[0])
+          // console.log("SMSFData",clientFilterObj[0])
          
        })
 
@@ -52,7 +52,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setSMSF_FormData(clientFilterObj[0])
-        console.log("SMSF_FormData",clientFilterObj[0])
+        // console.log("SMSF_FormData",clientFilterObj[0])
        
      })
    
@@ -63,7 +63,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setAccumulationData(clientFilterObj[0])
-        console.log("accumulation",clientFilterObj[0])
+        // console.log("accumulation",clientFilterObj[0])
        
      })
 
@@ -74,7 +74,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setBeneficiariesData(clientFilterObj[0])
-        console.log("Beneficiaries",clientFilterObj[0])
+        // console.log("Beneficiaries",clientFilterObj[0])
        
      })
 
@@ -85,7 +85,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setContributionData(clientFilterObj[0])
-      console.log("contribution",clientFilterObj[0])
+      // console.log("contribution",clientFilterObj[0])
        
      })
 
@@ -96,7 +96,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setPensionAccountData(clientFilterObj[0])
-      console.log("PensionAccount",clientFilterObj[0])
+      // console.log("PensionAccount",clientFilterObj[0])
        
      })
 
@@ -107,7 +107,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setBankAccountsData(clientFilterObj[0])
-      console.log("BankAccounts",clientFilterObj[0])
+      // console.log("BankAccounts",clientFilterObj[0])
        
      })
 
@@ -118,7 +118,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setTermDepositData(clientFilterObj[0])
-      console.log("TermDepositAccounts",clientFilterObj[0])
+      // console.log("TermDepositAccounts",clientFilterObj[0])
        
      })
 
@@ -129,7 +129,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setAustralianShareData(clientFilterObj[0])
-      console.log("AustralianShareMarket",clientFilterObj[0])
+      // console.log("AustralianShareMarket",clientFilterObj[0])
        
      })
 
@@ -141,18 +141,18 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setAustralianPortfolioData(clientFilterObj[0])
-      console.log("AustralianPortfolio ",clientFilterObj[0])
+      // console.log("AustralianPortfolio ",clientFilterObj[0])
        
      })
 
          //  Managed Funds 
-    //   axios
+      axios
      .get(`http://localhost:7000/Client-SMSF-ManagedFunds`)
      .then((res) => {
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setManagedFundData(clientFilterObj[0])
-      console.log("ManagedFunds ",clientFilterObj[0])
+      // console.log("ManagedFunds ",clientFilterObj[0])
        
      })
 
@@ -163,8 +163,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setManagedLoanData(clientFilterObj[0])
-      console.log("Managedloan  ",clientFilterObj[0])
-       
+      // console.log("Managedloan  ",clientFilterObj[0])
      })
 
      //  Investment Properties
@@ -174,8 +173,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setInvestmentData(clientFilterObj[0])
-      console.log("InvestmentProperties  ",clientFilterObj[0])
-       
+      // console.log("InvestmentProperties  ",clientFilterObj[0])
      })
 
      //  Investment Properties Inner Modal
@@ -185,8 +183,7 @@ let email=localStorage.getItem("EditClient")
      let clientObj=(res.data)
      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
      setInvestmentInnerData(clientFilterObj[0])
-      console.log("InvestmentPropertiesInnerModal  ",clientFilterObj[0])
-       
+      // console.log("InvestmentPropertiesInnerModal  ",clientFilterObj[0])
      })
 
 
@@ -1377,24 +1374,36 @@ AustralianPortfolioYearRemaining:AustralianPortfolioData.AustralianPortfolioYear
 
 }
 let Australian_loansAssociated_validationSchema = Yup.object({
-  AustralianPortfolioLoanType:Yup.string().required("Required") ,
-  AustralianPortfolioCurrentBalance:Yup.number().required("Required")
-  .test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-  AustralianPortfolioLender:Yup.string().required("Required") ,
-  AustralianPortfolioRepaymentAmount:Yup.number().required("Required")
-  .test("Is positive?", "Must be a positive value", (value) => value > 0),
-  AustralianPortfolioFrequency:Yup.string().required("Required") ,
-  AustralianInterestRatePA:Yup.number().required("Required")
-  .test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-  AustralianPortfolioLoanTerm:Yup.string().required("Required") ,
-  AustralianPortfolioLoanType2:Yup.string().required("Required") ,
-
-  AustralianPortfolioDeductibleLoanAmount:Yup.number().required("Required")
-  .test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-  AustralianPortfolioYearRemaining:Yup.string().required("Required") ,
+  AustralianPortfolioLoanType:Yup.string() ,
+  AustralianPortfolioCurrentBalance:Yup.number() 
+  .test(
+    "Is positive?",
+    "Must be a positive number",
+    (value) => value > 0
+  ),
+  AustralianPortfolioLender:Yup.string() ,
+  AustralianPortfolioRepaymentAmount:Yup.number() 
+  .test(
+    "Is positive?",
+    "Must be a positive number",
+    (value) => value > 0
+  ),
+  AustralianPortfolioFrequency:Yup.string() ,
+  AustralianInterestRatePA:Yup.number() 
+  .test(
+    "Is positive?",
+    "Must be a positive number",
+    (value) => value > 0
+  ),
+  AustralianPortfolioLoanTerm:Yup.string() ,
+  AustralianPortfolioLoanType2:Yup.string() ,
+  AustralianPortfolioDeductibleLoanAmount:Yup.number() 
+  .test(
+    "Is positive?",
+    "Must be a positive number",
+    (value) => value > 0
+  ),
+  AustralianPortfolioYearRemaining:Yup.string() ,
 
 })
 let Australian_loansAssociated_onSubmit = (values) => {
@@ -1463,22 +1472,36 @@ const [manageloan_initialValues2, setmanageLoan_initialValues2] = useState([])
                         
 
                         let managed_validationSchema = Yup.object({
-                          Typeofloan:Yup.string().required("Required") ,
-                          CurrentBalance:Yup.number().required("Required")
-                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-                          Lender:Yup.string().required("Required") ,
-                          RepaymentsAmount:Yup.number().required("Required")
-                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
-                          Frequency:Yup.string().required("Required") ,
-                          InterestRatePA:Yup.number().required("Required")
-                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
-
-                          LoanTermInYears:Yup.string().required("Required") ,
-                          LoanType:Yup.string().required("Required") ,
-                          DeductibleAmountofLoan:Yup.number().required("Required")
-                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
-                          YearRemaning:Yup.string().required("Required") ,
+                          Typeofloan:Yup.string() ,
+                          CurrentBalance:Yup.number() 
+                          .test(
+                            "Is positive?",
+                            "Must be a positive number",
+                            (value) => value > 0
+                          ),
+                          Lender:Yup.string() ,
+                          RepaymentsAmount:Yup.number() 
+                          .test(
+                            "Is positive?",
+                            "Must be a positive number",
+                            (value) => value > 0
+                          ),
+                          Frequency:Yup.string() ,
+                          InterestRatePA:Yup.number() 
+                          .test(
+                            "Is positive?",
+                            "Must be a positive number",
+                            (value) => value > 0
+                          ),
+                          LoanTermInYears:Yup.string() ,
+                          LoanType:Yup.string() ,
+                          DeductibleAmountofLoan:Yup.number() 
+                          .test(
+                            "Is positive?",
+                            "Must be a positive number",
+                            (value) => value > 0
+                          ),
+                          YearRemaning:Yup.string() ,
 
                         })
 
@@ -2954,13 +2977,12 @@ let emailasID=localStorage.getItem("ClientEmail");
                                           >
                                             Save
                                           </button>
-                                          <button
-                                          type='button'
+                                          <span
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={contributionHandleClose}
                                           >
                                             Cancel
-                                          </button>
+                                          </span>
                                         </div>
                                       </Modal.Footer>
                                     </Form>
@@ -2984,7 +3006,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AccumulationhandleClose}
                                     >
@@ -3367,7 +3388,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={PensionhandleClose}
                                     >
@@ -3674,7 +3694,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankAccountshandleClose}
                                     >
@@ -3977,7 +3996,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={TermDeposithandleClose}
                                     >
@@ -4282,7 +4300,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianSharehandleClose}
                                     >
@@ -4690,13 +4707,12 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <button
-                                type='button'
+                                <span
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose4}
                                 >
                                   Cancel
-                                </button>
+                                </span>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5422,13 +5438,12 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <button
-                                type='button'
+                                <span
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose6}
                                 >
                                   Cancel
-                                </button>
+                                </span>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5859,7 +5874,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -6064,7 +6078,6 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
-                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentPropertieshandleClose}
                                     >
