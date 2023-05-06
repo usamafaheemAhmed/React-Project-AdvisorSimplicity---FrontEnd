@@ -154,7 +154,7 @@ function SMSF() {
 
     let Navigate = useNavigate();
     function BackFunction(){
-        Navigate('/Accumulation-And-Retirment');
+        Navigate('/Super-And-Retirment');
     }
     let onSubmit = (Values) => {
 
@@ -183,11 +183,13 @@ function SMSF() {
         AustralianShareMarket:Values.AustralianShareRadio,
         ManagedFunds:Values.ManagedFundsRadio,
         InvestmentProperties:Values.InvestmentPropertiesRadio,
+        AustralianSharePortfolio:Values.loansAssociatedradio,
+        ManagedFundsPortfolio:Values.managedloansAssociatedradio,
       }
       // Post Api
       console.log(myData)
       axios
-      .post('http://localhost:7000/Client-SMSF/Add-Client-SMSF', myData)
+      .post('http://localhost:7000/Client-SMSF-Client/Add-Client-SMSF', myData)
       .then((res) => console.log('Client  Added Successfully!')) 
       
 
@@ -206,14 +208,19 @@ function SMSF() {
 
     let Client_initialValues = {
 
-      AnnualIncome1: '',
-      IncomeYield1: '',
-      FinancialInstitution1: '',
-      CurrentValue1: '',
-      AnnualIncome2: '',
-      IncomeYield2: '',
-      FinancialInstitution2: '',
-      CurrentValue2: '',
+    // Bank123
+    CurrentValue1:'',
+    FinancialInstitution1:'',
+    IncomeYield1:'',
+    AnnualIncome1:'',
+    CurrentValue2:'',
+    FinancialInstitution2:'',
+    IncomeYield2:'',
+    AnnualIncome2:'',
+    CurrentValue3:'',
+    FinancialInstitution3:'',
+    IncomeYield3:'',
+    AnnualIncome3:'',
         
      
 
@@ -1172,36 +1179,24 @@ let Australian_loansAssociated_initialValues ={
   AustralianPortfolioYearRemaining:"",
 }
 let Australian_loansAssociated_validationSchema = Yup.object({
-  AustralianPortfolioLoanType:Yup.string() ,
-  AustralianPortfolioCurrentBalance:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioLender:Yup.string() ,
-  AustralianPortfolioRepaymentAmount:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioFrequency:Yup.string() ,
-  AustralianInterestRatePA:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioLoanTerm:Yup.string() ,
-  AustralianPortfolioLoanType2:Yup.string() ,
-  AustralianPortfolioDeductibleLoanAmount:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioYearRemaining:Yup.string() ,
+  AustralianPortfolioLoanType:Yup.string().required("Required") ,
+  AustralianPortfolioCurrentBalance:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  AustralianPortfolioLender:Yup.string().required("Required") ,
+  AustralianPortfolioRepaymentAmount:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianPortfolioFrequency:Yup.string().required("Required") ,
+  AustralianInterestRatePA:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  AustralianPortfolioLoanTerm:Yup.string().required("Required") ,
+  AustralianPortfolioLoanType2:Yup.string().required("Required") ,
+
+  AustralianPortfolioDeductibleLoanAmount:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  AustralianPortfolioYearRemaining:Yup.string().required("Required") ,
 
 })
 let Australian_loansAssociated_onSubmit = (values) => {
@@ -1269,36 +1264,22 @@ const [manageloan_initialValues2, setmanageLoan_initialValues2] = useState([])
                         }
 
                         let managed_validationSchema = Yup.object({
-                          Typeofloan:Yup.string() ,
-                          CurrentBalance:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          Lender:Yup.string() ,
-                          RepaymentsAmount:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          Frequency:Yup.string() ,
-                          InterestRatePA:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          LoanTermInYears:Yup.string() ,
-                          LoanType:Yup.string() ,
-                          DeductibleAmountofLoan:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          YearRemaning:Yup.string() ,
+                          Typeofloan:Yup.string().required("Required") ,
+                          CurrentBalance:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+                          Lender:Yup.string().required("Required") ,
+                          RepaymentsAmount:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+                          Frequency:Yup.string().required("Required") ,
+                          InterestRatePA:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+                          LoanTermInYears:Yup.string().required("Required") ,
+                          LoanType:Yup.string().required("Required") ,
+                          DeductibleAmountofLoan:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+                          YearRemaning:Yup.string().required("Required") ,
 
                         })
 
@@ -2777,12 +2758,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                           >
                                             Save
                                           </button>
-                                          <span
+                                          <button
+                                          type='button'
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={contributionHandleClose}
                                           >
                                             Cancel
-                                          </span>
+                                          </button>
                                         </div>
                                       </Modal.Footer>
                                     </Form>
@@ -2806,6 +2788,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AccumulationhandleClose}
                                     >
@@ -3188,6 +3171,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={PensionhandleClose}
                                     >
@@ -3494,6 +3478,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankAccountshandleClose}
                                     >
@@ -3796,6 +3781,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={TermDeposithandleClose}
                                     >
@@ -4100,6 +4086,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianSharehandleClose}
                                     >
@@ -4507,12 +4494,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose4}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5238,12 +5226,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose6}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5674,6 +5663,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -5878,6 +5868,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentPropertieshandleClose}
                                     >

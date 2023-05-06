@@ -11,8 +11,50 @@ import { NavLink, useNavigate } from 'react-router-dom';
 function SMSF_Edit() {
 
 const [accumulationData, setAccumulationData] = useState([])
+const [beneficiariesData, setBeneficiariesData] = useState([])
+const [contributionData, setContributionData] = useState([])
+const [pensionAccountData, setPensionAccountData] = useState([])
+const [bankAccountsData, setBankAccountsData] = useState([])
+const [termDepositData, setTermDepositData] = useState([])
+const [AustralianShareData, setAustralianShareData] = useState([])
+
+const [AustralianPortfolioData, setAustralianPortfolioData] = useState([])
+const [managedFundData, setManagedFundData] = useState([])
+const [managedLoanData, setManagedLoanData] = useState([])
+const [investmentData, setInvestmentData] = useState([])
+const [investmentInnerData, setInvestmentInnerData] = useState([])
+const [SMSFData, setSMSFData] = useState([])
+
+const [SMSF_FormData, setSMSF_FormData] = useState([])
+
+
+
+
+
 let email=localStorage.getItem("EditClient")
   useEffect(() => {
+
+       // SMSFData
+       axios
+       .get(`http://localhost:7000/Client-SMSF-Client`)
+       .then((res) => {
+       let clientObj=(res.data)
+       let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+       setSMSFData(clientFilterObj[0])
+          console.log("SMSFData",clientFilterObj[0])
+         
+       })
+
+          // SMSF_FormData
+     axios
+     .get(`http://localhost:7000/Client-SMSFForm`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setSMSF_FormData(clientFilterObj[0])
+        console.log("SMSF_FormData",clientFilterObj[0])
+       
+     })
    
      // accumulation
      axios
@@ -24,6 +66,131 @@ let email=localStorage.getItem("EditClient")
         console.log("accumulation",clientFilterObj[0])
        
      })
+
+    //  Beneficiaries 
+     axios
+     .get(`http://localhost:7000/Client-SMSF-Beneficiary`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setBeneficiariesData(clientFilterObj[0])
+        console.log("Beneficiaries",clientFilterObj[0])
+       
+     })
+
+    //  Contribution
+      axios
+     .get(`http://localhost:7000/Client-SMSF-Contribution`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setContributionData(clientFilterObj[0])
+      console.log("contribution",clientFilterObj[0])
+       
+     })
+
+      //  Pension Account
+      axios
+     .get(`http://localhost:7000/Client-SMSF-PensionAccount`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setPensionAccountData(clientFilterObj[0])
+      console.log("PensionAccount",clientFilterObj[0])
+       
+     })
+
+      //  Bank Accounts
+      axios
+     .get(`http://localhost:7000/Client-SMSF-BankAccounts`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setBankAccountsData(clientFilterObj[0])
+      console.log("BankAccounts",clientFilterObj[0])
+       
+     })
+
+      //  Term Deposit Accounts
+      axios
+     .get(`http://localhost:7000/Client-SMSF-TermDeposit`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setTermDepositData(clientFilterObj[0])
+      console.log("TermDepositAccounts",clientFilterObj[0])
+       
+     })
+
+      //  Australian Share Market
+      axios
+     .get(`http://localhost:7000/Client-SMSF-AustralianShareMarket`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setAustralianShareData(clientFilterObj[0])
+      console.log("AustralianShareMarket",clientFilterObj[0])
+       
+     })
+
+
+       //  Australian portfolio 
+      axios
+     .get(`http://localhost:7000/Client-SMSF-AustralianSharePortfolio/Australian-Market-Portfolio`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setAustralianPortfolioData(clientFilterObj[0])
+      console.log("AustralianPortfolio ",clientFilterObj[0])
+       
+     })
+
+         //  Managed Funds 
+    //   axios
+     .get(`http://localhost:7000/Client-SMSF-ManagedFunds`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setManagedFundData(clientFilterObj[0])
+      console.log("ManagedFunds ",clientFilterObj[0])
+       
+     })
+
+        //  Managed loan  
+      axios
+     .get(`http://localhost:7000/Client-SMSF-ManagedFundsPortfolio`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setManagedLoanData(clientFilterObj[0])
+      console.log("Managedloan  ",clientFilterObj[0])
+       
+     })
+
+     //  Investment Properties
+      axios
+     .get(`http://localhost:7000/Client-SMSF-InvestmentProperties`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setInvestmentData(clientFilterObj[0])
+      console.log("InvestmentProperties  ",clientFilterObj[0])
+       
+     })
+
+     //  Investment Properties Inner Modal
+      axios
+     .get(`http://localhost:7000/Client-SMSF-InvestmentModal`)
+     .then((res) => {
+     let clientObj=(res.data)
+     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+     setInvestmentInnerData(clientFilterObj[0])
+      console.log("InvestmentPropertiesInnerModal  ",clientFilterObj[0])
+       
+     })
+
+
+
   }, [])
   
 
@@ -133,29 +300,31 @@ let email=localStorage.getItem("EditClient")
   }
 
     let initialValues = {
-      PensionRadio: "No",
-      AccumulationRadio: "No",
-      BankAccountsRadio: "No",
-      TermDepositRadio: "No",
-      AustralianShareRadio: "No",
-      loansAssociatedradio:'No',
-      ManagedFundsRadio: "No",
-      managedloansAssociatedradio:'No',
-      InvestmentPropertiesRadio: 'No',
+     PensionRadio :SMSFData.PensionAccount,
+     AccumulationRadio:SMSFData. Accumulation,
+     BankAccountsRadio :SMSFData.BankAccount,
+     TermDepositRadio :SMSFData.TermDepositAccount,
+     AustralianShareRadio :SMSFData.AustralianShareMarket,
+     ManagedFundsRadio :SMSFData.ManagedFunds,
+     InvestmentPropertiesRadio :SMSFData.InvestmentProperties,
+     loansAssociatedradio :SMSFData.AustralianSharePortfolio,
+     managedloansAssociatedradio :SMSFData.ManagedFundsPortfolio,
       
-      SMSFFundName: '',
-      SMSFFundType: '',
-      SMSFABN: '',
-      SMSFTrusteeType: '',
-      SMSFEstablishmentDate: '',
-      SMSFAssetsSegregated: 'No',
-      SMSFBorrowingInvestment: 'No',
-      SMSFAcquiringInsurances: 'No',
-      SMSFAccountant: '',
-      SMSFAuditor: '',
-      SMSFAccountingAuditing: '',
-      SMSFATOLevy: '',
+      SMSFFundName:SMSF_FormData.FundName,
+      SMSFFundType:SMSF_FormData.FundType,
+      SMSFABN:SMSF_FormData.ABN,
+      SMSFTrusteeType:SMSF_FormData.TrusteeType,
+      SMSFEstablishmentDate:SMSF_FormData.EstablishmentDate,
+      SMSFAssetsSegregated:SMSF_FormData.AssetsSegregated,
+      SMSFBorrowingInvestment:SMSF_FormData.InvestmentBorrowing,
+      SMSFAcquiringInsurances:SMSF_FormData.AcquireInsurances,
+      SMSFAccountant:SMSF_FormData.AccountantName,
+      SMSFAuditor:SMSF_FormData.AuditorName,
+      SMSFAccountingAuditing:SMSF_FormData.AccountingAuditing,
+      SMSFATOLevy:SMSF_FormData.ATOLevy,
     }
+
+    
 
     let validationSchema = Yup.object({
       
@@ -173,7 +342,7 @@ let email=localStorage.getItem("EditClient")
 
     let Navigate = useNavigate();
     function BackFunction(){
-        Navigate('/Accumulation-And-Retirment');
+        Navigate('/Edit-Super-And-Retirment');
     }
     let onSubmit = (Values) => {
 
@@ -202,6 +371,8 @@ let email=localStorage.getItem("EditClient")
         AustralianShareMarket:Values.AustralianShareRadio,
         ManagedFunds:Values.ManagedFundsRadio,
         InvestmentProperties:Values.InvestmentPropertiesRadio,
+        AustralianSharePortfolio:Values.loansAssociatedradio,
+        ManagedFundsPortfolio:Values.managedloansAssociatedradio,
       }
       // Post Api
       console.log(myData)
@@ -214,7 +385,7 @@ let email=localStorage.getItem("EditClient")
       axios
       .post('http://localhost:7000/Client-SMSFForm/Add-Client-SMSFForm', SMSF_Form)
       .then((res) => {
-      Navigate('/Investment-Trust');
+      Navigate('/Edit-Investment-Trust');
         console.log('Client Form  Added Successfully!');
       })
       
@@ -225,17 +396,22 @@ let email=localStorage.getItem("EditClient")
 
     let Client_initialValues = {
 
-      AnnualIncome1: '',
-      IncomeYield1: '',
-      FinancialInstitution1: '',
-      CurrentValue1: '',
-      AnnualIncome2: '',
-      IncomeYield2: '',
-      FinancialInstitution2: '',
-      CurrentValue2: '',
+      // Bank123
+    CurrentValue1:bankAccountsData.CurrentValue1,
+    FinancialInstitution1:bankAccountsData.FinancialInstitution1,
+    IncomeYield1:bankAccountsData.IncomeYield1,
+    AnnualIncome1:bankAccountsData.AnnualIncome1,
+    CurrentValue2:bankAccountsData.CurrentValue2,
+    FinancialInstitution2:bankAccountsData.FinancialInstitution2,
+    IncomeYield2:bankAccountsData.IncomeYield2,
+    AnnualIncome2:bankAccountsData.AnnualIncome2,
+    CurrentValue3:bankAccountsData.CurrentValue3,
+    FinancialInstitution3:bankAccountsData.FinancialInstitution3,
+    IncomeYield3:bankAccountsData.IncomeYield3,
+    AnnualIncome3:bankAccountsData.AnnualIncome3,
         
      
-
+    // Accumulation123
       AccumulationMemberName:accumulationData.MemberName,
       AccumulationEligibleDate:accumulationData.EligibleDate,
 
@@ -246,68 +422,80 @@ let email=localStorage.getItem("EditClient")
        AccumulationNonPreservedUnRestriction:accumulationData.NonPreservedUnRestriction ,
        AccumulationPreservedAmount:accumulationData.PreservedAmount ,
 
-      PensionMemberName: '',
-      PensionType: '',
-      PensionCommencementDate: '',
-      PensionCurrentBalance: '',
-      PensionTaxFree: '',
-      PensionTaxed: '',
-      PensionPurchasePrice: '',
-      PensionFrequency: '',
-      PensionRegularIncomeDrawn: '',
-      PensionMinimumRequired: '',
-      PensionRelevantNumber: '',
-      PensionPurchasePrice: '',
-      PensionLumpsumTaken: '',
-      PensionDeductibleAmount: '',
+      //  pension123
+    PensionMemberName:pensionAccountData.MemberName,
+    PensionType:pensionAccountData.PensionType,
+    PensionCommencementDate:pensionAccountData.CommencementDateDate,
+    PensionCurrentBalance:pensionAccountData.CurrentBalance,
+    PensionTaxFree:pensionAccountData.TaxFree,
+    PensionTaxed:pensionAccountData.Taxed,
+    PensionPurchasePrice:pensionAccountData.OriginalPurchasePrice,
+    PensionFrequency:pensionAccountData.Frequency,
+    PensionRegularIncomeDrawn:pensionAccountData.RegularIncomeDrawn,
+    PensionMinimumRequired:pensionAccountData.MinimumRequired,
+    PensionRelevantNumber:pensionAccountData.RelevantNumber,
+    PensionLumpsumTaken:pensionAccountData.LumpsumTaken,
+    PensionDeductibleAmount:pensionAccountData.DeductibleAmount,
+      // pensionAccountData
 
-      AustralianShareInvestmentName: '',
-      AustralianShareNoOfShares: '',
-      AustralianShareCurrentPrice: '',
-      AustralianShareTotalValue: '',
-      AustralianShareCostBase: '',
-      AustralianSharePurchaseDate: '',
-      AustralianShareIncomePA: '',
-      AustralianShareIncomePA2: '',
-      AustralianShareTotalIncomePA: '',
-      AustralianShareReinvestIncome: 'No',
-      AustralianShareFrankedAmount: '',
-      AustralianShareRegInvestmentsPA: '',
+      // Australian123
 
-      ManagedFundsPlatformName: '',
-      ManagedFundsInvestmentName: '',
-      ManagedFundsNoOfShares: '',
-      ManagedFundsCurrentPrice: '',
-      ManagedFundsCurrentValue: '',
-      ManagedFundsOriginalInvestment: '',
-      ManagedFundsPurchaseDate: '',
-      ManagedFundsIncomePA: '',
-      ManagedFundsIncomePA2: '',
-      ManagedFundsTotalIncomePA: '',
-      ManagedFundsReinvestIncome: 'No',
-      ManagedFundsRegInvestmentsPA: '',
-      
-      InvestmentPropertiesCurrentValue: '',
-      InvestmentPropertiesCostBase: '',
-      InvestmentPropertiesAddress: '',
-      InvestmentPropertiesPostcode: '',
-      InvestmentPropertiesRentalIncome: '',
-      InvestmentPropertiesFrequency: '',
-      InvestmentPropertiesTotalAnnualIncome: '',
-      InvestmentPropertiesExpensesPA: '',
-      InvestmentPropertiesLoanAttached: 'No',
-      InvestmentPropertiesCurrentBalance: '',
-      InvestmentPropertiesClientBorrowing: '',
-      InvestmentPropertiesLender: '',
-      InvestmentPropertiesRepaymentAmount: '',
-      InvestmentPropertiesFrequency2: '',
-      InvestmentPropertiesAnnualRepayment: '',
-      InvestmentPropertiesInterestRatePA: '',
-      InvestmentPropertiesLoanTerm: '',
-      InvestmentPropertiesLoanType: '',
-      InvestmentPropertiesDebtLoanAmount: '',
-      InvestmentPropertiesYearsRemaining: ''
+      AustralianShareInvestmentName:AustralianShareData.InvestmentName,
+      AustralianShareNoOfShares:AustralianShareData.NoOfShares,
+      AustralianShareCurrentPrice:AustralianShareData.CurrentSharePrice,
+      AustralianShareTotalValue:AustralianShareData.TotalShareValue,
+      AustralianShareCostBase:AustralianShareData.CostBase,
+      AustralianSharePurchaseDate:AustralianShareData.PurchaseDate,
+      AustralianShareIncomePA:AustralianShareData.IncomePA,
+      AustralianShareIncomePA2:AustralianShareData.IncomePAType,
+      AustralianShareTotalIncomePA:AustralianShareData.TotalIncomePA,
+      AustralianShareReinvestIncome:AustralianShareData.ReinvestIncome,
+      AustralianShareFrankedAmount:AustralianShareData.FrankedAmount,
+      AustralianShareRegInvestmentsPA:AustralianShareData.RegInvestmentsPA,
+
+      // Australian 
+
+      // ManagedFunds123
+
+    ManagedFundsPlatformName:managedFundData.PlatformName,
+    ManagedFundsInvestmentName:managedFundData.InvestmentName,
+    ManagedFundsNoOfShares:managedFundData.NoOfShares,
+    ManagedFundsCurrentPrice:managedFundData.CurrentSharePrice,
+    ManagedFundsCurrentValue:managedFundData.CurrentShareValue,
+    ManagedFundsOriginalInvestment:managedFundData.OriginalInvestment,
+    ManagedFundsPurchaseDate:managedFundData.PurchaseDate,
+    ManagedFundsIncomePA:managedFundData.IncomePA,
+    ManagedFundsIncomePA2:managedFundData.IncomePAType,
+    ManagedFundsTotalIncomePA:managedFundData.TotalIncomePA,
+    ManagedFundsReinvestIncome:managedFundData.ReinvestIncome,
+    ManagedFundsRegInvestmentsPA:managedFundData.RegInvestmentsPA,
+
+    
+    // investment123
+
+
+    InvestmentPropertiesCurrentValue:investmentData.CurrentValue,
+    InvestmentPropertiesCostBase:investmentData.CostBase,
+    InvestmentPropertiesAddress:investmentData.PropertyAddress,
+    InvestmentPropertiesPostcode:investmentData.PostCode,
+    InvestmentPropertiesRentalIncome:investmentData.RentalIncome,
+    InvestmentPropertiesFrequency:investmentData.Frequency,
+    InvestmentPropertiesTotalAnnualIncome:investmentData.TotalAnnualIncome,
+    InvestmentPropertiesExpensesPA:investmentData.ExpensesPA,
+    InvestmentPropertiesLoanAttached:investmentData.LoanAttached,
+    InvestmentPropertiesCurrentBalance:investmentData.CurrentBalance,
+    InvestmentPropertiesLender:investmentData.Lender,
+    InvestmentPropertiesRepaymentAmount:investmentData.RepaymentAmount,
+    InvestmentPropertiesFrequency2:investmentData.Frequency2,
+    InvestmentPropertiesAnnualRepayment:investmentData.AnnualRepayments,
+    InvestmentPropertiesInterestRatePA:investmentData.InterestRatePA,
+    InvestmentPropertiesLoanTerm:investmentData.LoanTerm,
+    InvestmentPropertiesLoanType:investmentData.LoanType,
+    InvestmentPropertiesDebtLoanAmount:investmentData.DebtAmountLoan,
+    InvestmentPropertiesYearsRemaining:investmentData.YearsRemaining,
+    
     }
+    
 
     let Client_validationSchema = Yup.object({   
 
@@ -448,26 +636,22 @@ let email=localStorage.getItem("EditClient")
       })
     })
 
-    let Client_onSubmit = (Values) => {
-        console.log("submited")
-        console.log(Values)
-    }
-
-    
+   
   let InvestmentModal_initialValues = {
-    InvestmentModalTotalExpense: '',
-    InvestmentModalCorporateFees: '',
-    InvestmentModalCouncilRates: '',
-    InvestmentModalLawnMoving: '',
-    InvestmentModalInsurance: '',
-    InvestmentModalLandTax: '',
-    InvestmentModalRepairs: '',
-    InvestmentModalWaterCharges: '',
-    InvestmentModalOthers: '',
-    InvestmentModalTelephone: '',
-    InvestmentModalProfessionalFees: '',
-    InvestmentModalAllOthers: ''
+    InvestmentModalTotalExpense: investmentInnerData.TotalExpense, // ReadOnly
+    InvestmentModalCorporateFees: investmentInnerData.CorporateFees,
+    InvestmentModalCouncilRates: investmentInnerData.CouncilRates,
+    InvestmentModalLawnMoving: investmentInnerData.LawnMoving,
+    InvestmentModalInsurance: investmentInnerData.Insurance,
+    InvestmentModalLandTax: investmentInnerData.LandTax,
+    InvestmentModalRepairs: investmentInnerData.Repairs,
+    InvestmentModalWaterCharges: investmentInnerData.WaterCharges,
+    InvestmentModalOthers: investmentInnerData.Others,
+    InvestmentModalTelephone: investmentInnerData.Telephone,
+    InvestmentModalProfessionalFees: investmentInnerData.ProfessionalFees,
+    InvestmentModalAllOthers: investmentInnerData.AllOthers,
   }
+  
 
   let InvestmentModal_validationSchema = Yup.object({
    
@@ -488,8 +672,8 @@ let email=localStorage.getItem("EditClient")
        
   let myObj = {
     Email: localStorage.getItem("ClientEmail"),
-    // TotalExpense: Values.InvestmentModalTotalExpense,
-    TotalExpense: 5000, //Calculated value
+    
+    TotalExpense: 5000, //InvestmentModalTotalExpense ReadOnly
     CorporateFees: Values.InvestmentModalCorporateFees,
     CouncilRates: Values.InvestmentModalCouncilRates,
     LawnMoving: Values.InvestmentModalLawnMoving,
@@ -763,19 +947,20 @@ let emailasID=localStorage.getItem("ClientEmail");
    const [isEdit_TermList, set_isEdit_TermList] = useState(false)
 
   let term_InitialValues={
-    AnnualIncome1: '',
-    TermDepositIncomeYield: '',
-    TermDepositFinancialInstitution: '',
-    CurrentValue1: '',
-    TermDeposit2AnnualIncome: '',
-    TermDeposit2IncomeYield: '',
-    TermDeposit2FinancialInstitution: '',
-    TermDeposit2CurrentValue: '',
-    TermDeposit3AnnualIncome: '',
-    TermDeposit3IncomeYield: '',
-    TermDeposit3FinancialInstitution: '',
-    TermDeposit3CurrentValue: '',
+    CurrentValue1:termDepositData.CurrentValue1,
+    TermDepositFinancialInstitution:termDepositData.FinancialInstitution1,
+    TermDepositIncomeYield:termDepositData.IncomeYield1,
+    AnnualIncome1:termDepositData.AnnualIncome1,
+    TermDeposit2CurrentValue:termDepositData.CurrentValue2,
+    TermDeposit2FinancialInstitution:termDepositData.FinancialInstitution2,
+    TermDeposit2IncomeYield:termDepositData.IncomeYield2,
+    TermDeposit2AnnualIncome:termDepositData.AnnualIncome2,
+    TermDeposit3CurrentValue:termDepositData.CurrentValue3,
+    TermDeposit3FinancialInstitution:termDepositData.FinancialInstitution3,
+    TermDeposit3IncomeYield:termDepositData.IncomeYield3,
+    TermDeposit3AnnualIncome:termDepositData.AnnualIncome3,
   }
+  
  let Term_validationSchema = Yup.object({   
   AnnualIncome1: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   TermDepositIncomeYield: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -1128,7 +1313,6 @@ let deleteHandler_AustralianShare=(elem)=>{
     ExpensesPA:Values.InvestmentPropertiesExpensesPA,
     LoanAttached:Values.InvestmentPropertiesLoanAttached,
     CurrentBalance:Values.InvestmentPropertiesCurrentBalance,
-    // // InvestmentPropertiesClientBorrowing: '', not exist in this UI (Extra)
     Lender:Values.InvestmentPropertiesLender,
     RepaymentAmount:Values.InvestmentPropertiesRepaymentAmount,
     Frequency2:Values.InvestmentPropertiesFrequency2,
@@ -1177,51 +1361,40 @@ const [AustralianLoanList, setAustralianLoanList] = useState([])
 
 let Australian_loansAssociated_initialValues ={
 
-  AustralianPortfolioLoanType:"",
-  AustralianPortfolioCurrentBalance:"",
-  AustralianPortfolioLender:"",
-  AustralianInterestRatePA:"",
+AustralianPortfolioLoanType:AustralianPortfolioData.AustralianPortfolioLoanType,
+AustralianPortfolioCurrentBalance:AustralianPortfolioData.AustralianPortfolioCurrentBalance,
+AustralianPortfolioLender:AustralianPortfolioData.AustralianPortfolioLender,
+AustralianInterestRatePA:AustralianPortfolioData.AustralianInterestRatePA,
 
-  AustralianPortfolioRepaymentAmount:"",
-  AustralianPortfolioFrequency:"",
-  AustralianPortfolioAnnualRepayment:'', //readonly
+AustralianPortfolioRepaymentAmount:AustralianPortfolioData.AustralianPortfolioRepaymentAmount,
+AustralianPortfolioFrequency:AustralianPortfolioData.AustralianPortfolioFrequency,
+AustralianPortfolioAnnualRepayment:AustralianPortfolioData.AustralianPortfolioAnnualRepayment,//readonly
 
-  AustralianPortfolioLoanTerm:"",
-  AustralianPortfolioLoanType2:"",
-  AustralianPortfolioDeductibleLoanAmount:"",
-  AustralianPortfolioYearRemaining:"",
+AustralianPortfolioLoanTerm:AustralianPortfolioData.AustralianPortfolioLoanTerm,
+AustralianPortfolioLoanType2:AustralianPortfolioData.AustralianPortfolioLoanType2,
+AustralianPortfolioDeductibleLoanAmount:AustralianPortfolioData.AustralianPortfolioDeductibleLoanAmount,
+AustralianPortfolioYearRemaining:AustralianPortfolioData.AustralianPortfolioYearRemaining,
+
 }
 let Australian_loansAssociated_validationSchema = Yup.object({
-  AustralianPortfolioLoanType:Yup.string() ,
-  AustralianPortfolioCurrentBalance:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioLender:Yup.string() ,
-  AustralianPortfolioRepaymentAmount:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioFrequency:Yup.string() ,
-  AustralianInterestRatePA:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioLoanTerm:Yup.string() ,
-  AustralianPortfolioLoanType2:Yup.string() ,
-  AustralianPortfolioDeductibleLoanAmount:Yup.number() 
-  .test(
-    "Is positive?",
-    "Must be a positive number",
-    (value) => value > 0
-  ),
-  AustralianPortfolioYearRemaining:Yup.string() ,
+  AustralianPortfolioLoanType:Yup.string().required("Required") ,
+  AustralianPortfolioCurrentBalance:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  AustralianPortfolioLender:Yup.string().required("Required") ,
+  AustralianPortfolioRepaymentAmount:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+  AustralianPortfolioFrequency:Yup.string().required("Required") ,
+  AustralianInterestRatePA:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  AustralianPortfolioLoanTerm:Yup.string().required("Required") ,
+  AustralianPortfolioLoanType2:Yup.string().required("Required") ,
+
+  AustralianPortfolioDeductibleLoanAmount:Yup.number().required("Required")
+  .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  AustralianPortfolioYearRemaining:Yup.string().required("Required") ,
 
 })
 let Australian_loansAssociated_onSubmit = (values) => {
@@ -1275,50 +1448,37 @@ const [manageloan_initialValues2, setmanageLoan_initialValues2] = useState([])
                   const [is_manageLoan, setIs_manageLoan] = useState(false)
                   const [  manageLoanList , setManageLoanList] = useState([])
                         let managed_initialValues ={
-                          Typeofloan:'',
-                          CurrentBalance:'',
-                          Lender:'',
-                          RepaymentsAmount:'',
-                          Frequency:'',
-                          managedAnnualRepayments:'', //readonly
-                          InterestRatePA:'',
-                          LoanTermInYears:'',
-                          LoanType:'',
-                          DeductibleAmountofLoan:'',
-                          YearRemaning:'',
+                          Typeofloan:managedLoanData.ManagedFundsPortfolioLoanType,
+                          CurrentBalance:managedLoanData.ManagedFundsPortfolioCurrentBalance,
+                          Lender:managedLoanData.ManagedFundsPortfolioLender,
+                          RepaymentsAmount:managedLoanData.ManagedFundsPortfolioRepaymentAmount,
+                          Frequency:managedLoanData.ManagedFundsPortfolioFrequency,
+                          managedAnnualRepayments:managedLoanData.ManagedFundsPortfolioAnnualRepayments, //readonly
+                          InterestRatePA:managedLoanData.ManagedFundsPortfolioInterestRatePA,
+                          LoanTermInYears:managedLoanData.ManagedFundsPortfolioLoanTerm,
+                          LoanType:managedLoanData.ManagedFundsPortfolioLoanType2,
+                          DeductibleAmountofLoan:managedLoanData.ManagedFundsPortfolioDeductibleLoanAmount,
+                          YearRemaning:managedLoanData.ManagedFundsPortfolioYearRemaining,
                         }
+                        
 
                         let managed_validationSchema = Yup.object({
-                          Typeofloan:Yup.string() ,
-                          CurrentBalance:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          Lender:Yup.string() ,
-                          RepaymentsAmount:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          Frequency:Yup.string() ,
-                          InterestRatePA:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          LoanTermInYears:Yup.string() ,
-                          LoanType:Yup.string() ,
-                          DeductibleAmountofLoan:Yup.number() 
-                          .test(
-                            "Is positive?",
-                            "Must be a positive number",
-                            (value) => value > 0
-                          ),
-                          YearRemaning:Yup.string() ,
+                          Typeofloan:Yup.string().required("Required") ,
+                          CurrentBalance:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+                          Lender:Yup.string().required("Required") ,
+                          RepaymentsAmount:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+                          Frequency:Yup.string().required("Required") ,
+                          InterestRatePA:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+                          LoanTermInYears:Yup.string().required("Required") ,
+                          LoanType:Yup.string().required("Required") ,
+                          DeductibleAmountofLoan:Yup.number().required("Required")
+                          .test("Is positive?", "Must be a positive value", (value) => value > 0),
+                          YearRemaning:Yup.string().required("Required") ,
 
                         })
 
@@ -1328,14 +1488,10 @@ const [manageloan_initialValues2, setmanageLoan_initialValues2] = useState([])
                             ManagedFundsPortfolioLoanType:values.Typeofloan,
                             ManagedFundsPortfolioCurrentBalance :values.CurrentBalance,
                             ManagedFundsPortfolioLender:values.Lender,
-
-
                             ManagedFundsPortfolioRepaymentAmount:values.RepaymentsAmount,
                             ManagedFundsPortfolioFrequency:values.Frequency,
-
                             ManagedFundsPortfolioAnnualRepayments:5000,//  managedAnnualRepayments, //readonly
                             ManagedFundsPortfolioInterestRatePA:values.InterestRatePA,
-
                             ManagedFundsPortfolioLoanTerm:values.LoanTermInYears,
                             ManagedFundsPortfolioLoanType2:values.LoanType,
                             ManagedFundsPortfolioDeductibleLoanAmount:values.DeductibleAmountofLoan,
@@ -1377,29 +1533,29 @@ let deleteHandler_ManageLoan=(elem)=>{
    // CLIENT SUPER ACCOUNT --> BENEFICIARIES
    let initialValues_Beneficiaries = {
 
-    beneficiariesAttached: "No",
-    NomiationTypeBeneficiary: "",
-    BeneficiariesOptionDetailsBeneficiaries:'',
+   beneficiariesAttached: beneficiariesData. NominatedBeneficiary,
+      NomiationTypeBeneficiary: beneficiariesData.NominationType,
+     BeneficiariesOptionDetailsBeneficiaries :beneficiariesData.No_ofBeneficiaries,
 
-    Beneficiary1: "",
-    ShareofBenefit1: "",
-    RelationshipOptionDetailsRelationship1: "",
+      Beneficiary1: beneficiariesData.Beneficiary1,
+      ShareofBenefit1: beneficiariesData.BenefitShare1,
+      RelationshipOptionDetailsRelationship1: beneficiariesData.Relationship1,
+      
+      Beneficiary2: beneficiariesData.Beneficiary2,
+      ShareofBenefit2: beneficiariesData.BenefitShare2,
+      RelationshipOptionDetailsRelationship2: beneficiariesData.Relationship2,
 
-    Beneficiary2: "",
-    ShareofBenefit2: "",
-    RelationshipOptionDetailsRelationship2: "",
+      Beneficiary3: beneficiariesData.Beneficiary3,
+      ShareofBenefit3: beneficiariesData.BenefitShare3,
+      RelationshipOptionDetailsRelationship3: beneficiariesData.Relationship3,
 
-    Beneficiary3: "",
-    ShareofBenefit3: "",
-    RelationshipOptionDetailsRelationship3: "",
+      Beneficiary4: beneficiariesData.Beneficiary4,
+      ShareofBenefit4: beneficiariesData.BenefitShare4,
+      RelationshipOptionDetailsRelationship4: beneficiariesData.Relationship4,
 
-    Beneficiary4: "",
-    ShareofBenefit4: "",
-    RelationshipOptionDetailsRelationship4: "",
-
-    Beneficiary5: "",
-    ShareofBenefit5: "",
-    RelationshipOptionDetailsRelationship5: ""
+      Beneficiary5: beneficiariesData.Beneficiary5,
+      ShareofBenefit5: beneficiariesData.BenefitShare5,
+      RelationshipOptionDetailsRelationship5: beneficiariesData.Relationship5,
 
   }
   let validateSchema_Beneficiaries = Yup.object({
@@ -1602,23 +1758,26 @@ let deleteHandler_ManageLoan=(elem)=>{
   const contributionHandleClose = () => setcontributionShow(false);
   const handlecontributionShow = () => setcontributionShow(true);
   const [contributionModal, setcontributionModal] = useState([]);
+
 // CLIENT SUPER ACCOUNT --> CONTRIBUTIONS
 let initialValues_Contribution = {
-  contributeFundRadio:'No',
-  Non_Concessional1: "",
-  Other1: "",
-  EmployerContributions1: "",
-  SalarySacAndPersonalDed1: "",
 
-  Non_Concessional2: "",
-  Other2: "",
-  EmployerContributions2: "",
-  SalarySacAndPersonalDed2: "",
+  
+ contributeFundRadio :contributionData.ContributeFund,
+  Non_Concessional1: contributionData.NonConcessional1,
+  Other1: contributionData.Other1,
+  EmployerContributions1: contributionData.EmployerContributions1,
+  SalarySacAndPersonalDed1: contributionData.SalaryPersonalDed1,
 
-  Non_Concessional3: "",
-  Other3: "",
-  EmployerContributions3: "",
-  SalarySacAndPersonalDed3: "",
+  Non_Concessional2: contributionData.NonConcessional2,
+  Other2: contributionData.Other2,
+  EmployerContributions2: contributionData.EmployerContributions2,
+  SalarySacAndPersonalDed2: contributionData.SalaryPersonalDed2,
+
+  Non_Concessional3: contributionData.NonConcessional3,
+  Other3: contributionData.Other3,
+  EmployerContributions3: contributionData.EmployerContributions3,
+  SalarySacAndPersonalDed3: contributionData.SalaryPersonalDed3,
 }
 let validateSchema_Contribution = Yup.object({
 
@@ -1772,8 +1931,6 @@ let validateSchema_Contribution = Yup.object({
 });
 
 let on_Submit_Contribution = (values) => {
-
-
 
   contributionHandleClose();
   // console.log(values)
@@ -2797,12 +2954,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                           >
                                             Save
                                           </button>
-                                          <span
+                                          <button
+                                          type='button'
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={contributionHandleClose}
                                           >
                                             Cancel
-                                          </span>
+                                          </button>
                                         </div>
                                       </Modal.Footer>
                                     </Form>
@@ -2826,6 +2984,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AccumulationhandleClose}
                                     >
@@ -3208,6 +3367,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={PensionhandleClose}
                                     >
@@ -3514,6 +3674,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankAccountshandleClose}
                                     >
@@ -3816,6 +3977,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={TermDeposithandleClose}
                                     >
@@ -4120,6 +4282,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianSharehandleClose}
                                     >
@@ -4527,12 +4690,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose4}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5258,12 +5422,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose6}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5694,6 +5859,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -5898,6 +6064,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentPropertieshandleClose}
                                     >

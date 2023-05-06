@@ -13,7 +13,12 @@ import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 
-function PersonalInsurance() {
+function PersonalInsurance_Edit() {
+
+  const [isClientObj, setIsClientObj] = useState([]);
+  const [isPartnerObj, setIsPartnerObj] = useState([]);
+
+
 
   //Array States to Store Data Temporarily 
   //Client Arrays
@@ -222,26 +227,26 @@ useEffect(() => {
   
 
     let initialValues = {
-      PersonalInsuranceWeeks: '',
-      PersonalInsuranceWeeks2: '',
+      PersonalInsuranceWeeks: isClientObj.Weeks_without_PrimaryIncome,
+      PersonalInsuranceWeeks2: isPartnerObj.Weeks_without_PrimaryIncome,
 
-      PersonalInsuranceBenefitClaimedradio: 'No',
-      PersonalInsuranceApplicationInsuranceradio: 'No',
-      PersonalInsuranceImpedimentReasonradio: 'No',
-      PersonalInsuranceCoverRadio: 'No',
+      PersonalInsuranceBenefitClaimedradio: isClientObj.ClaimedBenifit,
+      PersonalInsuranceApplicationInsuranceradio: isClientObj.InusranceRejected,
+      PersonalInsuranceImpedimentReasonradio: isClientObj.Reason_Impediment_Disability,
+      PersonalInsuranceCoverRadio: isClientObj.PersonalInsuranceCover,
 
-      PersonalInsuranceBenefitClaimed2radio: 'No',
-      PersonalInsuranceApplicationInsurance2radio: 'No',
-      PersonalInsuranceImpedimentReason2radio: 'No',
-      PersonalInsuranceCover2Radio: 'No',
+      PersonalInsuranceBenefitClaimed2radio: isPartnerObj.ClaimedBenifit,
+      PersonalInsuranceApplicationInsurance2radio: isPartnerObj.InusranceRejected,
+      PersonalInsuranceImpedimentReason2radio: isPartnerObj.Reason_Impediment_Disability,
+      PersonalInsuranceCover2Radio: isPartnerObj.PersonalInsuranceCover,
 
-      PersonalInsuranceBenefitsDescription: '',
-      PersonalInsuranceApplicationDescription: '',
-      PersonalInsuranceImpedimentReasonDescription: '',
+      PersonalInsuranceBenefitsDescription: isClientObj.Details_ClaimedBenifit,
+      PersonalInsuranceApplicationDescription: isClientObj.Details_InusranceRejected,
+      PersonalInsuranceImpedimentReasonDescription: isClientObj.Details_Reason_Impediment_Disability,
 
-      PersonalInsuranceBenefitsDescription2: '',
-      PersonalInsuranceApplicationDescription2: '',
-      PersonalInsuranceImpedimentReasonDescription2: '',
+      PersonalInsuranceBenefitsDescription2: isPartnerObj.Details_ClaimedBenifit,
+      PersonalInsuranceApplicationDescription2: isPartnerObj.Details_InusranceRejected,
+      PersonalInsuranceImpedimentReasonDescription2: isPartnerObj.Details_Reason_Impediment_Disability,
     }
 
     let OnlyClient_initialValues= {
@@ -314,7 +319,7 @@ useEffect(() => {
 
     let Navigate = useNavigate();
     function BackFunction(){
-      Navigate('/Investment-Trust')
+      Navigate('/Edit-Investment-Trust')
     }
     let onSubmit = (values) => {
       Navigate('/Risk-Profile')
@@ -861,13 +866,13 @@ useEffect(() => {
 
       setIsClientListIncomeProtection([...isClientListIncomeProtection, clientData]);
       setIsClientNumber2(isClientNumber2+1);
-      // PersonalInsuranceCover2handleClose();
+      PersonalInsuranceCover2handleClose();
      
       axios
       .post('http://localhost:7000/Client-Income-Insurance/Add-Client-Insurance-Income',clientData)
       .then((res)=>{
         console.log("Data Added Successfully!")
-        // PersonalInsuranceCover2handleClose();
+        PersonalInsuranceCover2handleClose();
       })
 
       }
@@ -890,6 +895,9 @@ useEffect(() => {
         PersonalInsuranceLifeRadio:elem.Life,
         PersonalInsuranceTPDRadio:elem.TPD,
         PersonalInsuranceTraumaRadio:elem.Trauma,
+        LifeInput:elem.LifeInput,
+        TPDInput:elem.TPDInput,
+        TraumaInput:elem.TraumaInput,
 
         PersonalInsurancePolicyOwner:elem.Life_PolicyOwner,
         PersonalInsuranceLifeInsured:elem.Life_Insured,
@@ -959,6 +967,96 @@ useEffect(() => {
       setUpdateIndex(ind);
       PersonalInsuranceCover2handleShow();
     }
+
+
+    useEffect(()=>{
+
+      let email=localStorage.getItem("EditClient")
+
+      //Over all Api
+
+      axios
+      .get(`http://localhost:7000/Client-Insurance`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setIsClientObj(clientFilterObj[0])
+
+      //  console.log(clientFilterObj);
+      })
+
+      axios
+      .get(`http://localhost:7000/Partner-Insurance`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setIsPartnerObj(clientFilterObj[0])
+
+      //  console.log(clientFilterObj);
+      })
+
+
+
+
+
+      //Client Data
+      //Life/TPD/Turme
+      axios
+      .get(`http://localhost:7000/Client-Life-Insurance`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      // setdepositListObj(clientFilterObj[0])
+      setIsClientListLifeTPD(clientFilterObj);
+      setIsClientListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
+      //  console.log(clientFilterObj);
+      })
+
+      
+      //Income Insurance 
+
+      axios
+      .get(`http://localhost:7000/Client-Income-Insurance`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      // setdepositListObj(clientFilterObj[0])
+      setIsClientListIncomeProtection(clientFilterObj);
+      setIsClientListIncomeProtection(prevState => [...prevState].sort((a, b) => (a.Income_PolicyID > b.Income_PolicyID) ? 1 : -1));
+      //  console.log(clientFilterObj);
+      })
+
+      //Partner Data
+
+      //Life/TPD/Turme
+      axios
+      .get(`http://localhost:7000/Partner-Life-Insurance`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      // setdepositListObj(clientFilterObj[0])
+      setIsPartnerListLifeTPD(clientFilterObj);        
+      setIsPartnerListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
+      //  console.log(clientFilterObj);
+      })
+
+      //Income Insurance 
+      axios
+      .get(`http://localhost:7000/Client-Income-Insurance`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      // setdepositListObj(clientFilterObj[0])
+      setIsPartnerListIncomeProtection(clientFilterObj);
+      setIsPartnerListIncomeProtection(prevState => [...prevState].sort((a, b) => (a.Income_PolicyID > b.Income_PolicyID) ? 1 : -1));
+      //  console.log(clientFilterObj);
+      })
+
+    },[])
+
+
+
+
     
 
   return (
@@ -1737,7 +1835,7 @@ useEffect(() => {
                                               >
                                                 Save
                                               </button>
-                                              <button
+                                              <button type="button"
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={PersonalInsuranceCoverhandleClose}
                                               >
@@ -2208,6 +2306,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type="button"
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={PersonalInsuranceCover2handleClose}
                                               >
@@ -2992,6 +3091,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type="button"
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={Partner_PersonalInsuranceCoverhandleClose}
                                               >
@@ -3464,6 +3564,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type="button"
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={Partner_PersonalInsuranceCover2handleClose}
                                               >
@@ -3502,4 +3603,4 @@ useEffect(() => {
   )
 }
 
-export default PersonalInsurance
+export default PersonalInsurance_Edit

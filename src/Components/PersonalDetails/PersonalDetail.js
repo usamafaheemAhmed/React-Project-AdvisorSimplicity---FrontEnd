@@ -630,7 +630,7 @@ const initialValues2={
 
 
 
-    let age= parseFloat(document.getElementById("childAge").value);
+    let age= parseFloat(document.getElementById("childAge").value)||0;
     console.log(age);
 
     let ChildDetails={
@@ -638,7 +638,7 @@ const initialValues2={
       ChildNO: parseFloat(numOfChild),
       ChildName:values.childNameID,
       ChildDOB:values.childDoBID,
-      ChildAge:values.childAge,
+      ChildAge:age,
       ChildGender:childGender,
       ChildRelation:values.childRelationship,
       ChildFinancialyDependent:values.childDependentradio,

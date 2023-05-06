@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
-const InvestmentTrust = () => {
+const InvestmentTrust_Edit = () => {
   const [updateIndex, setUpdateIndex] = useState();
 
   const [show, setShow] = useState(false);
@@ -51,6 +51,26 @@ const InvestmentTrust = () => {
   const handleShow8 = () => setShow8(true);
   //investment properties
 
+
+
+  // Using states to store APIs data 
+
+  const [bankAccountListObj, setBankAccountListObj] = useState([]);
+
+  const [depositListObj, setdepositListObj] = useState([]);
+  
+  const [investmentInnerModalObj, setInvestmentInnerModalObj] = useState([]);
+  
+  const [investmentFormObj, setInvestmentFromObj] = useState([]);
+
+
+
+
+
+
+
+
+
   let letters = /^[a-zA-Z ]*$/;
   const [DistributionsTakenState, setDistributionsTakenState] = useState(false);
   const [loansAssociatedState, setloansAssociatedState] = useState(false);
@@ -64,21 +84,21 @@ const InvestmentTrust = () => {
   };
 
   let initialValues = {
-    NameofFamilyTrust: "",
-    TypeofTrust: "",
-    ABN: "",
-    TrusteeType: "",
-    CorporateTrusteeName: "",
-    NumberofDirectors: "",
-    EstablishmentDate: "",
-    NameofAccountant: "",
-    DistributionCashradio: "No",
-    DirectorName1: "",
-    DirectorName2: "",
-    DirectorName3: "",
-    DirectorName4: "",
-    loansAssociatedradio: "No",
-    managedloansAssociatedradio: "No",
+    NameofFamilyTrust: investmentFormObj.FamilyTrustName,
+    TypeofTrust: investmentFormObj.TrustType,
+    ABN:investmentFormObj.ABN,
+    TrusteeType: investmentFormObj.TrusteeType,
+    CorporateTrusteeName: investmentFormObj.CorporateTrusteeName,
+    NumberofDirectors: investmentFormObj.TotalDirectors,
+    EstablishmentDate:"",
+    NameofAccountant: investmentFormObj.AccountantName,
+    DistributionCashradio: investmentFormObj.CashDistribution,
+    DirectorName1: investmentFormObj.Director1Name,
+    DirectorName2: investmentFormObj.Director2Name,
+    DirectorName3: investmentFormObj.Director3Name,
+    DirectorName4: investmentFormObj.Director4Name,
+    loansAssociatedradio: investmentFormObj.AustralianSharePortfolio,
+    managedloansAssociatedradio: investmentFormObj.ManagedFunds,
   };
   let validationSchema = Yup.object({
     NameofFamilyTrust: Yup.string().matches(letters, "only letters"),
@@ -97,9 +117,10 @@ const InvestmentTrust = () => {
 
   let Navigate = useNavigate();
   function BackFunction() {
-    Navigate("/SMSF");
+    Navigate("/Edit-SMSF");
   }
   let onSubmit = (values) => {
+    Navigate("/Edit-Personal-Insurance");
     let AddData = {
       Email: localStorage.getItem("ClientEmail"),
       FamilyTrustName: values.NameofFamilyTrust,
@@ -125,15 +146,15 @@ const InvestmentTrust = () => {
     console.log(AddData);
     // Post Api
 
-    axios
-      .post(
-        "http://localhost:7000/Client-InvestmentTrust-InvestmentForm/Add-Client-InvestmentForm",
-        AddData
-      )
-      .then((res) => {
-        console.log("Client  Added Successfully!");
-        Navigate("/Personal-Insurance");
-      });
+    // axios
+    //   .post(
+    //     "http://localhost:7000/Client-InvestmentTrust-InvestmentForm/Add-Client-InvestmentForm",
+    //     AddData
+    //   )
+    //   .then((res) => {
+    //     console.log("Client  Added Successfully!");
+    //     Navigate("/Edit-Personal-Insurance");
+    //   });
   };
 
   const [bankAccountList, setBankAccountList] = useState([]);
@@ -141,19 +162,19 @@ const InvestmentTrust = () => {
   const [isEdit_bankAccountList, set_isEdit_BankAccountList] = useState(false);
 
   let Bank_initialValues = {
-    CurrentValue1: "",
-    FinancialInstitution1: "",
-    IncomeYield1: "",
+    CurrentValue1: bankAccountListObj.CurrentValue1,
+    FinancialInstitution1: bankAccountListObj.FinancialInstitution1,
+    IncomeYield1: bankAccountListObj.IncomeYield1,
     AnnualIncome1: "",
 
-    CurrentValue2: "",
-    FinancialInstitution2: "",
-    IncomeYield2: "",
+    CurrentValue2: bankAccountListObj.CurrentValue2,
+    FinancialInstitution2: bankAccountListObj.FinancialInstitution2,
+    IncomeYield2: bankAccountListObj.IncomeYield2,
     AnnualIncome2: "",
 
-    CurrentValue3: "",
-    FinancialInstitution3: "",
-    IncomeYield3: "",
+    CurrentValue3: bankAccountListObj.CurrentValue3,
+    FinancialInstitution3: bankAccountListObj.FinancialInstitution3,
+    IncomeYield3:  bankAccountListObj.IncomeYield3,
     AnnualIncome3: "",
   };
   let Bank_validationSchema = Yup.object({
@@ -258,7 +279,7 @@ const InvestmentTrust = () => {
     if (isEdit_bankAccountList == false) {
       axios
         .post(
-          "http://localhost:7000/Client-InvestmentTrust-BankAccounts/Add-Client-BankAccounts",
+          "http://localhost:7000/Client-InvestmentTrust/Add-Client-BankAccounts",
           Bank_Data
         )
         .then((res) => console.log("data added successfully"));
@@ -329,20 +350,20 @@ const InvestmentTrust = () => {
   const [isEdit_deposit, set_isEdit_deposit] = useState(false);
 
   let Deposit_initialValues = {
-    DepositCurrentValue1: "",
-    DepositFinancialInstitution1: "",
-    DepositIncomeYield1: "",
-    DepositAnnualIncome1: "",
+    DepositCurrentValue1: depositListObj.CurrentValue1,
+    DepositFinancialInstitution1: depositListObj.FinancialInstitution1,
+    DepositIncomeYield1: depositListObj.IncomeYield1,
+    DepositAnnualIncome1: depositListObj.AnnualIncome1,
 
-    DepositCurrentValue2: "",
-    DepositFinancialInstitution2: "",
-    DepositIncomeYield2: "",
-    DepositAnnualIncome2: "",
+    DepositCurrentValue2: depositListObj.CurrentValue2,
+    DepositFinancialInstitution2: depositListObj.FinancialInstitution2,
+    DepositIncomeYield2: depositListObj.IncomeYield2,
+    DepositAnnualIncome2: depositListObj.AnnualIncome2,
 
-    DepositCurrentValue3: "",
-    DepositFinancialInstitution3: "",
-    DepositIncomeYield3: "",
-    DepositAnnualIncome3: "",
+    DepositCurrentValue3: depositListObj.CurrentValue3,
+    DepositFinancialInstitution3: depositListObj.FinancialInstitution3,
+    DepositIncomeYield3: depositListObj.IncomeYield3,
+    DepositAnnualIncome3: depositListObj.AnnualIncome3,
   };
   let Deposit_validationSchema = Yup.object({
     DepositCurrentValue1: Yup.number().test(
@@ -465,7 +486,7 @@ const InvestmentTrust = () => {
 
     axios
       .post(
-        "http://localhost:7000/Client-InvestmentTrust-TermDeposit/Add-Client-TermDeposit",
+        "http://localhost:7000/Client-InvestmentTrust/Add-Client-TermDeposit",
         depositData
       )
       .then((res) => console.log("data added successfully"));
@@ -611,20 +632,11 @@ const InvestmentTrust = () => {
       console.log(AddData);
       axios
         .post(
-          "http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Add-Client-Australian-Market-Share",
+          "http://localhost:7000/Client-InvestmentTrust/Add-Client-Australian-Market-Share",
           AddData
         )
         .then((res) => console.log("Data Added Successfully"));
 
-      axios
-        .get(
-          "http://localhost:7000/Client-InvestmentTrust/Australian-Market-Share"
-        )
-        .then((res) => {
-          console.log("Data get Successfully");
-          console.log(res.data);
-          setAustralianShareList(res.data);
-        });
 
       setIs_Share(false);
       handleClose3();
@@ -749,21 +761,12 @@ const InvestmentTrust = () => {
 
       axios
         .post(
-          "http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Add-Client-Australian-Market-Portfolio",
+          "http://localhost:7000/Client-InvestmentTrust/Add-Client-Australian-Market-Portfolio",
           myData
         )
         .then((res) => console.log("data Added Successfully"));
       handleClose4();
 
-      axios
-        .get(
-          "http://localhost:7000/Client-InvestmentTrust/Australian-Market-Portfolio"
-        )
-        .then((res) => {
-          console.log("Data get Successfully");
-          console.log(res.data);
-          setAustralianLoanList(res.data);
-        });
     }
   };
 
@@ -891,7 +894,7 @@ const InvestmentTrust = () => {
       setManageFundList([...manageFundList, myData]);
       axios
         .post(
-          "http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Add-Client-ManagedFunds",
+          "http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds",
           myData
         )
         .then((ref) => {
@@ -915,7 +918,7 @@ const InvestmentTrust = () => {
       CurrentShareUnitPrice: elem.CurrentSharePrice,
       managedCurrentValue: 5000, //managedCurrentValue read only
       OriginalInvestment: elem.OriginalInvestment,
-      managedPurchaseDate: elem.PurchaseDate,
+      // managedPurchaseDate: elem.PurchaseDate,
       managedIncomepa: elem.IncomePA,
       managedIncomepaType: elem.IncomePAType,
       managedTotalIncomePA: 5000, //managedTotalIncomePA read only
@@ -1017,7 +1020,7 @@ const InvestmentTrust = () => {
 
       axios
       .post(
-        "http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio/Add-Client-ManagedFunds-Portfolio",
+        "http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds-Portfolio",
         myData
       )
       .then((ref) => {
@@ -1231,7 +1234,7 @@ const InvestmentTrust = () => {
       console.log(myData);
       axios
         .post(
-          "http://localhost:7000/Client-InvestmentTrust-InvestmentProperties/Add-Client-InvestmentProperties",
+          "http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentProperties",
           myData
         )
         .then((res) => {
@@ -1287,18 +1290,18 @@ const InvestmentTrust = () => {
   //investment properties modal within modal
 
   let Investment_initialValues_Modal = {
-    TotalPropertyExpenses2: "", //readonly
-    BodyCorporateFees2: "",
-    CouncilRates2: "",
-    GardeningAndLawnmowing2: "",
-    Insurance2: "",
-    LandTax2: "",
-    RepairsAndMaintenance2: "",
-    WaterCharges2: "",
-    Other2: "",
-    TelephoneAndInternet2: "",
-    ProfessionalFees2: "",
-    AllOther2: "",
+    TotalPropertyExpenses2: investmentInnerModalObj.TotalPropertyExpenses, //readonly
+    BodyCorporateFees2:  investmentInnerModalObj.BodyCorporateFees,
+    CouncilRates2:  investmentInnerModalObj.CouncilRates,
+    GardeningAndLawnmowing2:  investmentInnerModalObj.GardeningAndLawnMowing,
+    Insurance2:  investmentInnerModalObj.Insurance,
+    LandTax2:  investmentInnerModalObj.LandTax,
+    RepairsAndMaintenance2:  investmentInnerModalObj.RepairsAndMaintenance,
+    WaterCharges2:  investmentInnerModalObj.WaterCharges,
+    Other2:  investmentInnerModalObj.Other,
+    TelephoneAndInternet2:  investmentInnerModalObj.TelephoneAndInternet,
+    ProfessionalFees2:  investmentInnerModalObj.ProfessionalFees,
+    AllOther2:  investmentInnerModalObj.AllOther,
   };
   let Investment_validationSchema_Modal = Yup.object({
     BodyCorporateFees2: Yup.number().test(
@@ -1379,7 +1382,7 @@ const InvestmentTrust = () => {
 
     axios
       .post(
-        "http://localhost:7000/Client-InvestmentTrust-InvestmentProperties-Modal/Add-Client-InvestmentPropertiesModal",
+        "http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentPropertiesModal",
         myData
       )
       .then((res) => {
@@ -1387,6 +1390,112 @@ const InvestmentTrust = () => {
       });
     handleClose8();
   };
+
+
+
+  useEffect(()=>{
+
+    let email=localStorage.getItem("EditClient")
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-InvestmentForm`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setInvestmentFromObj(clientFilterObj[0])
+     console.log(clientFilterObj);
+    })
+
+
+
+
+    //BankAccounts is added in get Api 
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setBankAccountListObj(clientFilterObj[0])
+    //  console.log(clientFilterObj);
+    })
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setdepositListObj(clientFilterObj[0])
+    //  console.log(clientFilterObj);
+    })
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Australian-Market-Share`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setdepositListObj(clientFilterObj[0])
+    setAustralianShareList(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Australian-Market-Portfolio`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setdepositListObj(clientFilterObj[0])
+    setAustralianLoanList(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Client-ManagedFunds`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setdepositListObj(clientFilterObj[0])
+    setManageFundList(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setdepositListObj(clientFilterObj[0])
+    setManageLoanList(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setdepositListObj(clientFilterObj[0])
+    setInvestmentList(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties-Modal`)
+    .then((res) => {
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    // setdepositListObj(clientFilterObj[0])
+    setInvestmentInnerModalObj(clientFilterObj[0]);
+    //  console.log(clientFilterObj);
+    })
+
+
+  },[])
+
+
+
+
 
   return (
     <>
@@ -1397,6 +1506,7 @@ const InvestmentTrust = () => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={onSubmit}
+              enableReinitialize
             >
               {({ values, handleChange, setFieldValue, handleBlur }) => (
                 <Form>
@@ -2103,12 +2213,12 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -2520,12 +2630,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose2}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -2974,12 +3085,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose3}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -3513,12 +3625,13 @@ const InvestmentTrust = () => {
                                   >
                                     Save
                                   </button>
-                                  <span
+                                  <button
+                                  type="button"
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose4}
                                   >
                                     Cancel
-                                  </span>
+                                  </button>
                                 </div>
                               </Modal.Footer>
                             </Form>
@@ -4003,12 +4116,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose5}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -4535,12 +4649,12 @@ const InvestmentTrust = () => {
                                   >
                                     Save
                                   </button>
-                                  <span
+                                  <button type="button"
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose6}
                                   >
                                     Cancel
-                                  </span>
+                                  </button>
                                 </div>
                               </Modal.Footer>
                             </Form>
@@ -5244,12 +5358,12 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose7}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -5638,12 +5752,12 @@ const InvestmentTrust = () => {
                               >
                                 Save
                               </button>
-                              <span
+                              <button type="button"
                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                 onClick={handleClose8}
                               >
                                 Cancel
-                              </span>
+                              </button>
                             </div>
                           </Modal.Footer>
                         </Form>
@@ -5680,4 +5794,4 @@ const InvestmentTrust = () => {
   );
 };
 
-export default InvestmentTrust;
+export default InvestmentTrust_Edit;

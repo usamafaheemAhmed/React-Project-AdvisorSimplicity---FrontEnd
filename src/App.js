@@ -32,6 +32,8 @@ import Investments_Edit from './PatchComponents/Edit_Investments/Investments_Edi
 import EstatePlanning_Edit from './PatchComponents/Edit_EstatePlanning/EstatePlanning_Edit';
 import Edit_SuperRetriement from './PatchComponents/Edit_Super&Retirement/Edit_SuperRetriement';
 import SMSF_Edit from './PatchComponents/SMSF/SMSF_Edit';
+import PersonalInsurance_Edit from './PatchComponents/PersonalInsurance_Edit/PersonalInsurance_Edit';
+import InvestmentTrust_Edit from './PatchComponents/InvestmentTrust_Edit/InvestmentTrust_Edit';
 
 function App() {
   return (
@@ -79,15 +81,18 @@ function App() {
         <Route path='/Edit-Estate-Planning' element={<EstatePlanning_Edit/>} />
         <Route path='/Edit-Super-And-Retirment' element={<Edit_SuperRetriement/>} />
         <Route path='/Edit-SMSF' element={<SMSF_Edit/>} />
-        {/* <Route path='/Edit-Investment-Trust' element={<InvestmentTrust/>} /> */}
-        {/* <Route path='/Edit-Personal-Insurance' element={<PersonalInsurance/>} /> */}
+        <Route path='/Edit-Investment-Trust' element={<InvestmentTrust_Edit/>} />
+        <Route path='/Edit-Personal-Insurance' element={<PersonalInsurance_Edit/>} />
         {/* <Route path='/Edit-Risk-Profile' element={<RiskProfile/>} /> */}
         {/* <Route path='/Edit-Goals-And-Objectives' element={<GoalsObjectives/>} /> */}
       </Routes>
       </BrowserRouter>
       </div>
+      
     </div>
-    
+   {/* <Investments_Edit/> */}
+   {/* <InvestmentTrust_Edit/>
+   <PersonalInsurance_Edit/> */}
 
     </div>
   );
