@@ -1738,6 +1738,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type='button'
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={PersonalInsuranceCoverhandleClose}
                                               >
@@ -2208,6 +2209,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type='button'
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={PersonalInsuranceCover2handleClose}
                                               >
@@ -2992,6 +2994,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type='button'
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={Partner_PersonalInsuranceCoverhandleClose}
                                               >
@@ -3464,6 +3467,7 @@ useEffect(() => {
                                                 Save
                                               </button>
                                               <button
+                                              type='button'
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={Partner_PersonalInsuranceCover2handleClose}
                                               >

@@ -2103,12 +2103,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -2520,12 +2521,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose2}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -2974,12 +2976,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose3}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -3513,12 +3516,13 @@ const InvestmentTrust = () => {
                                   >
                                     Save
                                   </button>
-                                  <span
+                                  <button
+                                  type='button'
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose4}
                                   >
                                     Cancel
-                                  </span>
+                                  </button>
                                 </div>
                               </Modal.Footer>
                             </Form>
@@ -4003,12 +4007,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose5}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -4535,12 +4540,13 @@ const InvestmentTrust = () => {
                                   >
                                     Save
                                   </button>
-                                  <span
+                                  <button
+                                  type='button'
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose6}
                                   >
                                     Cancel
-                                  </span>
+                                  </button>
                                 </div>
                               </Modal.Footer>
                             </Form>
@@ -5244,12 +5250,13 @@ const InvestmentTrust = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose7}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                           </Form>
@@ -5638,12 +5645,13 @@ const InvestmentTrust = () => {
                               >
                                 Save
                               </button>
-                              <span
+                              <button
+                              type='button'
                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                 onClick={handleClose8}
                               >
                                 Cancel
-                              </span>
+                              </button>
                             </div>
                           </Modal.Footer>
                         </Form>

@@ -1835,7 +1835,8 @@ useEffect(() => {
                                               >
                                                 Save
                                               </button>
-                                              <button type="button"
+                                              <button 
+                                              type="button"
                                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                                 onClick={PersonalInsuranceCoverhandleClose}
                                               >

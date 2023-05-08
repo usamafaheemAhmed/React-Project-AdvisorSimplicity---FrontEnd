@@ -1206,12 +1206,13 @@ let PartnerOtherDeleteHandler=(e)=>{
                                       >
                                         Save
                                       </button>
-                                      <span
+                                      <button
+                                      type='button'
                                         className="float-end btn w-25  btn-outline  backBtn mx-3"
                                         onClick={handleClose}
                                       >
                                         Cancel
-                                      </span>
+                                      </button>
                                     </div>
                                   </Modal.Footer>
                                 </Form>
@@ -2071,6 +2072,7 @@ let PartnerOtherDeleteHandler=(e)=>{
                                         Save
                                       </button>
                                       <button
+                                      type='button'
                                         className="float-end btn w-25  btn-outline  backBtn mx-3"
                                         onClick={handleClose2}
                                       >

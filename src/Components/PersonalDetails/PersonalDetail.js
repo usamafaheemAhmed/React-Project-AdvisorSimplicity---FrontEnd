@@ -623,7 +623,7 @@ const initialValues2={
   CostofUniEducation:'',
   courseYears:'',
   AmountPaidReceivedID:'',
-  childAge:'',
+  // childAge:'',
   }
   const onSubmit2= (values,action) => {
   
@@ -1181,7 +1181,7 @@ const initialValues2={
                   <div className="row">
                   <div className="col-md-6">
                         <label htmlFor="ClientDoBID" className="form-label">
-                        Date of Birth
+                        Date of Birth client
                         </label>
                       <div className="input-group ">
                         <Field
@@ -2024,8 +2024,11 @@ const initialValues2={
                         />
                         <div className="input-group-append">
                           <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='childDoBID' type='date'
-                             id="HiddenDate3" onChange={()=>ChangeDateFormat("childDoBID","HiddenDate3")}/>
+                            <input className="HiddenDate" 
+                            // name='childDoBID' 
+                            type='date'
+                             id="HiddenDate3" 
+                             onChange={()=>ChangeDateFormat("childDoBID","HiddenDate3")}/>
                           </span>
                         </div>
                          </div>
@@ -2408,9 +2411,9 @@ const initialValues2={
                           <Modal.Footer>
                          
 
-                            <div className="col-md-12">
-<button className="float-end btn w-25  bgColor modalBtn" type="submit" >Save</button>
-<button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={handleClose} >Cancel</button>
+  <div className="col-md-12">
+      <button className="float-end btn w-25  bgColor modalBtn" type="submit" >Save</button>
+      <button type="button"  className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={handleClose} >Cancel</button>
 
 </div>
                           </Modal.Footer>

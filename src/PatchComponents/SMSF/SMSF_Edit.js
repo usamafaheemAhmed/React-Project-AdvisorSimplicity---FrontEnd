@@ -2977,12 +2977,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                           >
                                             Save
                                           </button>
-                                          <span
+                                          <button
+                                          type="button"
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={contributionHandleClose}
                                           >
                                             Cancel
-                                          </span>
+                                          </button>
                                         </div>
                                       </Modal.Footer>
                                     </Form>
@@ -3006,6 +3007,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AccumulationhandleClose}
                                     >
@@ -3388,6 +3390,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={PensionhandleClose}
                                     >
@@ -3694,6 +3697,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankAccountshandleClose}
                                     >
@@ -3996,6 +4000,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={TermDeposithandleClose}
                                     >
@@ -4300,6 +4305,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianSharehandleClose}
                                     >
@@ -4707,12 +4713,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose4}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5438,12 +5445,13 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose6}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -5874,6 +5882,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -6078,6 +6087,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentPropertieshandleClose}
                                     >

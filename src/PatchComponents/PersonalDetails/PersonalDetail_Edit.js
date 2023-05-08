@@ -2372,7 +2372,7 @@ const initialValues2={
 
                             <div className="col-md-12">
 <button className="float-end btn w-25  bgColor modalBtn" type="submit" >Save</button>
-<button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={handleClose} >Cancel</button>
+<button type="button" className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={handleClose} >Cancel</button>
 
 </div>
                           </Modal.Footer>

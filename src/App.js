@@ -43,7 +43,7 @@ function App() {
     
     <div className="row" id="Shapaik">
       <div className="col-md-2 m-0 p-0 ">
-        <SideBar/>
+        {/* <SideBar/> */}
       </div>
 
       <div className="col-md-10 m-0 p-0"> 

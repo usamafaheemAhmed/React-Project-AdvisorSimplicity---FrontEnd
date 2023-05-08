@@ -2213,7 +2213,8 @@ const InvestmentTrust_Edit = () => {
                                 >
                                   Save
                                 </button>
-                                <button type="button"
+                                <button 
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose}
                                 >
@@ -4649,7 +4650,8 @@ const InvestmentTrust_Edit = () => {
                                   >
                                     Save
                                   </button>
-                                  <button type="button"
+                                  <button 
+                                  type="button"
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose6}
                                   >
@@ -5358,7 +5360,8 @@ const InvestmentTrust_Edit = () => {
                                 >
                                   Save
                                 </button>
-                                <button type="button"
+                                <button 
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose7}
                                 >
@@ -5752,7 +5755,8 @@ const InvestmentTrust_Edit = () => {
                               >
                                 Save
                               </button>
-                              <button type="button"
+                              <button 
+                              type="button"
                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                 onClick={handleClose8}
                               >

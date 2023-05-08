@@ -1227,12 +1227,13 @@ const AssetsLiabilities_Edit = () => {
                                 >
                                   Save
                                 </button>
-                                <span
+                                <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose}
                                 >
                                   Cancel
-                                </span>
+                                </button>
                               </div>
                             </Modal.Footer>
                             </Form>
@@ -1777,6 +1778,7 @@ return(
                                   Save
                                 </button>
                                 <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose2}
                                 >
@@ -2913,6 +2915,7 @@ return(
                                   Save
                                 </button>
                                 <button
+                                type="button"
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose3}
                                 >

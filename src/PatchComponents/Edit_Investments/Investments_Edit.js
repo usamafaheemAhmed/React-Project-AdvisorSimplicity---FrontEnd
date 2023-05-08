@@ -1293,6 +1293,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankhandleClose}
                                     >
@@ -1703,6 +1704,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={TermDeposithandleClose}
                                     >
@@ -2053,6 +2055,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianShareMarkethandleClose}
                                     >
@@ -2387,6 +2390,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianSharePortfoliohandleClose}
                                     >
@@ -2721,6 +2725,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -3048,6 +3053,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundsPortfoliohandleClose}
                                     >
@@ -3382,6 +3388,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentBondshandleClose}
                                     >
@@ -3825,6 +3832,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -4037,6 +4045,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentPropertieshandleClose}
                                     >
@@ -4447,6 +4456,7 @@ useEffect(() => {
                                       Save
                                     </button>
                                     <button
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={OthershandleClose}
                                     >

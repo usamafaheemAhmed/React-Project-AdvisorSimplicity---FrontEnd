@@ -1504,7 +1504,8 @@ let OtherDeleteHandler2 =(e)=>{
                                     >
                                       Save
                                     </button>
-                                    <button type="button"
+                                    <button 
+                                    type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={BankhandleClose}
                                     >
@@ -1916,6 +1917,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={TermDeposithandleClose}
                                     >
@@ -2266,6 +2268,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianShareMarkethandleClose}
                                     >
@@ -2601,6 +2604,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={AustralianSharePortfoliohandleClose}
                                     >
@@ -2936,6 +2940,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -3266,6 +3271,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundsPortfoliohandleClose}
                                     >
@@ -3601,6 +3607,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentBondshandleClose}
                                     >
@@ -4043,6 +4050,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={ManagedFundshandleClose}
                                     >
@@ -4255,6 +4263,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={InvestmentPropertieshandleClose}
                                     >
@@ -4666,6 +4675,7 @@ let OtherDeleteHandler2 =(e)=>{
                                       Save
                                     </button>
                                     <button
+                                    type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={OthershandleClose}
                                     >
