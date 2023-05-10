@@ -7,6 +7,8 @@ import plus from './images/plus.svg'
 import lawyer from './images/lawyer.svg'
 import notebook from './images/notebook.svg'
 import { NavLink, useNavigate } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function SMSF() {
     const [Accumulation, setAccumulation] = useState(false);
@@ -144,7 +146,7 @@ function SMSF() {
       SMSFFundType: Yup.string().required("Required"),
       SMSFABN: Yup.string().required("Required"),
       SMSFTrusteeType: Yup.string().required("Required"),
-      SMSFEstablishmentDate: Yup.string().required("Required"),
+      SMSFEstablishmentDate: Yup.date().required("Required").nullable(),
       SMSFAccountant: Yup.string().required("Required"),
       SMSFAuditor: Yup.string().required("Required"),
       SMSFAccountingAuditing: Yup.string().required("Required"),
@@ -502,7 +504,7 @@ function SMSF() {
 const [accumulationList, setAccumulationList] = useState([])
 let Accumulation_validationSchema = Yup.object({   
   AccumulationMemberName: Yup.string().required("Required"),
-  AccumulationEligibleDate: Yup.string().required("Required"),
+  AccumulationEligibleDate: Yup.date().required("Required").nullable(),
   AccumulationCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   AccumulationTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   AccumulationTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -545,7 +547,7 @@ let AccumulationModal_onSubmit = (Values) => {
  let PensionAccount_validationSchema = Yup.object({   
   PensionMemberName: Yup.string().required("Required"),
   PensionType: Yup.string().required("Required"),
-  PensionCommencementDate: Yup.string().required("Required"),
+  PensionCommencementDate: Yup.date().required("Required").nullable,
   PensionCurrentBalance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   PensionTaxFree: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   PensionTaxed: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -890,7 +892,7 @@ const [AustralianShareList, setAustralianShareList] = useState([])
   AustralianShareCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   AustralianShareTotalValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   AustralianShareCostBase: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-  AustralianSharePurchaseDate: Yup.string().required("Required"),
+  AustralianSharePurchaseDate: Yup.date().required("Required").nullable(),
   AustralianShareIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   AustralianShareIncomePA2: Yup.string().required("Required"),
   AustralianShareTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -975,7 +977,7 @@ let deleteHandler_AustralianShare=(elem)=>{
   ManagedFundsCurrentPrice: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   ManagedFundsCurrentValue: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   ManagedFundsOriginalInvestment: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
-  ManagedFundsPurchaseDate: Yup.string().required("Required"),
+  ManagedFundsPurchaseDate: Yup.date().required("Required").nullable(),
   ManagedFundsIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
   ManagedFundsIncomePA2: Yup.string().required("Required"),
   ManagedFundsTotalIncomePA: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -1793,7 +1795,7 @@ let emailasID=localStorage.getItem("ClientEmail");
         <div className='row my-3'>
           <div className='col-md-12'>
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} enableReinitialize>
-              {({ values, handleChange })=>
+              {({ values, handleChange, handleBlur, setFieldValue })=>
                 <Form>
 
                   {/* SMSF Details */}
@@ -1853,8 +1855,28 @@ let emailasID=localStorage.getItem("ClientEmail");
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                     <label htmlFor="SMSFEstablishmentDate" className="form-label">Establishment Date</   label>
-                                    <Field type="date" className="form-control shadow inputDesign" 
-                                    id="SMSFEstablishmentDate" name='SMSFEstablishmentDate'/>
+                                    
+                                    <div>
+                                    <DatePicker
+                                      className="form-control inputDesign shadow"
+                                      showIcon
+                                      id="SMSFEstablishmentDate"
+                                      name="SMSFEstablishmentDate"
+                                      selected={values.SMSFEstablishmentDate}
+                                      onChange={(date) =>
+                                        setFieldValue("SMSFEstablishmentDate", date)
+                                      }
+                                      dateFormat="dd/MM/yyyy"
+                                      placeholderText="dd/mm/yyyy"
+                                      maxDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      onBlur={handleBlur}
+                                    />
+                                  
+                                  </div>
+
                                     <ErrorMessage component='div' className='text-danger fw-bold' name='SMSFEstablishmentDate' />
                                     </div>            
                                     </div>                                    
@@ -2077,7 +2099,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 initialValues={Client_initialValues}
                                 validationSchema={Accumulation_validationSchema}
                                 onSubmit={AccumulationModal_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Professional Advisor Detail Form */}
@@ -2113,8 +2135,28 @@ let emailasID=localStorage.getItem("ClientEmail");
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                     <label htmlFor="AccumulationEligibleDate" className="form-label">Eligible Date</   label>
-                                    <Field type="date" className="form-control shadow inputDesign" 
-                                    id="AccumulationEligibleDate" name='AccumulationEligibleDate'/>
+                                   
+                                    <div>
+                                    <DatePicker
+                                      className="form-control inputDesign shadow"
+                                      showIcon
+                                      id="AccumulationEligibleDate"
+                                      name="AccumulationEligibleDate"
+                                      selected={values.AccumulationEligibleDate}
+                                      onChange={(date) =>
+                                        setFieldValue("AccumulationEligibleDate", date)
+                                      }
+                                      dateFormat="dd/MM/yyyy"
+                                      placeholderText="dd/mm/yyyy"
+                                      maxDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      onBlur={handleBlur}
+                                    />
+                                  
+                                    </div>
+
                                     <ErrorMessage component='div' className='text-danger fw-bold' name='AccumulationEligibleDate' />
                                     </div>            
                                     </div>                                    
@@ -3056,8 +3098,26 @@ let emailasID=localStorage.getItem("ClientEmail");
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                     <label htmlFor="PensionCommencementDate" className="form-label">Commencment Date</   label>
-                                    <Field type="date" className="form-control shadow inputDesign" 
-                                    id="PensionCommencementDate" name='PensionCommencementDate'/>
+                                    <div>
+                                    <DatePicker
+                                      className="form-control inputDesign shadow"
+                                      showIcon
+                                      id="PensionCommencementDate"
+                                      name="PensionCommencementDate"
+                                      selected={values.PensionCommencementDate}
+                                      onChange={(date) =>
+                                        setFieldValue("PensionCommencementDate", date)
+                                      }
+                                      dateFormat="dd/MM/yyyy"
+                                      placeholderText="dd/mm/yyyy"
+                                      maxDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      onBlur={handleBlur}
+                                    />
+                                  
+                                    </div>
                                     <ErrorMessage component='div' className='text-danger fw-bold' name='PensionCommencementDate' />
                                     </div>            
                                     </div>
@@ -3921,7 +3981,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 initialValues={Client_initialValues}
                                 validationSchema={Australian_validationSchema}
                                 onSubmit={Australian_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Professional Advisor Detail Form */}
@@ -3982,8 +4042,26 @@ let emailasID=localStorage.getItem("ClientEmail");
                                         <div className="col-md-6">
                                         <div className="mb-3">
                                         <label htmlFor="AustralianSharePurchaseDate" className="form-label">Purchase Date</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="AustralianSharePurchaseDate" name='AustralianSharePurchaseDate' />
+                                        <div>
+                                    <DatePicker
+                                      className="form-control inputDesign shadow"
+                                      showIcon
+                                      id="AustralianSharePurchaseDate"
+                                      name="AustralianSharePurchaseDate"
+                                      selected={values.AustralianSharePurchaseDate}
+                                      onChange={(date) =>
+                                        setFieldValue("AustralianSharePurchaseDate", date)
+                                      }
+                                      dateFormat="dd/MM/yyyy"
+                                      placeholderText="dd/mm/yyyy"
+                                      maxDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      onBlur={handleBlur}
+                                    />
+                                  
+                                    </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianSharePurchaseDate' />
                                         </div>            
                                         </div>
@@ -4643,7 +4721,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                 initialValues={Client_initialValues}
                                 validationSchema={Manage_validationSchema}
                                 onSubmit={Manage_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Professional Advisor Detail Form */}
@@ -4721,8 +4799,26 @@ let emailasID=localStorage.getItem("ClientEmail");
                                         <div className="col-md-6">
                                         <div className="mb-3">
                                         <label htmlFor="ManagedFundsPurchaseDate" className="form-label">Purchase Date</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="ManagedFundsPurchaseDate" name='ManagedFundsPurchaseDate' />
+                                        <div>
+                                    <DatePicker
+                                      className="form-control inputDesign shadow"
+                                      showIcon
+                                      id="ManagedFundsPurchaseDate"
+                                      name="ManagedFundsPurchaseDate"
+                                      selected={values.ManagedFundsPurchaseDate}
+                                      onChange={(date) =>
+                                        setFieldValue("ManagedFundsPurchaseDate", date)
+                                      }
+                                      dateFormat="dd/MM/yyyy"
+                                      placeholderText="dd/mm/yyyy"
+                                      maxDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      onBlur={handleBlur}
+                                    />
+                                  
+                                    </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPurchaseDate' />
                                         </div>            
                                         </div>
@@ -5657,7 +5753,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                   <div className="col-md-12">
                                     <button
                                       className="float-end btn w-25  bgColor modalBtn"
-                                      // onClick={ManagedFundshandleClose}
+                                      
                                       type='submit'
                                     >
                                       Save
@@ -5665,7 +5761,7 @@ let emailasID=localStorage.getItem("ClientEmail");
                                     <button
                                     type='button'
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                      onClick={ManagedFundshandleClose}
+                                      onClick={InvestmentProperties2handleClose}
                                     >
                                       Cancel
                                     </button>

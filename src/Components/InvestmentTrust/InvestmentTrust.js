@@ -5,8 +5,11 @@ import "yup-phone";
 import plus from "./images/plus.svg";
 import notebook from "./images/notebook.svg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import DatePicker from "react-datepicker";
 import axios from "axios";
+
+
+
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 const InvestmentTrust = () => {
@@ -90,7 +93,7 @@ const InvestmentTrust = () => {
       then: Yup.string(),
       otherwise: Yup.string().notRequired(),
     }),
-    EstablishmentDate: Yup.date().nullable(),
+    EstablishmentDate: Yup.date().required("Required").nullable(),
     NameofAccountant: Yup.string().matches(letters, "only letters"),
     NumberofDirectors: Yup.string(),
   });

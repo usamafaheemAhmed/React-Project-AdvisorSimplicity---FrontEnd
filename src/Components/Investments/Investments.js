@@ -2,7 +2,8 @@ import { React, useState , useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import plus from './images/plus.svg'
 import accounting from './images/accounting.svg'
 import businessman from './images/businessman.svg'
@@ -329,7 +330,7 @@ function Investments() {
     OtherInvestmentName: Yup.string(),
     OtherCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     OtherCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    OtherPurchaseDate: Yup.string(),
+    OtherPurchaseDate: Yup.date().required("Required").nullable(),
     OtherIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     OtherIncomePAType: Yup.string(),
     // OtherTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -345,7 +346,7 @@ function Investments() {
 
       (value) => value > 0
     ),
-    OtherPurchaseDate2: Yup.string(),
+    OtherPurchaseDate2: Yup.date().required("Required").nullable(),
     OtherIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     OtherIncomePAType2: Yup.string(),
     // OtherTotalIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -396,7 +397,7 @@ function Investments() {
     AustralianMarketTotalShareValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianMarketCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     // AustralianMarketPurchaseDate: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketPurchaseDate:  Yup.date(),
+    AustralianMarketPurchaseDate:  Yup.date().required("Required").nullable(),
     AustralianMarketIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianMarketIncomePAType: Yup.string(),
     AustralianMarketTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -423,7 +424,7 @@ function Investments() {
     ManagedFundsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPurchaseDate: Yup.string(),
+    ManagedFundsPurchaseDate: Yup.date().required("Required").nullable(),
     ManagedFundsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsIncomePAType: Yup.string(),
     ManagedFundsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -451,7 +452,7 @@ function Investments() {
     InvestmentBondsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsPurchaseDate: Yup.string(),
+    InvestmentBondsPurchaseDate: Yup.date().required("Required").nullable(),
     InvestmentBondsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsIncomePAType: Yup.string(),
     InvestmentBondsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -2093,7 +2094,7 @@ let OtherDeleteHandler2 =(e)=>{
                                 initialValues={AustralianShareMarketEdit?  AustralianShareMarketList[0] :  Client_initialValues}
                                 validationSchema={Client_validationSchemaAustralianMarket}
                                 onSubmit={AustralianShareMarket_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Australian Share Market Form */}
@@ -2162,9 +2163,26 @@ let OtherDeleteHandler2 =(e)=>{
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</label>
-                              <Field type="date" className="form-control shadow inputDesign"
-                              id="AustralianMarketPurchaseDate" name='AustralianMarketPurchaseDate'/>
+                              <label htmlFor="AustralianMarketPurchaseDate" className="form-label">Purchase Date</label>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="AustralianMarketPurchaseDate"
+                                name="AustralianMarketPurchaseDate"
+                                selected={values.AustralianMarketPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("AustralianMarketPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketPurchaseDate' />
                             </div>            
                             </div>
@@ -2755,7 +2773,7 @@ let OtherDeleteHandler2 =(e)=>{
                                 initialValues={ManagedFundsEdit? ManagedFundsList[0] : Client_initialValues}
                                 validationSchema={Client_validationSchemaManagedFunds}
                                 onSubmit={ManagedFunds_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Australian Share Market Form */}
@@ -2842,9 +2860,27 @@ let OtherDeleteHandler2 =(e)=>{
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</label>
-                              <Field type="date" className="form-control shadow inputDesign"
-                              id="ManagedFundsPurchaseDate" name='ManagedFundsPurchaseDate'/>
+                              <label htmlFor="ManagedFundsPurchaseDate" className="form-label">Purchase Date</label>
+                             
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="ManagedFundsPurchaseDate"
+                                name="ManagedFundsPurchaseDate"
+                                selected={values.ManagedFundsPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("ManagedFundsPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPurchaseDate' />
                             </div>            
                             </div>
@@ -3422,7 +3458,7 @@ let OtherDeleteHandler2 =(e)=>{
                                 initialValues={InvestmentBondsEdit? InvestmentBondsList[0] :Client_initialValues}
                                 validationSchema={Client_validationSchemaInvestmentBonds}
                                 onSubmit={InvestmentBonds_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Australian Share Market Form */}
@@ -3509,9 +3545,26 @@ let OtherDeleteHandler2 =(e)=>{
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</label>
-                              <Field type="date" className="form-control shadow inputDesign"
-                              id="InvestmentBondsPurchaseDate" name='InvestmentBondsPurchaseDate'/>
+                              <label htmlFor="InvestmentBondsPurchaseDate" className="form-label">Purchase Date</label>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="InvestmentBondsPurchaseDate"
+                                name="InvestmentBondsPurchaseDate"
+                                selected={values.InvestmentBondsPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("InvestmentBondsPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsPurchaseDate' />
                             </div>            
                             </div>
@@ -4419,7 +4472,7 @@ let OtherDeleteHandler2 =(e)=>{
                                 initialValues={OthersEdit? OthersList[0] :Client_initialValues}
                                 validationSchema={Client_validationSchemaOtherFunds}
                                 onSubmit={Others_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Professional Advisor Detail Form */}
@@ -4462,8 +4515,25 @@ let OtherDeleteHandler2 =(e)=>{
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="OtherPurchaseDate" className="form-label">Purchase Date</label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                      id="OtherPurchaseDate" name='OtherPurchaseDate' />
+                                       <div>
+                                       <DatePicker
+                                         className="form-control inputDesign shadow"
+                                         showIcon
+                                         id="OtherPurchaseDate"
+                                         name="OtherPurchaseDate"
+                                         selected={values.OtherPurchaseDate}
+                                         onChange={(date) =>
+                                           setFieldValue("OtherPurchaseDate", date)
+                                         }
+                                         dateFormat="dd/MM/yyyy"
+                                         placeholderText="dd/mm/yyyy"
+                                         maxDate={new Date()}
+                                         showMonthDropdown
+                                         showYearDropdown
+                                         dropdownMode="select"
+                                         onBlur={handleBlur}
+                                       />
+                                     </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate' />
                                     </div>            
                                     </div>
@@ -4581,8 +4651,25 @@ let OtherDeleteHandler2 =(e)=>{
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="OtherPurchaseDate2" className="form-label">Purchase Date</label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                      id="OtherPurchaseDate2" name='OtherPurchaseDate2' />
+                                      <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="OtherPurchaseDate2"
+                                name="OtherPurchaseDate2"
+                                selected={values.OtherPurchaseDate2}
+                                onChange={(date) =>
+                                  setFieldValue("OtherPurchaseDate2", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate2' />
                                     </div>            
                                     </div>
