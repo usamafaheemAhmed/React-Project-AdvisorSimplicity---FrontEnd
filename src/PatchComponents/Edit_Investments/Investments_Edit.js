@@ -2,7 +2,8 @@ import { React, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import plus from './images/plus.svg'
 import accounting from './images/accounting.svg'
 import businessman from './images/businessman.svg'
@@ -481,7 +482,7 @@ useEffect(() => {
     AustralianMarketSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianMarketTotalShareValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianMarketCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    AustralianMarketPurchaseDate: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketPurchaseDate: Yup.date().required("Required").nullable(),
     AustralianMarketIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     AustralianMarketIncomePAType: Yup.string(),
     AustralianMarketTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -498,14 +499,14 @@ useEffect(() => {
     AustralianPortfolioYearRemaining: Yup.string(),
 
     ManagedFundsPlatformName: Yup.string(),
-    ManagedFundsInvestmentName: Yup.string(),
+    ManagedFundsInvestmentName: Yup.string().required("Required"),
     ManagedFundsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsPurchaseDate: Yup.string(),
+    ManagedFundsPurchaseDate: Yup.date().required("Required").nullable(),
     ManagedFundsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    ManagedFundsIncomePAType: Yup.string(),
+    ManagedFundsIncomePAType: Yup.string().required("Required"),
     ManagedFundsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     ManagedFundsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
 
@@ -518,15 +519,15 @@ useEffect(() => {
     ManagedFundsPortfolioDeductibleLoanAmount: Yup.string(),
     ManagedFundsPortfolioYearRemaining: Yup.string(),
 
-    InvestmentBondsPlatformName: Yup.string(),
-    InvestmentBondsInvestmentName: Yup.string(),
+    InvestmentBondsPlatformName: Yup.string().required("Required"),
+    InvestmentBondsInvestmentName: Yup.string().required("Required"),
     InvestmentBondsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsPurchaseDate: Yup.string(),
+    InvestmentBondsPurchaseDate: Yup.date().required("Required").nullable(),
     InvestmentBondsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
-    InvestmentBondsIncomePAType: Yup.string(),
+    InvestmentBondsIncomePAType: Yup.string().required("Required"),
     InvestmentBondsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
     InvestmentBondsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
 
@@ -621,6 +622,221 @@ useEffect(() => {
       otherwise: Yup.string().notRequired()
     })
   })
+
+  let AustralianShareMarket_validationSchema = Yup.object({
+
+    AustralianMarketInvestmentName: Yup.string().required("Required"),
+    AustralianMarketNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketTotalShareValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketPurchaseDate: Yup.date().required("Required").nullable(),
+    AustralianMarketIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketIncomePAType: Yup.string().required("Required"),
+    AustralianMarketTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketFrankedAmount: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianMarketRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+
+  })
+
+
+  let ManagedFunds_validationSchema = Yup.object({
+    ManagedFundsPlatformName: Yup.string().required("Required"),
+    ManagedFundsInvestmentName: Yup.string().required("Required"),
+    ManagedFundsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPurchaseDate: Yup.date().required("Required").nullable(),
+    ManagedFundsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsIncomePAType: Yup.string().required("Required"),
+    ManagedFundsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+
+  })
+
+  let InvestmentBonds_validationSchema=Yup.object({
+    InvestmentBondsPlatformName: Yup.string().required("Required"),
+    InvestmentBondsInvestmentName: Yup.string().required("Required"),
+    InvestmentBondsNumberOfShares: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsSharePrice: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsOriginalInvestment: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsPurchaseDate: Yup.date().required("Required").nullable(),
+    InvestmentBondsIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsIncomePAType: Yup.string().required("Required"),
+    InvestmentBondsTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentBondsRegInvestments: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  })
+
+  let other_validationSchema=Yup.object({
+   
+    OtherInvestmentName: Yup.string().required("Required"),
+    OtherCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherPurchaseDate: Yup.string().required("Required"),
+    OtherIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType: Yup.string().required("Required"),
+    // OtherTotalIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType: Yup.string().required("Required"),
+    OtherRegularInvestmentsPA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+    OtherInvestmentName2: Yup.string().required("Required"),
+    OtherCurrentValue2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherCostBase2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
+    .test(
+      "Is positive?",
+      "Cost Base must be a positive value",
+
+      (value) => value > 0
+    ),
+    OtherPurchaseDate2: Yup.string().required("Required"),
+    OtherIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType2: Yup.string().required("Required"),
+    // OtherTotalIncomePA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    OtherIncomePAType2: Yup.string().required("Required"),
+    OtherRegularInvestmentsPA2: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+
+  })
+
+  let BankAccount_validationSchema=Yup.object({
+    BankCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankFinancialInstitution: Yup.string().required("Required"),
+    BankIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    BankIncomePAType: Yup.string().required("Required"),
+    BankIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    BankRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+    Bank2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2FinancialInstitution:Yup.string().required("Required"),
+    Bank2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    Bank2IncomePAType: Yup.string().required("Required"),
+    Bank2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    Bank2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+  
+  })
+
+  let termDeposit_validationSchema=Yup.object({
+
+   
+    TermDepositCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositFinancialInstitution: Yup.string().required("Required") ,
+    TermDepositIncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDepositIncomePAType:Yup.string().required("Required") ,
+    TermDepositIncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDepositRegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+    TermDeposit2CurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2FinancialInstitution: Yup.string().required("Required") ,
+    TermDeposit2IncomePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    TermDeposit2IncomePAType:Yup.string().required("Required") ,
+    TermDeposit2IncomeinDollars: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    TermDeposit2RegularSavings: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+
+
+  
+  })
+  let AustralianSharePortfolio_validationSchema=Yup.object({
+
+    AustralianPortfolioLoanType: Yup.string().required("Required"),
+    AustralianPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLender: Yup.string().required("Required"),
+    AustralianInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    AustralianPortfolioLoanTerm: Yup.string().required("Required"),
+    AustralianPortfolioLoanType2: Yup.string().required("Required"),
+    AustralianPortfolioDeductibleLoanAmount: Yup.string().required("Required"),
+    AustralianPortfolioYearRemaining: Yup.string().required("Required"),
+  
+  })
+
+  let managedFundPortfolio_validationSchema=Yup.object({
+
+    ManagedFundsPortfolioLoanType: Yup.string().required("Required"),
+    ManagedFundsPortfolioCurrentBalance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLender: Yup.string().required("Required"),
+    ManagedFundsPortfolioInterestRatePA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    ManagedFundsPortfolioLoanTerm: Yup.string().required("Required"),
+    ManagedFundsPortfolioLoanType2: Yup.string().required("Required"),
+    ManagedFundsPortfolioDeductibleLoanAmount: Yup.string().required("Required"),
+    ManagedFundsPortfolioYearRemaining: Yup.string().required("Required"),
+  
+  })
+  let investment_validationSchema=Yup.object({
+
+    InvestmentPropertiesCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesClientOwnership: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesCostBase: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesAddress: Yup.string().required("Required"),
+    InvestmentPropertiesPostcode: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesRentalIncome: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesFrequency: Yup.string().required("Required"),
+    InvestmentPropertiesTotalAnnualIncome: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+    InvestmentPropertiesExpensesPA: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
+   
+    InvestmentPropertiesCurrentBalance: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesClientBorrowing: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesLender: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesRepaymentAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesFrequency2: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesAnnualRepayment: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesInterestRatePA: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesLoanTerm: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesLoanType: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    }),
+    InvestmentPropertiesDebtLoanAmount: Yup.number().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0),
+      otherwise: Yup.number().notRequired()
+    }),
+    InvestmentPropertiesYearsRemaining: Yup.string().when('InvestmentPropertiesLoanAttached',{
+      is: val => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired()
+    })
+
+  
+  })
+
+
 
   let BankAccount_onSubmit = (values) => {
     
@@ -895,17 +1111,17 @@ useEffect(() => {
 
   let InvestmentModal_validationSchema = Yup.object({
     // InvestmentModalTotalExpense: '',
-    InvestmentModalCorporateFees: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalCouncilRates: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalLawnMoving: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalInsurance: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalLandTax: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalRepairs: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalWaterCharges: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalTelephone: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalProfessionalFees: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0) ,
-    InvestmentModalAllOthers: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0)
+    InvestmentModalCorporateFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalCouncilRates: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalLawnMoving: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalInsurance: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalLandTax: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalRepairs: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalWaterCharges: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalTelephone: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalProfessionalFees: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0) ,
+    InvestmentModalAllOthers: Yup.number().required("Required").test("Is positive?", "Must be a positive value", (value) => value > 0)
   })
 
   let InvestmentModal_onSubmit = (Values) => {
@@ -1057,7 +1273,7 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={BankAccount_validationSchema}
                                 onSubmit={BankAccount_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -1468,7 +1684,7 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={termDeposit_validationSchema}
                                 onSubmit={TermDeposit_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -1878,9 +2094,9 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={AustralianShareMarket_validationSchema}
                                 onSubmit={AustralianShareMarket_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Australian Share Market Form */}
@@ -1949,9 +2165,26 @@ useEffect(() => {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
-                              <Field type="date" className="form-control shadow inputDesign"
-                              id="AustralianMarketPurchaseDate" name='AustralianMarketPurchaseDate'/>
+                              <label htmlFor="AustralianMarketPurchaseDate" className="form-label">Purchase Date</   label>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="AustralianMarketPurchaseDate"
+                                name="AustralianMarketPurchaseDate"
+                                selected={values.AustralianMarketPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("AustralianMarketPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='AustralianMarketPurchaseDate' />
                             </div>            
                             </div>
@@ -2197,7 +2430,7 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={AustralianSharePortfolio_validationSchema}
                                 onSubmit={AustralianSharePortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -2538,9 +2771,9 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={ManagedFunds_validationSchema}
                                 onSubmit={ManagedFunds_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Australian Share Market Form */}
@@ -2627,9 +2860,26 @@ useEffect(() => {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
-                              <Field type="date" className="form-control shadow inputDesign"
-                              id="ManagedFundsPurchaseDate" name='ManagedFundsPurchaseDate'/>
+                              <label htmlFor="ManagedFundsPurchaseDate" className="form-label">Purchase Date</   label>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="ManagedFundsPurchaseDate"
+                                name="ManagedFundsPurchaseDate"
+                                selected={values.ManagedFundsPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("ManagedFundsPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='ManagedFundsPurchaseDate' />
                             </div>            
                             </div>
@@ -2860,7 +3110,7 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={managedFundPortfolio_validationSchema}
                                 onSubmit={ManagedFundsPortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -3201,9 +3451,9 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={InvestmentBonds_validationSchema}
                                 onSubmit={InvestmentBonds_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Australian Share Market Form */}
@@ -3290,9 +3540,26 @@ useEffect(() => {
                             </div>
                             <div className="col-md-6">
                             <div className="mb-3">
-                              <label htmlFor="TermDepositFinancialInstitution" className="form-label">Purchase Date</   label>
-                              <Field type="date" className="form-control shadow inputDesign"
-                              id="InvestmentBondsPurchaseDate" name='InvestmentBondsPurchaseDate'/>
+                              <label htmlFor="InvestmentBondsPurchaseDate" className="form-label">Purchase Date</   label>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="InvestmentBondsPurchaseDate"
+                                name="InvestmentBondsPurchaseDate"
+                                selected={values.InvestmentBondsPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("InvestmentBondsPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                               <ErrorMessage component='div' className='text-danger fw-bold' name='InvestmentBondsPurchaseDate' />
                             </div>            
                             </div>
@@ -3531,7 +3798,7 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={investment_validationSchema}
                                 onSubmit={InvestmentProperties_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
                                 <Form>
@@ -3834,7 +4101,7 @@ useEffect(() => {
                                     <button
                                     type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                      onClick={ManagedFundshandleClose}
+                                      onClick={InvestmentProperties2handleClose}
                                     >
                                       Cancel
                                     </button>
@@ -4198,9 +4465,9 @@ useEffect(() => {
                                 </Modal.Header>
                               <Formik
                                 initialValues={Client_initialValues}
-                                // validationSchema={Client_validationSchema}
+                                validationSchema={other_validationSchema}
                                 onSubmit={Others_onSubmit}>
-                              {({values , setFieldValue ,setValues,handleChange,formik})=>
+                              {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                 <Form>
                                 <Modal.Body>
                                     {/* Professional Advisor Detail Form */}
@@ -4243,8 +4510,25 @@ useEffect(() => {
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="OtherPurchaseDate" className="form-label">Purchase Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                      id="OtherPurchaseDate" name='OtherPurchaseDate' />
+                                      <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="OtherPurchaseDate"
+                                name="OtherPurchaseDate"
+                                selected={values.OtherPurchaseDate}
+                                onChange={(date) =>
+                                  setFieldValue("OtherPurchaseDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate' />
                                     </div>            
                                     </div>
@@ -4362,8 +4646,25 @@ useEffect(() => {
                                     <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="OtherPurchaseDate2" className="form-label">Purchase Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                      id="OtherPurchaseDate2" name='OtherPurchaseDate2' />
+                                      <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="OtherPurchaseDate2"
+                                name="OtherPurchaseDate2"
+                                selected={values.OtherPurchaseDate2}
+                                onChange={(date) =>
+                                  setFieldValue("OtherPurchaseDate2", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPurchaseDate2' />
                                     </div>            
                                     </div>

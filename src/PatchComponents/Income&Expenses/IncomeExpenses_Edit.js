@@ -2,7 +2,8 @@ import React,{ useState , useEffect } from "react";
 import "./incomeExpenses.css"
 import Modal from "react-bootstrap/Modal";
 import Collapse from 'react-bootstrap/Collapse';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import plus from "./images/plus.svg"
 import down from "./images/down.svg"
 import noteBook from "./images/notebook.svg"
@@ -629,7 +630,7 @@ axios
     }),
     clientEmploymentStatus:Yup.string().required( "Required"),
     clientNameofCompany: Yup.string().matches(letters, "Only letters").required('Required') ,
-    clientCommencementDate:Yup.string().required( "Required"),
+    clientCommencementDate:Yup.date().required( "Required").nullable(),
     clientNumberofhoursperweek:Yup.number().required("Required")
     .test(
       "Is positive?",
@@ -720,7 +721,7 @@ axios
     }),
         clientEmploymentStatus2:Yup.string().required( "Required"),
         clientNameofCompany2: Yup.string().matches(letters, "Only letters").required('Required') ,
-        clientCommencementDate2:Yup.string().required( "Required"),
+        clientCommencementDate2:Yup.date().required( "Required").nullable(),
         clientNumberofhoursperweek2:Yup.number().required("Required")
         .test(
           "Is positive?",
@@ -856,11 +857,11 @@ axios
       ,otherwise: Yup.string()
       .notRequired()
     }),
-    ActualDateofyear1: Yup.string()
+    ActualDateofyear1: Yup.date()
     .when("AssetGifted1radio",{
       is: val => val && val.length==3,
-      then:Yup.string().required("Required")
-      ,otherwise: Yup.string()
+      then:Yup.date().required("Required").nullable()
+      ,otherwise: Yup.date()
       .notRequired()
     }),
 
@@ -1043,7 +1044,7 @@ axios
     }),
     clientEmploymentStatus:Yup.string().required( "Required"),
     clientNameofCompany: Yup.string().matches(letters, "Only letters").required('Required') ,
-    clientCommencementDate:Yup.string().required( "Required"),
+    clientCommencementDate:Yup.date().required( "Required").nullable(),
     clientNumberofhoursperweek:Yup.number().required("Required")
     .test(
       "Is positive?",
@@ -1170,11 +1171,11 @@ axios
       ,otherwise: Yup.string()
       .notRequired()
     }),
-    ActualDateofyear1: Yup.string()
+    ActualDateofyear1: Yup.date()
     .when("AssetGifted1radio",{
       is: val => val && val.length==3,
-      then:Yup.string().required("Required")
-      ,otherwise: Yup.string()
+      then:Yup.date().required("Required").nullable()
+      ,otherwise: Yup.date()
       .notRequired()
     }),
 
@@ -1669,7 +1670,7 @@ axios
               validationSchema={isPartnered ? validationSchema : singlevalidationSchema}
               onSubmit={onSubmit}
               enableReinitialize>
-                  {({values , setFieldValue ,setValues,handleChange,formik})=>
+                  {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                   <Form>
 
                   {/* Client Employment Details */}
@@ -1929,20 +1930,25 @@ axios
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCommencementDate" className="form-label">Commencement Date</   label>
-                              <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
-                          id="clientCommencementDate"
-                          name='clientCommencementDate'
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate"
-                            //  name='clientCommencementDate'
-                             type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("clientCommencementDate","HiddenDate")}/>
-                          </span>
-                        </div>
-                              </div>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="clientCommencementDate"
+                                name="clientCommencementDate"
+                                selected={values.clientCommencementDate}
+                                onChange={(date) =>
+                                  setFieldValue("clientCommencementDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                       <ErrorMessage component='div' className="text-danger fw-bold"name="clientCommencementDate" />
 
                             </div> 
@@ -2564,20 +2570,25 @@ axios
                             <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="clientCommencementDate2" className="form-label">partner Commencement Date</   label>
-                              <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
-                          id="clientCommencementDate2"
-                          name='clientCommencementDate2'
-                          
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='clientCommencementDate2'
-                             type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("clientCommencementDate2","HiddenDate")}/>
-                          </span>
-                        </div>
-                              </div>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="clientCommencementDate2"
+                                name="clientCommencementDate2"
+                                selected={values.clientCommencementDate2}
+                                onChange={(date) =>
+                                  setFieldValue("clientCommencementDate2", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                       <ErrorMessage component='div' className="text-danger fw-bold"name="clientCommencementDate2" />
 
                             </div> 
@@ -3195,20 +3206,25 @@ axios
                         <div className="col-md-6">
                             <div className="mb-3">
                               <label htmlFor="ActualDateofyear1" className="form-label">Commencement Date</   label>
-                              <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
-                          id="ActualDateofyear1"
-                          name='ActualDateofyear1'
-                          
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='ActualDateofyear1'
-                             type='date' id="HiddenDate" onChange={()=>ChangeDateFormat("ActualDateofyear1","HiddenDate")}/>
-                          </span>
-                        </div>
-                              </div>
+                              <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="ActualDateofyear1"
+                                name="ActualDateofyear1"
+                                selected={values.ActualDateofyear1}
+                                onChange={(date) =>
+                                  setFieldValue("ActualDateofyear1", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                       <ErrorMessage component='div' className="text-danger fw-bold"name="ActualDateofyear1" />
 
                             </div> 

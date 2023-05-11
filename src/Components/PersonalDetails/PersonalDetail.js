@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./personalDetail.css";
 
 import {Formik , Field,Form, ErrorMessage} from 'formik';
+import { differenceInYears, getDate } from 'date-fns';
 
 import * as Yup from 'yup';
 import 'yup-phone';
@@ -482,7 +483,7 @@ console.log(ClientDetails)
 
              (value) => value > 0
            ),
-           ClientDoBID: Yup.string().required('Required'),
+           ClientDoBID: Yup.date().required('Required').nullable(),
 
            homeAddressID:Yup.string().required('Required'),
            homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
@@ -549,7 +550,7 @@ console.log(ClientDetails)
 
             (value) => value > 0
           ),
-          ClientDoBID: Yup.string().required('Required'),
+          ClientDoBID: Yup.date().required('Required').nullable(),
 
           homeAddressID:Yup.string().required('Required'),
           homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
@@ -612,7 +613,7 @@ let ageHandler2=()=>{
   
 const initialValues2={
   childNameID:"",
-  childDoBID:'',
+  childDoBID:null,
   childRelationship:'',
   childSupportReceived:'No',
   childDependentradio:'No',
@@ -706,7 +707,7 @@ const initialValues2={
   
     const validationSchema2=Yup.object({
     childNameID: Yup.string().matches(letters, "only letters").required('Required') ,
-    childDoBID: Yup.string().required('Required'),
+    childDoBID: Yup.date().required('Required').nullable(),
     childRelationship:Yup.string().required('Required'),
     CostofPrimaryEducation:Yup.number()
     .when("significantEducationRadio",{
@@ -883,7 +884,7 @@ const initialValues2={
                     onSubmit={onSubmit}
                     enableReinitialize
                     >
-                      {({values, setFieldValue, handleChange, errors, touched})=>
+                      {({values, setFieldValue, handleChange, errors, handleBlur})=>
                       <Form>
       <div className="container-fluid mt-4">
         <div className="row m-0 p-0 ">
@@ -1183,21 +1184,31 @@ const initialValues2={
                         <label htmlFor="ClientDoBID" className="form-label">
                         Date of Birth client
                         </label>
-                      <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
-                          id="ClientDoBID"
-                          name='ClientDoBID'
-                          onBlur={(e)=>ageHandler("ClientDoBID","employeeAgeID")}
-                          // value={values.DoBID}
-                          // max="2023-1-31"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" type='date' id="HiddenDate"
-                             onChange={()=>ChangeDateFormat("ClientDoBID","HiddenDate")}/>
-                          </span>
-                        </div>
+                     
+
+                      <div>
+                      <DatePicker
+                      id="ClientDoBID"
+                       className="form-control inputDesign shadow"
+                        selected={values.ClientDoBID}
+                        onChange={(date) => {
+                          
+                          setFieldValue('ClientDoBID', date);
+                          const age = differenceInYears(new Date(), date)||0;
+                          setFieldValue('employeeAgeID', age);
+                          // console.log(values.ClientDoBID)
+                        }}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="dd/mm/yyyy"
+          
+                        showYearDropdown
+                        scrollableYearDropdown
+                        onBlur={handleBlur}
+                        name="ClientDoBID"
+                        maxDate={new Date()}
+                        showMonthDropdown
+                        dropdownMode="select"
+                      />
                       </div>
                       <ErrorMessage component='div' className="text-danger fw-bold" name="ClientDoBID" />
                     </div>
@@ -1511,22 +1522,33 @@ const initialValues2={
                         <label htmlFor="ClientDoBID2" className="form-label">
                         Date of Birth
                         </label>
-                      <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
-                          id="ClientDoBID2"
-                          name='ClientDoBID2'
-                          onBlur={(e)=>partnerAgeHandler("ClientDoBID2","employeeAgeID2")}
-                          // value={values.DoBID}
-                          // max="2023-1-31"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" name='ClientDoBID2' type='date' id="HiddenDate2"
-                             onChange={()=>ChangeDateFormat("ClientDoBID2","HiddenDate2")}/>
-                          </span>
-                        </div>
+                     <div>
+                      <DatePicker
+                      
+                       className="form-control inputDesign shadow"
+                        selected={values.ClientDoBID2}
+                        onChange={(date) => {
+                          
+                          setFieldValue('ClientDoBID2', date);
+                          const age = differenceInYears(new Date(), date)||0;
+                          setFieldValue('employeeAgeID2', age);
+                          console.log(values.ClientDoBID2)
+                        }}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="dd/mm/yyyy"
+          
+                        showYearDropdown
+                        scrollableYearDropdown
+                        onBlur={handleBlur}
+                        name="ClientDoBID2"
+                        id="ClientDoBID2"
+
+                        maxDate={new Date()}
+                        showMonthDropdown
+                        dropdownMode="select"
+                      />
                       </div>
+
                       <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID2" />
                     </div>
                     <div className="col-md-6">
@@ -2006,32 +2028,32 @@ const initialValues2={
                                     Date of Birth child
                                   </label>
 
-                                  {/* <Field
-                                    type="date"
-                                    className="form-control inputDesign shadow"
-                                    id="childDoBID"
-                                    onBlur={(e)=>ageHandler2(e)}
-                                    onChange={(e) => setFieldValue("childDoBID", e.target.value)}
-                                    value={values.childDoBID}
-                      /> */}
-                       <div className="input-group ">
-                        <Field
-                          className="form-control inputDesign shadow"
-                          id="childDoBID"
-                          name='childDoBID'
-                          onBlur={(e)=>ageHandler("childDoBID","childAge")}
+                            
+                      
+                      <div>
+                      <DatePicker
+                      id="childDoBID"
+                       className="form-control inputDesign shadow"
+                        selected={values.childDoBID}
+                        onChange={(date) => {
                           
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="CalenderIcon">
-                            <input className="HiddenDate" 
-                            // name='childDoBID' 
-                            type='date'
-                             id="HiddenDate3" 
-                             onChange={()=>ChangeDateFormat("childDoBID","HiddenDate3")}/>
-                          </span>
-                        </div>
-                         </div>
+                          setFieldValue('childDoBID', date);
+                          const age = differenceInYears(new Date(), date)||0;
+                          setFieldValue('childAge', age);
+                          // console.log(values.ClientDoBID)
+                        }}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="dd/mm/yyyy"
+          
+                        showYearDropdown
+                        scrollableYearDropdown
+                        onBlur={handleBlur}
+                        name="childDoBID"
+                        maxDate={new Date()}
+                        showMonthDropdown
+                        dropdownMode="select"
+                      />
+                      </div>
 
 
                         <ErrorMessage className="text-danger fw-bold" component="div"   name="childDoBID" />

@@ -8,7 +8,8 @@ import notebook from "./images/notebook.svg";
 import smoking from "./images/smoking.svg";
 
 import plus from './images/plus.svg';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -469,8 +470,8 @@ useEffect(() => {
       PersonalInsuranceInsuranceCompany: Yup.string().required("Required"),
       PersonalInsuranceProductName: Yup.string().required("Required"),
       PersonalInsurancePolicySrNo: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsuranceCommencedDate: Yup.string().required("Required"),
-      PersonalInsuranceRenewalDate: Yup.string().required("Required"),
+      PersonalInsuranceCommencedDate: Yup.date().required("Required").nullable(),
+      PersonalInsuranceRenewalDate: Yup.date().required("Required").nullable(),
       PersonalInsurancePremiumPA: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
       PersonalInsurancePremiumType: Yup.string().required("Required"),
       PersonalInsuranceLoadingDescription1: Yup.string().when('PersonalInsuranceLoadingRadio',{
@@ -488,8 +489,8 @@ useEffect(() => {
       PersonalInsurance2InsuranceCompany: Yup.string().required("Required"),
       PersonalInsurance2ProductName: Yup.string().required("Required"),
       PersonalInsurance2PolicySrNo: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
-      PersonalInsurance2CommencedDate: Yup.string().required("Required"),
-      PersonalInsurance2RenewalDate: Yup.string().required("Required"),
+      PersonalInsurance2CommencedDate: Yup.date().required("Required").nullable(),
+      PersonalInsurance2RenewalDate: Yup.date().required("Required").nullable(),
       PersonalInsurance2MonthlyBenefit: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
       PersonalInsurance2SuperContinuance: Yup.number().required("Required").test("Is positive?", "Must be a positive number", (value) => value > 0),
       PersonalInsurance2WaitingPeriod: Yup.string().required("Required"),
@@ -1424,7 +1425,7 @@ useEffect(() => {
                                           initialValues={ ClientLifeTPDUpdateFlag ? ClientListLifeTPDTOUpdate[0] : Client_initialValues}
                                           validationSchema={ClientLife_validationSchema}
                                           onSubmit={Client_onSubmit_Life}>
-                                        {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                        {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                           <Form>
                                           <Modal.Body>
                                               {/* Australian Share Market Form */}
@@ -1613,8 +1614,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsuranceCommencedDate" className="form-label">Date Commenced</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="PersonalInsuranceCommencedDate" name='PersonalInsuranceCommencedDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsuranceCommencedDate"
+                                name="PersonalInsuranceCommencedDate"
+                                selected={values.PersonalInsuranceCommencedDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsuranceCommencedDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsuranceCommencedDate' />
                                       </div>            
                                       </div>                                        
@@ -1622,8 +1640,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsuranceRenewalDate" className="form-label">Renewal Date</   label>
-                                        <Field type="date" className="form-control shadow inputDesign"
-                                        id="PersonalInsuranceRenewalDate" name='PersonalInsuranceRenewalDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsuranceRenewalDate"
+                                name="PersonalInsuranceRenewalDate"
+                                selected={values.PersonalInsuranceRenewalDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsuranceRenewalDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsuranceRenewalDate' />
                                       </div>            
                                       </div> 
@@ -1874,7 +1909,7 @@ useEffect(() => {
                                           initialValues={ClientIncomeProtectionUpdateFlag ? ClientListIncomeProtectionUpdate[0] : Client_initialValues}
                                           validationSchema={ClientIncome_validationSchema}
                                           onSubmit={Client_onSubmit_Income}>
-                                        {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                        {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                           <Form>
                                           <Modal.Body>
                                               {/* Australian Share Market Form */}
@@ -1950,8 +1985,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2CommencedDate" className="form-label">Date Commenced</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="PersonalInsurance2CommencedDate" name='PersonalInsurance2CommencedDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsurance2CommencedDate"
+                                name="PersonalInsurance2CommencedDate"
+                                selected={values.PersonalInsurance2CommencedDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsurance2CommencedDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2CommencedDate' />
                                       </div>            
                                       </div>                                        
@@ -1959,8 +2011,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2RenewalDate" className="form-label">Renewal Date</   label>
-                                        <Field type="date" className="form-control shadow inputDesign"
-                                        id="PersonalInsurance2RenewalDate" name='PersonalInsurance2RenewalDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsurance2RenewalDate"
+                                name="PersonalInsurance2RenewalDate"
+                                selected={values.PersonalInsurance2RenewalDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsurance2RenewalDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2RenewalDate' />
                                       </div>            
                                       </div> 
@@ -2683,7 +2752,7 @@ useEffect(() => {
                                           initialValues={PartnerLifeTPDUpdateFlag ? PartnerListLifeTPDTOUpdate[0]:Partner_initialValues}                              
                                           validationSchema={ClientLife_validationSchema}
                                           onSubmit={Partner_onSubmit_Life}>
-                                        {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                        {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                           <Form>
                                           <Modal.Body>
                                               {/* Australian Share Market Form */}
@@ -2870,8 +2939,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsuranceCommencedDate" className="form-label">Date Commenced</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="PersonalInsuranceCommencedDate" name='PersonalInsuranceCommencedDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsuranceCommencedDate"
+                                name="PersonalInsuranceCommencedDate"
+                                selected={values.PersonalInsuranceCommencedDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsuranceCommencedDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsuranceCommencedDate' />
                                       </div>            
                                       </div>                                        
@@ -2879,8 +2965,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsuranceRenewalDate" className="form-label">Renewal Date</   label>
-                                        <Field type="date" className="form-control shadow inputDesign"
-                                        id="PersonalInsuranceRenewalDate" name='PersonalInsuranceRenewalDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsuranceRenewalDate"
+                                name="PersonalInsuranceRenewalDate"
+                                selected={values.PersonalInsuranceRenewalDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsuranceRenewalDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsuranceRenewalDate' />
                                       </div>            
                                       </div> 
@@ -3132,7 +3235,7 @@ useEffect(() => {
                                           validationSchema={ClientIncome_validationSchema} 
                                           onSubmit={Partner_onSubmit_Income}
                                           >
-                                        {({values , setFieldValue ,setValues,handleChange,formik})=>
+                                        {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
                                           <Form>
                                           <Modal.Body>
                                               {/* Australian Share Market Form */}
@@ -3208,17 +3311,51 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2CommencedDate" className="form-label">Date Commenced</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="PersonalInsurance2CommencedDate" name='PersonalInsurance2CommencedDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsurance2CommencedDate"
+                                name="PersonalInsurance2CommencedDate"
+                                selected={values.PersonalInsurance2CommencedDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsurance2CommencedDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2CommencedDate' />
                                       </div>            
-                                      </div>                                        
+                                      </div>                 
                                       
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2RenewalDate" className="form-label">Renewal Date</   label>
-                                        <Field type="date" className="form-control shadow inputDesign"
-                                        id="PersonalInsurance2RenewalDate" name='PersonalInsurance2RenewalDate'/>
+                                        <div>
+                              <DatePicker
+                                className="form-control inputDesign shadow"
+                                showIcon
+                                id="PersonalInsurance2RenewalDate"
+                                name="PersonalInsurance2RenewalDate"
+                                selected={values.PersonalInsurance2RenewalDate}
+                                onChange={(date) =>
+                                  setFieldValue("PersonalInsurance2RenewalDate", date)
+                                }
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="dd/mm/yyyy"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onBlur={handleBlur}
+                              />
+                            </div>
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2RenewalDate' />
                                       </div>            
                                       </div> 
