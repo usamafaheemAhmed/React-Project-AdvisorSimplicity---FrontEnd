@@ -302,7 +302,7 @@ const ProfessionalAdvisors = () => {
       //  console.log(clientFilterObj);
       })
   
-      }, 2000);
+      }, 500);
 
 
 
@@ -331,7 +331,7 @@ const ProfessionalAdvisors = () => {
           })
   
   
-        }, 1000);
+        }, 500);
         
   
     }
@@ -468,20 +468,66 @@ const ProfessionalAdvisors = () => {
     };
 
 
-    setPartnerData([PartnerModalDetails]);
+    // setPartnerData([PartnerModalDetails]);
 
-    console.log("Partnet",PartnerData);
+    // console.log("Partnet",PartnerData);
+    let email=localStorage.getItem("EditClient");
 
-    setIsPartnerTable(true);
-    setPartnerEdit(true);
-
+    if(PartnerEdit){
 
     axios
-      .post(
-        "http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Add-Partner-AdvisorModal",
-        PartnerModalDetails
-      )
-      .then((res) => console.log("Partner Advisor Modal Added Successfully!"));
+    .patch(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Update-Partner-AdvisorModal/${email}`, PartnerModalDetails)
+    .then((res) => {
+      //Popper Massage
+      console.log("Updated Complete");
+    })
+
+    setTimeout(() => {
+
+    axios
+    .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+    .then((res) => {
+      console.log("got it");
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setPartnerData(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    }, 500);
+
+
+    }
+    else{
+      setIsPartnerTable(true);
+
+      setPartnerEdit(true);
+  
+  
+      axios
+        .post(
+          "http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Add-Partner-AdvisorModal",
+          PartnerModalDetails
+        )
+        .then((res) => console.log("Partner Advisor Modal Added Successfully!"));
+
+        setTimeout(() => {
+
+          axios
+          .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+          .then((res) => {
+            console.log("got it");
+          let clientObj=(res.data)
+          let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+          setPartnerData(clientFilterObj);
+          //  console.log(clientFilterObj);
+          })
+      
+          }, 500);
+      
+  
+    }
+
 
     // console.log(PartnerModalDetails);
     handleClose2();
@@ -572,7 +618,7 @@ const ProfessionalAdvisors = () => {
       //  console.log(clientFilterObj);
       })
   
-      }, 2000);
+      }, 500);
  }
 
   let ClientAccountantDeleteHandler=(e)=>{
@@ -649,7 +695,7 @@ const ProfessionalAdvisors = () => {
       //  console.log(clientFilterObj);
       })
   
-      }, 2000);
+      }, 500);
 
 
 
@@ -689,7 +735,7 @@ const ProfessionalAdvisors = () => {
       //  console.log(clientFilterObj);
       })
   
-      }, 2000);
+      }, 500);
   }
 
   let ClientOtherDeleteHandler=(e)=>{
@@ -727,7 +773,7 @@ const ProfessionalAdvisors = () => {
       //  console.log(clientFilterObj);
       })
   
-      }, 2000);
+      }, 500);
   }
 
 
@@ -739,9 +785,34 @@ const ProfessionalAdvisors = () => {
     data.Solicitor_Company="";
     data.Solicitor_Phone="";
     data.Solicitor_Email="";
-    setPartnerData([data]);
+    // setPartnerData([data]);
     
     // console.warn(data);
+
+    let email=localStorage.getItem("EditClient");
+
+    axios
+    .patch(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Update-Partner-AdvisorModal/${email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Updated Complete");
+    })
+
+    setTimeout(() => {
+
+    axios
+    .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+    .then((res) => {
+      console.log("got it");
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setPartnerData(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    }, 500);
+
+
 }
 
 let PartnerAccountantDeleteHandler=(e)=>{
@@ -752,8 +823,32 @@ let PartnerAccountantDeleteHandler=(e)=>{
   data.Accountant_Company="";
   data.Accountant_Phone="";
   data.Accountant_Email="";
-  setPartnerData([data]);
+     // setPartnerData([data]);
+    
+    // console.warn(data);
 
+    let email=localStorage.getItem("EditClient");
+
+    axios
+    .patch(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Update-Partner-AdvisorModal/${email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Updated Complete");
+    })
+
+    setTimeout(() => {
+
+    axios
+    .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+    .then((res) => {
+      console.log("got it");
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setPartnerData(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    }, 500);
 
 }
 
@@ -765,7 +860,32 @@ let PartnerInsuranceAdvisorDeleteHandler=(e)=>{
   data.InsuranceAdvisor_Company="";
   data.InsuranceAdvisor_Phone="";
   data.InsuranceAdvisor_Email="";
-  setPartnerData([data]);
+     // setPartnerData([data]);
+    
+     let email=localStorage.getItem("EditClient");
+
+    // console.warn(data);
+
+    axios
+    .patch(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Update-Partner-AdvisorModal/${email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Updated Complete");
+    })
+
+    setTimeout(() => {
+
+    axios
+    .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+    .then((res) => {
+      console.log("got it");
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setPartnerData(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    }, 500);
 
 }
 
@@ -776,7 +896,32 @@ let PartnerDoctorDeleteHandler=(e)=>{
   data.Doctor_Company="";
   data.Doctor_Phone="";
   data.Doctor_Email="";
-  setPartnerData([data]);
+     // setPartnerData([data]);
+    
+     let email=localStorage.getItem("EditClient");
+
+    // console.warn(data);
+
+    axios
+    .patch(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Update-Partner-AdvisorModal/${email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Updated Complete");
+    })
+
+    setTimeout(() => {
+
+    axios
+    .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+    .then((res) => {
+      console.log("got it");
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setPartnerData(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    }, 500);
 }
 
 let PartnerOtherDeleteHandler=(e)=>{
@@ -787,7 +932,32 @@ let PartnerOtherDeleteHandler=(e)=>{
   data.Other_Company="";
   data.Other_Phone="";
   data.Other_Email="";
-  setPartnerData([data]);
+      // setPartnerData([data]);
+    
+      let email=localStorage.getItem("EditClient");
+
+    // console.warn(data);
+
+    axios
+    .patch(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal/Update-Partner-AdvisorModal/${email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Updated Complete");
+    })
+
+    setTimeout(() => {
+
+    axios
+    .get(`http://localhost:7000/Partner-ProfessionalAdvisor-Modal`)
+    .then((res) => {
+      console.log("got it");
+    let clientObj=(res.data)
+    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    setPartnerData(clientFilterObj);
+    //  console.log(clientFilterObj);
+    })
+
+    }, 500);
 }
 
   return (

@@ -72,8 +72,16 @@ useEffect(() => {
     .then((res) => {
     let clientObj=(res.data)
     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+
+    let date = new Date(clientFilterObj[0].Client_ActualDate);
+    clientFilterObj[0].Client_ActualDate=date;
+
+    // Client_CommencementDate
+    date = new Date(clientFilterObj[0].Client_CommencementDate);
+    clientFilterObj[0].Client_CommencementDate=date;
+
     setclientData(clientFilterObj[0])
-      // console.log(res.data)
+      // console.log(clientFilterObj[0])
     })
 
     // partner
@@ -82,8 +90,12 @@ useEffect(() => {
     .then((res) => {
     let partnerObj=(res.data)
     let partnerFilterObj=partnerObj.filter((item) => item.Email ==email);
+
+    let date = new Date(partnerFilterObj[0].Partner_CommencementDate);
+    partnerFilterObj[0].Partner_CommencementDate=date;
+
     setPartnerData(partnerFilterObj[0])
-      // console.log(res.data)
+      // console.log(partnerFilterObj)
     })
 
     // modal
@@ -93,7 +105,7 @@ useEffect(() => {
     let modalObj=(res.data)
     let objectFilterObj=modalObj.filter((item) => item.Email ==email);
     setModalData(objectFilterObj[0])
-      console.log(res.data)
+      // console.log(res.data)
     })
 
   
@@ -1428,10 +1440,35 @@ axios
     
     console.log(ExpensesModal)
 
+    let email=localStorage.getItem("EditClient")
+
     axios
-    .post('http://localhost:7000/Client-ExpensesModal/Add-Client-ExpensesModal', ExpensesModal)
-    .then((res) => console.log("Expenses Modal Added Succesfully!"))
+    .patch(`http://localhost:7000/Client-ExpensesModal/Update-Client-ExpensesModal/${email}`, ExpensesModal)
+    .then((res) => console.log("Expenses Modal Updated Succesfully!"))
+
+    setTimeout(() => {
+      
+    // modal
+    axios
+    .get(`http://localhost:7000/Client-ExpensesModal`)
+    .then((res) => {
+    let modalObj=(res.data)
+    let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+    setModalData(objectFilterObj[0])
+
+    })
+
+
+
+    }, 500);
+
+
+
+
     handleClose();
+
+    
+
     
   }
 
