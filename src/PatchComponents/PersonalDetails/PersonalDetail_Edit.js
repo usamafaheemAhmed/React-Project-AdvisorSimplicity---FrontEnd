@@ -1,10 +1,8 @@
-
-
-
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./personalDetail.css";
 
 import {Formik , Field,Form, ErrorMessage} from 'formik';
+import { differenceInYears, getDate } from 'date-fns';
 
 import * as Yup from 'yup';
 import 'yup-phone';
@@ -22,11 +20,9 @@ import axios from "axios";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { differenceInYears, getDate } from 'date-fns';
-
 import { NavLink, useNavigate } from "react-router-dom";
 
-const PersonalDetail_Edit = () => {
+const PersonalDetail = () => {
   const [isPartnered, setIsPartnered] = useState(true)
 
   let letters = /^[a-zA-Z ]*$/;
@@ -47,59 +43,79 @@ const PersonalDetail_Edit = () => {
   const [checkNumber, setcheckNumber] = useState();
   const [listOfChild, setListOfChild] = useState([])
 
-  const [isChildTable, setIsChildTable] = useState(true)
+  const [isChildTable, setIsChildTable] = useState(false)
 
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [UpdateChild, setUpdateChild] = useState([]);
+  const [SubmitFlag, setSubmitFlag] = useState(false);
+
   const [clientData, setclientData] = useState([])
   const [PartnerData, setPartnerData] = useState([])
-  const [childData, setChildData] = useState([])
+
+
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
 
   useEffect(() => {
 
- let email=localStorage.getItem("EditClient")
-    axios
-    .get(`http://127.0.0.1:7000/Client/`)
-    .then((res) => {
+    let email=localStorage.getItem("EditClient")
+       axios
+       .get(`http://127.0.0.1:7000/Client/`)
+       .then((res) => {
+       
+       let clientObj=(res.data)
+       let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+   
+       let date = new Date(clientFilterObj[0].DOB);
+       clientFilterObj[0].DOB=date;
+   
+       setclientData(clientFilterObj[0])
+      //  console.log("client",clientFilterObj);
+   
+       })
+   
+       // partner
+       axios
+       .get(`http://127.0.0.1:7000/Partner`)
+       .then((res) => {
+       
+       let partnerObj=(res.data)
+       let partnerFilterObj=partnerObj.filter((item) => item.ClientEmail ==email);
+       let date =new Date(partnerFilterObj[0].DOB);
+       partnerFilterObj[0].DOB= date;
+       setPartnerData(partnerFilterObj[0])
+      //  console.log("partner",partnerFilterObj);
+
+       })
+   
+       // child
+   
+       axios
+       .get(`http://127.0.0.1:7000/Child`)
+       .then((res) => {
+       console.log(res.data)
+       let childObj=(res.data)
+       let childFilterObj=childObj.filter((item) => item.Email ==email);
+   
+       let date = new Date(childFilterObj[0].ChildDOB);
+       childFilterObj[0].ChildDOB=date;
+   
+       setListOfChild(childFilterObj)
+      //  console.log("child",childFilterObj);
+   
+       setIsChildTable(true);
+       })
     
-    let clientObj=(res.data)
-    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    setclientData(clientFilterObj[0])
+     }, [])
+   
 
-    })
-
-    // partner
-    axios
-    .get(`http://127.0.0.1:7000/Partner`)
-    .then((res) => {
-    
-    let partnerObj=(res.data)
-    let partnerFilterObj=partnerObj.filter((item) => item.ClientEmail ==email);
-    setPartnerData(partnerFilterObj[0])
-
-    })
-
-    // child
-
-    axios
-    .get(`http://127.0.0.1:7000/Child`)
-    .then((res) => {
-    console.log(res.data)
-    let childObj=(res.data)
-    let childFilterObj=childObj.filter((item) => item.Email ==email);
-    setListOfChild(childFilterObj)
-
-
-    })
- 
-  }, [])
-
-  
 
   let partnerHandler=(value)=>{
     //  alert(value)
+     
+
     let selectedValue= document.getElementById("maritalStatus").value;
      
     switch (selectedValue) {
@@ -388,6 +404,8 @@ let partnerAgeHandler=(Dob,Age)=>{
 }
 
 
+
+
 const initialValues={
   titleID:clientData.Title,
   givenNameID:clientData.GivenName,
@@ -436,7 +454,8 @@ let Navigate = useNavigate();
 
 const onSubmit= (values,action) => {
   localStorage.setItem("ClientEmail", values.emailID);
-   Navigate('/Edit-Business-TextStucture');
+
+  Navigate('/Edit-Business-TextStucture');
 
 let ClientDetails={
     Title:values.titleID,
@@ -484,35 +503,27 @@ let ClientDetails={
   }
 
   if(isPartnered===true){
-     axios
-
-  .patch(`http://localhost:7000/Client/Update-Client/${localStorage.getItem("EditClient")}`, ClientDetails)
-  
+    let email=localStorage.getItem("EditClient")
+  axios
+  .patch(`http://localhost:7000/Client/Update-Client/${email}`,ClientDetails)
   .then((res) => {
-    console.log("Client Successfully Added!");
+    console.log("Client Successfully Updated!");
     
   })
 
   axios
-  
-  .patch(`http://localhost:7000/Partner/Update-Partner/${localStorage.getItem("EditClient")}`, PartnerDetails)
+  .patch(`http://localhost:7000/Partner/Update-Partner/${email}`,PartnerDetails)
+  .then((res) => console.log("Partner Successfully Updated!"))
 
-  .then((res) => console.log("Partner Successfully Added!"))
-
-    console.log(PartnerDetails)
-    console.log(ClientDetails)
   }
   else{
    axios
-   .patch(`http://localhost:7000/Client/Update-Client/${localStorage.getItem("EditClient")}`, ClientDetails)
-
+  .post('http://localhost:7000/Client/Add-Client',ClientDetails)
   .then((res) => console.log("Client Successfully Added!"))    
 console.log(ClientDetails)
 
 
   }
-  
-
 }
         const validationSchema = Yup.object({
            givenNameID: Yup.string().matches(letters, "only letters").required('Required') ,
@@ -529,7 +540,7 @@ console.log(ClientDetails)
 
              (value) => value > 0
            ),
-           ClientDoBID: Yup.string().required('Required'),
+           ClientDoBID: Yup.date().required('Required').nullable(),
 
            homeAddressID:Yup.string().required('Required'),
            homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
@@ -552,8 +563,7 @@ console.log(ClientDetails)
             DescriptionID:Yup.string()
             .when("healthIssuesradio",{
             is:(val)=> val && val.length ==3,
-            then:Yup.string().required("Required") ,otherwise: Yup.string()
-            .notRequired()
+            then:Yup.string().required("Required")
              }),
 
 
@@ -597,7 +607,7 @@ console.log(ClientDetails)
 
             (value) => value > 0
           ),
-          ClientDoBID: Yup.string().required('Required'),
+          ClientDoBID: Yup.date().required('Required').nullable(),
 
           homeAddressID:Yup.string().required('Required'),
           homePhoneID:Yup.string().matches(phonePattern, "invalid phone number")
@@ -617,13 +627,11 @@ console.log(ClientDetails)
            then:Yup.string().matches(postCodePattern,"invalid postcode").required("Required")
           }),
 
-          //  DescriptionID:Yup.string()
-          //  .when("healthIssuesradio",{
-          //  is:(val)=> val && val.length ==3,
-          //  then:Yup.string().required("Required")
-          //   }),
-          //   otherwise: Yup.string()
-          //   .notRequired()
+           DescriptionID:Yup.string()
+           .when("healthIssuesradio",{
+           is:(val)=> val && val.length ==3,
+           then:Yup.string().required("Required")
+            }),
 
        })
 
@@ -661,39 +669,31 @@ let ageHandler2=()=>{
   }
   
 const initialValues2={
-  childNameID:childData.ChildName,
-  childDoBID:childData.ChildDOB,
-  // ChildNO: (checkNumber),
-  childAge:childData.ChildAge,
-  // ChildGender:childGender,
-   childRelationship:childData.ChildRelation,
-
-   childDependentradio:childData.ChildFinancialyDependent,
-
-   DependantUntilAge:childData.ChildDependentAge,
-
-   childSupportReceived:childData.ChildSupportRecieved,
-
-   AmountPaidReceivedID:childData.ChildAmountRecieved,
-
-   significantEducationRadio:childData.ChildSignificantEducationCost,
-
-   CostofPrimaryEducation:childData.ChildPrimaryEducationCost,
-
-   CostofSecondaryEducation:childData.ChildSecondaryEducationCost,
-
-   CostofUniEducation:childData.ChildUniversityEducationCost,
-
-   courseYears:childData.ChildCourseYear,  
+  childNameID:"",
+  childDoBID:null,
+  childRelationship:'',
+  childSupportReceived:'No',
+  childDependentradio:'No',
+  significantEducationRadio:'No',
+  DependantUntilAge:'',
+  CostofPrimaryEducation:'',
+  CostofSecondaryEducation:'',
+  CostofUniEducation:'',
+  courseYears:'',
+  AmountPaidReceivedID:'',
+  // childAge:'',
   }
   const onSubmit2= (values,action) => {
-    let age=document.getElementById("childAge").value;
+  
+    let age= parseFloat(document.getElementById("childAge").value)||0;
+    console.log(age);
+
     let ChildDetails={
       Email: localStorage.getItem("ClientEmail"),
-      ChildNO: parseFloat(checkNumber),
+      ChildNO: parseFloat(numOfChild),
       ChildName:values.childNameID,
       ChildDOB:values.childDoBID,
-      ChildAge:parseFloat(age),
+      ChildAge:age,
       ChildGender:childGender,
       ChildRelation:values.childRelationship,
       ChildFinancialyDependent:values.childDependentradio,
@@ -707,15 +707,91 @@ const initialValues2={
       ChildCourseYear:parseFloat(values.courseYears)||0,    
     }
 
-    axios
-  .patch(`http://localhost:7000/Child/Update-Child/${localStorage.getItem("EditClient")}`, ChildDetails)
-  .then((res) => {
-    console.log("Child Successfully Updated!")
-    // setListOfChild(res.data)
-  }
-  )
+    console.log(ChildDetails);
+    
+    if(SubmitFlag){
+      console.log("true")
+      handleClose ();
+
+      console.log(listOfChild)
+
+      setSubmitFlag(false);
+
+      let email=localStorage.getItem("EditClient")
+      let id = values.id;
+        // alert(id);
+      axios
+      .patch(`http://localhost:7000/Child/Update-Child/${email}/${id}`, ChildDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Updated Complete");
+      })
   
-  handleClose ();
+      setTimeout(() => {
+  
+      axios
+      .get(`http://localhost:7000/Child`)
+      .then((res) => {
+        console.log("got it");
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setListOfChild(clientFilterObj);
+      //  console.log(clientFilterObj);
+      })
+  
+      }, 500);
+
+    }
+    else{
+      console.log("false")
+      console.log(ChildDetails)
+      setListOfChild([...listOfChild, ChildDetails])
+  
+      axios
+    .post('http://localhost:7000/Child/Add-Child', ChildDetails)
+    .then((res) => console.log("Child Successfully Added!"))
+
+  
+       console.log(listOfChild)
+     
+      setChildGender("female")
+      //  handleClose ();
+      if(numOfChild==checkNumber){
+        handleClose ();
+        setNumOfChild(1)
+        setIsChildTable(true)
+
+        let email=localStorage.getItem("EditClient")
+
+           
+        setTimeout(() => {
+          
+          axios
+          .get(`http://localhost:7000/Child`)
+          .then((res) => {
+          let clientObj=(res.data)
+          let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+          setListOfChild(clientFilterObj);
+          console.log("got after deleting")
+          //  console.log(clientFilterObj);
+          })
+
+        }, 500);
+
+      }
+      else{
+        setNumOfChild(numOfChild+1)
+        
+        handleClose ();
+        setIsChildTable(true)
+  
+        // setShow(true)
+        setTimeout(() => {
+          handleShow();
+        }, 600);
+      }
+    }
+
   }
   
     const validationSchema2=Yup.object({
@@ -834,13 +910,67 @@ const initialValues2={
    }
 
    let deleteHandler=(e)=>{
-    console.log("delete",e)
+    // console.log("delete",e)
+
+    let ChildNO = e.ChildNO;
+
+    
+    let email=localStorage.getItem("EditClient")
+    let id = e._id;
+
+    axios
+    .delete(`http://localhost:7000/Child/Delete-Child/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Chilled Remove")
+    })
+
+    setTimeout(() => {
+      
+      axios
+      .get(`http://localhost:7000/Child`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setListOfChild(clientFilterObj);
+      console.log("got after deleting")
+      //  console.log(clientFilterObj);
+      })
+
+    }, 500);
+
    }
 
    let updateHandler=(e)=>{
-    setChildData(e)
-    
-    handleShow();
+    // console.log("update",e);
+    setNumOfChild(e.ChildNO);
+
+    let date = new Date(e.ChildDOB);
+    e.ChildDOB=date;
+
+    let data = {
+      id: e._id,
+      ChildNO: parseFloat(numOfChild),
+      childNameID:e.ChildName,
+      childDoBID:e.ChildDOB,
+      childAge : e.ChildAge,
+      childRelationship:e.ChildRelation,
+      childDependentradio:e.ChildFinancialyDependent,
+      DependantUntilAge:e.ChildDependentAge,
+      childSupportReceived:e.ChildSupportRecieved,
+      AmountPaidReceivedID:e.ChildAmountRecieved,
+      significantEducationRadio:e.ChildSignificantEducationCost,
+      CostofPrimaryEducation:e.ChildPrimaryEducationCost,
+      CostofSecondaryEducation:e.ChildSecondaryEducationCost,
+      CostofUniEducation:e.ChildUniversityEducationCost,
+      courseYears:e.ChildCourseYear,
+    };
+
+    setUpdateChild([data]);
+    setSubmitFlag(true);
+    setTimeout(() => {
+      setShow(true);
+    }, 1000);
    }
 
   return (
@@ -944,9 +1074,9 @@ const initialValues2={
                           type="text"
                           className="form-control inputDesign shadow inputDesign"
                           id="givenNameID"
-                          name="givenNameID"
                           placeholder="Given Name"
-                          
+                          name="givenNameID"
+                        
                         />
                         <ErrorMessage component='div' className="text-danger fw-bold" name='givenNameID'/>
 
@@ -1151,9 +1281,11 @@ const initialValues2={
                   <div className="row">
                   <div className="col-md-6">
                         <label htmlFor="ClientDoBID" className="form-label">
-                        Date of Birth
+                        Date of Birth client
                         </label>
-                        <div>
+                     
+
+                      <div>
                       <DatePicker
                       id="ClientDoBID"
                        className="form-control inputDesign shadow"
@@ -1177,8 +1309,7 @@ const initialValues2={
                         dropdownMode="select"
                       />
                       </div>
-                     
-                      <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID" />
+                      <ErrorMessage component='div' className="text-danger fw-bold" name="ClientDoBID" />
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -1195,7 +1326,7 @@ const initialValues2={
                           // onChange={(e) => setFieldValue("employeeAgeID", e.target.value)}
                           // value={values.employeeAgeID}
                         />
-                        <ErrorMessage component='div' className="text-danger fw-bold"name="employeeAgeID" />
+                        <ErrorMessage component='div' className="text-danger fw-bold" name="employeeAgeID" />
 
                       </div>
                     </div>
@@ -1211,8 +1342,8 @@ const initialValues2={
               {/* Client Personal Information */}
 
               {/* Partner Personal Information */}
-{            
-                isPartnered && 
+{/*              
+                isPartnered && */}
              <div className="mt-4" id="PartnerPersonalInformation">
 
                   <div className=" shadow px-4 py-4">
@@ -1490,9 +1621,9 @@ const initialValues2={
                         <label htmlFor="ClientDoBID2" className="form-label">
                         Date of Birth
                         </label>
-                        <div>
+                     <div>
                       <DatePicker
-                      id="ClientDoBID2"
+                      
                        className="form-control inputDesign shadow"
                         selected={values.ClientDoBID2}
                         onChange={(date) => {
@@ -1500,7 +1631,7 @@ const initialValues2={
                           setFieldValue('ClientDoBID2', date);
                           const age = differenceInYears(new Date(), date)||0;
                           setFieldValue('employeeAgeID2', age);
-                          // console.log(values.ClientDoBID2)
+                          console.log(values.ClientDoBID2)
                         }}
                         dateFormat="dd/MM/yyyy"
                         placeholderText="dd/mm/yyyy"
@@ -1509,11 +1640,14 @@ const initialValues2={
                         scrollableYearDropdown
                         onBlur={handleBlur}
                         name="ClientDoBID2"
+                        id="ClientDoBID2"
+
                         maxDate={new Date()}
                         showMonthDropdown
                         dropdownMode="select"
                       />
                       </div>
+
                       <ErrorMessage component='div' className="text-danger fw-bold"name="ClientDoBID2" />
                     </div>
                     <div className="col-md-6">
@@ -1545,7 +1679,7 @@ const initialValues2={
                 
 
               </div>
-}
+             
               {/* Partner Personal Information */}
             
 
@@ -1931,7 +2065,7 @@ const initialValues2={
                           </Modal.Header>
 
                           <Formik 
-                           initialValues={initialValues2}
+                           initialValues={SubmitFlag? UpdateChild[0] : initialValues2}
                            validationSchema={validationSchema2}
                            onSubmit={onSubmit2}
                            
@@ -1971,8 +2105,8 @@ const initialValues2={
                                     className="form-control inputDesign  shadow"
                                     id="childNameID"
                                     placeholder="Name"
-                                    name="childNameID"
-                                    
+                                    onChange={(e) => setFieldValue("childNameID", e.target.value)}
+                                    value={values.childNameID}
                                 />
                                   <ErrorMessage className="text-danger fw-bold" component="div"   name="childNameID" />
                                 </div>
@@ -1980,7 +2114,7 @@ const initialValues2={
                             {/* child Name */}
 
                             </div>
-
+                            <input type="hidden" name="_id"/>
                             {/* row 2 */}
                             <div className="row">
                               {/* DOB */}
@@ -1990,10 +2124,12 @@ const initialValues2={
                                     htmlFor="childDoBID"
                                     className="form-label"
                                   >
-                                    Date of Birth
+                                    Date of Birth child
                                   </label>
 
-                                  <div>
+                            
+                      
+                      <div>
                       <DatePicker
                       id="childDoBID"
                        className="form-control inputDesign shadow"
@@ -2003,7 +2139,7 @@ const initialValues2={
                           setFieldValue('childDoBID', date);
                           const age = differenceInYears(new Date(), date)||0;
                           setFieldValue('childAge', age);
-                          // console.log(values.childDoBID)
+                          // console.log(values.ClientDoBID)
                         }}
                         dateFormat="dd/MM/yyyy"
                         placeholderText="dd/mm/yyyy"
@@ -2031,14 +2167,14 @@ const initialValues2={
                                     htmlFor="childAge"
                                     className="form-label"
                                   >
-                                    Age
+                                    Age Child
                                   </label>
                                   <Field
                                     type="text"
                                     className="form-control inputDesign shadow"
                                     id="childAge"
-                                    placeholder="Age"
                                     name="childAge"
+                                    placeholder="Age"
                                     readOnly
                                   />
                                 </div>
@@ -2167,8 +2303,7 @@ const initialValues2={
                             {/* row 4*/}
 
                             {/* row 42*/}
-                           { values.childDependentradio=="Yes" &&
-                            <div className="row" id="dependantRow">
+                            <div className="row d-none" id="dependantRow">
                                {/* Dependant Until Age */}
                               <div className="col-md-6">
                                 <div className="mb-3">
@@ -2242,7 +2377,7 @@ const initialValues2={
                               {/* Amount Paid/Received*/}
                             
 
-                            </div>}
+                            </div>
                             {/* row 42*/}
 
                           
@@ -2285,8 +2420,7 @@ const initialValues2={
                             </div>
                             {/* row 5 */}
 
-                          {values.significantEducationRadio=="Yes" &&
-                           <div className="" id="significantCostsofEducationRow">
+                           <div className="d-none" id="significantCostsofEducationRow">
                             {/* row 6 */}
                             <div className="row">
 
@@ -2392,15 +2526,15 @@ const initialValues2={
 
                             </div>
                               {/* row 7 */}
-                            </div>}
+                              </div>
 
                           </Modal.Body>
                           <Modal.Footer>
                          
 
-                            <div className="col-md-12">
-<button className="float-end btn w-25  bgColor modalBtn" type="submit" >Save</button>
-<button type="button" className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={handleClose} >Cancel</button>
+  <div className="col-md-12">
+      <button className="float-end btn w-25  bgColor modalBtn" type="submit" >Save</button>
+      <button type="button"  className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={handleClose} >Cancel</button>
 
 </div>
                           </Modal.Footer>
@@ -2498,8 +2632,7 @@ const initialValues2={
                 {/*  end What health or other issues */}
 
                 {/* start Description */}
-              {
-        (values.healthIssuesradio=="Yes") &&
+              {clientDec &&
                 <div className="row" id>
                   <div className="col-md-12">
                     <div className="mb-3">
@@ -2514,7 +2647,10 @@ const initialValues2={
                         name='DescriptionID'
                         rows="3"
                         placeholder="Description"
-                      
+                        
+
+
+                 
                       />
                       {/* <p className="" id="errorDes">error</p> */}
                       <ErrorMessage component='div' className="text-danger fw-bold"name="DescriptionID"/>
@@ -2556,7 +2692,7 @@ const initialValues2={
   <thead className="text-light" id="tableHead">
   <tr>
         <th>Child Name</th>
-        <th>Date of Birth</th>
+
         <th>Age</th>
         <th>Gender</th>
         <th>Relationship</th>
@@ -2564,28 +2700,26 @@ const initialValues2={
     </tr>
   </thead>
   <tbody>
-  { 
-   listOfChild.map((elem,index)=>{
-  
+  {  listOfChild.map((elem,index)=>{
+      // console.log("In Mapp Getting Date",elem.ChildDOB)
 return(
     
     <tr key={index}>
         <td>{elem.ChildName}</td>
-        <td>{elem.ChildDOB}</td>
-        <td>{elem.ChildAge}</td>
+        <td>{elem.ChildAge}</td> 
         <td>{elem.ChildGender}</td>
         <td>{elem.ChildRelation}</td>
         <td >
-         <button  type='btn' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-         <button  type='btn' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
 
-         </td> 
+         <button  type='button' onClick={(e)=>deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+         <button  type='button' onClick={(e)=>updateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
+
+         </td>
     
     </tr>
     );
         
-    }) 
-    }
+    }) }
   </tbody>
 </table>
          </div>
@@ -2598,4 +2732,4 @@ return(
   );
 };
 
-export default PersonalDetail_Edit;
+export default PersonalDetail;

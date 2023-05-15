@@ -11,10 +11,32 @@ import lawyer from './images/lawyer.svg'
 import notebook from './images/notebook.svg'
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+
 
 
 function SuperRetriement() {
   let phonePattern=/^[1-9][0-9]{9}$/;
+
+  const [ClientSuperAccounts, setClientSuperAccounts] = useState([]);
+  const [ClientSuperAccountsObj, setClientSuperAccountsObj] = useState([]);
+  const [ClientSuperAccountsUpdateFlag, setClientSuperAccountsUpdateFlag] = useState(false);
+
+  const [PartnerSuperAccounts, setPartnerSuperAccounts] = useState([]);
+  const [PartnerSuperAccountsObj, setPartnerSuperAccountsObj] = useState([]);
+  const [PartnerSuperAccountsUpdateFlag, setPartnerSuperAccountsUpdateFlag] = useState(false);
+
+  const [ClientLifetimePension, setClientLifetimePension] = useState([]);
+  const [ClientLifetimePensionObj, setClientLifetimePensionObj] = useState([]);
+  const [ClientLifetimePensionUpdateFlag, setClientLifetimePensionUpdateFlag] = useState(false);
+
+  const [PartnerLifetimePension, setPartnerLifetimePension] = useState([]);
+  const [PartnerLifetimePensionObj, setPartnerLifetimePensionObj] = useState([]);
+  const [PartnerLifetimePensionUpdateFlag, setPartnerLifetimePensionUpdateFlag] = useState(false);
+
+
+  const [updateIndex, setUpdateIndex] = useState();
+
 
   //NESTED INVESTMENT MODAL STATES
   const [show, setShow] = useState(false);
@@ -22,6 +44,7 @@ function SuperRetriement() {
   const handleShow = () => setShow(true);
 
   const [InvestmentModal, setInvestmentModal] = useState([]);
+  const [InvestmentModalObj, setInvestmentModalObj] = useState([]);
   const [InvestmentModalEdit, setInvestmentModalEdit] = useState(false)
 
   //PARTNER
@@ -30,6 +53,7 @@ function SuperRetriement() {
   const handleShowPartner = () => setShowPartner(true);
 
   const [InvestmentModalPartner, setInvestmentModalPartner] = useState([]);
+  const [InvestmentModalPartnerObj, setInvestmentModalPartnerObj] = useState([]);
   const [InvestmentModalPartnerEdit, setInvestmentModalPartnerEdit] = useState(false);
   //NESTED INVESTMENT MODAL STATES
 
@@ -48,7 +72,9 @@ function SuperRetriement() {
       alert('No')
     }
   }
-  const [InsuranceDataList, setInsuranceDataList] = useState([])
+  const [InsuranceDataList, setInsuranceDataList] = useState([]);
+  const [InsuranceDataListObj, setInsuranceDataListObj] = useState([]);
+  const [InsuranceDataListUpdateFlag, setInsuranceDataListUpdateFlag] = useState(false);
 
   //PARTNER NESTED INSURANCE
   const [showPartner2, setShowPartner2] = useState(false);
@@ -56,6 +82,8 @@ function SuperRetriement() {
   const handleShowPartner2 = () => setShowPartner2(true);
 
   const [InsuranceDataPartnerList, setInsuranceDataPartnerList] = useState([])
+  const [InsuranceDataPartnerListUpdateFlag, setInsuranceDataPartnerListUpdateFlag] = useState(false)
+  const [InsuranceDataPartnerListObj, setInsuranceDataPartnerListObj] = useState([])
 
   //PARTNER NESTED INSURANCE
   // NESTED INSURANCE MODAL STATES
@@ -66,6 +94,8 @@ function SuperRetriement() {
   const handleShow3 = () => setShow3(true);
 
   const [BeneficiaryDataList, setBeneficiaryDataList] = useState([])
+  const [BeneficiaryDataListObj, setBeneficiaryDataListObj] = useState([])
+  const [BeneficiaryDataListUpdateFlag, setBeneficiaryDataListUpdateFlag] = useState(false)
 
   //PARTNER NESTED MODAL
   const [showPartner3, setShowPartner3] = useState(false);
@@ -73,6 +103,9 @@ function SuperRetriement() {
   const handleShowPartner3 = () => setShowPartner3(true);
 
   const [BeneficiaryDataPartnerList, setBeneficiaryDataPartnerList] = useState([])
+  const [BeneficiaryDataPartnerListObj, setBeneficiaryDataPartnerListObj] = useState([])
+  const [BeneficiaryDataPartnerListUpdateFlag, setBeneficiaryDataPartnerListUpdateFlag] = useState(false)
+
   //PARTNER NESTED MODAL
   // NESTED BENFICIARIES MODAL STATES
 
@@ -82,6 +115,8 @@ function SuperRetriement() {
   const handleShow4 = () => setShow4(true);
 
   const [contributionModal, setcontributionModal] = useState([]);
+  const [contributionModalUpdateFlag, setcontributionModalUpdateFlag] = useState(false);
+  const [contributionModalObj, setcontributionModalObj] = useState([]);
 
   //PARTNER NESTED CONTRIBUTION MODAL
 
@@ -90,11 +125,19 @@ function SuperRetriement() {
   const handleShowPartner4 = () => setShowPartner4(true);
 
   const [contributionPartnerModal, setcontributionPartnerModal] = useState([]);
+  const [contributionPartnerModalUpdateFlag, setcontributionPartnerModalUpdateFlag] = useState(false);
+  const [contributionPartnerModalObj, setcontributionPartnerModalObj] = useState([]);
   //PARTNER NESTED CONTRIBUTION MODAL
   // NESTED CONTRIBUTIONS MODAL STATES
 
   let partner = window.localStorage.getItem("partner");
   const [isPartnered, setIsPartnered] = useState()
+
+
+  const [ClientObj, setClientObj] = useState([]);
+  const [PartnerObj, setPartnerObj] = useState([]);
+
+
 
   useEffect(() => {
     if (partner == "true") {
@@ -104,6 +147,7 @@ function SuperRetriement() {
       setIsPartnered(false)
 
     }
+
 
   }, [])
 
@@ -142,6 +186,7 @@ function SuperRetriement() {
   const PensionhandleShow = () => setPensionShow(true);
 
   const [clientPensionDataList, setclientPensionDataList] = useState([]);
+  const [clientPensionDataListObj, setclientPensionDataListObj] = useState([]);
   const [clientPensionDataListEdit, setclientPensionDataListEdit] = useState(false);
 
   let PensionHandler = (elem) => {
@@ -159,7 +204,9 @@ function SuperRetriement() {
   const Pension2handleShow = () => setPension2Show(true);
 
   const [Pension2PartnerDataList, setPension2PartnerDataList] = useState([])
-  const [Pension2PartnerDataListEdit, setPension2PartnerDataListEdit] = useState(false)
+  const [Pension2PartnerDataListObj, setPension2PartnerDataListObj] = useState([])
+  const [Pension2PartnerDataListEdit, setPension2PartnerDataListEdit] = useState(false);
+
   let Pension2Handler = (elem) => {
     if (elem === "No") {
       setPension2(false)
@@ -235,6 +282,7 @@ function SuperRetriement() {
   const handleShowPensionClient = () => setShowPensionClient(true);
 
   const [PensionClientInvestmentModal, setPensionClientInvestmentModal] = useState([]);
+  const [PensionClientInvestmentModalObj, setPensionClientInvestmentModalObj] = useState([]);
   const [PensionClientInvestmentModalEdit, setPensionClientInvestmentModalEdit] = useState(false);
 
   //NESTED PENSION PARTNER INVESTMENT MODAL STATES
@@ -243,6 +291,7 @@ function SuperRetriement() {
   const handleShowPensionPartner = () => setShowPensionPartner(true);
 
   const [PensionPartnerInvestmentModal, setPensionPartnerInvestmentModal] = useState([]);
+  const [PensionPartnerInvestmentModalObj, setPensionPartnerInvestmentModalObj] = useState([]);
   const [PensionPartnerInvestmentModalEdit, setPensionPartnerInvestmentModalEdit] = useState(false);
 
   //NESTED PENSION PARTNER BENEFICIARY MODAL STATES
@@ -250,14 +299,18 @@ function SuperRetriement() {
   const handleClosePartnerBeneficiary = () => setShowPartnerBeneficiary(false);
   const handleShowPartnerBeneficiary = () => setShowPartnerBeneficiary(true);
 
-  const [PartnerBeneficiaryDataList, setPartnerBeneficiaryDataList] = useState([])
+  const [PartnerBeneficiaryDataList, setPartnerBeneficiaryDataList] = useState([]);
+  const [PartnerBeneficiaryDataListObj, setPartnerBeneficiaryDataListObj] = useState([]);
+  const [PartnerBeneficiaryDataListUpdateFlag, setPartnerBeneficiaryDataListUpdateFlag] = useState(false);
 
   //NESTED PENSION Client BENEFICIARY MODAL STATES
   const [showClientBeneficiary, setShowClientBeneficiary] = useState(false);
   const handleCloseClientBeneficiary = () => setShowClientBeneficiary(false);
   const handleShowClientBeneficiary = () => setShowClientBeneficiary(true);
 
-  const [ClientBeneficiaryDataList, setClientBeneficiaryDataList] = useState([])
+  const [ClientBeneficiaryDataList, setClientBeneficiaryDataList] = useState([]);
+  const [ClientBeneficiaryDataListObj, setClientBeneficiaryDataListObj] = useState([]);
+  const [ClientBeneficiaryDataListUpdateFlag, setClientBeneficiaryDataListUpdateFlag] = useState(false);
 
 
 
@@ -814,7 +867,7 @@ function SuperRetriement() {
   })
 
   let ClientSuperAccount_onSubmit = (values) => {
-    SuperhandleClose();
+
     let SuperAccountDetails = {
       Email: localStorage.getItem("ClientEmail"),
       Super_FundName: values.SuperFundName,
@@ -839,15 +892,31 @@ function SuperRetriement() {
       Super_PreservedAmount: values.SuperPreservedAmount
     }
 
-    axios
-      .post('http://localhost:7000/Client-Super-Retirement/Add-Client-SuperAccount', SuperAccountDetails)
-      .then((res) => console.log('Client Super Account Added Successfully!'))
-    console.log(SuperAccountDetails)
+    if(ClientSuperAccountsUpdateFlag){
+
+      setClientSuperAccounts(ClientSuperAccounts.filter((ClientSuperAccounts, index) => index !== updateIndex));
+      setClientSuperAccounts(ClientSuperAccounts =>[...ClientSuperAccounts, SuperAccountDetails]);
+      SuperhandleClose();
+      setClientSuperAccountsUpdateFlag(false);
+
+    }
+    else{
+
+      setClientSuperAccounts([...ClientSuperAccounts,SuperAccountDetails]);
+      SuperhandleClose();
+
+      axios
+        .post('http://localhost:7000/Client-Super-Retirement/Add-Client-SuperAccount', SuperAccountDetails)
+        .then((res) => console.log('Client Super Account Added Successfully!'))
+      console.log(SuperAccountDetails)
+  
+    }
+
+
   }
 
   let PartnerSuperAccount_onSubmit = (values) => {
 
-    Super2handleClose();
     let SuperAccountDetails = {
       Email: localStorage.getItem("ClientEmail"),
       Super_FundName: values.Super2FundName,
@@ -872,15 +941,33 @@ function SuperRetriement() {
       Super_PreservedAmount: values.Super2PreservedAmount
     }
 
-    axios
-      .post('http://localhost:7000/Partner-Retirement/Add-Partner-SuperAccount', SuperAccountDetails)
-      .then((res) => console.log('Partner Super Account Added Successfully!'))
-    console.log(SuperAccountDetails)
+    if(PartnerSuperAccountsUpdateFlag){
+
+      setPartnerSuperAccounts(PartnerSuperAccounts.filter((PartnerSuperAccounts, index) => index !== updateIndex));
+      setPartnerSuperAccounts(PartnerSuperAccounts =>[...PartnerSuperAccounts, SuperAccountDetails]);
+      Super2handleClose();
+      setPartnerSuperAccountsUpdateFlag(false);
+
+
+    }
+    else{
+
+      setPartnerSuperAccounts([...PartnerSuperAccounts,SuperAccountDetails]);
+
+
+      Super2handleClose();
+  
+      axios
+        .post('http://localhost:7000/Partner-Super-Retirement/Add-Partner-SuperAccount', SuperAccountDetails)
+        .then((res) => console.log('Partner Super Account Added Successfully!'))
+      console.log(SuperAccountDetails)
+    }
+
+
   }
 
   let ClientPensionAccount_onSubmit = (values) => {
 
-    PensionhandleClose();
     let PensionAccountDetails = {
       Email: localStorage.getItem("ClientEmail"),
       AccountPension_FundName: values.AccountPension_FundName,
@@ -907,12 +994,21 @@ function SuperRetriement() {
       AccountPension_LumpsumTaken: values.AccountPension_LumpsumTaken,
       AccountPension_DeductibleAmount: values.AccountPension_DeductibleAmount
     }
-    setclientPensionDataList([PensionAccountDetails]);
-    setclientPensionDataListEdit(true)
-    axios
-      .post('http://localhost:7000/Client-Pension-Retirement/Add-Client-PensionAccount', PensionAccountDetails)
-      .then((res) => console.log('Client Pension Account Added Successfully!'))
-    console.log(PensionAccountDetails)
+
+    if(clientPensionDataListEdit){
+
+      setclientPensionDataList(clientPensionDataList.filter((clientPensionDataList, index) => index !== updateIndex));
+      setclientPensionDataList(clientPensionDataList =>[...clientPensionDataList, PensionAccountDetails]);
+      setclientPensionDataListEdit(false);
+      
+    }else{
+      setclientPensionDataList([PensionAccountDetails]);
+      axios
+        .post('http://localhost:7000/Client-Pension-Retirement/Add-Client-PensionAccount', PensionAccountDetails)
+        .then((res) => console.log('Client Pension Account Added Successfully!'))
+      console.log(PensionAccountDetails)
+    }
+    PensionhandleClose();
   }
 
   let PartnerPensionAccount_onSubmit = (values) => {
@@ -944,12 +1040,26 @@ function SuperRetriement() {
       AccountPension_LumpsumTaken: values.AccountPension_LumpsumTaken,
       AccountPension_DeductibleAmount: values.AccountPension_DeductibleAmount
     }
-    setPension2PartnerDataList([PensionAccountDetails])
-    setPension2PartnerDataListEdit(false)
-    axios
-      .post('http://localhost:7000/Partner-Retirement/Add-Partner-PensionAccount', PensionAccountDetails)
-      .then((res) => console.log('Partner Pension Account Added Successfully!'))
-    console.log(PensionAccountDetails)
+
+    if(Pension2PartnerDataListEdit){
+      // alert("JaerKutai");
+      setPension2PartnerDataList(Pension2PartnerDataList.filter((Pension2PartnerDataList, index) => index !== updateIndex));
+      setPension2PartnerDataList(Pension2PartnerDataList =>[...Pension2PartnerDataList, PensionAccountDetails]);
+      setPension2PartnerDataListEdit(false);
+     Pension2handleClose();
+
+    }else{
+
+      setPension2PartnerDataList([...Pension2PartnerDataList,PensionAccountDetails])
+      
+      
+      // Used Wrong API 
+      axios
+        .post('http://localhost:7000/Partner-Pesnison-Retirement/Add-Partner-PensionAccount', PensionAccountDetails)
+        .then((res) => console.log('Partner Pension Account Added Successfully!'))
+      console.log(PensionAccountDetails)
+    }
+
      Pension2handleClose();
   }
 
@@ -996,7 +1106,7 @@ function SuperRetriement() {
     setAnnuitiesData2List([PartnerAnnuitiesDetails]);
     setAnnuitiesData2ListEdit(false)
     axios
-      .post('http://localhost:7000/Partner-Retirement/Add-Partner-AnnuitiesAccount', PartnerAnnuitiesDetails)
+      .post('http://localhost:7000/Partner-Annuities-Retirement/Add-Partner-AnnuitiesAccount', PartnerAnnuitiesDetails)
       .then((res) => console.log('Partner Annuities Added Successfully!'))
     console.log(PartnerAnnuitiesDetails)
 
@@ -1004,7 +1114,7 @@ function SuperRetriement() {
 
   let ClientLifetimePension_onSubmit = (values) => {
 
-    LifetimePensionhandleClose();
+    
     let ClientLifetimePensionDetails = {
       Email: localStorage.getItem("ClientEmail"),
       LifePension_FundName: values.LifetimeAccountPension_FundName,
@@ -1015,28 +1125,59 @@ function SuperRetriement() {
       LifePension_TaxablePensionAmount: values.LifetimePensionTaxableAmount
     }
 
-    axios
-      .post('http://localhost:7000/Client-LifetimePension-Retirement/Add-Client-LifetimePension', ClientLifetimePensionDetails)
-      .then((res) => console.log('Client LifeTime Pension Added Successfully!'))
-    console.log(ClientLifetimePensionDetails)
+    if(ClientLifetimePensionUpdateFlag){
+
+      setClientLifetimePension(ClientLifetimePension.filter((ClientLifetimePension, index) => index !== updateIndex));
+      setClientLifetimePension(ClientLifetimePension =>[...ClientLifetimePension, ClientLifetimePensionDetails]);
+      LifetimePensionhandleClose();
+      setClientLifetimePensionUpdateFlag(false);
+    }
+    else{
+      setClientLifetimePension([...ClientLifetimePension,ClientLifetimePensionDetails]);
+      LifetimePensionhandleClose();
+  
+      axios
+        .post('http://localhost:7000/Client-LifetimePension-Retirement/Add-Client-LifetimePension', ClientLifetimePensionDetails)
+        .then((res) => console.log('Client LifeTime Pension Added Successfully!'))
+      console.log(ClientLifetimePensionDetails)
+    }
+
+  
   }
 
   let PartnerLifetimePension_onSubmit = (values) => {
-    LifetimePension2handleClose();
+    // LifetimePension2handleClose();
     let PartnerLifetimePensionDetails = {
       Email: localStorage.getItem("ClientEmail"),
       LifePension_FundName: values.LifetimeAccountPension_FundName,
       LifePension_RegularIncome: values.LifetimePension2IncomeDrawn,
       LifePension_Frequency: values.LifetimeAccountPension_Frequency,
       LifePension_DeductibleAmount: values.LifetimeAccountPension_DeductibleAmount,
-      LifePension_TaxFree_Pension: values.Lifetime2AccountPension_TaxFree,
+      LifePension_TaxFree_Pension: values.LifetimeAccountPension_TaxFree,
+      
       LifePension_TaxablePensionAmount: values.LifetimePension2TaxableAmount
     }
 
+    console.log(PartnerLifetimePensionDetails);
+
+    if(PartnerLifetimePensionUpdateFlag){
+
+      setPartnerLifetimePension(PartnerLifetimePension.filter((PartnerLifetimePension, index) => index !== updateIndex));
+      setPartnerLifetimePension(PartnerLifetimePension =>[...PartnerLifetimePension, PartnerLifetimePensionDetails]);
+      LifetimePension2handleClose();
+      setPartnerLifetimePensionUpdateFlag(false);
+    }
+    else{
+      setPartnerLifetimePension([...PartnerLifetimePension,PartnerLifetimePensionDetails]);
+      LifetimePension2handleClose();
+
+
+
     axios
-      .post('http://localhost:7000/Partner-Retirement/Add-Partner-LifetimePension', PartnerLifetimePensionDetails)
+      .post('http://localhost:7000/Partner-LifetimePension-Retirement/Add-Partner-LifetimePension', PartnerLifetimePensionDetails)
       .then((res) => console.log('Partner Life Time Added Successfully!'))
-    console.log(PartnerLifetimePensionDetails)
+    // console.log(PartnerLifetimePensionDetails)
+    }
   }
 
   let initialValues = {
@@ -1054,7 +1195,7 @@ function SuperRetriement() {
   }
 
   let onSubmit = (Values) => {
-    // Navigate('/SMSF')
+    Navigate('/SMSF')
     let clientData = {
       Email: localStorage.getItem("ClientEmail"),
       Super: Values.SuperRadio,
@@ -1111,22 +1252,35 @@ function SuperRetriement() {
     InvestmentOptionDetailsCurrentValue: Yup.number().required("*Required")
   })
   let On_submit_validateYupSchemaInvestmentOptionDetails = (values) => {
-    handleClose();
     let InvestmentOptionDetailsData = {
 
       Email: localStorage.getItem("ClientEmail"),
       InvestmentOption: values.InvestmentOptionDetailsInvestment,
       CurrentValue: values.InvestmentOptionDetailsCurrentValue
     }
-    setInvestmentModal([InvestmentOptionDetailsData]);
-    setInvestmentModalEdit(false);
-    console.log(InvestmentOptionDetailsData);
-    axios
-      .post('http://localhost:7000/Client-Retirement-Investment/Add-Client-Super-Investment', InvestmentOptionDetailsData)
-      .then(() => {
-        console.log("data added successfully!")
 
-      })
+    if(InvestmentModalEdit){
+      setInvestmentModal(InvestmentModal.filter((InvestmentModal, index) => index !== updateIndex));
+      setInvestmentModal(InvestmentModal =>[...InvestmentModal, InvestmentOptionDetailsData]);
+      // handleClose5();
+      setInvestmentModalEdit(false);
+      handleClose();
+      handleShow();
+    }
+    else{
+
+      setInvestmentModal([...InvestmentModal,InvestmentOptionDetailsData]);
+      setInvestmentModalEdit(false);
+      console.log(InvestmentOptionDetailsData);
+      axios
+        .post('http://localhost:7000/Client-Retirement-Investment/Add-Client-Super-Investment', InvestmentOptionDetailsData)
+        .then(() => {
+          console.log("data added successfully!")
+  
+        })
+       handleClose();
+      }
+
 
   }
   //PARTNER INVESTMENT 
@@ -1140,22 +1294,37 @@ function SuperRetriement() {
     InvestmentOptionDetailsCurrentValuePartner: Yup.number().required("*Required")
   })
   let On_submit_validateYupSchemaInvestmentPartnerOptionDetails = (values) => {
-    handleClosePartner();
     let InvestmentOptionDetailsData = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentOption: values.InvestmentOptionDetailsInvestmentPartner,
       CurrentValue: values.InvestmentOptionDetailsCurrentValuePartner
     }
-    setInvestmentModalPartner([InvestmentOptionDetailsData]);
-    setInvestmentModalEdit(false)
-    console.log(InvestmentOptionDetailsData);
 
-    axios
-      .post('http://localhost:7000/Partner-Retirement-Investment/Add-Partner-Super-Investment', InvestmentOptionDetailsData)
-      .then((ref) => {
-        console.log("data added successfully!")
+    if(InvestmentModalPartnerEdit){
+      setInvestmentModalPartner(InvestmentModalPartner.filter((InvestmentModalPartner, index) => index !== updateIndex));
+      setInvestmentModalPartner(InvestmentModalPartner =>[...InvestmentModalPartner, InvestmentOptionDetailsData]);
+      // handleClose5();
+      setInvestmentModalPartnerEdit(false);
+      handleClosePartner();
+      handleShowPartner();
 
-      })
+    }
+    else{
+
+      setInvestmentModalPartner([...InvestmentModalPartner,InvestmentOptionDetailsData]);
+      console.log(InvestmentOptionDetailsData);
+  
+      axios
+        .post('http://localhost:7000/Partner-Retirement-Investment/Add-Partner-Super-Investment', InvestmentOptionDetailsData)
+        .then((ref) => {
+          console.log("data added successfully!")
+  
+        })
+
+    handleClosePartner();
+
+    }
+
   }
   //PARTNER INVESTMENT
   // InvestmentOptionDetails FORMIK DATA
@@ -1343,7 +1512,7 @@ function SuperRetriement() {
       SalaryPersonalDed3: values.SalarySacAndPersonalDed3
 
     }
-    setcontributionModal([ContributionOptionDetailsData]);
+    setcontributionModal([...contributionModal,ContributionOptionDetailsData]);
     console.log(ContributionOptionDetailsData);
 
     axios
@@ -1513,7 +1682,6 @@ function SuperRetriement() {
 
   let On_submit_validateYupSchemaContributionPartnerOptionDetails = (values) => {
 
-    handleClosePartner4();
     // console.log(values)
 
     let ContributionOptionDetailsData = {
@@ -1537,14 +1705,26 @@ function SuperRetriement() {
       SalaryPersonalDed3: values.SalarySacAndPersonalDedPartner3
 
     }
-    setcontributionPartnerModal([ContributionOptionDetailsData]);
-    console.log(ContributionOptionDetailsData);
-    axios
-      .post('http://localhost:7000/Partner-Retirement-Contributions/Add-Partner-Super-Contribution', ContributionOptionDetailsData)
-      .then((ref) => {
-        console.log("data added successfully!")
+    // setcontributionPartnerModalUpdateFlag
+    if(contributionPartnerModalUpdateFlag){
+      setcontributionPartnerModal(contributionPartnerModal.filter((contributionPartnerModal, index) => index !== updateIndex));
+      setcontributionPartnerModal(contributionPartnerModal =>[...contributionPartnerModal, ContributionOptionDetailsData]);
+      setcontributionPartnerModalUpdateFlag(false);
+    }else{
 
-      })
+      setcontributionPartnerModal([...contributionPartnerModal,ContributionOptionDetailsData]);
+      console.log(ContributionOptionDetailsData);
+      axios
+        .post('http://localhost:7000/Partner-Retirement-Contributions/Add-Partner-Super-Contribution', ContributionOptionDetailsData)
+        .then((ref) => {
+          console.log("data added successfully!")
+  
+        })
+
+    }
+    handleClosePartner4();
+
+
   }
 
   //PARTNER SUPER ACCOUNT --> CONTRIBUTION
@@ -1734,7 +1914,6 @@ function SuperRetriement() {
   })
   let On_submit_validateYupSchemaBeneficiariesOptionDetails = (values) => {
 
-    handleClose3();
     let BeneficiaryData = {
 
       Email: localStorage.getItem("ClientEmail"),
@@ -1763,15 +1942,24 @@ function SuperRetriement() {
       Relationship5: values.RelationshipOptionDetailsRelationship5
 
     }
+   if  (BeneficiaryDataListUpdateFlag){
+    setBeneficiaryDataList(BeneficiaryDataList.filter((BeneficiaryDataList, index) => index !== updateIndex));
+    setBeneficiaryDataList(BeneficiaryDataList =>[...BeneficiaryDataList, BeneficiaryData]);
+    // handleClose7();
+    setBeneficiaryDataListUpdateFlag(false);
 
+   }else{
     console.log(BeneficiaryData)
-    setBeneficiaryDataList([BeneficiaryDataList])
+    setBeneficiaryDataList([...BeneficiaryDataList,BeneficiaryData]);
 
     axios
       .post('http://localhost:7000/Client-Retirement-Beneficiaries/Add-Client-Super-Beneficiaries', BeneficiaryData)
       .then(() => {
         console.log("data added successfully!")
       })
+   }
+   handleClose3();
+   
   }
   // PARTNER SUPER ACCOUNT->BENEFICIARIES
   let initialValuesBeneficiariesPartnerOptionDetails = {
@@ -1953,7 +2141,6 @@ function SuperRetriement() {
 
   })
   let On_submit_validateYupSchemaPartnerBeneficiariesOptionDetails = (values) => {
-    handleClosePartner3();
     let BeneficiaryData = {
 
       Email: localStorage.getItem("ClientEmail"),
@@ -1984,15 +2171,28 @@ function SuperRetriement() {
 
     }
 
-    console.log(BeneficiaryData)
-    setBeneficiaryDataList([BeneficiaryDataList])
+    // setBeneficiaryDataPartnerListUpdateFlag
 
-    axios
-      .post('http://localhost:7000/Partner-Retirement-Beneficiaries/Add-Partner-Super-Beneficiaries', BeneficiaryData)
-      .then((ref) => {
-        console.log("data added successfully!")
+    if(BeneficiaryDataPartnerListUpdateFlag){
+      setBeneficiaryDataPartnerList(BeneficiaryDataPartnerList.filter((BeneficiaryDataPartnerList, index) => index !== updateIndex));
+      setBeneficiaryDataPartnerList(BeneficiaryDataPartnerList =>[...BeneficiaryDataPartnerList, BeneficiaryData]);
+      setBeneficiaryDataPartnerListUpdateFlag(false);
+    }
+    else{
+      console.log(BeneficiaryData)
+      setBeneficiaryDataPartnerList([...BeneficiaryDataPartnerList,BeneficiaryData]);
+  
+      axios
+        .post('http://localhost:7000/Partner-Retirement-Beneficiaries/Add-Partner-Super-Beneficiaries', BeneficiaryData)
+        .then((ref) => {
+          console.log("data added successfully!")
+  
+        })
+    }
 
-      })
+
+    handleClosePartner3();
+
   }
 
   // PARTNER SUPER ACCOUNT->BENEFICIARIES
@@ -2188,7 +2388,7 @@ function SuperRetriement() {
       Email: localStorage.getItem("ClientEmail"),
       InsuranceAttached: values.insuranceAttachedOption,
       Life_TPD_Insurance: values.insuranceLifeTPDAttached,
-
+      
       // Row 1
       CoverType: values.CoverType,
       LifeCover: values.LifeCover,
@@ -2220,15 +2420,25 @@ function SuperRetriement() {
       LoadingExecutions_2_Details: values.PleaseprovidedetailsSecond
 
     }
-    setInsuranceDataList([InsuranceData]);
-    console.log(InsuranceData);
 
-    axios
-      .post('http://localhost:7000/Client-Retirement-Insurance/Add-Client-Super-Insurance', InsuranceData)
-      .then(() => {
-        console.log("data added successfully!")
+    if (InsuranceDataListUpdateFlag){
+      setInsuranceDataList(InsuranceDataList.filter((InsuranceDataList, index) => index !== updateIndex));
+      setInsuranceDataList(InsuranceDataList =>[...InsuranceDataList, InsuranceData]);
+      // handleClose6();
+      setInsuranceDataListUpdateFlag(false);
+    } 
+    else{
+      setInsuranceDataList([InsuranceData]);
+      console.log(InsuranceData);
+  
+      axios
+        .post('http://localhost:7000/Client-Retirement-Insurance/Add-Client-Super-Insurance', InsuranceData)
+        .then(() => {
+          console.log("data added successfully!")
+  
+        })
+    }
 
-      })
     handleClose2();
   }
   //  SUPER ACCOUNT -> PARTNER INSURANCE
@@ -2447,7 +2657,13 @@ function SuperRetriement() {
       LoadingExecutions_2_Details: values.PleaseprovidedetailsSecondPartner
 
     }
-    setInsuranceDataPartnerList([InsuranceData]);
+   if(InsuranceDataPartnerListUpdateFlag){
+    setInsuranceDataPartnerList(InsuranceDataPartnerList.filter((InsuranceDataPartnerList, index) => index !== updateIndex));
+    setInsuranceDataPartnerList(InsuranceDataPartnerList =>[...InsuranceDataPartnerList, InsuranceData]);
+    handleClosePartner2();
+    setInsuranceDataPartnerListUpdateFlag(false);
+   }else{
+    setInsuranceDataPartnerList([...InsuranceDataPartnerList,InsuranceData]);
     console.log(InsuranceData);
     axios
       .post('http://localhost:7000/Partner-Retirement-Insurance/Add-Partner-Super-Insurance', InsuranceData)
@@ -2456,6 +2672,9 @@ function SuperRetriement() {
 
       })
 
+   }
+    
+  
 
 
   }
@@ -2470,22 +2689,34 @@ function SuperRetriement() {
     InvestmentClientPensionCurrentValue: Yup.number().required("*Required")
   })
   let On_submit_validateClientPensionNestedModal = (values) => {
-    handleClosePensionClient();
+ 
     let InvestmentOptionDetailsData = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentOption: values.InvestmentClientPensionOption,
       CurrentValue: values.InvestmentClientPensionCurrentValue
     }
-    setPensionClientInvestmentModal([InvestmentOptionDetailsData]);
-    setPensionClientInvestmentModalEdit(false);
-    console.log(InvestmentOptionDetailsData);
 
-    axios
-    .post('http://localhost:7000/Client-Retirement-PensionInvestment/Add-Client-PensionAccount-Investment',InvestmentOptionDetailsData)
-    .then((ref)=>{
-     console.log(" Client Pension -> Investment data added successfully!")
-     
-    })
+    if(PensionClientInvestmentModalEdit){
+      setPensionClientInvestmentModal(PensionClientInvestmentModal.filter((PensionClientInvestmentModal, index) => index !== updateIndex));
+      setPensionClientInvestmentModal(PensionClientInvestmentModal =>[...PensionClientInvestmentModal, InvestmentOptionDetailsData]);
+      // handleClose5();
+      setInvestmentModalPartnerEdit(false);
+      handleClosePensionClient();
+      handleShowPensionClient();
+    }
+    else{
+      setPensionClientInvestmentModal([...PensionClientInvestmentModal,InvestmentOptionDetailsData]);
+      setPensionClientInvestmentModalEdit(false);
+      console.log(InvestmentOptionDetailsData);
+  
+      axios
+      .post('http://localhost:7000/Client-Retirement-PensionInvestment/Add-Client-PensionAccount-Investment',InvestmentOptionDetailsData)
+      .then((ref)=>{
+       console.log(" Client Pension -> Investment data added successfully!")
+       
+      })
+    }
+
   }
   //PENSION PARTNER NESTED INVESTMNENT MODAL
   let initialValuesPartnerPensionNestedModal = {
@@ -2498,22 +2729,36 @@ function SuperRetriement() {
     InvestmentPartnerPensionCurrentValue: Yup.number().required("*Required")
   })
   let On_submit_validatePartnerPensionNestedModal = (values) => {
-    handleClosePensionPartner();
+  
     let InvestmentOptionDetailsData = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentOption: values.InvestmentPartnerPensionOption,
       CurrentValue: values.InvestmentPartnerPensionCurrentValue
     }
-    setPensionPartnerInvestmentModal([InvestmentOptionDetailsData]);
-    setPensionPartnerInvestmentModalEdit(false)
-    console.log(InvestmentOptionDetailsData);
 
-    axios
-    .post('http://localhost:7000/Partner-Retirement-PensionInvestment/Add-Client-PensionAccount-Investment',InvestmentOptionDetailsData)
-    .then((ref)=>{
-     console.log("Partner -> Pension -> Investment data added successfully!")
-     
-    })
+    if (PensionPartnerInvestmentModalEdit){
+      setPensionPartnerInvestmentModal(PensionPartnerInvestmentModal.filter((PensionPartnerInvestmentModal, index) => index !== updateIndex));
+      setPensionPartnerInvestmentModal(PensionPartnerInvestmentModal =>[...PensionPartnerInvestmentModal, InvestmentOptionDetailsData]);
+      // handleClose5();
+      setPensionPartnerInvestmentModalEdit(false);
+      handleClosePensionPartner();
+      handleShowPensionPartner();
+
+    }else{
+      setPensionPartnerInvestmentModal([...PensionPartnerInvestmentModal,InvestmentOptionDetailsData]);
+      setPensionPartnerInvestmentModalEdit(false)
+      console.log(InvestmentOptionDetailsData);
+  
+      axios
+      .post('http://localhost:7000/Partner-Retirement-PensionInvestment/Add-Client-PensionAccount-Investment',InvestmentOptionDetailsData)
+      .then((ref)=>{
+       console.log("Partner -> Pension -> Investment data added successfully!")
+       
+      })
+      handleClosePensionPartner();
+
+    }
+
   }
   //PARTNER-> NESTED PENSION BENEFICIARY
   let initialValuesPensionBeneficiaryPartner = {
@@ -2694,7 +2939,8 @@ function SuperRetriement() {
 
   })
   let On_submit_PenionBeneficiaryPartner = (values) => {
-    handleClosePartnerBeneficiary();
+    
+    
     let BeneficiaryData = {
 
       Email: localStorage.getItem("ClientEmail"),
@@ -2725,17 +2971,26 @@ function SuperRetriement() {
 
     }
 
-    console.log(BeneficiaryData)
-    setPartnerBeneficiaryDataList([PartnerBeneficiaryDataList])
+    if (PartnerBeneficiaryDataListUpdateFlag){
 
-    axios
-        .post('http://localhost:7000/Partner-Retirement-PensionBeneficiaries/Add-Client-PensionAccount-Beneficiaries',BeneficiaryData)
-        .then((ref)=>{
-         console.log(" Partner -> Pension -> Beneficiary -> data added successfully!")
-         
-        })
+      setPartnerBeneficiaryDataList(PartnerBeneficiaryDataList.filter((PartnerBeneficiaryDataList, index) => index !== updateIndex));
+      setPartnerBeneficiaryDataList(PartnerBeneficiaryDataList =>[...PartnerBeneficiaryDataList, BeneficiaryData]);
+      setPartnerBeneficiaryDataListUpdateFlag(false);
 
 
+    }else {
+      
+      console.log(BeneficiaryData)
+      setPartnerBeneficiaryDataList([...PartnerBeneficiaryDataList,BeneficiaryData])
+  
+      axios
+          .post('http://localhost:7000/Partner-Retirement-PensionBeneficiaries/Add-Client-PensionAccount-Beneficiaries',BeneficiaryData)
+          .then((ref)=>{
+           console.log(" Partner -> Pension -> Beneficiary -> data added successfully!")
+           
+          })
+    }
+    handleClosePartnerBeneficiary();
   }
   //CLIENT -> PENSION BENEFICIARY
   let initialValuesPensionBeneficiaryClient = {
@@ -2916,7 +3171,6 @@ function SuperRetriement() {
 
   })
   let On_submit_PenionBeneficiaryClient = (values) => {
-    handleCloseClientBeneficiary();
     let BeneficiaryData = {
 
       Email: localStorage.getItem("ClientEmail"),
@@ -2946,9 +3200,14 @@ function SuperRetriement() {
       Relationship5: values.RelationshipOptionDetailsPensionClient5
 
     }
-
-    console.log(BeneficiaryData)
-    setClientBeneficiaryDataList([ClientBeneficiaryDataList])
+   if (ClientBeneficiaryDataListUpdateFlag){
+    setClientBeneficiaryDataList(ClientBeneficiaryDataList.filter((ClientBeneficiaryDataList, index) => index !== updateIndex));
+    setClientBeneficiaryDataList(ClientBeneficiaryDataList =>[...ClientBeneficiaryDataList, BeneficiaryData]);
+    setClientBeneficiaryDataListUpdateFlag(false);
+   }
+   else{
+    // console.log(BeneficiaryData)
+    setClientBeneficiaryDataList([...ClientBeneficiaryDataList,BeneficiaryData])
 
     axios
     .post('http://localhost:7000/Client-Retirement-PensionBeneficiaries/Add-Client-PensionAccount-Beneficiaries',BeneficiaryData)
@@ -2956,20 +3215,27 @@ function SuperRetriement() {
      console.log("data added successfully!")
      
     })
+   }
 
+   handleCloseClientBeneficiary();
 
   }
   //INVESTMENT CLIENT NESTED MODAL EVENT HANDLER
-  let InvestmentModalupdateHandler = (e) => {
+  let InvestmentModalupdateHandler = (elem,ind) => {
 
     setInvestmentModalEdit(true);
 
-    console.log(InvestmentModal)
-    setTimeout(() => {
+    let InvestmentOptionDetailsData = {
+      Email: localStorage.getItem("ClientEmail"),
+      InvestmentOptionDetailsInvestment: elem.InvestmentOption,
+      InvestmentOptionDetailsCurrentValue: elem.CurrentValue,
+    }
 
-      handleShow();
-
-    }, 500)
+    setInvestmentModalObj([InvestmentOptionDetailsData])
+    
+    setUpdateIndex(ind);
+    handleClose();
+    handleShow();
   }
   let InvestmentModaldeleteHandler = (e) => {
     let data = e;
@@ -2980,16 +3246,22 @@ function SuperRetriement() {
   }
 
   //INVESTMENT PARTNER NESTED MODAL EVENT HANDLER
-  let PartnerInvestmentModalupdateHandler = (e) => {
+  let PartnerInvestmentModalupdateHandler = (elem,ind) => {
 
     setInvestmentModalPartnerEdit(true);
 
-    console.log(InvestmentModalPartner)
-    setTimeout(() => {
+    let InvestmentOptionDetailsData = {
+      Email: localStorage.getItem("ClientEmail"),
+      InvestmentOptionDetailsInvestmentPartner: elem.InvestmentOption,
+      InvestmentOptionDetailsCurrentValuePartner: elem.CurrentValue,
+    }
 
-      handleShowPartner();
 
-    }, 500)
+    setInvestmentModalPartnerObj([InvestmentOptionDetailsData]);
+    setUpdateIndex(ind);
+    handleClosePartner();
+    handleShowPartner();
+
   }
   let InvestmentModalPartnerdeleteHandler = (e) => {
     let data = e;
@@ -2999,16 +3271,20 @@ function SuperRetriement() {
     setInvestmentModalPartnerEdit(false)
   }
   //CLIENT PENSION->NESTED INVESTED MODAL EVENT HANDLERS
-  let ClientPensionInvestmentModalupdateHandler = (e) => {
+  let ClientPensionInvestmentModalupdateHandler = (elem,ind) => {
 
+    let InvestmentOptionDetailsData = {
+      Email: localStorage.getItem("ClientEmail"),
+      InvestmentClientPensionOption: elem.InvestmentOption,
+      InvestmentClientPensionCurrentValue: elem.CurrentValue,
+    }
+
+    setPensionClientInvestmentModalObj([InvestmentOptionDetailsData])
     setPensionClientInvestmentModalEdit(true);
 
-    console.log(PensionClientInvestmentModal)
-    setTimeout(() => {
-
-      handleShowPensionClient();
-
-    }, 500)
+    setUpdateIndex(ind);
+    handleClosePensionClient();
+    handleShowPensionClient();
   }
   let ClientPensionInvestmentModaldeleteHandler = (e) => {
     let data = e;
@@ -3018,16 +3294,21 @@ function SuperRetriement() {
     setPensionClientInvestmentModalEdit(false)
   }
   //PARTNER PENSION->NESTED INVESTED MODAL EVENT HANDLERS
-  let PartnerPensionInvestmentModalupdateHandler = (e) => {
+  let PartnerPensionInvestmentModalupdateHandler = (elem,ind) => {
 
-    setPensionClientInvestmentModalEdit(true);
+    setPensionPartnerInvestmentModalEdit(true);
 
-    console.log(PensionPartnerInvestmentModal)
-    setTimeout(() => {
+    setUpdateIndex(ind);
+    let InvestmentOptionDetailsData = {
+      Email: localStorage.getItem("ClientEmail"),
+      InvestmentPartnerPensionOption: elem.InvestmentOption,
+      InvestmentPartnerPensionCurrentValue: elem.CurrentValue,
+    }
+    setPensionPartnerInvestmentModalObj([InvestmentOptionDetailsData]);
 
-      handleShowPensionPartner();
+    handleClosePensionPartner();
+    handleShowPensionPartner();
 
-    }, 500)
   }
   let PartnerPensionInvestmentModaldeleteHandler = (e) => {
     let data = e;
@@ -3075,16 +3356,51 @@ function SuperRetriement() {
     setAnnuitiesData2ListEdit(false)
   }
   //CLIENT PENSION
-  let clientPensionupdateHandler = (e) => {
+  let clientPensionupdateHandler = (elem,ind) => {
 
     setclientPensionDataListEdit(true);
 
-    console.log(clientPensionDataList)
-    setTimeout(() => {
+    let AccountPension_EligibleService= new Date(elem.AccountPension_EligibleService);
+    elem.AccountPension_EligibleService=AccountPension_EligibleService;
 
-      PensionhandleShow();
+    let AccountPension_CommencementDate= new Date(elem.AccountPension_CommencementDate);
+    elem.AccountPension_CommencementDate=AccountPension_CommencementDate;
 
-    }, 500)
+
+
+    let PensionAccountDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      AccountPension_FundName: elem.AccountPension_FundName,
+      AccountPension_MemberNO: elem.AccountPension_MemberNO,
+      AccountPension_FundType: elem.AccountPension_FundType,
+      AccountPension_ContactNO: elem.AccountPension_ContactNO,
+      AccountPension_FaxNO: elem.AccountPension_FaxNO,
+      AccountPension_PostalAddress: elem.AccountPension_PostalAddress,
+      AccountPension_ABN: elem.AccountPension_ABN,
+      AccountPension_SPIN: elem.AccountPension_SPIN,
+      AccountPension_Website: elem.AccountPension_Website,
+      AccountPension_Email: elem.AccountPension_Email,
+      AccountPension_PensionType: elem.AccountPension_PensionType,
+      AccountPension_CurrentBalance: elem.AccountPension_CurrentBalance,
+      AccountPension_TaxFree: elem.AccountPension_TaxFree,
+      AccountPension_Taxed: elem.AccountPension_Taxed,
+      AccountPension_EligibleService: elem.AccountPension_EligibleService,
+      AccountPension_CommencementDate: elem.AccountPension_CommencementDate,
+      AccountPension_OriginalPrice: elem.AccountPension_OriginalPrice,
+      AccountPension_IncomeDrawn: elem.AccountPension_IncomeDrawn,
+      AccountPension_Frequency: elem.AccountPension_Frequency,
+      AccountPension_MinimumRequired: elem.AccountPension_MinimumRequired,
+      AccountPension_RelevantNumber: elem.AccountPension_RelevantNumber,
+      AccountPension_LumpsumTaken: elem.AccountPension_LumpsumTaken,
+      AccountPension_DeductibleAmount: elem.AccountPension_DeductibleAmount,
+    }
+
+
+    setclientPensionDataListObj([PensionAccountDetails]);
+    setUpdateIndex(ind);
+    PensionhandleShow();
+
+
   }
   let clientPensiondeleteHandler = (e) => {
     let data = e;
@@ -3094,16 +3410,50 @@ function SuperRetriement() {
     setclientPensionDataListEdit(false)
   }
   //PARTNER PENSION
-  let partnerPensionupdateHandler = (e) => {
+  let partnerPensionupdateHandler = (elem , ind) => {
 
     setPension2PartnerDataListEdit(true);
 
-    console.log(Pension2PartnerDataList)
-    setTimeout(() => {
+    // console.log(elem);
 
-      Pension2handleShow();
+    let AccountPension_CommencementDate = new Date(elem.AccountPension_CommencementDate);
+    elem.AccountPension_CommencementDate = AccountPension_CommencementDate;
 
-    }, 500)
+    let AccountPension_EligibleService = new Date(elem.AccountPension_EligibleService);
+    elem.AccountPension_EligibleService = AccountPension_EligibleService;
+
+
+    let PensionAccountDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      AccountPension_FundName: elem.AccountPension_FundName,
+      AccountPension_MemberNO: elem.AccountPension_MemberNO,
+      AccountPension_FundType: elem.AccountPension_FundType,
+      AccountPension_ContactNO: elem.AccountPension_ContactNO,
+      AccountPension_FaxNO: elem.AccountPension_FaxNO,
+      AccountPension_PostalAddress: elem.AccountPension_PostalAddress,
+      AccountPension_ABN: elem.AccountPension_ABN,
+      AccountPension_SPIN: elem.AccountPension_SPIN,
+      AccountPension_Website: elem.AccountPension_Website,
+      AccountPension_Email: elem.AccountPension_Email,
+      AccountPension_FundType2: elem.AccountPension_PensionType,
+      AccountPension_CurrentBalance: elem.AccountPension_CurrentBalance,
+      AccountPension_TaxFree: elem.AccountPension_TaxFree,
+      AccountPension_Taxed: elem.AccountPension_Taxed,
+      AccountPension_EligibleService: elem.AccountPension_EligibleService,
+      AccountPension_CommencementDate: elem.AccountPension_CommencementDate,
+      AccountPension_OriginalPrice: elem.AccountPension_OriginalPrice,
+      AccountPension_IncomeDrawn: elem.AccountPension_IncomeDrawn,
+      AccountPension_Frequency: elem.AccountPension_Frequency,
+      AccountPension_MinimumRequired: elem.AccountPension_MinimumRequired,
+      AccountPension_RelevantNumber: elem.AccountPension_RelevantNumber,
+      AccountPension_LumpsumTaken: elem.AccountPension_LumpsumTaken,
+      AccountPension_DeductibleAmount: elem.AccountPension_DeductibleAmount,
+    }
+
+    setPartnerSuperAccountsObj([PensionAccountDetails]);
+    setUpdateIndex(ind);
+    Pension2handleShow();
+
   }
   let partnerPensiondeleteHandler = (e) => {
     let data = e;
@@ -3112,6 +3462,489 @@ function SuperRetriement() {
       current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
     setPension2PartnerDataListEdit(false)
   }
+
+  let ClientSuperAccountsDeleteHandler=(elem,ind)=>{
+    setClientSuperAccounts(ClientSuperAccounts.filter((ClientSuperAccounts, index) => index !== ind));
+  }
+  let ClientSuperAccountsUpdateHandler = (elem, ind)=>{
+    setClientSuperAccountsUpdateFlag(true);
+
+    // let date = new Date(clientFilterObj[0].EstablishmentDate);
+    // clientFilterObj[0].EstablishmentDate=date;
+
+    let Super_CommencementDate= new Date(elem.Super_CommencementDate);
+    elem.Super_CommencementDate=Super_CommencementDate;
+
+    let Super_EligibleServiceDate= new Date(elem.Super_EligibleServiceDate);
+    elem.Super_EligibleServiceDate=Super_EligibleServiceDate;
+
+    let SuperAccountDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      SuperFundName: elem.Super_FundName,
+      SuperMemberNo: elem.Super_MemberNO,
+      SuperFundType: elem.Super_FundType,
+      SuperContactNO: elem.Super_ContactNO,
+      SuperFaxNO: elem.Super_FaxNO,
+      SuperPostalAddress: elem.Super_PostalAddress,
+      SuperABN: elem.Super_ABN,
+      SuperSPIN: elem.Super_SPIN,
+      SuperWebsite: elem.Super_Website,
+      SuperEmail: elem.Super_Email,
+      SuperFundType2: elem.Super_FundType_2,
+      SuperCommencementDate: elem.Super_CommencementDate,
+      SuperEligibleDate: elem.Super_EligibleServiceDate,
+      SuperTFNQuoted: elem.Super_TFN,
+      SuperCurrentBalance: elem.Super_CurrentBalance,
+      SuperTaxFree: elem.Super_TaxFree,
+      SuperTaxed: elem.Super_Taxed,
+      SuperRestrictionNonPreserved: elem.Super_Restricted,
+      SuperUnRestrictionNonPreserved: elem.Super_Unrestricted,
+      SuperPreservedAmount: elem.Super_PreservedAmount,
+    }
+
+    setClientSuperAccountsObj([SuperAccountDetails]);
+    setUpdateIndex(ind);
+    SuperhandleShow();
+  }
+
+  let PartnerSuperAccountsDeleteHandler=(elem,ind)=>{
+    setPartnerSuperAccounts(PartnerSuperAccounts.filter((PartnerSuperAccounts, index) => index !== ind));
+  }
+  let PartnerSuperAccountsUpdateHandler = (elem, ind)=>{
+    setPartnerSuperAccountsUpdateFlag(true);
+
+    let Super_CommencementDate= new Date(elem.Super_CommencementDate);
+    elem.Super_CommencementDate=Super_CommencementDate;
+
+    let Super_EligibleServiceDate= new Date(elem.Super_EligibleServiceDate);
+    elem.Super_EligibleServiceDate=Super_EligibleServiceDate;
+
+
+    let SuperAccountDetails = {
+      Email: localStorage.getItem("PartnerEmail"),
+      Super2FundName: elem.Super_FundName,
+      Super2MemberNo: elem.Super_MemberNO,
+      Super2FundType: elem.Super_FundType,
+      Super2ContactNO: elem.Super_ContactNO,
+      Super2FaxNO: elem.Super_FaxNO,
+      Super2PostalAddress: elem.Super_PostalAddress,
+      Super2ABN: elem.Super_ABN,
+      Super2SPIN: elem.Super_SPIN,
+      Super2Website: elem.Super_Website,
+      Super2Email: elem.Super_Email,
+      Super2FundType2: elem.Super_FundType_2,
+      Super2CommencementDate: elem.Super_CommencementDate,
+      Super2EligibleDate: elem.Super_EligibleServiceDate,
+      Super2TFNQuoted: elem.Super_TFN,
+      Super2CurrentBalance: elem.Super_CurrentBalance,
+      Super2TaxFree: elem.Super_TaxFree,
+      Super2Taxed: elem.Super_Taxed,
+      Super2RestrictionNonPreserved: elem.Super_Restricted,
+      Super2UnRestrictionNonPreserved: elem.Super_Unrestricted,
+      Super2PreservedAmount: elem.Super_PreservedAmount,
+    }
+    
+    // alert("usama")
+
+    setPension2PartnerDataListObj([SuperAccountDetails]);
+    setUpdateIndex(ind);
+    Super2handleShow();
+
+  }
+
+  let ClientLifetimePensionDeleteHandler=(elem,ind)=>{
+    setClientLifetimePension(ClientLifetimePension.filter((ClientLifetimePension, index) => index !== ind));
+  }
+  let ClientLifetimePensionUpdateHandler = (elem, ind)=>{
+    setClientLifetimePensionUpdateFlag(true);
+
+    let ClientLifetimePensionDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      LifetimeAccountPension_FundName: elem.LifePension_FundName,
+      LifetimePensionIncomeDrawn: elem.LifePension_RegularIncome,
+      LifetimeAccountPension_Frequency: elem.LifePension_Frequency,
+      LifetimeAccountPension_DeductibleAmount: elem.LifePension_DeductibleAmount,
+      LifetimeAccountPension_TaxFree: elem.LifePension_TaxFree_Pension,
+      LifetimePensionTaxableAmount: elem.LifePension_TaxablePensionAmount,
+    }
+    
+    // alert("usama")
+
+    setClientLifetimePensionObj([ClientLifetimePensionDetails]);
+    setUpdateIndex(ind);
+    LifetimePensionhandleShow();
+
+  }
+
+  let PartnerLifetimePensionDeleteHandler=(elem,ind)=>{
+    setPartnerLifetimePension(PartnerLifetimePension.filter((PartnerLifetimePension, index) => index !== ind));
+  }
+  let PartnerLifetimePensionUpdateHandler = (elem, ind)=>{
+    setPartnerLifetimePensionUpdateFlag(true);
+
+    let PartnerLifetimePensionDetails = {
+      Email: localStorage.getItem("PartnerEmail"),
+      LifetimeAccountPension_FundName: elem.LifePension_FundName,
+      LifetimePension2IncomeDrawn: elem.LifePension_RegularIncome,
+      LifetimeAccountPension_Frequency: elem.LifePension_Frequency,
+      LifetimeAccountPension_DeductibleAmount: elem.LifePension_DeductibleAmount,
+      LifetimeAccountPension_TaxFree: elem.LifePension_TaxFree_Pension,
+      LifetimePension2TaxableAmount: elem.LifePension_TaxablePensionAmount,
+    }
+    
+    
+    // alert("usama")
+
+    setPartnerLifetimePensionObj([PartnerLifetimePensionDetails]);
+    setUpdateIndex(ind);
+    LifetimePension2handleShow();
+
+  }
+
+  let InsuranceDataListDeleteHandler=(elem,ind)=>{
+    setInsuranceDataList(InsuranceDataList.filter((InsuranceDataList, index) => index !== ind));
+  }
+  let InsuranceDataListUpdateHandler = (elem, ind)=>{
+    setInsuranceDataListUpdateFlag(true);
+
+    let InsuranceData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+      insuranceAttachedOption: elem.InsuranceAttached,
+      insuranceLifeTPDAttached: elem.Life_TPD_Insurance,
+      
+      // Row 1
+      CoverType: elem.CoverType,
+      LifeCover: elem.LifeCover,
+      TPDCover: elem.TPDCover,
+
+      //Row 2
+      CostPA: elem.CostPA,
+      PremiumType: elem.PremiumType,
+      anyLoadingOrExclusionsAttached: elem.LoadingExecutions,
+
+      //Row 3
+      Pleaseprovidedetails: elem.LoadingExecution_Details,
+      incomeProtectionAttached: elem.IncomeProtection,
+      MonthlyBenefit: elem.MonthlyBenefit,
+
+      //Row 4
+      waitingPeriod: elem.WaitingPeriod,
+      benefitPeriod: elem.BenefitPeriod,
+      agreedOrIndemnity: elem.Indemnity,
+
+      //Row 5
+      CostPASecond: elem.CostPA_2,
+      PremiumTypeSecond: elem.PremiumType_2,
+      IncludesSuperContinuance: elem.Includes_SuperContinuance,
+
+      //Row 6
+      Isthebenefitindexed: elem.BenefitIndexed,
+      AnyLoadingOrExclusions: elem.LoadingExecutions_2,
+      PleaseprovidedetailsSecond: elem.LoadingExecutions_2_Details,
+
+    }
+
+    setInsuranceDataListObj([InsuranceData]);
+    setUpdateIndex(ind);
+    setShow2(true);
+    // alert("Kuta");
+
+  }
+
+  let BeneficiaryDataListDeleteHandler=(elem,ind)=>{
+    setBeneficiaryDataList(BeneficiaryDataList.filter((BeneficiaryDataList, index) => index !== ind));
+  }
+  let BeneficiaryDataListUpdateHandler = (elem, ind)=>{
+    setBeneficiaryDataListUpdateFlag(true);
+
+
+
+
+    let BeneficiaryData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+      clientNestedbeneficiariesAttached: elem.NominatedBeneficiary,
+      NomiationTypeBeneficiary: elem.NominationType,
+      BeneficiariesOptionDetailsBeneficiaries: elem.No_ofBeneficiaries,
+
+      Beneficiary1: elem.Beneficiary1,
+      ShareofBenefit1: elem.BenefitShare1,
+      RelationshipOptionDetailsRelationship1: elem.Relationship1,
+
+      Beneficiary2: elem.Beneficiary2,
+      ShareofBenefit2: elem.BenefitShare2,
+      RelationshipOptionDetailsRelationship2: elem.Relationship2,
+
+      Beneficiary3: elem.Beneficiary3,
+      ShareofBenefit3: elem.BenefitShare3,
+      RelationshipOptionDetailsRelationship3: elem.Relationship3,
+
+      Beneficiary4: elem.Beneficiary4,
+      ShareofBenefit4: elem.BenefitShare4,
+      RelationshipOptionDetailsRelationship4: elem.Relationship4,
+
+      Beneficiary5: elem.Beneficiary5,
+      ShareofBenefit5: elem.BenefitShare5,
+      RelationshipOptionDetailsRelationship5: elem.Relationship5,
+
+    }
+
+    setBeneficiaryDataListObj([BeneficiaryData]);
+    setUpdateIndex(ind);
+    handleShow3(true);
+    // alert("Kuta");
+
+  }
+
+  let contributionModalDeleteHandler=(elem,ind)=>{
+    setcontributionModal(contributionModal.filter((contributionModal, index) => index !== ind));
+  }
+  let contributionModalUpdateHandler = (elem, ind)=>{
+    setcontributionModalUpdateFlag(true);
+
+    let ContributionOptionDetailsData = {
+      Email: localStorage.getItem("ClientEmail"),
+      clientinvestmentAttached: elem.ContributeFund,
+
+      Non_Concessional1: elem.NonConcessional1,
+      Other1: elem.Other1,
+      EmployerContributions1: elem.EmployerContributions1,
+      SalarySacAndPersonalDed1: elem.SalaryPersonalDed1,
+
+      Non_Concessional2: elem.NonConcessional2,
+      Other2: elem.Other2,
+      EmployerContributions2: elem.EmployerContributions2,
+      SalarySacAndPersonalDed2: elem.SalaryPersonalDed2,
+
+      Non_Concessional3: elem.NonConcessional3,
+      Other3: elem.Other3,
+      EmployerContributions3: elem.EmployerContributions3,
+      SalarySacAndPersonalDed3: elem.SalaryPersonalDed3,
+
+    }
+
+    setcontributionModalObj([ContributionOptionDetailsData]);
+    setUpdateIndex(ind);
+    handleShow4(true);
+    // alert("Kuta");
+
+  }
+
+  let InsuranceDataPartnerListDeleteHandler=(elem,ind)=>{
+    setInsuranceDataPartnerList(InsuranceDataPartnerList.filter((InsuranceDataPartnerList, index) => index !== ind));
+  }
+  let InsuranceDataPartnerListUpdateHandler = (elem, ind)=>{
+    setInsuranceDataPartnerListUpdateFlag(true);
+
+    let InsuranceData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+      insurancePartnerAttachedOption: elem.InsuranceAttached,
+      insuranceLifeTPDPartnerAttached: elem.Life_TPD_Insurance,
+
+      // Row 1
+      CoverTypePartner: elem.CoverType,
+      LifeCoverPartner: elem.LifeCover,
+      TPDCoverPartner: elem.TPDCover,
+
+      //Row 2
+      CostPAPartner: elem.CostPA,
+      PremiumTypePartner: elem.PremiumType,
+      anyLoadingOrExclusionsPartnerAttached: elem.LoadingExecutions,
+
+      //Row 3
+      PleaseprovidePartnerdetails: elem.LoadingExecution_Details,
+      incomeProtectionPartnerAttached: elem.IncomeProtection,
+      MonthlyBenefitPartner: elem.MonthlyBenefit,
+
+      //Row 4
+      waitingPeriodPartner: elem.WaitingPeriod,
+      benefitPeriodPartner: elem.BenefitPeriod,
+      agreedOrIndemnityPartner: elem.Indemnity,
+
+      //Row 5
+      CostPASecondPartner: elem.CostPA_2,
+      PremiumTypeSecondPartner: elem.PremiumType_2,
+      IncludesSuperContinuancePartner: elem.Includes_SuperContinuance,
+
+      //Row 6
+      IsthebenefitindexedPartner: elem.BenefitIndexed,
+      AnyLoadingOrExclusionsPartner: elem.LoadingExecutions_2,
+      PleaseprovidedetailsSecondPartner: elem.LoadingExecutions_2_Details,
+
+    }
+
+    setInsuranceDataPartnerListObj([InsuranceData]);
+    setUpdateIndex(ind);
+    handleShowPartner2();
+    // alert("Kuta");
+
+  }
+
+  let BeneficiaryDataPartnerListDeleteHandler=(elem,ind)=>{
+    setBeneficiaryDataPartnerList(BeneficiaryDataPartnerList.filter((BeneficiaryDataPartnerList, index) => index !== ind));
+  }
+  let BeneficiaryDataPartnerListUpdateHandler = (elem, ind)=>{
+    setBeneficiaryDataPartnerListUpdateFlag(true);
+
+    let BeneficiaryData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+
+      partnerNestedBeneficiariesAttached: elem.NominatedBeneficiary,
+      beneficiariesPartnerAttached1: elem.NominationType,
+      NomiationTypePartnerBeneficiary: elem.No_ofBeneficiaries,
+
+      BeneficiaryPartner1: elem.Beneficiary1,
+      ShareofBenefitPartner1: elem.BenefitShare1,
+      RelationshipOptionDetailsRelationshipPartner1: elem.Relationship1,
+
+      BeneficiaryPartner2: elem.Beneficiary2,
+      ShareofBenefitPartner2: elem.BenefitShare2,
+      RelationshipOptionDetailsRelationshipPartner2: elem.Relationship2,
+
+      BeneficiaryPartner3: elem.Beneficiary3,
+      ShareofBenefitPartner3: elem.BenefitShare3,
+      RelationshipOptionDetailsRelationshipPartner3: elem.Relationship3,
+
+      BeneficiaryPartner4: elem.Beneficiary4,
+      ShareofBenefitPartner4: elem.BenefitShare4,
+      RelationshipOptionDetailsRelationshipPartner4: elem.Relationship4,
+
+      BeneficiaryPartner5: elem.Beneficiary5,
+      ShareofBenefitPartner5: elem.BenefitShare5,
+      RelationshipOptionDetailsRelationshipPartner5: elem.Relationship5,
+
+    }
+
+
+    setBeneficiaryDataPartnerListObj([BeneficiaryData]);
+    setUpdateIndex(ind);
+    handleShowPartner3(true);
+    // alert("Kuta");
+
+  }
+
+  let contributionPartnerModalDeleteHandler=(elem,ind)=>{
+    setcontributionPartnerModal(contributionPartnerModal.filter((contributionPartnerModal, index) => index !== ind));
+  }
+  let contributionPartnerModalUpdateHandler = (elem, ind)=>{
+    setcontributionPartnerModalUpdateFlag(true);
+
+    let ContributionOptionDetailsData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+      partnerInvestmentAttached: elem.ContributeFund,
+
+      Non_ConcessionalPartner1: elem.NonConcessional1,
+      OtherPartner1: elem.Other1,
+      EmployerContributionsPartner1: elem.EmployerContributions1,
+      SalarySacAndPersonalDedPartner1: elem.SalaryPersonalDed1,
+
+      Non_ConcessionalPartner2: elem.NonConcessional2,
+      OtherPartner2: elem.Other2,
+      EmployerContributionsPartner2: elem.EmployerContributions2,
+      SalarySacAndPersonalDedPartner2: elem.SalaryPersonalDed2,
+
+      Non_ConcessionalPartner3: elem.NonConcessional3,
+      OtherPartner3: elem.Other3,
+      EmployerContributionsPartner3: elem.EmployerContributions3,
+      SalarySacAndPersonalDedPartner3: elem.SalaryPersonalDed3,
+
+    }
+
+    setcontributionPartnerModalObj([ContributionOptionDetailsData]);
+    setUpdateIndex(ind);
+    handleShowPartner4(true);
+    // alert("Kuta");
+
+  }
+
+  let ClientBeneficiaryDataListDeleteHandler=(elem,ind)=>{
+    setClientBeneficiaryDataList(ClientBeneficiaryDataList.filter((ClientBeneficiaryDataList, index) => index !== ind));
+  }
+  let ClientBeneficiaryDataListUpdateHandler = (elem, ind)=>{
+    setClientBeneficiaryDataListUpdateFlag(true);
+
+    let BeneficiaryData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+      clientPensionBeneficiaryAttached: elem.NominatedBeneficiary,
+
+      NomiationTypePensionClientBeneficiary: elem.NominationType,
+      BeneficiariesOptionDetailsBeneficiaries: elem.No_ofBeneficiaries,
+
+      BeneficiaryPensionClient1: elem.Beneficiary1,
+      ShareofBenefitPensionClient1: elem.BenefitShare1,
+      RelationshipOptionDetailsPensionClient1: elem.Relationship1,
+
+      BeneficiaryPensionClient2: elem.Beneficiary2,
+      ShareofBenefit2PensionClient2: elem.BenefitShare2,
+      RelationshipOptionDetailsPensionClient2: elem.Relationship2,
+
+      BeneficiaryPensionClient3: elem.Beneficiary3,
+      ShareofBenefitPensionClient3: elem.BenefitShare3,
+      RelationshipOptionDetailsPensionClient3: elem.Relationship3,
+
+      BeneficiaryPensionClient4: elem.Beneficiary4,
+      ShareofBenefitPensionClient4: elem.BenefitShare4,
+      RelationshipOptionDetailsPensionClient4: elem.Relationship4,
+
+      BeneficiaryPensionClient5: elem.Beneficiary5,
+      ShareofBenefitPensionClient5: elem.BenefitShare5,
+      RelationshipOptionDetailsPensionClient5: elem.Relationship5,
+
+    }
+
+    setClientBeneficiaryDataListObj([BeneficiaryData]);
+    setUpdateIndex(ind);
+    PensionhandleShow();
+    handleShowClientBeneficiary();
+  }
+
+  let PartnerBeneficiaryDataListDeleteHandler=(elem,ind)=>{
+    setPartnerBeneficiaryDataList(PartnerBeneficiaryDataList.filter((PartnerBeneficiaryDataList, index) => index !== ind));
+  }
+
+  let PartnerBeneficiaryDataListUpdateHandler = (elem, ind)=>{
+    setPartnerBeneficiaryDataListUpdateFlag(true);
+
+    let BeneficiaryData = {
+
+      Email: localStorage.getItem("ClientEmail"),
+
+      partnerPensionBeneficiaryAttached: elem.NominatedBeneficiary,
+      NomiationTypePensionPartnerBeneficiary: elem.NominationType,
+      BeneficiariesOptionDetailsBeneficiaries: elem.No_ofBeneficiaries,
+
+      BeneficiaryPensionPartner1: elem.Beneficiary1,
+      ShareofBenefitPensionPartner1: elem.BenefitShare1,
+      RelationshipOptionDetailsPensionPartner1: elem.Relationship1,
+
+      BeneficiaryPensionPartner2: elem.Beneficiary2,
+      ShareofBenefit2PensionPartner2: elem.BenefitShare2,
+      RelationshipOptionDetailsPensionPartner2: elem.Relationship2,
+
+      BeneficiaryPensionPartner3: elem.Beneficiary3,
+      ShareofBenefitPensionPartner3: elem.BenefitShare3,
+      RelationshipOptionDetailsPensionPartner3: elem.Relationship3,
+
+      BeneficiaryPensionPartner4: elem.Beneficiary4,
+      ShareofBenefitPensionPartner4: elem.BenefitShare4,
+      RelationshipOptionDetailsPensionPartner4: elem.Relationship4,
+
+      BeneficiaryPensionPartner5: elem.Beneficiary5,
+      ShareofBenefitPensionPartner5: elem.BenefitShare5,
+      RelationshipOptionDetailsPensionPartner5: elem.Relationship5,
+
+    }
+
+    setPartnerBeneficiaryDataListObj([BeneficiaryData]);
+    setUpdateIndex(ind);
+    handleShowPartnerBeneficiary();
+  }
+
   return (
     <div className='container-fluid'>
       <div className='shadow px-4 mx-4'>
@@ -3210,10 +4043,10 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={InitialValuesMainClientSuperAccount}
+                        initialValues={ClientSuperAccountsUpdateFlag ?ClientSuperAccountsObj[0]:InitialValuesMainClientSuperAccount}
                         validationSchema={clientSuperAccountMainValidationSchema}
                         onSubmit={ClientSuperAccount_onSubmit}>
-                        {({ values, setFieldValue, setValues, handleChange, formik }) =>
+                        {({ values, setFieldValue, setValues, handleChange, handleBlur, formik }) =>
                           <Form>
                             <Modal.Body>
                               {/* Professional Advisor Detail Form */}
@@ -3349,16 +4182,54 @@ function SuperRetriement() {
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="SuperCommencementDate" className="form-label">Commencment Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="SuperCommencementDate" name='SuperCommencementDate' />
+                                     {/*<Field type="date" className="form-control shadow inputDesign"
+                                        id="SuperCommencementDate" name='SuperCommencementDate' /> */}
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="SuperCommencementDate"
+                                          name="SuperCommencementDate"
+                                          selected={values.SuperCommencementDate}
+                                          onChange={(date) =>
+                                            setFieldValue("SuperCommencementDate", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='SuperCommencementDate' />
                                     </div>
                                   </div>
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="SuperEligibleDate" className="form-label">Eligible Service Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="SuperEligibleDate" name='SuperEligibleDate' />
+                                     {/*<Field type="date" className="form-control shadow inputDesign"
+                                        id="SuperEligibleDate" name='SuperEligibleDate' /> */} 
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="SuperEligibleDate"
+                                          name="SuperEligibleDate"
+                                          selected={values.SuperEligibleDate}
+                                          onChange={(date) =>
+                                            setFieldValue("SuperEligibleDate", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='SuperEligibleDate' />
                                     </div>
                                   </div>
@@ -3470,7 +4341,7 @@ function SuperRetriement() {
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Formik
-                                  initialValues={InvestmentModalEdit ? InvestmentModal[0] : initialValuesInvestmentOptionDetails}
+                                  initialValues={InvestmentModalEdit ? InvestmentModalObj[0] : initialValuesInvestmentOptionDetails}
                                   validationSchema={validateYupSchemaInvestmentOptionDetails}
                                   onSubmit={On_submit_validateYupSchemaInvestmentOptionDetails}
                                   enableReinitialize
@@ -3531,15 +4402,15 @@ function SuperRetriement() {
                                               <tbody>
                                                 {
                                                   InvestmentModal.map((elem, index) => {
-                                                    let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
+                                                    // let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
                                                     return (
                                                       <tr>
                                                         <td>2r5rs</td>
-                                                        <td>{InvestmentOptionDetailsInvestment}</td>
-                                                        <td> {InvestmentOptionDetailsCurrentValue}</td>
+                                                        <td>{elem.InvestmentOption}</td>
+                                                        <td> {elem.CurrentValue}</td>
                                                         <td >
-                                                          <button type='button' onClick={() => InvestmentModaldeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                                          <button type='button' onClick={InvestmentModalupdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
+                                                          <button type='button' onClick={(e) => InvestmentModaldeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                                          <button type='button' onClick={(e)=>InvestmentModalupdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
                                                         </td>
 
                                                       </tr>
@@ -3561,7 +4432,7 @@ function SuperRetriement() {
                                           >
                                             Save
                                           </button>
-                                          <button
+                                          <button type='button'
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={handleClose}
                                           >
@@ -3576,1108 +4447,16 @@ function SuperRetriement() {
                               {/* NESTED INVESTMENT MODAL */}
 
                               <button type='button' onClick={handleShow2} className='btn bgColor modalBtn mx-2'>Insurance</button>
-                              {/* NESTED INSURANCE MODAL */}
-                              <Modal
-                                show={show2}
-                                onHide={handleClose2}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Insurance Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesInsuranceOptionDetails}
-                                  validationSchema={validateYupSchemaInsuranceOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaInsuranceOptionDetails}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
+                              {/* NESTED INSURANCE MODAL at line 4461 */}
 
-                                        <div className='row mx-auto'>
-                                          <div className='col md-6'>
-
-                                            {/* Toggle 1*/}
-                                            <label className="form-label">
-                                              Do you have any insurance attached?
-                                            </label>
-
-                                            {/* switch button style */}
-                                            <div className="form-check form-switch m-0 p-0 ">
-                                              <div className="radiobutton">
-                                                <input type="radio" name="insuranceAttachedOption"
-                                                  id="insuranceAttachedOption" value="Yes"
-                                                  //  onClick={() => investmentRadioHandler("Yes")}
-                                                  onChange={handleChange}
-                                                  checked={values.insuranceAttachedOption === "Yes"}
-                                                />
-                                                <label htmlFor="insuranceAttachedOption" className="label1">
-                                                  <span>YES</span>
-                                                </label>
-                                                <input type="radio" name="insuranceAttachedOption"
-                                                  id="insuranceAttachedOption1" value="No"
-                                                  // onClick={() => investmentRadioHandler("No")}
-                                                  onChange={handleChange}
-                                                  checked={values.insuranceAttachedOption === "No"}
-                                                />
-                                                <label htmlFor="insuranceAttachedOption1" className="label2">
-                                                  <span>NO</span>
-                                                </label>
-                                              </div>
-
-                                            </div>
-
-
-
-                                          </div>
-                                          {/* Toggle # 1*/}
-                                          {values.insuranceAttachedOption === "Yes" &&
-                                            <div className='col md-6'>
-
-                                              {/* Toggle 2*/}
-                                              <label className="form-label">
-                                                Do you have any Life/TPD insurance?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="insuranceLifeTPDAttached"
-                                                    id="insuranceLifeTPDAttached" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.insuranceLifeTPDAttached === "Yes"}
-                                                  />
-                                                  <label htmlFor="insuranceLifeTPDAttached" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="insuranceLifeTPDAttached"
-                                                    id="insuranceLifeTPDAttached1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.insuranceLifeTPDAttached === "No"}
-                                                  />
-                                                  <label htmlFor="insuranceLifeTPDAttached1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                              {/* Toggle # 2*/}
-                                            </div>}
-                                        </div>
-                                        {values.insuranceLifeTPDAttached == "Yes" && values.insuranceAttachedOption == "Yes" &&
-                                          <div>
-                                            {/* Row # 1 */}
-                                            <div className='row'>
-                                              <div className="col-md-4">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="CoverType" className="form-label">
-                                                    Cover Type
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="CoverType"
-                                                    name="CoverType"
-                                                    className="form-select shadow  inputDesign"
-                                                    onChange={(e) => setFieldValue("CoverType", e.target.value)}
-                                                    value={values.CoverType}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Fixed Level">Fixed Level</option>
-                                                    <option value="Unitised">Unitised</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="CoverType" />
-
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="LifeCover" className="form-label">Life Cover</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="LifeCover" name='LifeCover' placeholder="Life Cover" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='LifeCover' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="TPDCover" className="form-label">TPD Cover</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="TPDCover" name='TPDCover' placeholder="TPD Cover" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='TPDCover' />
-                                                </div>
-                                              </div>
-                                            </div>
-                                            {/* Row # 1 */}
-                                            {/* Row # 2 */}
-                                            <div className='row'>
-                                              <div className="col-md-4">
-                                                <div className="mb-3 mt-2">
-                                                  <label htmlFor="CostPA" className="form-label">Cost p.a.</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="CostPA" name='CostPA' placeholder="Cost p.a." />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='CostPA' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3 mt-2">
-                                                  <label htmlFor="PremiumType" className="form-label">
-                                                    Premium Type
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="PremiumType"
-                                                    name="PremiumType" placeholder='Premium Type'
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("PremiumType", e.target.value)}
-                                                    value={values.PremiumType}
-                                                  >
-                                                    <option value="Level">Level</option>
-                                                    <option value="Stepped">Stepped</option>
-                                                    <option value="Other">Other</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumType" />
-
-                                                </div>
-                                              </div>
-
-                                              <div className='col-md-4 mt-2 mb-3'>
-                                                <label className="form-label">
-                                                  Any Loading Or Exclusions?
-                                                </label>
-                                                {/* switch button style */}
-                                                <div className="form-check form-switch m-0 p-0 ">
-                                                  <div className="radiobutton">
-                                                    <input type="radio" name="anyLoadingOrExclusionsAttached"
-                                                      id="anyLoadingOrExclusionsAttached" value="Yes"
-                                                      //  onClick={() => investmentRadioHandler("Yes")}
-                                                      onChange={handleChange}
-                                                      checked={values.anyLoadingOrExclusionsAttached === "Yes"}
-                                                    />
-                                                    <label htmlFor="anyLoadingOrExclusionsAttached" className="label1">
-                                                      <span>YES</span>
-                                                    </label>
-                                                    <input type="radio" name="anyLoadingOrExclusionsAttached"
-                                                      id="anyLoadingOrExclusionsAttached1" value="No"
-                                                      //onClick={() => investmentRadioHandler("No")}
-                                                      onChange={handleChange}
-                                                      checked={values.anyLoadingOrExclusionsAttached === "No"}
-                                                    />
-                                                    <label htmlFor="anyLoadingOrExclusionsAttached1" className="label2">
-                                                      <span>NO</span>
-                                                    </label>
-                                                  </div>
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row # 2 */}
-
-                                          </div>}
-                                        {/* Row # 3 */}
-                                        <div className='row'>
-
-                                          {values.anyLoadingOrExclusionsAttached === "Yes" && values.insuranceLifeTPDAttached === "Yes" && values.insuranceAttachedOption === "Yes" && <div className="col-md-4">
-                                            <div className="mb-3 mt-2">
-                                              <label htmlFor="Pleaseprovidedetails" className="form-label">Please provide details </   label>
-                                              <Field className="form-control shadow inputDesign"
-                                                id="Pleaseprovidedetails" name='Pleaseprovidedetails' placeholder="Please provide details" />
-                                              <ErrorMessage component='div' className='text-danger fw-bold' name='Pleaseprovidedetails' />
-                                            </div>
-                                          </div>}
-
-                                          {values.insuranceAttachedOption === "Yes" && <div className='col-md-4 mt-2 mb-3'>
-                                            <label className="form-label">
-                                              Have any Income Protection?
-                                            </label>
-                                            {/* switch button style */}
-                                            <div className="form-check form-switch m-0 p-0 ">
-                                              <div className="radiobutton">
-                                                <input type="radio" name="incomeProtectionAttached"
-                                                  id="incomeProtectionAttached" value="Yes"
-                                                  //  onClick={() => investmentRadioHandler("Yes")}
-                                                  onChange={handleChange}
-                                                  checked={values.incomeProtectionAttached === "Yes"}
-                                                />
-                                                <label htmlFor="incomeProtectionAttached" className="label1">
-                                                  <span>YES</span>
-                                                </label>
-                                                <input type="radio" name="incomeProtectionAttached"
-                                                  id="incomeProtectionAttached1" value="No"
-                                                  //onClick={() => investmentRadioHandler("No")}
-                                                  onChange={handleChange}
-                                                  checked={values.incomeProtectionAttached === "No"}
-                                                />
-                                                <label htmlFor="incomeProtectionAttached1" className="label2">
-                                                  <span>NO</span>
-                                                </label>
-                                              </div>
-
-                                            </div>
-                                          </div>}
-
-                                        </div>
-                                        {/* YAHN SE RENDERING START */}
-
-                                        {values.incomeProtectionAttached == "Yes" && values.insuranceAttachedOption == "Yes" && <div>
-                                          <div className="col-md-4">
-                                            <div className="mb-3 mt-2">
-                                              <label htmlFor="MonthlyBenefit" className="form-label">Monthly Benefit</   label>
-                                              <Field type="number" className="form-control shadow inputDesign"
-                                                id="MonthlyBenefit" name='MonthlyBenefit' placeholder="Monthly Benefit" />
-                                              <ErrorMessage component='div' className='text-danger fw-bold' name='MonthlyBenefit' />
-                                            </div>
-                                          </div>
-
-                                          {/* Row # 3 */}
-
-                                          {/* Row # 4 */}
-                                          <div className='row'>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="waitingPeriod" className="form-label">
-                                                  Waiting Period
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="waitingPeriod"
-                                                  name="waitingPeriod" placeholder='Waiting Period'
-                                                  className="form-select shadow  inputDesign"
-                                                  onChange={(e) => setFieldValue("waitingPeriod", e.target.value)}
-                                                  value={values.waitingPeriod}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="30 Days">30 Days</option>
-                                                  <option value="60 Days">60 Days</option>
-                                                  <option value="90 Days">90 Days</option>
-                                                  <option value="180 Days">180 Days</option>
-                                                  <option value="1 Year">1 Year</option>
-                                                  <option value="2 Year">2 Year</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="waitingPeriod" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="benefitPeriod" className="form-label">
-                                                  Benefit Period
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="benefitPeriod"
-                                                  name="benefitPeriod" placeholder='Benefit Period'
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("benefitPeriod", e.target.value)}
-                                                  value={values.benefitPeriod}
-                                                >
-                                                  <option value="Select">Select</option>
-                                                  <option value="1 Year">1 Year</option>
-                                                  <option value="2 Years">2 Years</option>
-                                                  <option value="5 Years">5 Years</option>
-                                                  <option value="Age Until 60">Age Until 60</option>
-                                                  <option value="Age Until 65">Age Until 65</option>
-                                                  <option value="Age Until 67">Age Until 67</option>
-                                                  <option value="Age Until 70">Age Until 70</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="benefitPeriod" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="agreedOrIndemnity" className="form-label">
-                                                  Agreed or indemnity?
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="agreedOrIndemnity"
-                                                  name="agreedOrIndemnity" placeholder='Agreed or indemnity?'
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("agreedOrIndemnity", e.target.value)}
-                                                  value={values.agreedOrIndemnity}
-                                                >
-                                                  <option value="Select">Select</option>
-                                                  <option value="Agreed">Agreed</option>
-                                                  <option value="Indemnity">Indemnitys</option>
-
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="agreedOrIndemnity" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row # 4 */}
-                                          {/* Row # 5 */}
-                                          <div className='row'>
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="CostPASecond" className="form-label">Cost p.a.</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="CostPASecond" name='CostPASecond' placeholder="Cost p.a." />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='CostPASecond' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="PremiumTypeSecond" className="form-label">
-                                                  Premium Type
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="PremiumTypeSecond"
-                                                  name="PremiumTypeSecond" placeholder='Premium Type'
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("PremiumTypeSecond", e.target.value)}
-                                                  value={values.PremiumTypeSecond}
-                                                >
-                                                  <option value="Level">Level</option>
-                                                  <option value="Stepped">Stepped</option>
-                                                  <option value="Other">Other</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumTypeSecond" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Includes Super Continuance?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="IncludesSuperContinuance"
-                                                    id="IncludesSuperContinuance" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.IncludesSuperContinuance === "Yes"}
-                                                  />
-                                                  <label htmlFor="IncludesSuperContinuance" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="IncludesSuperContinuance"
-                                                    id="IncludesSuperContinuance1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.IncludesSuperContinuance === "No"}
-                                                  />
-                                                  <label htmlFor="IncludesSuperContinuance1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row # 5 */}
-
-                                          {/* Row # 6 */}
-                                          <div className='row'>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Is the benefit indexed?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="Isthebenefitindexed"
-                                                    id="Isthebenefitindexed" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.Isthebenefitindexed === "Yes"}
-                                                  />
-                                                  <label htmlFor="Isthebenefitindexed" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="Isthebenefitindexed"
-                                                    id="Isthebenefitindexed1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.Isthebenefitindexed === "No"}
-                                                  />
-                                                  <label htmlFor="Isthebenefitindexed1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Any Loading Or Exclusions?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="AnyLoadingOrExclusions"
-                                                    id="AnyLoadingOrExclusions" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.AnyLoadingOrExclusions === "Yes"}
-                                                  />
-                                                  <label htmlFor="AnyLoadingOrExclusions" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="AnyLoadingOrExclusions"
-                                                    id="AnyLoadingOrExclusions1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.AnyLoadingOrExclusions === "No"}
-                                                  />
-                                                  <label htmlFor="AnyLoadingOrExclusions1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                            {values.AnyLoadingOrExclusions === "Yes" && <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="PleaseprovidedetailsSecond" className="form-label">Please provide details</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="PleaseprovidedetailsSecond" name='PleaseprovidedetailsSecond' placeholder="Please provide details" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='PleaseprovidedetailsSecond' />
-                                              </div>
-                                            </div>
-                                            }
-                                          </div>
-                                          {/* Row # 6 */}
-                                        </div>}
-
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            //onClick={handleClose2}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClose2}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED INSURANCE MODAL */}
 
                               <button type='button' onClick={handleShow3} className='btn bgColor modalBtn'>Beneficiaries</button>
-                              {/* NESTED BENFICIARIES MODAL */}
-                              <Modal
-                                show={show3}
-                                onHide={handleClose3}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Beneficiaries Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesBeneficiariesOptionDetails}
-                                  validationSchema={validateYupSchemaBeneficiariesOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaBeneficiariesOptionDetails}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
-                                        {/* Family Assets Details*/}
+                              {/* NESTED BENFICIARIES MODAL  at line 4648  */}
 
-
-
-                                        <label className="form-label">
-                                          Do you have any Nominated Beneficiaries on the Account?
-                                        </label>
-                                        {/* switch button style */}
-                                        <div className="form-check form-switch m-0 p-0 ">
-                                          <div className="radiobutton">
-                                            <input type="radio" name="clientNestedbeneficiariesAttached"
-                                              id="clientNestedbeneficiariesAttached1" value="Yes"
-                                              //  onClick={() => beneficiariesRadioHandler("Yes")}
-                                              onChange={handleChange}
-                                              checked={values.clientNestedbeneficiariesAttached === "Yes"}
-                                            />
-                                            <label htmlFor="clientNestedbeneficiariesAttached1" className="label1">
-                                              <span>YES</span>
-                                            </label>
-                                            <input type="radio" name="clientNestedbeneficiariesAttached"
-                                              id="clientNestedbeneficiariesAttached2" value="No"
-                                              //onClick={() => beneficiariesRadioHandler("No")}
-                                              onChange={handleChange}
-                                              checked={values.clientNestedbeneficiariesAttached === "No"}
-                                            />
-                                            <label htmlFor="clientNestedbeneficiariesAttached2" className="label2">
-                                              <span>NO</span>
-                                            </label>
-                                          </div>
-                                        </div>
-
-                                        {values.clientNestedbeneficiariesAttached == "Yes" &&
-                                          <div className=''>
-                                            <div className="row">
-                                              <div className="col-md-6">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="NomiationTypeBeneficiary" className="form-label">
-                                                    Nomination Type
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="NomiationTypeBeneficiary"
-                                                    name="NomiationTypeBeneficiary"
-                                                    className="form-select shadow  inputDesign"
-                                                    onChange={(e) => setFieldValue("NomiationTypeBeneficiary", e.target.value)}
-                                                    value={values.NomiationTypeBeneficiary}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
-                                                    <option value="Binding Death Nominations">Binding Death Nominations</option>
-                                                    <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
-                                                    <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
-                                                    <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypeBeneficiary" />
-
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-6">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="BeneficiariesOptionDetailsBeneficiaries" className="form-label">
-                                                    How many beneficiaries do you have?
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="BeneficiariesOptionDetailsBeneficiaries"
-                                                    name="BeneficiariesOptionDetailsBeneficiaries"
-                                                    className="form-select shadow  inputDesign"
-                                                    onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
-                                                    value={values.BeneficiariesOptionDetailsBeneficiaries}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
-
-                                                </div>
-                                              </div>
-                                            </div>
-
-                                            {/* Row 1*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Beneficiary1" className="form-label">Beneficiary 1</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="Beneficiary1" name='Beneficiary1' placeholder="Beneficiary 1" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary1' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefit1" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefit1" name='ShareofBenefit1' placeholder="Share of Benefits 1" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit1' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsRelationship1" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsRelationship1"
-                                                    name="RelationshipOptionDetailsRelationship1"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship1", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsRelationship1}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship1" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-
-                                            {/* Row 2*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Beneficiary2" className="form-label">Beneficiary 2</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="Beneficiary2" name='Beneficiary2' placeholder="Beneficiary 2" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary2' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefit2" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefit2" name='ShareofBenefit2' placeholder="Share of Benefits 2" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit2' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsRelationship2" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsRelationship2"
-                                                    name="RelationshipOptionDetailsRelationship2"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship2", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsRelationship2}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship2" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 2*/}
-
-
-                                            {/* Row 3*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Beneficiary3" className="form-label">Beneficiary 3</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="Beneficiary3" name='Beneficiary3' placeholder="Beneficiary 3" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary3' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefit3" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefit3" name='ShareofBenefit3' placeholder="Share of Benefits 3" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit3' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsRelationship3" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsRelationship3"
-                                                    name="RelationshipOptionDetailsRelationship3"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship3", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsRelationship3}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship3" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 3*/}
-
-
-                                            {/* Row 4*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Beneficiary4" className="form-label">Beneficiary 4</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="Beneficiary4" name='Beneficiary4' placeholder="Beneficiary 4" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary4' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefit4" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefit4" name='ShareofBenefit4' placeholder="Share of Benefits 4" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit4' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsRelationship4" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsRelationship4"
-                                                    name="RelationshipOptionDetailsRelationship4"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship4", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsRelationship4}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship4" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 4*/}
-
-
-                                            {/* Row 5*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Beneficiary5" className="form-label">Beneficiary 5</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="Beneficiary5" name='Beneficiary5' placeholder="Beneficiary 5" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary5' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefit5" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefit5" name='ShareofBenefit5' placeholder="Share of Benefits 5" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit5' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsRelationship5" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsRelationship5"
-                                                    name="RelationshipOptionDetailsRelationship5"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship5", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsRelationship5}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship5" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 5*/}
-
-                                          </div>}
-
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            // onClick={handleClose3}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClose3}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED BENFICIARIES MODAL */}
 
                               <button type='button' onClick={handleShow4} className='btn bgColor modalBtn mx-2'>Contributions</button>
                               {/* NESTED CONTRIBUTION MODAL */}
-                              <Modal
-                                show={show4}
-                                onHide={handleClose4}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Contribution Details heree
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesContributionOptionDetails}
-                                  validationSchema={validateYupSchemaContributionOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaContributionOptionDetails}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
 
-
-                                        <label className="form-label">
-                                          Do you contribute to this fund?
-                                        </label>
-                                        {/* switch button style */}
-                                        <div className="form-check form-switch m-0 p-0 ">
-                                          <div className="radiobutton">
-                                            <input type="radio" name="clientinvestmentAttached"
-                                              id="clientinvestmentAttached" value="Yes"
-                                              //  onClick={() => investmentRadioHandler("Yes")}
-                                              onChange={handleChange}
-                                              checked={values.clientinvestmentAttached === "Yes"}
-                                            />
-                                            <label htmlFor="clientinvestmentAttached" className="label1">
-                                              <span>YES</span>
-                                            </label>
-                                            <input type="radio" name="clientinvestmentAttached"
-                                              id="clientinvestmentAttached2" value="No"
-                                              //onClick={() => investmentRadioHandler("No")}
-                                              onChange={handleChange}
-                                              checked={values.clientinvestmentAttached === "No"}
-                                            />
-                                            <label htmlFor="clientinvestmentAttached2" className="label2">
-                                              <span>NO</span>
-                                            </label>
-                                          </div>
-
-                                        </div>
-                                        {values.clientinvestmentAttached == "Yes" && <div className=''>
-
-                                          {/* Row 1*/}
-                                          <div>
-                                            <h3 className='mt-5'>
-                                              FY 2023
-                                            </h3>
-
-                                            <div className="row justify-content-around mt-3 mb-3">
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Non_Concessional1" className="form-label">Non Concessional</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Non_Concessional1" name='Non_Concessional1' placeholder="Non Concessional" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Non_Concessional1' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Other1" className="form-label">Other</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Other1" name='Other1' placeholder="Other" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Other1' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="EmployerContributions1" className="form-label">Contributions</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="EmployerContributions1" name='EmployerContributions1' placeholder="Employer Contributions" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributions1' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="SalarySacAndPersonalDed1" className="form-label">Salary Sac & Ded</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="SalarySacAndPersonalDed1" name='SalarySacAndPersonalDed1' placeholder="Salary Sac & Personal Ded" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDed1' />
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                          {/* Row # 2 */}
-                                          <div>
-                                            <h3 className='mt-2'>
-                                              FY 2022
-                                            </h3>
-
-                                            <div className="row justify-content-around mt-3 mb-3">
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Non_Concessional2" className="form-label">Non Concessional</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Non_Concessional2" name='Non_Concessional2' placeholder="Non Concessional" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Non_Concessional2' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Other2" className="form-label">Other</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Other2" name='Other2' placeholder="Other" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Other2' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="EmployerContributions2" className="form-label">Contributions</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="EmployerContributions2" name='EmployerContributions2' placeholder="Employer Contributions" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributions2' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="SalarySacAndPersonalDed2" className="form-label">Salary Sac & Ded</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="SalarySacAndPersonalDed2" name='SalarySacAndPersonalDed2' placeholder="Salary Sac & Personal Ded" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDed2' />
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                          {/* Row # 2 */}
-
-                                          {/* Row # 3 */}
-                                          <div>
-                                            <h3 className='mt-2'>
-                                              FY 2021
-                                            </h3>
-
-                                            <div className="row justify-content-around mt-3 mb-3">
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Non_Concessional3" className="form-label">Non Concessional</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Non_Concessional3" name='Non_Concessional3' placeholder="Non Concessional" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Non_Concessional3' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Other3" className="form-label">Other</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Other3" name='Other3' placeholder="Other" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Other3' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="EmployerContributions3" className="form-label">Contributions</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="EmployerContributions3" name='EmployerContributions3' placeholder="Employer Contributions" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributions3' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="SalarySacAndPersonalDed3" className="form-label">Salary Sac & Ded</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="SalarySacAndPersonalDed3" name='SalarySacAndPersonalDed3' placeholder="Salary Sac & Personal Ded" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDed3' />
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                          {/* Row # 3 */}
-
-                                        </div>}
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            // onClick={handleClose4}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClose4}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED CONTRIBUTION MODAL */}
                               {/* Bank Account Detail Form */}
 
                             </Modal.Body>
@@ -4690,7 +4469,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={SuperhandleClose}
                                 >
@@ -4702,8 +4481,1114 @@ function SuperRetriement() {
                         }
                       </Formik>
                     </Modal>
-                    {/* ---------------------------------------------------- */}
+                    {/* INNer Modals  */}
+                    
+                      {/* NESTED INSURANCE MODAL */}
+                      <Modal
+                      show={show2}
+                      onHide={handleClose2}
+                      backdrop="static"
+                      className="modal-lg"
+                      keyboard={false}
+                    >
+                      <Modal.Header
+                        className="text-light modalBG "
+                        closeButton
+                      >
+                        <Modal.Title className="fontStyle">
+                          Insurance Details
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Formik
+                        initialValues={InsuranceDataListUpdateFlag ? InsuranceDataListObj[0] : initialValuesInsuranceOptionDetails}
+                        validationSchema={validateYupSchemaInsuranceOptionDetails}
+                        onSubmit={On_submit_validateYupSchemaInsuranceOptionDetails}
+                        enableReinitialize
+                      >
+                        {({ values, handleChange, setFieldValue, formik }) =>
+                          <Form>
+                            <Modal.Body>
 
+                              <div className='row mx-auto'>
+                                <div className='col md-6'>
+
+                                  {/* Toggle 1*/}
+                                  <label className="form-label">
+                                    Do you have any insurance attached?
+                                  </label>
+
+                                  {/* switch button style */}
+                                  <div className="form-check form-switch m-0 p-0 ">
+                                    <div className="radiobutton">
+                                      <input type="radio" name="insuranceAttachedOption"
+                                        id="insuranceAttachedOption" value="Yes"
+                                        //  onClick={() => investmentRadioHandler("Yes")}
+                                        onChange={handleChange}
+                                        checked={values.insuranceAttachedOption === "Yes"}
+                                      />
+                                      <label htmlFor="insuranceAttachedOption" className="label1">
+                                        <span>YES</span>
+                                      </label>
+                                      <input type="radio" name="insuranceAttachedOption"
+                                        id="insuranceAttachedOption1" value="No"
+                                        // onClick={() => investmentRadioHandler("No")}
+                                        onChange={handleChange}
+                                        checked={values.insuranceAttachedOption === "No"}
+                                      />
+                                      <label htmlFor="insuranceAttachedOption1" className="label2">
+                                        <span>NO</span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+
+
+
+                                </div>
+                                {/* Toggle # 1*/}
+                                {values.insuranceAttachedOption === "Yes" &&
+                                  <div className='col md-6'>
+
+                                    {/* Toggle 2*/}
+                                    <label className="form-label">
+                                      Do you have any Life/TPD insurance?
+                                    </label>
+                                    {/* switch button style */}
+                                    <div className="form-check form-switch m-0 p-0 ">
+                                      <div className="radiobutton">
+                                        <input type="radio" name="insuranceLifeTPDAttached"
+                                          id="insuranceLifeTPDAttached" value="Yes"
+                                          //  onClick={() => investmentRadioHandler("Yes")}
+                                          onChange={handleChange}
+                                          checked={values.insuranceLifeTPDAttached === "Yes"}
+                                        />
+                                        <label htmlFor="insuranceLifeTPDAttached" className="label1">
+                                          <span>YES</span>
+                                        </label>
+                                        <input type="radio" name="insuranceLifeTPDAttached"
+                                          id="insuranceLifeTPDAttached1" value="No"
+                                          //onClick={() => investmentRadioHandler("No")}
+                                          onChange={handleChange}
+                                          checked={values.insuranceLifeTPDAttached === "No"}
+                                        />
+                                        <label htmlFor="insuranceLifeTPDAttached1" className="label2">
+                                          <span>NO</span>
+                                        </label>
+                                      </div>
+
+                                    </div>
+                                    {/* Toggle # 2*/}
+                                  </div>}
+                              </div>
+                              {values.insuranceLifeTPDAttached == "Yes" && values.insuranceAttachedOption == "Yes" &&
+                                <div>
+                                  {/* Row # 1 */}
+                                  <div className='row'>
+                                    <div className="col-md-4">
+                                      <div className="mb-3 mt-5">
+                                        <label htmlFor="CoverType" className="form-label">
+                                          Cover Type
+                                        </label>
+                                        <Field
+                                          as='select'
+                                          id="CoverType"
+                                          name="CoverType"
+                                          className="form-select shadow  inputDesign"
+                                          onChange={(e) => setFieldValue("CoverType", e.target.value)}
+                                          value={values.CoverType}
+                                        >
+                                          <option value="">Select</option>
+                                          <option value="Fixed Level">Fixed Level</option>
+                                          <option value="Unitised">Unitised</option>
+                                        </Field>
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="CoverType" />
+
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3 mt-5">
+                                        <label htmlFor="LifeCover" className="form-label">Life Cover</   label>
+                                        <Field type="number" className="form-control shadow inputDesign"
+                                          id="LifeCover" name='LifeCover' placeholder="Life Cover" />
+                                        <ErrorMessage component='div' className='text-danger fw-bold' name='LifeCover' />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3 mt-5">
+                                        <label htmlFor="TPDCover" className="form-label">TPD Cover</   label>
+                                        <Field type="number" className="form-control shadow inputDesign"
+                                          id="TPDCover" name='TPDCover' placeholder="TPD Cover" />
+                                        <ErrorMessage component='div' className='text-danger fw-bold' name='TPDCover' />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Row # 1 */}
+                                  {/* Row # 2 */}
+                                  <div className='row'>
+                                    <div className="col-md-4">
+                                      <div className="mb-3 mt-2">
+                                        <label htmlFor="CostPA" className="form-label">Cost p.a.</   label>
+                                        <Field type="number" className="form-control shadow inputDesign"
+                                          id="CostPA" name='CostPA' placeholder="Cost p.a." />
+                                        <ErrorMessage component='div' className='text-danger fw-bold' name='CostPA' />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                      <div className="mb-3 mt-2">
+                                        <label htmlFor="PremiumType" className="form-label">
+                                          Premium Type
+                                        </label>
+                                        <Field
+                                          as='select'
+                                          id="PremiumType"
+                                          name="PremiumType" placeholder='Premium Type'
+                                          className="form-select shadow  inputDesign"
+                                          //onChange={(e) => setFieldValue("PremiumType", e.target.value)}
+                                          value={values.PremiumType}
+                                        >
+                                          <option value="Level">Level</option>
+                                          <option value="Stepped">Stepped</option>
+                                          <option value="Other">Other</option>
+                                        </Field>
+                                        <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumType" />
+
+                                      </div>
+                                    </div>
+
+                                    <div className='col-md-4 mt-2 mb-3'>
+                                      <label className="form-label">
+                                        Any Loading Or Exclusions?
+                                      </label>
+                                      {/* switch button style */}
+                                      <div className="form-check form-switch m-0 p-0 ">
+                                        <div className="radiobutton">
+                                          <input type="radio" name="anyLoadingOrExclusionsAttached"
+                                            id="anyLoadingOrExclusionsAttached" value="Yes"
+                                            //  onClick={() => investmentRadioHandler("Yes")}
+                                            onChange={handleChange}
+                                            checked={values.anyLoadingOrExclusionsAttached === "Yes"}
+                                          />
+                                          <label htmlFor="anyLoadingOrExclusionsAttached" className="label1">
+                                            <span>YES</span>
+                                          </label>
+                                          <input type="radio" name="anyLoadingOrExclusionsAttached"
+                                            id="anyLoadingOrExclusionsAttached1" value="No"
+                                            //onClick={() => investmentRadioHandler("No")}
+                                            onChange={handleChange}
+                                            checked={values.anyLoadingOrExclusionsAttached === "No"}
+                                          />
+                                          <label htmlFor="anyLoadingOrExclusionsAttached1" className="label2">
+                                            <span>NO</span>
+                                          </label>
+                                        </div>
+
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                  {/* Row # 2 */}
+
+                                </div>}
+                              {/* Row # 3 */}
+                              <div className='row'>
+
+                                {values.anyLoadingOrExclusionsAttached === "Yes" && values.insuranceLifeTPDAttached === "Yes" && values.insuranceAttachedOption === "Yes" && <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="Pleaseprovidedetails" className="form-label">Please provide details </   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="Pleaseprovidedetails" name='Pleaseprovidedetails' placeholder="Please provide details" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='Pleaseprovidedetails' />
+                                  </div>
+                                </div>}
+
+                                {values.insuranceAttachedOption === "Yes" && <div className='col-md-4 mt-2 mb-3'>
+                                  <label className="form-label">
+                                    Have any Income Protection?
+                                  </label>
+                                  {/* switch button style */}
+                                  <div className="form-check form-switch m-0 p-0 ">
+                                    <div className="radiobutton">
+                                      <input type="radio" name="incomeProtectionAttached"
+                                        id="incomeProtectionAttached" value="Yes"
+                                        //  onClick={() => investmentRadioHandler("Yes")}
+                                        onChange={handleChange}
+                                        checked={values.incomeProtectionAttached === "Yes"}
+                                      />
+                                      <label htmlFor="incomeProtectionAttached" className="label1">
+                                        <span>YES</span>
+                                      </label>
+                                      <input type="radio" name="incomeProtectionAttached"
+                                        id="incomeProtectionAttached1" value="No"
+                                        //onClick={() => investmentRadioHandler("No")}
+                                        onChange={handleChange}
+                                        checked={values.incomeProtectionAttached === "No"}
+                                      />
+                                      <label htmlFor="incomeProtectionAttached1" className="label2">
+                                        <span>NO</span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+                                </div>}
+
+                              </div>
+                              {/* YAHN SE RENDERING START */}
+
+                              {values.incomeProtectionAttached == "Yes" && values.insuranceAttachedOption == "Yes" && <div>
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="MonthlyBenefit" className="form-label">Monthly Benefit</   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="MonthlyBenefit" name='MonthlyBenefit' placeholder="Monthly Benefit" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='MonthlyBenefit' />
+                                  </div>
+                                </div>
+
+                                {/* Row # 3 */}
+
+                                {/* Row # 4 */}
+                                <div className='row'>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3 mt-2">
+                                      <label htmlFor="waitingPeriod" className="form-label">
+                                        Waiting Period
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="waitingPeriod"
+                                        name="waitingPeriod" placeholder='Waiting Period'
+                                        className="form-select shadow  inputDesign"
+                                        onChange={(e) => setFieldValue("waitingPeriod", e.target.value)}
+                                        value={values.waitingPeriod}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="30 Days">30 Days</option>
+                                        <option value="60 Days">60 Days</option>
+                                        <option value="90 Days">90 Days</option>
+                                        <option value="180 Days">180 Days</option>
+                                        <option value="1 Year">1 Year</option>
+                                        <option value="2 Year">2 Year</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="waitingPeriod" />
+
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3 mt-2">
+                                      <label htmlFor="benefitPeriod" className="form-label">
+                                        Benefit Period
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="benefitPeriod"
+                                        name="benefitPeriod" placeholder='Benefit Period'
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("benefitPeriod", e.target.value)}
+                                        value={values.benefitPeriod}
+                                      >
+                                        <option value="Select">Select</option>
+                                        <option value="1 Year">1 Year</option>
+                                        <option value="2 Years">2 Years</option>
+                                        <option value="5 Years">5 Years</option>
+                                        <option value="Age Until 60">Age Until 60</option>
+                                        <option value="Age Until 65">Age Until 65</option>
+                                        <option value="Age Until 67">Age Until 67</option>
+                                        <option value="Age Until 70">Age Until 70</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="benefitPeriod" />
+
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3 mt-2">
+                                      <label htmlFor="agreedOrIndemnity" className="form-label">
+                                        Agreed or indemnity?
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="agreedOrIndemnity"
+                                        name="agreedOrIndemnity" placeholder='Agreed or indemnity?'
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("agreedOrIndemnity", e.target.value)}
+                                        value={values.agreedOrIndemnity}
+                                      >
+                                        <option value="Select">Select</option>
+                                        <option value="Agreed">Agreed</option>
+                                        <option value="Indemnity">Indemnitys</option>
+
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="agreedOrIndemnity" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row # 4 */}
+                                {/* Row # 5 */}
+                                <div className='row'>
+                                  <div className="col-md-4">
+                                    <div className="mb-3 mt-2">
+                                      <label htmlFor="CostPASecond" className="form-label">Cost p.a.</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="CostPASecond" name='CostPASecond' placeholder="Cost p.a." />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='CostPASecond' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3 mt-2">
+                                      <label htmlFor="PremiumTypeSecond" className="form-label">
+                                        Premium Type
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="PremiumTypeSecond"
+                                        name="PremiumTypeSecond" placeholder='Premium Type'
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("PremiumTypeSecond", e.target.value)}
+                                        value={values.PremiumTypeSecond}
+                                      >
+                                        <option value="Level">Level</option>
+                                        <option value="Stepped">Stepped</option>
+                                        <option value="Other">Other</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumTypeSecond" />
+
+                                    </div>
+                                  </div>
+
+                                  <div className='col-md-4 mt-2 mb-3'>
+                                    <label className="form-label">
+                                      Includes Super Continuance?
+                                    </label>
+                                    {/* switch button style */}
+                                    <div className="form-check form-switch m-0 p-0 ">
+                                      <div className="radiobutton">
+                                        <input type="radio" name="IncludesSuperContinuance"
+                                          id="IncludesSuperContinuance" value="Yes"
+                                          //  onClick={() => investmentRadioHandler("Yes")}
+                                          onChange={handleChange}
+                                          checked={values.IncludesSuperContinuance === "Yes"}
+                                        />
+                                        <label htmlFor="IncludesSuperContinuance" className="label1">
+                                          <span>YES</span>
+                                        </label>
+                                        <input type="radio" name="IncludesSuperContinuance"
+                                          id="IncludesSuperContinuance1" value="No"
+                                          //onClick={() => investmentRadioHandler("No")}
+                                          onChange={handleChange}
+                                          checked={values.IncludesSuperContinuance === "No"}
+                                        />
+                                        <label htmlFor="IncludesSuperContinuance1" className="label2">
+                                          <span>NO</span>
+                                        </label>
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row # 5 */}
+
+                                {/* Row # 6 */}
+                                <div className='row'>
+
+                                  <div className='col-md-4 mt-2 mb-3'>
+                                    <label className="form-label">
+                                      Is the benefit indexed?
+                                    </label>
+                                    {/* switch button style */}
+                                    <div className="form-check form-switch m-0 p-0 ">
+                                      <div className="radiobutton">
+                                        <input type="radio" name="Isthebenefitindexed"
+                                          id="Isthebenefitindexed" value="Yes"
+                                          //  onClick={() => investmentRadioHandler("Yes")}
+                                          onChange={handleChange}
+                                          checked={values.Isthebenefitindexed === "Yes"}
+                                        />
+                                        <label htmlFor="Isthebenefitindexed" className="label1">
+                                          <span>YES</span>
+                                        </label>
+                                        <input type="radio" name="Isthebenefitindexed"
+                                          id="Isthebenefitindexed1" value="No"
+                                          //onClick={() => investmentRadioHandler("No")}
+                                          onChange={handleChange}
+                                          checked={values.Isthebenefitindexed === "No"}
+                                        />
+                                        <label htmlFor="Isthebenefitindexed1" className="label2">
+                                          <span>NO</span>
+                                        </label>
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+                                  <div className='col-md-4 mt-2 mb-3'>
+                                    <label className="form-label">
+                                      Any Loading Or Exclusions?
+                                    </label>
+                                    {/* switch button style */}
+                                    <div className="form-check form-switch m-0 p-0 ">
+                                      <div className="radiobutton">
+                                        <input type="radio" name="AnyLoadingOrExclusions"
+                                          id="AnyLoadingOrExclusions" value="Yes"
+                                          //  onClick={() => investmentRadioHandler("Yes")}
+                                          onChange={handleChange}
+                                          checked={values.AnyLoadingOrExclusions === "Yes"}
+                                        />
+                                        <label htmlFor="AnyLoadingOrExclusions" className="label1">
+                                          <span>YES</span>
+                                        </label>
+                                        <input type="radio" name="AnyLoadingOrExclusions"
+                                          id="AnyLoadingOrExclusions1" value="No"
+                                          //onClick={() => investmentRadioHandler("No")}
+                                          onChange={handleChange}
+                                          checked={values.AnyLoadingOrExclusions === "No"}
+                                        />
+                                        <label htmlFor="AnyLoadingOrExclusions1" className="label2">
+                                          <span>NO</span>
+                                        </label>
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+                                  {values.AnyLoadingOrExclusions === "Yes" && <div className="col-md-4">
+                                    <div className="mb-3 mt-2">
+                                      <label htmlFor="PleaseprovidedetailsSecond" className="form-label">Please provide details</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="PleaseprovidedetailsSecond" name='PleaseprovidedetailsSecond' placeholder="Please provide details" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='PleaseprovidedetailsSecond' />
+                                    </div>
+                                  </div>
+                                  }
+                                </div>
+                                {/* Row # 6 */}
+                              </div>}
+
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <div className="col-md-12">
+                                <button
+                                  className="float-end btn w-25  bgColor modalBtn"
+                                  //onClick={handleClose2}
+                                  type='submit'
+                                >
+                                  Save
+                                </button>
+                                <button type='button'
+                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                  onClick={handleClose2}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </Modal.Footer>
+                          </Form>
+                        }
+                      </Formik>
+                    </Modal>
+                    {/* NESTED INSURANCE MODAL */}
+                    
+                    {/* NESTED BENFICIARIES MODAL */}
+                    <Modal
+                    show={show3}
+                    onHide={handleClose3}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                  >
+                    <Modal.Header
+                      className="text-light modalBG "
+                      closeButton
+                    >
+                      <Modal.Title className="fontStyle">
+                        Beneficiaries Details
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                      initialValues={BeneficiaryDataListUpdateFlag ? BeneficiaryDataListObj[0] : initialValuesBeneficiariesOptionDetails}
+                      validationSchema={validateYupSchemaBeneficiariesOptionDetails}
+                      onSubmit={On_submit_validateYupSchemaBeneficiariesOptionDetails}
+                      enableReinitialize
+                    >
+                      {({ values, handleChange, setFieldValue, formik }) =>
+                        <Form>
+                          <Modal.Body>
+                            {/* Family Assets Details*/}
+
+
+
+                            <label className="form-label">
+                              Do you have any Nominated Beneficiaries on the Account?
+                            </label>
+                            {/* switch button style */}
+                            <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="clientNestedbeneficiariesAttached"
+                                  id="clientNestedbeneficiariesAttached1" value="Yes"
+                                  //  onClick={() => beneficiariesRadioHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.clientNestedbeneficiariesAttached === "Yes"}
+                                />
+                                <label htmlFor="clientNestedbeneficiariesAttached1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="clientNestedbeneficiariesAttached"
+                                  id="clientNestedbeneficiariesAttached2" value="No"
+                                  //onClick={() => beneficiariesRadioHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.clientNestedbeneficiariesAttached === "No"}
+                                />
+                                <label htmlFor="clientNestedbeneficiariesAttached2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+                            </div>
+
+                            {values.clientNestedbeneficiariesAttached == "Yes" &&
+                              <div className=''>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <div className="mb-3 mt-5">
+                                      <label htmlFor="NomiationTypeBeneficiary" className="form-label">
+                                        Nomination Type
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="NomiationTypeBeneficiary"
+                                        name="NomiationTypeBeneficiary"
+                                        className="form-select shadow  inputDesign"
+                                        onChange={(e) => setFieldValue("NomiationTypeBeneficiary", e.target.value)}
+                                        value={values.NomiationTypeBeneficiary}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
+                                        <option value="Binding Death Nominations">Binding Death Nominations</option>
+                                        <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
+                                        <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
+                                        <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypeBeneficiary" />
+
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-6">
+                                    <div className="mb-3 mt-5">
+                                      <label htmlFor="BeneficiariesOptionDetailsBeneficiaries" className="form-label">
+                                        How many beneficiaries do you have?
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="BeneficiariesOptionDetailsBeneficiaries"
+                                        name="BeneficiariesOptionDetailsBeneficiaries"
+                                        className="form-select shadow  inputDesign"
+                                        onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
+                                        value={values.BeneficiariesOptionDetailsBeneficiaries}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Row 1*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="Beneficiary1" className="form-label">Beneficiary 1</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="Beneficiary1" name='Beneficiary1' placeholder="Beneficiary 1" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary1' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefit1" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefit1" name='ShareofBenefit1' placeholder="Share of Benefits 1" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit1' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsRelationship1" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsRelationship1"
+                                        name="RelationshipOptionDetailsRelationship1"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship1", e.target.value)}
+                                        value={values.RelationshipOptionDetailsRelationship1}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship1" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                                {/* Row 2*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="Beneficiary2" className="form-label">Beneficiary 2</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="Beneficiary2" name='Beneficiary2' placeholder="Beneficiary 2" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary2' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefit2" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefit2" name='ShareofBenefit2' placeholder="Share of Benefits 2" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit2' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsRelationship2" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsRelationship2"
+                                        name="RelationshipOptionDetailsRelationship2"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship2", e.target.value)}
+                                        value={values.RelationshipOptionDetailsRelationship2}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship2" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 2*/}
+
+
+                                {/* Row 3*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="Beneficiary3" className="form-label">Beneficiary 3</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="Beneficiary3" name='Beneficiary3' placeholder="Beneficiary 3" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary3' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefit3" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefit3" name='ShareofBenefit3' placeholder="Share of Benefits 3" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit3' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsRelationship3" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsRelationship3"
+                                        name="RelationshipOptionDetailsRelationship3"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship3", e.target.value)}
+                                        value={values.RelationshipOptionDetailsRelationship3}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship3" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 3*/}
+
+
+                                {/* Row 4*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="Beneficiary4" className="form-label">Beneficiary 4</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="Beneficiary4" name='Beneficiary4' placeholder="Beneficiary 4" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary4' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefit4" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefit4" name='ShareofBenefit4' placeholder="Share of Benefits 4" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit4' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsRelationship4" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsRelationship4"
+                                        name="RelationshipOptionDetailsRelationship4"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship4", e.target.value)}
+                                        value={values.RelationshipOptionDetailsRelationship4}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship4" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 4*/}
+
+
+                                {/* Row 5*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="Beneficiary5" className="form-label">Beneficiary 5</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="Beneficiary5" name='Beneficiary5' placeholder="Beneficiary 5" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Beneficiary5' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefit5" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefit5" name='ShareofBenefit5' placeholder="Share of Benefits 5" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit5' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsRelationship5" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsRelationship5"
+                                        name="RelationshipOptionDetailsRelationship5"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationship5", e.target.value)}
+                                        value={values.RelationshipOptionDetailsRelationship5}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationship5" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 5*/}
+
+                              </div>}
+
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <div className="col-md-12">
+                              <button
+                                className="float-end btn w-25  bgColor modalBtn"
+                                // onClick={handleClose3}
+                                type='submit'
+                              >
+                                Save
+                              </button>
+                              <button type='button'
+                                className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                onClick={handleClose3}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Modal.Footer>
+                        </Form>
+                      }
+                    </Formik>
+                  </Modal>
+                  {/* NESTED BENFICIARIES MODAL */}
+
+
+                  {/* NESTED CONTRIBUTION MODAL */}
+                  <Modal
+                    show={show4}
+                    onHide={handleClose4}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                  >
+                    <Modal.Header
+                      className="text-light modalBG "
+                      closeButton
+                    >
+                      <Modal.Title className="fontStyle">
+                        Contribution Details here 
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                      initialValues={contributionModalUpdateFlag ? contributionModalObj[0] : initialValuesContributionOptionDetails}
+                      validationSchema={validateYupSchemaContributionOptionDetails}
+                      onSubmit={On_submit_validateYupSchemaContributionOptionDetails}
+                      enableReinitialize
+                    >
+                      {({ values, handleChange, setFieldValue, formik }) =>
+                        <Form>
+                          <Modal.Body>
+
+
+                            <label className="form-label">
+                              Do you contribute to this fund?
+                            </label>
+                            {/* switch button style */}
+                            <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="clientinvestmentAttached"
+                                  id="clientinvestmentAttached" value="Yes"
+                                  //  onClick={() => investmentRadioHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.clientinvestmentAttached === "Yes"}
+                                />
+                                <label htmlFor="clientinvestmentAttached" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="clientinvestmentAttached"
+                                  id="clientinvestmentAttached2" value="No"
+                                  //onClick={() => investmentRadioHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.clientinvestmentAttached === "No"}
+                                />
+                                <label htmlFor="clientinvestmentAttached2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+                            </div>
+                            {values.clientinvestmentAttached == "Yes" && <div className=''>
+
+                              {/* Row 1*/}
+                              <div>
+                                <h3 className='mt-5'>
+                                  FY 2023
+                                </h3>
+
+                                <div className="row justify-content-around mt-3 mb-3">
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Non_Concessional1" className="form-label">Non Concessional</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Non_Concessional1" name='Non_Concessional1' placeholder="Non Concessional" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Non_Concessional1' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Other1" className="form-label">Other</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Other1" name='Other1' placeholder="Other" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Other1' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="EmployerContributions1" className="form-label">Contributions</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="EmployerContributions1" name='EmployerContributions1' placeholder="Employer Contributions" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributions1' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="SalarySacAndPersonalDed1" className="form-label">Salary Sac & Ded</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="SalarySacAndPersonalDed1" name='SalarySacAndPersonalDed1' placeholder="Salary Sac & Personal Ded" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDed1' />
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              {/* Row # 2 */}
+                              <div>
+                                <h3 className='mt-2'>
+                                  FY 2022
+                                </h3>
+
+                                <div className="row justify-content-around mt-3 mb-3">
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Non_Concessional2" className="form-label">Non Concessional</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Non_Concessional2" name='Non_Concessional2' placeholder="Non Concessional" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Non_Concessional2' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Other2" className="form-label">Other</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Other2" name='Other2' placeholder="Other" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Other2' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="EmployerContributions2" className="form-label">Contributions</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="EmployerContributions2" name='EmployerContributions2' placeholder="Employer Contributions" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributions2' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="SalarySacAndPersonalDed2" className="form-label">Salary Sac & Ded</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="SalarySacAndPersonalDed2" name='SalarySacAndPersonalDed2' placeholder="Salary Sac & Personal Ded" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDed2' />
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              {/* Row # 2 */}
+
+                              {/* Row # 3 */}
+                              <div>
+                                <h3 className='mt-2'>
+                                  FY 2021
+                                </h3>
+
+                                <div className="row justify-content-around mt-3 mb-3">
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Non_Concessional3" className="form-label">Non Concessional</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Non_Concessional3" name='Non_Concessional3' placeholder="Non Concessional" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Non_Concessional3' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Other3" className="form-label">Other</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Other3" name='Other3' placeholder="Other" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Other3' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="EmployerContributions3" className="form-label">Contributions</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="EmployerContributions3" name='EmployerContributions3' placeholder="Employer Contributions" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributions3' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="SalarySacAndPersonalDed3" className="form-label">Salary Sac & Ded</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="SalarySacAndPersonalDed3" name='SalarySacAndPersonalDed3' placeholder="Salary Sac & Personal Ded" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDed3' />
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              {/* Row # 3 */}
+
+                            </div>}
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <div className="col-md-12">
+                              <button
+                                className="float-end btn w-25  bgColor modalBtn"
+                                // onClick={handleClose4}
+                                type='submit'
+                              >
+                                Save
+                              </button>
+                              <button type='button'
+                                className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                onClick={handleClose4}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Modal.Footer>
+                        </Form>
+                      }
+                    </Formik>
+                  </Modal>
+                  {/* NESTED CONTRIBUTION MODAL */}
+
+
+                    {/* INNer Modals  */}
+
+                    {/* ---------------------------------------------------- */}
                     {/*CLIENT SUPER ACCOUNT DISPLAY TABLE */}
                     <div className='table-responsive my-3' id="ClientSuperAccountDisplayTable">
                       <table className="table table-bordered table-hover text-center">
@@ -4720,32 +5605,141 @@ function SuperRetriement() {
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {
-                                                  InvestmentModal.map((elem, index) => {
-                                                    let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
-                                                    return ( */}
+                          
+                        {ClientSuperAccounts.map((elem, index) => {
+                              return ( 
                           <tr>
-                            <td>AMTP</td>
-                            <td>1223</td>
-                            <td> CLient</td>
-                            <td> Yes</td>
+                            <td>{elem.Super_FundName}</td>
+                            <td>{elem.Super_MemberNO}</td>
+                            <td>{elem.Super_CurrentBalance}</td>
+                            <td>Yes</td>
                             <td>Yes</td>
                             <td>No</td>
-                            <td> Yes</td>
-                            <td>Un-comment</td>
-                            {/* <td >
-                                                          <button type='button' onClick={() => deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                                          <button type='button' onClick={updateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
-                                                        </td> */}
-
+                            <td>Yes</td>
+                            <td>
+                              <button type='button' onClick={(e)=>{ClientSuperAccountsDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                              <button type='button' onClick={(e)=>{ClientSuperAccountsUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                            </td> 
                           </tr>
-                          {/* );
-                                                  })} */}
+                           );
+                            })}
                         </tbody>
                       </table>
                     </div>
                     {/*CLIENT SUPER ACCOUNT DISPLAY TABLE */}
 
+                    
+                    {/*CLIENT SUPER ACCOUNT Insurance  DISPLAY TABLE */}
+                    <h3>Client Insurance</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>Cover Type</th>
+                      <th>Life Cover</th>
+                      <th>TPD Cover</th>
+                      <th>Cost p.a.</th>
+                      <th>Premium Type</th>
+                      <th>Any Loading Or Exclusions?</th>
+                      <th>Waiting Period</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {InsuranceDataList.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.CoverType}</th>
+                                <th>{elem.LifeCover}</th>
+                                <th>{elem.TPDCover}</th>
+                                <th>{elem.CostPA}</th>
+                                <th>{elem.PremiumType}</th>
+                                <th>{elem.LoadingExecutions}</th>
+                                <th>{elem.WaitingPeriod}</th>
+
+                                <th>
+                                <button type='button' onClick={(e)=>{InsuranceDataListDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{InsuranceDataListUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*CLIENT SUPER ACCOUNT Insurance  DISPLAY TABLE */}
+
+                    {/*CLIENT SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
+                    <h3>Client Benficiaries</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>No_ofBeneficiaries</th>
+                      <th>NominatedBeneficiary</th>
+                      <th>NominationType</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {BeneficiaryDataList.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.No_ofBeneficiaries}</th>
+                                <th>{elem.NominatedBeneficiary}</th>
+                                <th>{elem.NominationType}</th>
+
+                                <th>
+                                <button type='button' onClick={(e)=>{BeneficiaryDataListDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{BeneficiaryDataListUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*CLIENT SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
+
+                    {/*CLIENT SUPER ACCOUNT CONTRIBUTION  DISPLAY TABLE */}
+                    <h3>Client Contributions</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>Non Concessional Fy2023</th>
+                      <th>Salary Sac & Ded Fy2023</th>
+                      <th>Non Concessional Fy2022</th>
+                      <th>Salary Sac & Ded Fy2022</th>
+                      <th>Non Concessional Fy2021</th>
+                      <th>Salary Sac & Ded Fy2021</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {contributionModal.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.NonConcessional1}</th>
+                                <th>{elem.SalaryPersonalDed1}</th>
+                                <th>{elem.NonConcessional2}</th>
+                                <th>{elem.SalaryPersonalDed2}</th>
+                                <th>{elem.NonConcessional3}</th>
+                                <th>{elem.SalaryPersonalDed3}</th>
+                                <th>
+                                <button type='button' onClick={(e)=>{contributionModalDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{contributionModalUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*CLIENT SUPER ACCOUNT CONTRIBUTION  DISPLAY TABLE */}
 
                     <h3 className="">Partner Super Accounts</h3>
 
@@ -4828,10 +5822,10 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={InitialValuesMainPartnerSuperAccount}
+                        initialValues={PartnerSuperAccountsUpdateFlag ? PartnerSuperAccountsObj[0] : InitialValuesMainPartnerSuperAccount}
                         validationSchema={partnerSuperAccountMainValidationSchema}
                         onSubmit={PartnerSuperAccount_onSubmit}>
-                        {({ values, setFieldValue, setValues, handleChange, formik }) =>
+                        {({ values, setFieldValue, setValues, handleChange,handleBlur, formik }) =>
                           <Form>
                             <Modal.Body>
                               {/* Professional Advisor Detail Form */}
@@ -4967,16 +5961,54 @@ function SuperRetriement() {
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="Super2CommencementDate" className="form-label">Commencment Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="Super2CommencementDate" name='Super2CommencementDate' />
+                                   {/**   <Field type="date" className="form-control shadow inputDesign"
+                                        id="Super2CommencementDate" name='Super2CommencementDate' /> */}
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="Super2CommencementDate"
+                                          name="Super2CommencementDate"
+                                          selected={values.Super2CommencementDate}
+                                          onChange={(date) =>
+                                            setFieldValue("Super2CommencementDate", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='Super2CommencementDate' />
                                     </div>
                                   </div>
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="Super2EligibleDate" className="form-label">Eligible Service Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="Super2EligibleDate" name='Super2EligibleDate' />
+                                  {/**  <Field type="date" className="form-control shadow inputDesign"
+                                        id="Super2EligibleDate" name='Super2EligibleDate' /> */}  
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="Super2EligibleDate"
+                                          name="Super2EligibleDate"
+                                          selected={values.Super2EligibleDate}
+                                          onChange={(date) =>
+                                            setFieldValue("Super2EligibleDate", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='Super2EligibleDate' />
                                     </div>
                                   </div>
@@ -5088,7 +6120,7 @@ function SuperRetriement() {
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Formik
-                                  initialValues={InvestmentModalPartnerEdit ? InvestmentModalPartner[0] : initialValuesInvestmentPartnerOptionDetails}
+                                  initialValues={InvestmentModalPartnerEdit ? InvestmentModalPartnerObj[0] : initialValuesInvestmentPartnerOptionDetails}
                                   validationSchema={validateYupSchemaInvestmentPartnerOptionDetails}
                                   onSubmit={On_submit_validateYupSchemaInvestmentPartnerOptionDetails}
                                   enableReinitialize
@@ -5149,17 +6181,14 @@ function SuperRetriement() {
                                               <tbody>
                                                 {
                                                   InvestmentModalPartner.map((elem, index) => {
-                                                    let { InvestmentOptionDetailsInvestmentPartner, InvestmentOptionDetailsCurrentValuePartner } = elem;
                                                     return (
                                                       <tr>
                                                         <td>2r5rs</td>
-                                                        <td>{InvestmentOptionDetailsInvestmentPartner}</td>
-                                                        <td> {InvestmentOptionDetailsCurrentValuePartner}</td>
-
-
+                                                        <td>{elem.InvestmentOption}</td>
+                                                        <td> {elem.CurrentValue}</td>
                                                         <td >
                                                           <button type='button' onClick={() => InvestmentModalPartnerdeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                                          <button type='button' onClick={() => PartnerInvestmentModalupdateHandler()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                                          <button type='button' onClick={() => PartnerInvestmentModalupdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                                         </td>
 
@@ -5182,7 +6211,7 @@ function SuperRetriement() {
                                           >
                                             Save
                                           </button>
-                                          <button
+                                          <button type='button'
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={handleClosePartner}
                                           >
@@ -5198,1104 +6227,19 @@ function SuperRetriement() {
 
                               {/* INSURANCE MODEL PARTNER TRIGGER BUTTON */}
                               <button type='button' onClick={handleShowPartner2} className='btn bgColor modalBtn mx-2'>Insurance</button>
-                              {/* NESTED MODAL PARTNER -> INSURANCE */}
-                              {/* NESTED INSURANCE MODAL */}
-                              <Modal
-                                show={showPartner2}
-                                onHide={handleClosePartner2}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Insurance Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesInsurancePartnerOptionDetails}
-                                  validationSchema={validateYupSchemaInsurancePartnerOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaInsurancePartnerOptionDetails}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
-
-                                        <div className='row mx-auto'>
-                                          <div className='col md-6'>
-
-                                            {/* Toggle 1*/}
-                                            <label className="form-label">
-                                              Do you have any insurance attached?
-                                            </label>
-
-                                            {/* switch button style */}
-                                            <div className="form-check form-switch m-0 p-0 ">
-                                              <div className="radiobutton">
-                                                <input type="radio" name="insurancePartnerAttachedOption"
-                                                  id="insurancePartnerAttachedOption" value="Yes"
-                                                  //  onClick={() => investmentRadioHandler("Yes")}
-                                                  onChange={handleChange}
-                                                  checked={values.insurancePartnerAttachedOption === "Yes"}
-                                                />
-                                                <label htmlFor="insurancePartnerAttachedOption" className="label1">
-                                                  <span>YES</span>
-                                                </label>
-                                                <input type="radio" name="insurancePartnerAttachedOption"
-                                                  id="insurancePartnerAttachedOption1" value="No"
-                                                  //onClick={() => investmentRadioHandler("No")}
-                                                  onChange={handleChange}
-                                                  checked={values.insurancePartnerAttachedOption === "No"}
-                                                />
-                                                <label htmlFor="insurancePartnerAttachedOption1" className="label2">
-                                                  <span>NO</span>
-                                                </label>
-                                              </div>
-
-                                            </div>
-
-                                          </div>
-                                          {/* Toggle # 1*/}
-
-                                          {values.insurancePartnerAttachedOption === "Yes" && values.insurancePartnerAttachedOption == "Yes" && <div className='col md-6'>
-
-                                            {/* Toggle 2*/}
-                                            <label className="form-label">
-                                              Do you have any Life/TPD insurance?
-                                            </label>
-                                            {/* switch button style */}
-                                            <div className="form-check form-switch m-0 p-0 ">
-                                              <div className="radiobutton">
-                                                <input type="radio" name="insuranceLifeTPDPartnerAttached"
-                                                  id="insuranceLifeTPDPartnerAttached" value="Yes"
-                                                  //  onClick={() => investmentRadioHandler("Yes")}
-                                                  onChange={handleChange}
-                                                  checked={values.insuranceLifeTPDPartnerAttached === "Yes"}
-                                                />
-                                                <label htmlFor="insuranceLifeTPDPartnerAttached" className="label1">
-                                                  <span>YES</span>
-                                                </label>
-                                                <input type="radio" name="insuranceLifeTPDPartnerAttached"
-                                                  id="insuranceLifeTPDPartnerAttached1" value="No"
-                                                  //onClick={() => investmentRadioHandler("No")}
-                                                  onChange={handleChange}
-                                                  checked={values.insuranceLifeTPDPartnerAttached === "No"}
-                                                />
-                                                <label htmlFor="insuranceLifeTPDPartnerAttached1" className="label2">
-                                                  <span>NO</span>
-                                                </label>
-                                              </div>
-
-                                            </div>
-                                            {/* Toggle # 2*/}
-                                          </div>}
-                                        </div>
-
-                                        {values.insuranceLifeTPDPartnerAttached === "Yes" && values.insurancePartnerAttachedOption == "Yes" && <div>
-                                          {/* Row # 1 */}
-                                          <div className='row'>
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="CoverType" className="form-label">
-                                                  Cover Type
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="CoverTypePartner"
-                                                  name="CoverTypePartner"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("CoverTypePartner", e.target.value)}
-                                                  value={values.CoverTypePartner}
-                                                >
-                                                  <option value="Select">Select</option>
-                                                  <option value="Fixed Level">Fixed Level</option>
-                                                  <option value="Unitised">Unitised</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="CoverTypePartner" />
-
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="LifeCoverPartner" className="form-label">Life Cover</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="LifeCoverPartner" name='LifeCoverPartner' placeholder="Life Cover" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='LifeCoverPartner' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="TPDCoverPartner" className="form-label">TPD Cover</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="TPDCoverPartner" name='TPDCoverPartner' placeholder="TPD Cover" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='TPDCoverPartner' />
-                                              </div>
-                                            </div>
-                                          </div>
-                                          {/* Row # 1 */}
-                                          {/* Row # 2 */}
-                                          <div className='row'>
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="CostPAPartner" className="form-label">Cost p.a.</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="CostPAPartner" name='CostPAPartner' placeholder="Cost p.a." />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='CostPAPartner' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="PremiumType" className="form-label">
-                                                  Premium Type
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="PremiumTypePartner"
-                                                  name="PremiumTypePartner" placeholder='Premium Type'
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("PremiumTypePartner", e.target.value)}
-                                                  value={values.PremiumTypePartner}
-                                                >
-                                                  <option value="Level">Level</option>
-                                                  <option value="Stepped">Stepped</option>
-                                                  <option value="Other">Other</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumTypePartner" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Any Loading Or Exclusions?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="anyLoadingOrExclusionsPartnerAttached"
-                                                    id="anyLoadingOrExclusionsPartnerAttached" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.anyLoadingOrExclusionsPartnerAttached === "Yes"}
-                                                  />
-                                                  <label htmlFor="anyLoadingOrExclusionsPartnerAttached" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="anyLoadingOrExclusionsPartnerAttached"
-                                                    id="anyLoadingOrExclusionsPartnerAttached1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.anyLoadingOrExclusionsPartnerAttached === "No"}
-                                                  />
-                                                  <label htmlFor="anyLoadingOrExclusionsPartnerAttached1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                        </div>}
-                                        {/* Row # 2 */}
-
-                                        {/* Row # 3 */}
-                                        <div className='row'>
-                                          {values.anyLoadingOrExclusionsPartnerAttached === "Yes" && <div className="col-md-4">
-                                            <div className="mb-3 mt-2">
-                                              <label htmlFor="PleaseprovidePartnerdetails" className="form-label">Please provide details</   label>
-                                              <Field className="form-control shadow inputDesign"
-                                                id="PleaseprovidePartnerdetails" name='PleaseprovidePartnerdetails' placeholder="Please provide details" />
-                                              <ErrorMessage component='div' className='text-danger fw-bold' name='PleaseprovidePartnerdetails' />
-                                            </div>
-                                          </div>}
-
-                                          {values.insurancePartnerAttachedOption === "Yes" && <div className='col-md-4 mt-2 mb-3'>
-                                            <label className="form-label">
-                                              Have any Income Protection?
-                                            </label>
-                                            {/* switch button style */}
-                                            <div className="form-check form-switch m-0 p-0 ">
-                                              <div className="radiobutton">
-                                                <input type="radio" name="incomeProtectionPartnerAttached"
-                                                  id="incomeProtectionPartnerAttached" value="Yes"
-                                                  //  onClick={() => investmentRadioHandler("Yes")}
-                                                  onChange={handleChange}
-                                                  checked={values.incomeProtectionPartnerAttached === "Yes"}
-                                                />
-                                                <label htmlFor="incomeProtectionPartnerAttached" className="label1">
-                                                  <span>YES</span>
-                                                </label>
-                                                <input type="radio" name="incomeProtectionPartnerAttached"
-                                                  id="incomeProtectionPartnerAttached1" value="No"
-                                                  //onClick={() => investmentRadioHandler("No")}
-                                                  onChange={handleChange}
-                                                  checked={values.incomeProtectionPartnerAttached === "No"}
-                                                />
-                                                <label htmlFor="incomeProtectionPartnerAttached1" className="label2">
-                                                  <span>NO</span>
-                                                </label>
-                                              </div>
-
-                                            </div>
-                                          </div>}
-                                        </div>
-
-                                        {values.incomeProtectionPartnerAttached == "Yes" && values.insurancePartnerAttachedOption == "Yes" && <div >
-                                          <div className="col-md-4">
-                                            <div className="mb-3 mt-2">
-                                              <label htmlFor="MonthlyBenefitPartner" className="form-label">Monthly Benefit</   label>
-                                              <Field type="number" className="form-control shadow inputDesign"
-                                                id="MonthlyBenefitPartner" name='MonthlyBenefitPartner' placeholder="Monthly Benefit" />
-                                              <ErrorMessage component='div' className='text-danger fw-bold' name='MonthlyBenefitPartner' />
-                                            </div>
-                                          </div>
-
-                                          {/* Row # 3 */}
-
-                                          {/* Row # 4 */}
-                                          <div className='row'>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="waitingPeriodPartner" className="form-label">
-                                                  Waiting Period
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="waitingPeriodPartner"
-                                                  name="waitingPeriodPartner" placeholder='Waiting Period'
-                                                  className="form-select shadow  inputDesign"
-                                                //onChange={(e) => setFieldValue("waitingPeriodPartner", e.target.value)}
-                                                //value={values.waitingPeriodPartner}
-                                                >
-                                                  <option value="Select">Select</option>
-                                                  <option value="30 Days">30 Days</option>
-                                                  <option value="60 Days">60 Days</option>
-                                                  <option value="90 Days">90 Days</option>
-                                                  <option value="180 Days">180 Days</option>
-                                                  <option value="1 Year">1 Year</option>
-                                                  <option value="2 Year">2 Year</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="waitingPeriodPartner" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="benefitPeriodPartner" className="form-label">
-                                                  Benefit Period
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="benefitPeriodPartner"
-                                                  name="benefitPeriodPartner" placeholder='Benefit Period'
-                                                  className="form-select shadow  inputDesign"
-                                                //onChange={(e) => setFieldValue("benefitPeriodPartner", e.target.value)}
-                                                //value={values.benefitPeriodPartner}
-                                                >
-                                                  <option value="Select">Select</option>
-                                                  <option value="1 Year">1 Year</option>
-                                                  <option value="2 Years">2 Years</option>
-                                                  <option value="5 Years">5 Years</option>
-                                                  <option value="Age Until 60">Age Until 60</option>
-                                                  <option value="Age Until 65">Age Until 65</option>
-                                                  <option value="Age Until 67">Age Until 67</option>
-                                                  <option value="Age Until 70">Age Until 70</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="benefitPeriodPartner" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="agreedOrIndemnityPartner" className="form-label">
-                                                  Agreed or indemnity?
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="agreedOrIndemnityPartner"
-                                                  name="agreedOrIndemnityPartner" placeholder='Agreed or indemnity?'
-                                                  className="form-select shadow  inputDesign"
-                                                //onChange={(e) => setFieldValue("agreedOrIndemnityPartner", e.target.value)}
-                                                //value={values.agreedOrIndemnityPartner}
-                                                >
-                                                  <option value="Select">Select</option>
-                                                  <option value="Agreed">Agreed</option>
-                                                  <option value="Indemnity">Indemnitys</option>
-
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="agreedOrIndemnityPartner" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row # 4 */}
-                                          {/* Row # 5 */}
-                                          <div className='row'>
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="CostPASecondPartner" className="form-label">Cost p.a.</   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="CostPASecondPartner" name='CostPASecondPartner' placeholder="Cost p.a." />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='CostPASecondPartner' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="PremiumTypeSecondPartner" className="form-label">
-                                                  Premium Type
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="PremiumTypeSecondPartner"
-                                                  name="PremiumTypeSecondPartner" placeholder='Premium Type'
-                                                  className="form-select shadow  inputDesign"
-                                                //onChange={(e) => setFieldValue("PremiumTypeSecondPartner", e.target.value)}
-                                                //value={values.PremiumTypeSecondPartner}
-                                                >
-                                                  <option value="Level">Level</option>
-                                                  <option value="Stepped">Stepped</option>
-                                                  <option value="Other">Other</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumTypeSecondPartner" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Includes Super Continuance?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="IncludesSuperContinuancePartner"
-                                                    id="IncludesSuperContinuancePartner" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.IncludesSuperContinuancePartner === "Yes"}
-                                                  />
-                                                  <label htmlFor="IncludesSuperContinuancePartner" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="IncludesSuperContinuancePartner"
-                                                    id="IncludesSuperContinuancePartner1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.IncludesSuperContinuancePartner === "No"}
-                                                  />
-                                                  <label htmlFor="IncludesSuperContinuancePartner1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row # 5 */}
-
-                                          {/* Row # 6 */}
-                                          <div className='row'>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Is the benefit indexed?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="IsthebenefitindexedPartner"
-                                                    id="IsthebenefitindexedPartner" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.IsthebenefitindexedPartner === "Yes"}
-                                                  />
-                                                  <label htmlFor="IsthebenefitindexedPartner" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="IsthebenefitindexedPartner"
-                                                    id="IsthebenefitindexedPartner1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.IsthebenefitindexedPartner === "No"}
-                                                  />
-                                                  <label htmlFor="IsthebenefitindexedPartner1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                            <div className='col-md-4 mt-2 mb-3'>
-                                              <label className="form-label">
-                                                Any Loading Or Exclusions?
-                                              </label>
-                                              {/* switch button style */}
-                                              <div className="form-check form-switch m-0 p-0 ">
-                                                <div className="radiobutton">
-                                                  <input type="radio" name="AnyLoadingOrExclusionsPartner"
-                                                    id="AnyLoadingOrExclusionsPartner" value="Yes"
-                                                    //  onClick={() => investmentRadioHandler("Yes")}
-                                                    onChange={handleChange}
-                                                    checked={values.AnyLoadingOrExclusionsPartner === "Yes"}
-                                                  />
-                                                  <label htmlFor="AnyLoadingOrExclusionsPartner" className="label1">
-                                                    <span>YES</span>
-                                                  </label>
-                                                  <input type="radio" name="AnyLoadingOrExclusionsPartner"
-                                                    id="AnyLoadingOrExclusionsPartner1" value="No"
-                                                    //onClick={() => investmentRadioHandler("No")}
-                                                    onChange={handleChange}
-                                                    checked={values.AnyLoadingOrExclusionsPartner === "No"}
-                                                  />
-                                                  <label htmlFor="AnyLoadingOrExclusionsPartner1" className="label2">
-                                                    <span>NO</span>
-                                                  </label>
-                                                </div>
-
-                                              </div>
-                                            </div>
-
-                                            {values.AnyLoadingOrExclusionsPartner === "Yes" && values.incomeProtectionPartnerAttached == "Yes" && <div className="col-md-4">
-                                              <div className="mb-3 mt-2">
-                                                <label htmlFor="PleaseprovidedetailsSecondPartner" className="form-label">Please provide details</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="PleaseprovidedetailsSecondPartner" name='PleaseprovidedetailsSecondPartner' placeholder="Please provide details" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='PleaseprovidedetailsSecondPartner' />
-                                              </div>
-                                            </div>}
-                                          </div>
-                                          {/* Row # 6 */}
-                                        </div>}
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            //onClick={handleClose2}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClose2}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED INSURANCE MODAL */}
-                              {/* NESTED MODAL PARTNER -> INSURANCE */}
+                              {/* NESTED MODAL PARTNER -> INSURANCE at line 6347 */}
 
                               {/* BENEFICIARIES MODEL PARTNER TRIGGER BUTTON */}
 
                               {/* NESTED MODAL PARTNER -> BENEFICIARIES  */}
                               <button type='button' onClick={handleShowPartner3} className='btn bgColor modalBtn'>Beneficiaries</button>
-                              {/* NESTED BENFICIARIES MODAL */}
-                              <Modal
-                                show={showPartner3}
-                                onHide={handleClosePartner3}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Beneficiaries Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesBeneficiariesPartnerOptionDetails}
-                                  validationSchema={validateYupSchemaBeneficiariesOptionPartnerDetails}
-                                  onSubmit={On_submit_validateYupSchemaPartnerBeneficiariesOptionDetails}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
+                              {/* NESTED BENFICIARIES MODAL on line 6542 */}
 
-
-
-                                        <label className="form-label">
-                                          Do you have any Nominated Beneficiaries on the Account?
-                                        </label>
-                                        {/* switch button style */}
-                                        <div className="form-check form-switch m-0 p-0 ">
-                                          <div className="radiobutton">
-                                            <input type="radio" name="partnerNestedBeneficiariesAttached"
-                                              id="partnerNestedBeneficiariesAttached1" value="Yes"
-                                              //  onClick={() => beneficiariesRadioHandler("Yes")}
-                                              onChange={handleChange}
-                                              checked={values.partnerNestedBeneficiariesAttached === "Yes"}
-                                            />
-                                            <label htmlFor="partnerNestedBeneficiariesAttached1" className="label1">
-                                              <span>YES</span>
-                                            </label>
-                                            <input type="radio" name="partnerNestedBeneficiariesAttached"
-                                              id="partnerNestedBeneficiariesAttached2" value="No"
-                                              //onClick={() => beneficiariesRadioHandler("No")}
-                                              onChange={handleChange}
-                                              checked={values.partnerNestedBeneficiariesAttached === "No"}
-                                            />
-                                            <label htmlFor="partnerNestedBeneficiariesAttached2" className="label2">
-                                              <span>NO</span>
-                                            </label>
-                                          </div>
-                                        </div>
-
-                                        {values.partnerNestedBeneficiariesAttached == 'Yes' && <div className=''>
-                                          <div className="row">
-                                            <div className="col-md-6">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="beneficiariesPartnerAttached1" className="form-label">
-                                                  Nomination Type
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="beneficiariesPartnerAttached1"
-                                                  name="beneficiariesPartnerAttached1"
-                                                  className="form-select shadow  inputDesign"
-                                                  onChange={(e) => setFieldValue("beneficiariesPartnerAttached1", e.target.value)}
-                                                  value={values.beneficiariesPartnerAttached1}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
-                                                  <option value="Binding Death Nominations">Binding Death Nominations</option>
-                                                  <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
-                                                  <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
-                                                  <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="beneficiariesPartnerAttached1" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-6">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="NomiationTypePartnerBeneficiary" className="form-label">
-                                                  How many beneficiaries do you have?
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="NomiationTypePartnerBeneficiary"
-                                                  name="NomiationTypePartnerBeneficiary"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("NomiationTypePartnerBeneficiary", e.target.value)}
-                                                  value={values.NomiationTypePartnerBeneficiary}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="1">1</option>
-                                                  <option value="2">2</option>
-                                                  <option value="3">3</option>
-                                                  <option value="4">4</option>
-                                                  <option value="5">5</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypePartnerBeneficiary" />
-
-                                              </div>
-                                            </div>
-                                          </div>
-
-                                          {/* Row 1*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPartner1" className="form-label">Beneficiary 1</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPartner1" name='BeneficiaryPartner1' placeholder="Beneficiary 1" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner1' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPartner1" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPartner1" name='ShareofBenefitPartner1' placeholder="Share of Benefits 1" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner1' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsRelationshipPartner1" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsRelationshipPartner1"
-                                                  name="RelationshipOptionDetailsRelationshipPartner1"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner1", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsRelationshipPartner1}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner1" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-
-                                          {/* Row 2*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPartner2" className="form-label">Beneficiary 2</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPartner2" name='BeneficiaryPartner2' placeholder="Beneficiary 2" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner2' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPartner2" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPartner2" name='ShareofBenefitPartner2' placeholder="Share of Benefits 2" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner2' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsRelationshipPartner2" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsRelationshipPartner2"
-                                                  name="RelationshipOptionDetailsRelationshipPartner2"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner2", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsRelationshipPartner2}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner2" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 2*/}
-
-
-                                          {/* Row 3*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPartner3" className="form-label">Beneficiary 3</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPartner3" name='BeneficiaryPartner3' placeholder="Beneficiary 3" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner3' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPartner3" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPartner3" name='ShareofBenefitPartner3' placeholder="Share of Benefits 3" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner3' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsRelationshipPartner3" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsRelationshipPartner3"
-                                                  name="RelationshipOptionDetailsRelationshipPartner3"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner3", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsRelationshipPartner3}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner3" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 3*/}
-
-
-                                          {/* Row 4*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPartner4" className="form-label">Beneficiary 4</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPartner4" name='BeneficiaryPartner4' placeholder="Beneficiary 4" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner4' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPartner4" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPartner4" name='ShareofBenefitPartner4' placeholder="Share of Benefits 4" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner4' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsRelationshipPartner4" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsRelationshipPartner4"
-                                                  name="RelationshipOptionDetailsRelationshipPartner4"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner4", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsRelationshipPartner4}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner4" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 4*/}
-
-
-                                          {/* Row 5*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPartner5" className="form-label">Beneficiary 5</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPartner5" name='BeneficiaryPartner5' placeholder="Beneficiary 5" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner5' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPartner5" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPartner5" name='ShareofBenefitPartner5' placeholder="Share of Benefits 5" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner5' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsRelationshipPartner5" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsRelationshipPartner5"
-                                                  name="RelationshipOptionDetailsRelationshipPartner5"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner5", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsRelationshipPartner5}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner5" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 5*/}
-
-                                        </div>}
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            // onClick={handleClosePartner3}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClosePartner3}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED BENFICIARIES MODAL */}
-                              {/* NESTED MODAL PARTNER -> BENEFICIARIES  */}
 
 
                               <button type='button' onClick={handleShowPartner4} className='btn bgColor modalBtn mx-2'>Contributions</button>
                               {/* NESTED PARTNER -> CONTRIBUTION MODAL */}
 
-                              <Modal
-                                show={showPartner4}
-                                onHide={handleClosePartner4}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Contribution Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesContributionPartnerOptionDetails}
-                                  validationSchema={validateYupSchemaContributionPartnerOptionDetails}
-                                  onSubmit={On_submit_validateYupSchemaContributionPartnerOptionDetails}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
-
-                                        <label className="form-label">
-                                          Do you contribute to this fund?
-                                        </label>
-                                        {/* switch button style */}
-                                        <div className="form-check form-switch m-0 p-0 ">
-                                          <div className="radiobutton">
-                                            <input type="radio" name="partnerInvestmentAttached"
-                                              id="partnerInvestmentAttached" value="Yes"
-                                              //  onClick={() => investmentRadioHandler("Yes")}
-                                              onChange={handleChange}
-                                              checked={values.partnerInvestmentAttached === "Yes"}
-                                            />
-                                            <label htmlFor="partnerInvestmentAttached" className="label1">
-                                              <span>YES</span>
-                                            </label>
-                                            <input type="radio" name="partnerInvestmentAttached"
-                                              id="partnerInvestmentAttached2" value="No"
-                                              //onClick={() => investmentRadioHandler("No")}
-                                              onChange={handleChange}
-                                              checked={values.partnerInvestmentAttached === "No"}
-                                            />
-                                            <label htmlFor="partnerInvestmentAttached2" className="label2">
-                                              <span>NO</span>
-                                            </label>
-                                          </div>
-
-                                        </div>
-                                        {values.partnerInvestmentAttached == 'Yes' && <div className=''>
-
-                                          {/* Row 1*/}
-                                          <div>
-                                            <h3 className='mt-5'>
-                                              FY 2023
-                                            </h3>
-
-                                            <div className="row justify-content-around mt-3 mb-3">
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Non_ConcessionalPartner1" className="form-label">Non Concessional</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Non_ConcessionalPartner1" name='Non_ConcessionalPartner1' placeholder="Non Concessional" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Non_ConcessionalPartner1' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="OtherPartner1" className="form-label">Other</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="OtherPartner1" name='OtherPartner1' placeholder="Other" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPartner1' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="EmployerContributionsPartner1" className="form-label">Contributions</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="EmployerContributionsPartner1" name='EmployerContributionsPartner1' placeholder="Employer Contributions" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributionsPartner1' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="SalarySacAndPersonalDedPartner1" className="form-label">Salary Sac & Ded</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="SalarySacAndPersonalDedPartner1" name='SalarySacAndPersonalDedPartner1' placeholder="Salary Sac & Personal Ded" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDedPartner1' />
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                          {/* Row # 2 */}
-                                          <div>
-                                            <h3 className='mt-2'>
-                                              FY 2022
-                                            </h3>
-
-                                            <div className="row justify-content-around mt-3 mb-3">
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Non_ConcessionalPartner2" className="form-label">Non Concessional</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Non_ConcessionalPartner2" name='Non_ConcessionalPartner2' placeholder="Non Concessional" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Non_ConcessionalPartner2' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="OtherPartner2" className="form-label">Other</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="OtherPartner2" name='OtherPartner2' placeholder="Other" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPartner2' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="EmployerContributionsPartner2" className="form-label">Contributions</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="EmployerContributionsPartner2" name='EmployerContributionsPartner2' placeholder="Employer Contributions" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributionsPartner2' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="SalarySacAndPersonalDedPartner2" className="form-label">Salary Sac & Ded</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="SalarySacAndPersonalDedPartner2" name='SalarySacAndPersonalDedPartner2' placeholder="Salary Sac & Personal Ded" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDedPartner2' />
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                          {/* Row # 2 */}
-
-                                          {/* Row # 3 */}
-                                          <div>
-                                            <h3 className='mt-2'>
-                                              FY 2021
-                                            </h3>
-
-                                            <div className="row justify-content-around mt-3 mb-3">
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="Non_ConcessionalPartner3" className="form-label">Non Concessional</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="Non_ConcessionalPartner3" name='Non_ConcessionalPartner3' placeholder="Non Concessional" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='Non_ConcessionalPartner3' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="OtherPartner3" className="form-label">Other</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="OtherPartner3" name='OtherPartner3' placeholder="Other" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPartner3' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="EmployerContributionsPartner3" className="form-label">Contributions</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="EmployerContributionsPartner3" name='EmployerContributionsPartner3' placeholder="Employer Contributions" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributionsPartner3' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-3">
-                                                <div className="mb-3">
-                                                  <label htmlFor="SalarySacAndPersonalDedPartner3" className="form-label">Salary Sac & Ded</   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="SalarySacAndPersonalDedPartner3" name='SalarySacAndPersonalDedPartner3' placeholder="Salary Sac & Personal Ded" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDedPartner3' />
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                          {/* Row # 3 */}
-                                        </div>}
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            // onClick={handleClose4}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClosePartner4}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED PARTNER -> CONTRIBUTION MODAL */}
 
                             </Modal.Body>
                             <Modal.Footer>
@@ -6307,7 +6251,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={Super2handleClose}
                                 >
@@ -6319,8 +6263,1104 @@ function SuperRetriement() {
                         }
                       </Formik>
                     </Modal>
+                    {/* Partner Inner Modal */}
+                    
+                  {/* NESTED MODAL PARTNER -> INSURANCE */}
+                  {/* NESTED INSURANCE MODAL */}
+                  <Modal
+                    show={showPartner2}
+                    onHide={handleClosePartner2}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                  >
+                    <Modal.Header
+                      className="text-light modalBG "
+                      closeButton
+                    >
+                      <Modal.Title className="fontStyle">
+                        Insurance Details
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                      initialValues={InsuranceDataPartnerListUpdateFlag ? InsuranceDataPartnerListObj[0] : initialValuesInsurancePartnerOptionDetails}
+                      validationSchema={validateYupSchemaInsurancePartnerOptionDetails}
+                      onSubmit={On_submit_validateYupSchemaInsurancePartnerOptionDetails}
+                      enableReinitialize
+                    >
+                      {({ values, handleChange, setFieldValue, formik }) =>
+                        <Form>
+                          <Modal.Body>
+
+                            <div className='row mx-auto'>
+                              <div className='col md-6'>
+
+                                {/* Toggle 1*/}
+                                <label className="form-label">
+                                  Do you have any insurance attached?
+                                </label>
+
+                                {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                                  <div className="radiobutton">
+                                    <input type="radio" name="insurancePartnerAttachedOption"
+                                      id="insurancePartnerAttachedOption" value="Yes"
+                                      //  onClick={() => investmentRadioHandler("Yes")}
+                                      onChange={handleChange}
+                                      checked={values.insurancePartnerAttachedOption === "Yes"}
+                                    />
+                                    <label htmlFor="insurancePartnerAttachedOption" className="label1">
+                                      <span>YES</span>
+                                    </label>
+                                    <input type="radio" name="insurancePartnerAttachedOption"
+                                      id="insurancePartnerAttachedOption1" value="No"
+                                      //onClick={() => investmentRadioHandler("No")}
+                                      onChange={handleChange}
+                                      checked={values.insurancePartnerAttachedOption === "No"}
+                                    />
+                                    <label htmlFor="insurancePartnerAttachedOption1" className="label2">
+                                      <span>NO</span>
+                                    </label>
+                                  </div>
+
+                                </div>
+
+                              </div>
+                              {/* Toggle # 1*/}
+
+                              {values.insurancePartnerAttachedOption === "Yes" && values.insurancePartnerAttachedOption == "Yes" && <div className='col md-6'>
+
+                                {/* Toggle 2*/}
+                                <label className="form-label">
+                                  Do you have any Life/TPD insurance?
+                                </label>
+                                {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                                  <div className="radiobutton">
+                                    <input type="radio" name="insuranceLifeTPDPartnerAttached"
+                                      id="insuranceLifeTPDPartnerAttached" value="Yes"
+                                      //  onClick={() => investmentRadioHandler("Yes")}
+                                      onChange={handleChange}
+                                      checked={values.insuranceLifeTPDPartnerAttached === "Yes"}
+                                    />
+                                    <label htmlFor="insuranceLifeTPDPartnerAttached" className="label1">
+                                      <span>YES</span>
+                                    </label>
+                                    <input type="radio" name="insuranceLifeTPDPartnerAttached"
+                                      id="insuranceLifeTPDPartnerAttached1" value="No"
+                                      //onClick={() => investmentRadioHandler("No")}
+                                      onChange={handleChange}
+                                      checked={values.insuranceLifeTPDPartnerAttached === "No"}
+                                    />
+                                    <label htmlFor="insuranceLifeTPDPartnerAttached1" className="label2">
+                                      <span>NO</span>
+                                    </label>
+                                  </div>
+
+                                </div>
+                                {/* Toggle # 2*/}
+                              </div>}
+                            </div>
+
+                            {values.insuranceLifeTPDPartnerAttached === "Yes" && values.insurancePartnerAttachedOption == "Yes" && <div>
+                              {/* Row # 1 */}
+                              <div className='row'>
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-5">
+                                    <label htmlFor="CoverType" className="form-label">
+                                      Cover Type
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="CoverTypePartner"
+                                      name="CoverTypePartner"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("CoverTypePartner", e.target.value)}
+                                      value={values.CoverTypePartner}
+                                    >
+                                      <option value="Select">Select</option>
+                                      <option value="Fixed Level">Fixed Level</option>
+                                      <option value="Unitised">Unitised</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="CoverTypePartner" />
+
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-5">
+                                    <label htmlFor="LifeCoverPartner" className="form-label">Life Cover</   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="LifeCoverPartner" name='LifeCoverPartner' placeholder="Life Cover" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='LifeCoverPartner' />
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-5">
+                                    <label htmlFor="TPDCoverPartner" className="form-label">TPD Cover</   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="TPDCoverPartner" name='TPDCoverPartner' placeholder="TPD Cover" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='TPDCoverPartner' />
+                                  </div>
+                                </div>
+                              </div>
+                              {/* Row # 1 */}
+                              {/* Row # 2 */}
+                              <div className='row'>
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="CostPAPartner" className="form-label">Cost p.a.</   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="CostPAPartner" name='CostPAPartner' placeholder="Cost p.a." />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='CostPAPartner' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="PremiumType" className="form-label">
+                                      Premium Type
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="PremiumTypePartner"
+                                      name="PremiumTypePartner" placeholder='Premium Type'
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("PremiumTypePartner", e.target.value)}
+                                      value={values.PremiumTypePartner}
+                                    >
+                                      <option value="Level">Level</option>
+                                      <option value="Stepped">Stepped</option>
+                                      <option value="Other">Other</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumTypePartner" />
+
+                                  </div>
+                                </div>
+
+                                <div className='col-md-4 mt-2 mb-3'>
+                                  <label className="form-label">
+                                    Any Loading Or Exclusions?
+                                  </label>
+                                  {/* switch button style */}
+                                  <div className="form-check form-switch m-0 p-0 ">
+                                    <div className="radiobutton">
+                                      <input type="radio" name="anyLoadingOrExclusionsPartnerAttached"
+                                        id="anyLoadingOrExclusionsPartnerAttached" value="Yes"
+                                        //  onClick={() => investmentRadioHandler("Yes")}
+                                        onChange={handleChange}
+                                        checked={values.anyLoadingOrExclusionsPartnerAttached === "Yes"}
+                                      />
+                                      <label htmlFor="anyLoadingOrExclusionsPartnerAttached" className="label1">
+                                        <span>YES</span>
+                                      </label>
+                                      <input type="radio" name="anyLoadingOrExclusionsPartnerAttached"
+                                        id="anyLoadingOrExclusionsPartnerAttached1" value="No"
+                                        //onClick={() => investmentRadioHandler("No")}
+                                        onChange={handleChange}
+                                        checked={values.anyLoadingOrExclusionsPartnerAttached === "No"}
+                                      />
+                                      <label htmlFor="anyLoadingOrExclusionsPartnerAttached1" className="label2">
+                                        <span>NO</span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>}
+                            {/* Row # 2 */}
+
+                            {/* Row # 3 */}
+                            <div className='row'>
+                              {values.anyLoadingOrExclusionsPartnerAttached === "Yes" && <div className="col-md-4">
+                                <div className="mb-3 mt-2">
+                                  <label htmlFor="PleaseprovidePartnerdetails" className="form-label">Please provide details</   label>
+                                  <Field className="form-control shadow inputDesign"
+                                    id="PleaseprovidePartnerdetails" name='PleaseprovidePartnerdetails' placeholder="Please provide details" />
+                                  <ErrorMessage component='div' className='text-danger fw-bold' name='PleaseprovidePartnerdetails' />
+                                </div>
+                              </div>}
+
+                              {values.insurancePartnerAttachedOption === "Yes" && <div className='col-md-4 mt-2 mb-3'>
+                                <label className="form-label">
+                                  Have any Income Protection?
+                                </label>
+                                {/* switch button style */}
+                                <div className="form-check form-switch m-0 p-0 ">
+                                  <div className="radiobutton">
+                                    <input type="radio" name="incomeProtectionPartnerAttached"
+                                      id="incomeProtectionPartnerAttached" value="Yes"
+                                      //  onClick={() => investmentRadioHandler("Yes")}
+                                      onChange={handleChange}
+                                      checked={values.incomeProtectionPartnerAttached === "Yes"}
+                                    />
+                                    <label htmlFor="incomeProtectionPartnerAttached" className="label1">
+                                      <span>YES</span>
+                                    </label>
+                                    <input type="radio" name="incomeProtectionPartnerAttached"
+                                      id="incomeProtectionPartnerAttached1" value="No"
+                                      //onClick={() => investmentRadioHandler("No")}
+                                      onChange={handleChange}
+                                      checked={values.incomeProtectionPartnerAttached === "No"}
+                                    />
+                                    <label htmlFor="incomeProtectionPartnerAttached1" className="label2">
+                                      <span>NO</span>
+                                    </label>
+                                  </div>
+
+                                </div>
+                              </div>}
+                            </div>
+
+                            {values.incomeProtectionPartnerAttached == "Yes" && values.insurancePartnerAttachedOption == "Yes" && <div >
+                              <div className="col-md-4">
+                                <div className="mb-3 mt-2">
+                                  <label htmlFor="MonthlyBenefitPartner" className="form-label">Monthly Benefit</   label>
+                                  <Field type="number" className="form-control shadow inputDesign"
+                                    id="MonthlyBenefitPartner" name='MonthlyBenefitPartner' placeholder="Monthly Benefit" />
+                                  <ErrorMessage component='div' className='text-danger fw-bold' name='MonthlyBenefitPartner' />
+                                </div>
+                              </div>
+
+                              {/* Row # 3 */}
+
+                              {/* Row # 4 */}
+                              <div className='row'>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="waitingPeriodPartner" className="form-label">
+                                      Waiting Period
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="waitingPeriodPartner"
+                                      name="waitingPeriodPartner" placeholder='Waiting Period'
+                                      className="form-select shadow  inputDesign"
+                                    //onChange={(e) => setFieldValue("waitingPeriodPartner", e.target.value)}
+                                    //value={values.waitingPeriodPartner}
+                                    >
+                                      <option value="Select">Select</option>
+                                      <option value="30 Days">30 Days</option>
+                                      <option value="60 Days">60 Days</option>
+                                      <option value="90 Days">90 Days</option>
+                                      <option value="180 Days">180 Days</option>
+                                      <option value="1 Year">1 Year</option>
+                                      <option value="2 Year">2 Year</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="waitingPeriodPartner" />
+
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="benefitPeriodPartner" className="form-label">
+                                      Benefit Period
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="benefitPeriodPartner"
+                                      name="benefitPeriodPartner" placeholder='Benefit Period'
+                                      className="form-select shadow  inputDesign"
+                                    //onChange={(e) => setFieldValue("benefitPeriodPartner", e.target.value)}
+                                    //value={values.benefitPeriodPartner}
+                                    >
+                                      <option value="Select">Select</option>
+                                      <option value="1 Year">1 Year</option>
+                                      <option value="2 Years">2 Years</option>
+                                      <option value="5 Years">5 Years</option>
+                                      <option value="Age Until 60">Age Until 60</option>
+                                      <option value="Age Until 65">Age Until 65</option>
+                                      <option value="Age Until 67">Age Until 67</option>
+                                      <option value="Age Until 70">Age Until 70</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="benefitPeriodPartner" />
+
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="agreedOrIndemnityPartner" className="form-label">
+                                      Agreed or indemnity?
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="agreedOrIndemnityPartner"
+                                      name="agreedOrIndemnityPartner" placeholder='Agreed or indemnity?'
+                                      className="form-select shadow  inputDesign"
+                                    //onChange={(e) => setFieldValue("agreedOrIndemnityPartner", e.target.value)}
+                                    //value={values.agreedOrIndemnityPartner}
+                                    >
+                                      <option value="Select">Select</option>
+                                      <option value="Agreed">Agreed</option>
+                                      <option value="Indemnity">Indemnitys</option>
+
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="agreedOrIndemnityPartner" />
+
+                                  </div>
+                                </div>
+
+                              </div>
+                              {/* Row # 4 */}
+                              {/* Row # 5 */}
+                              <div className='row'>
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="CostPASecondPartner" className="form-label">Cost p.a.</   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="CostPASecondPartner" name='CostPASecondPartner' placeholder="Cost p.a." />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='CostPASecondPartner' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="PremiumTypeSecondPartner" className="form-label">
+                                      Premium Type
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="PremiumTypeSecondPartner"
+                                      name="PremiumTypeSecondPartner" placeholder='Premium Type'
+                                      className="form-select shadow  inputDesign"
+                                    //onChange={(e) => setFieldValue("PremiumTypeSecondPartner", e.target.value)}
+                                    //value={values.PremiumTypeSecondPartner}
+                                    >
+                                      <option value="Level">Level</option>
+                                      <option value="Stepped">Stepped</option>
+                                      <option value="Other">Other</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="PremiumTypeSecondPartner" />
+
+                                  </div>
+                                </div>
+
+                                <div className='col-md-4 mt-2 mb-3'>
+                                  <label className="form-label">
+                                    Includes Super Continuance?
+                                  </label>
+                                  {/* switch button style */}
+                                  <div className="form-check form-switch m-0 p-0 ">
+                                    <div className="radiobutton">
+                                      <input type="radio" name="IncludesSuperContinuancePartner"
+                                        id="IncludesSuperContinuancePartner" value="Yes"
+                                        //  onClick={() => investmentRadioHandler("Yes")}
+                                        onChange={handleChange}
+                                        checked={values.IncludesSuperContinuancePartner === "Yes"}
+                                      />
+                                      <label htmlFor="IncludesSuperContinuancePartner" className="label1">
+                                        <span>YES</span>
+                                      </label>
+                                      <input type="radio" name="IncludesSuperContinuancePartner"
+                                        id="IncludesSuperContinuancePartner1" value="No"
+                                        //onClick={() => investmentRadioHandler("No")}
+                                        onChange={handleChange}
+                                        checked={values.IncludesSuperContinuancePartner === "No"}
+                                      />
+                                      <label htmlFor="IncludesSuperContinuancePartner1" className="label2">
+                                        <span>NO</span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                              </div>
+                              {/* Row # 5 */}
+
+                              {/* Row # 6 */}
+                              <div className='row'>
+
+                                <div className='col-md-4 mt-2 mb-3'>
+                                  <label className="form-label">
+                                    Is the benefit indexed?
+                                  </label>
+                                  {/* switch button style */}
+                                  <div className="form-check form-switch m-0 p-0 ">
+                                    <div className="radiobutton">
+                                      <input type="radio" name="IsthebenefitindexedPartner"
+                                        id="IsthebenefitindexedPartner" value="Yes"
+                                        //  onClick={() => investmentRadioHandler("Yes")}
+                                        onChange={handleChange}
+                                        checked={values.IsthebenefitindexedPartner === "Yes"}
+                                      />
+                                      <label htmlFor="IsthebenefitindexedPartner" className="label1">
+                                        <span>YES</span>
+                                      </label>
+                                      <input type="radio" name="IsthebenefitindexedPartner"
+                                        id="IsthebenefitindexedPartner1" value="No"
+                                        //onClick={() => investmentRadioHandler("No")}
+                                        onChange={handleChange}
+                                        checked={values.IsthebenefitindexedPartner === "No"}
+                                      />
+                                      <label htmlFor="IsthebenefitindexedPartner1" className="label2">
+                                        <span>NO</span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                                <div className='col-md-4 mt-2 mb-3'>
+                                  <label className="form-label">
+                                    Any Loading Or Exclusions?
+                                  </label>
+                                  {/* switch button style */}
+                                  <div className="form-check form-switch m-0 p-0 ">
+                                    <div className="radiobutton">
+                                      <input type="radio" name="AnyLoadingOrExclusionsPartner"
+                                        id="AnyLoadingOrExclusionsPartner" value="Yes"
+                                        //  onClick={() => investmentRadioHandler("Yes")}
+                                        onChange={handleChange}
+                                        checked={values.AnyLoadingOrExclusionsPartner === "Yes"}
+                                      />
+                                      <label htmlFor="AnyLoadingOrExclusionsPartner" className="label1">
+                                        <span>YES</span>
+                                      </label>
+                                      <input type="radio" name="AnyLoadingOrExclusionsPartner"
+                                        id="AnyLoadingOrExclusionsPartner1" value="No"
+                                        //onClick={() => investmentRadioHandler("No")}
+                                        onChange={handleChange}
+                                        checked={values.AnyLoadingOrExclusionsPartner === "No"}
+                                      />
+                                      <label htmlFor="AnyLoadingOrExclusionsPartner1" className="label2">
+                                        <span>NO</span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                                {values.AnyLoadingOrExclusionsPartner === "Yes" && values.incomeProtectionPartnerAttached == "Yes" && <div className="col-md-4">
+                                  <div className="mb-3 mt-2">
+                                    <label htmlFor="PleaseprovidedetailsSecondPartner" className="form-label">Please provide details</   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="PleaseprovidedetailsSecondPartner" name='PleaseprovidedetailsSecondPartner' placeholder="Please provide details" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='PleaseprovidedetailsSecondPartner' />
+                                  </div>
+                                </div>}
+                              </div>
+                              {/* Row # 6 */}
+                            </div>}
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <div className="col-md-12">
+                              <button
+                                className="float-end btn w-25  bgColor modalBtn"
+                                //onClick={handleClose2}
+                                type='submit'
+                              >
+                                Save
+                              </button>
+                              <button type='button'
+                                className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                onClick={handleClosePartner2}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Modal.Footer>
+                        </Form>
+                      }
+                    </Formik>
+                  </Modal>
+                  {/* NESTED INSURANCE MODAL */}
+                  {/* NESTED MODAL PARTNER -> INSURANCE */}
+
+                  {/* NESTED BENFICIARIES MODAL */}
+                  <Modal
+                    show={showPartner3}
+                    onHide={handleClosePartner3}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                  >
+                    <Modal.Header
+                      className="text-light modalBG "
+                      closeButton
+                    >
+                      <Modal.Title className="fontStyle">
+                        Beneficiaries Details
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                      initialValues={BeneficiaryDataPartnerListUpdateFlag ? BeneficiaryDataPartnerListObj[0] : initialValuesBeneficiariesPartnerOptionDetails}
+                      validationSchema={validateYupSchemaBeneficiariesOptionPartnerDetails}
+                      onSubmit={On_submit_validateYupSchemaPartnerBeneficiariesOptionDetails}
+                      enableReinitialize
+                    >
+                      {({ values, handleChange, setFieldValue, formik }) =>
+                        <Form>
+                          <Modal.Body>
+
+
+
+                            <label className="form-label">
+                              Do you have any Nominated Beneficiaries on the Account?
+                            </label>
+                            {/* switch button style */}
+                            <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="partnerNestedBeneficiariesAttached"
+                                  id="partnerNestedBeneficiariesAttached1" value="Yes"
+                                  //  onClick={() => beneficiariesRadioHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.partnerNestedBeneficiariesAttached === "Yes"}
+                                />
+                                <label htmlFor="partnerNestedBeneficiariesAttached1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="partnerNestedBeneficiariesAttached"
+                                  id="partnerNestedBeneficiariesAttached2" value="No"
+                                  //onClick={() => beneficiariesRadioHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.partnerNestedBeneficiariesAttached === "No"}
+                                />
+                                <label htmlFor="partnerNestedBeneficiariesAttached2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+                            </div>
+
+                            {values.partnerNestedBeneficiariesAttached == 'Yes' && <div className=''>
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <div className="mb-3 mt-5">
+                                    <label htmlFor="beneficiariesPartnerAttached1" className="form-label">
+                                      Nomination Type
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="beneficiariesPartnerAttached1"
+                                      name="beneficiariesPartnerAttached1"
+                                      className="form-select shadow  inputDesign"
+                                      onChange={(e) => setFieldValue("beneficiariesPartnerAttached1", e.target.value)}
+                                      value={values.beneficiariesPartnerAttached1}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
+                                      <option value="Binding Death Nominations">Binding Death Nominations</option>
+                                      <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
+                                      <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
+                                      <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="beneficiariesPartnerAttached1" />
+
+                                  </div>
+                                </div>
+
+                                <div className="col-md-6">
+                                  <div className="mb-3 mt-5">
+                                    <label htmlFor="NomiationTypePartnerBeneficiary" className="form-label">
+                                      How many beneficiaries do you have?
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="NomiationTypePartnerBeneficiary"
+                                      name="NomiationTypePartnerBeneficiary"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("NomiationTypePartnerBeneficiary", e.target.value)}
+                                      value={values.NomiationTypePartnerBeneficiary}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypePartnerBeneficiary" />
+
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Row 1*/}
+                              <div className="row justify-content-around mt-4 mb-3">
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="BeneficiaryPartner1" className="form-label">Beneficiary 1</   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="BeneficiaryPartner1" name='BeneficiaryPartner1' placeholder="Beneficiary 1" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner1' />
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="ShareofBenefitPartner1" className="form-label">Share of Benefits % </   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="ShareofBenefitPartner1" name='ShareofBenefitPartner1' placeholder="Share of Benefits 1" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner1' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="RelationshipOptionDetailsRelationshipPartner1" className="form-label">
+                                      Relationship
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="RelationshipOptionDetailsRelationshipPartner1"
+                                      name="RelationshipOptionDetailsRelationshipPartner1"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner1", e.target.value)}
+                                      value={values.RelationshipOptionDetailsRelationshipPartner1}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Spouse">Spouse</option>
+                                      <option value="Child">Child</option>
+                                      <option value="Other">Other</option>
+                                      <option value="Interdependency">Interdependency</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner1" />
+
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              {/* Row 2*/}
+                              <div className="row justify-content-around mt-4 mb-3">
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="BeneficiaryPartner2" className="form-label">Beneficiary 2</   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="BeneficiaryPartner2" name='BeneficiaryPartner2' placeholder="Beneficiary 2" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner2' />
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="ShareofBenefitPartner2" className="form-label">Share of Benefits % </   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="ShareofBenefitPartner2" name='ShareofBenefitPartner2' placeholder="Share of Benefits 2" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner2' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="RelationshipOptionDetailsRelationshipPartner2" className="form-label">
+                                      Relationship
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="RelationshipOptionDetailsRelationshipPartner2"
+                                      name="RelationshipOptionDetailsRelationshipPartner2"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner2", e.target.value)}
+                                      value={values.RelationshipOptionDetailsRelationshipPartner2}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Spouse">Spouse</option>
+                                      <option value="Child">Child</option>
+                                      <option value="Other">Other</option>
+                                      <option value="Interdependency">Interdependency</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner2" />
+
+                                  </div>
+                                </div>
+
+                              </div>
+                              {/* Row 2*/}
+
+
+                              {/* Row 3*/}
+                              <div className="row justify-content-around mt-4 mb-3">
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="BeneficiaryPartner3" className="form-label">Beneficiary 3</   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="BeneficiaryPartner3" name='BeneficiaryPartner3' placeholder="Beneficiary 3" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner3' />
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="ShareofBenefitPartner3" className="form-label">Share of Benefits % </   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="ShareofBenefitPartner3" name='ShareofBenefitPartner3' placeholder="Share of Benefits 3" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner3' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="RelationshipOptionDetailsRelationshipPartner3" className="form-label">
+                                      Relationship
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="RelationshipOptionDetailsRelationshipPartner3"
+                                      name="RelationshipOptionDetailsRelationshipPartner3"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner3", e.target.value)}
+                                      value={values.RelationshipOptionDetailsRelationshipPartner3}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Spouse">Spouse</option>
+                                      <option value="Child">Child</option>
+                                      <option value="Other">Other</option>
+                                      <option value="Interdependency">Interdependency</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner3" />
+
+                                  </div>
+                                </div>
+
+                              </div>
+                              {/* Row 3*/}
+
+
+                              {/* Row 4*/}
+                              <div className="row justify-content-around mt-4 mb-3">
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="BeneficiaryPartner4" className="form-label">Beneficiary 4</   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="BeneficiaryPartner4" name='BeneficiaryPartner4' placeholder="Beneficiary 4" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner4' />
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="ShareofBenefitPartner4" className="form-label">Share of Benefits % </   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="ShareofBenefitPartner4" name='ShareofBenefitPartner4' placeholder="Share of Benefits 4" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner4' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="RelationshipOptionDetailsRelationshipPartner4" className="form-label">
+                                      Relationship
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="RelationshipOptionDetailsRelationshipPartner4"
+                                      name="RelationshipOptionDetailsRelationshipPartner4"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner4", e.target.value)}
+                                      value={values.RelationshipOptionDetailsRelationshipPartner4}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Spouse">Spouse</option>
+                                      <option value="Child">Child</option>
+                                      <option value="Other">Other</option>
+                                      <option value="Interdependency">Interdependency</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner4" />
+
+                                  </div>
+                                </div>
+
+                              </div>
+                              {/* Row 4*/}
+
+
+                              {/* Row 5*/}
+                              <div className="row justify-content-around mt-4 mb-3">
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="BeneficiaryPartner5" className="form-label">Beneficiary 5</   label>
+                                    <Field className="form-control shadow inputDesign"
+                                      id="BeneficiaryPartner5" name='BeneficiaryPartner5' placeholder="Beneficiary 5" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPartner5' />
+                                  </div>
+                                </div>
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="ShareofBenefitPartner5" className="form-label">Share of Benefits % </   label>
+                                    <Field type="number" className="form-control shadow inputDesign"
+                                      id="ShareofBenefitPartner5" name='ShareofBenefitPartner5' placeholder="Share of Benefits 5" />
+                                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPartner5' />
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="mb-3">
+                                    <label htmlFor="RelationshipOptionDetailsRelationshipPartner5" className="form-label">
+                                      Relationship
+                                    </label>
+                                    <Field
+                                      as='select'
+                                      id="RelationshipOptionDetailsRelationshipPartner5"
+                                      name="RelationshipOptionDetailsRelationshipPartner5"
+                                      className="form-select shadow  inputDesign"
+                                      //onChange={(e) => setFieldValue("RelationshipOptionDetailsRelationshipPartner5", e.target.value)}
+                                      value={values.RelationshipOptionDetailsRelationshipPartner5}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Spouse">Spouse</option>
+                                      <option value="Child">Child</option>
+                                      <option value="Other">Other</option>
+                                      <option value="Interdependency">Interdependency</option>
+                                    </Field>
+                                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsRelationshipPartner5" />
+
+                                  </div>
+                                </div>
+
+                              </div>
+                              {/* Row 5*/}
+
+                            </div>}
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <div className="col-md-12">
+                              <button
+                                className="float-end btn w-25  bgColor modalBtn"
+                                // onClick={handleClosePartner3}
+                                type='submit'
+                              >
+                                Save
+                              </button>
+                              <button type='button'
+                                className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                onClick={handleClosePartner3}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Modal.Footer>
+                        </Form>
+                      }
+                    </Formik>
+                  </Modal>
+                  {/* NESTED BENFICIARIES MODAL */}
+                  {/* NESTED MODAL PARTNER -> BENEFICIARIES  */}
+
+                  {/* NESTED PARTNER -> CONTRIBUTION MODAL */}
+
+                  <Modal
+                    show={showPartner4}
+                    onHide={handleClosePartner4}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                  >
+                    <Modal.Header
+                      className="text-light modalBG "
+                      closeButton
+                    >
+                      <Modal.Title className="fontStyle">
+                        Contribution Details
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                      initialValues={contributionPartnerModalUpdateFlag ? contributionPartnerModalObj[0] : initialValuesContributionPartnerOptionDetails}
+                      validationSchema={validateYupSchemaContributionPartnerOptionDetails}
+                      onSubmit={On_submit_validateYupSchemaContributionPartnerOptionDetails}
+                      enableReinitialize
+                    >
+                      {({ values, handleChange, setFieldValue, formik }) =>
+                        <Form>
+                          <Modal.Body>
+
+                            <label className="form-label">
+                              Do you contribute to this fund?
+                            </label>
+                            {/* switch button style */}
+                            <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="partnerInvestmentAttached"
+                                  id="partnerInvestmentAttached" value="Yes"
+                                  //  onClick={() => investmentRadioHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.partnerInvestmentAttached === "Yes"}
+                                />
+                                <label htmlFor="partnerInvestmentAttached" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="partnerInvestmentAttached"
+                                  id="partnerInvestmentAttached2" value="No"
+                                  //onClick={() => investmentRadioHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.partnerInvestmentAttached === "No"}
+                                />
+                                <label htmlFor="partnerInvestmentAttached2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+
+                            </div>
+                            {values.partnerInvestmentAttached == 'Yes' && <div className=''>
+
+                              {/* Row 1*/}
+                              <div>
+                                <h3 className='mt-5'>
+                                  FY 2023
+                                </h3>
+
+                                <div className="row justify-content-around mt-3 mb-3">
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Non_ConcessionalPartner1" className="form-label">Non Concessional</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Non_ConcessionalPartner1" name='Non_ConcessionalPartner1' placeholder="Non Concessional" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Non_ConcessionalPartner1' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherPartner1" className="form-label">Other</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="OtherPartner1" name='OtherPartner1' placeholder="Other" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPartner1' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="EmployerContributionsPartner1" className="form-label">Contributions</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="EmployerContributionsPartner1" name='EmployerContributionsPartner1' placeholder="Employer Contributions" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributionsPartner1' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="SalarySacAndPersonalDedPartner1" className="form-label">Salary Sac & Ded</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="SalarySacAndPersonalDedPartner1" name='SalarySacAndPersonalDedPartner1' placeholder="Salary Sac & Personal Ded" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDedPartner1' />
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              {/* Row # 2 */}
+                              <div>
+                                <h3 className='mt-2'>
+                                  FY 2022
+                                </h3>
+
+                                <div className="row justify-content-around mt-3 mb-3">
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Non_ConcessionalPartner2" className="form-label">Non Concessional</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Non_ConcessionalPartner2" name='Non_ConcessionalPartner2' placeholder="Non Concessional" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Non_ConcessionalPartner2' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherPartner2" className="form-label">Other</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="OtherPartner2" name='OtherPartner2' placeholder="Other" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPartner2' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="EmployerContributionsPartner2" className="form-label">Contributions</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="EmployerContributionsPartner2" name='EmployerContributionsPartner2' placeholder="Employer Contributions" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributionsPartner2' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="SalarySacAndPersonalDedPartner2" className="form-label">Salary Sac & Ded</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="SalarySacAndPersonalDedPartner2" name='SalarySacAndPersonalDedPartner2' placeholder="Salary Sac & Personal Ded" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDedPartner2' />
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              {/* Row # 2 */}
+
+                              {/* Row # 3 */}
+                              <div>
+                                <h3 className='mt-2'>
+                                  FY 2021
+                                </h3>
+
+                                <div className="row justify-content-around mt-3 mb-3">
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="Non_ConcessionalPartner3" className="form-label">Non Concessional</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="Non_ConcessionalPartner3" name='Non_ConcessionalPartner3' placeholder="Non Concessional" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='Non_ConcessionalPartner3' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="OtherPartner3" className="form-label">Other</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="OtherPartner3" name='OtherPartner3' placeholder="Other" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='OtherPartner3' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="EmployerContributionsPartner3" className="form-label">Contributions</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="EmployerContributionsPartner3" name='EmployerContributionsPartner3' placeholder="Employer Contributions" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='EmployerContributionsPartner3' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-3">
+                                    <div className="mb-3">
+                                      <label htmlFor="SalarySacAndPersonalDedPartner3" className="form-label">Salary Sac & Ded</   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="SalarySacAndPersonalDedPartner3" name='SalarySacAndPersonalDedPartner3' placeholder="Salary Sac & Personal Ded" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='SalarySacAndPersonalDedPartner3' />
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              {/* Row # 3 */}
+                            </div>}
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <div className="col-md-12">
+                              <button
+                                className="float-end btn w-25  bgColor modalBtn"
+                                // onClick={handleClose4}
+                                type='submit'
+                              >
+                                Save
+                              </button>
+                              <button type='button'
+                                className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                onClick={handleClosePartner4}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Modal.Footer>
+                        </Form>
+                      }
+                    </Formik>
+                  </Modal>
+                  {/* NESTED PARTNER -> CONTRIBUTION MODAL */}
+
+                    {/* Partner Inner Modal */}
                     {/* ---------------------------------------------------- */}
-                  </div>
+                    </div>
                   {/*PARTNER SUPER ACCOUNT DISPLAY TABLE */}
                   <div className='table-responsive my-3' id="PartnerSuperAccountDisplayTable">
                     <table className="table table-bordered table-hover text-center">
@@ -6337,31 +7377,141 @@ function SuperRetriement() {
                         </tr>
                       </thead>
                       <tbody>
-                        {/* {
-                                                  InvestmentModal.map((elem, index) => {
-                                                    let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
-                                                    return ( */}
-                        <tr>
-                          <td>AMTP</td>
-                          <td>1223</td>
-                          <td> CLient</td>
-                          <td> Yes</td>
-                          <td>Yes</td>
-                          <td>No</td>
-                          <td> Yes</td>
-                          <td>Un-comment</td>
-                          {/* <td >
-                                                          <button type='button' onClick={() => deleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                                          <button type='button' onClick={updateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
-                                                        </td> */}
-
-                        </tr>
-                        {/* );
-                                                  })} */}
+                         { PartnerSuperAccounts.map((elem, index) => {
+                          return ( 
+                            <tr>
+                            <td>{elem.Super_FundName}</td>
+                            <td>{elem.Super_MemberNO}</td>
+                            <td>{elem.Super_CurrentBalance}</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>No</td>
+                            <td>Yes</td>
+                            <td>
+                              <button type='button' onClick={(e)=>{PartnerSuperAccountsDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                              <button type='button' onClick={(e)=>{PartnerSuperAccountsUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                            </td> 
+                          </tr>
+                         );
+                         })} 
                       </tbody>
                     </table>
                   </div>
-                  {/*CLIENT SUPER ACCOUNT DISPLAY TABLE */}
+                  {/*PARTNER SUPER ACCOUNT DISPLAY TABLE */}
+                  
+                    {/*PARTNER SUPER ACCOUNT Insurance  DISPLAY TABLE */}
+                    <h3>Partner Insurance</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>Cover Type</th>
+                      <th>Life Cover</th>
+                      <th>TPD Cover</th>
+                      <th>Cost p.a.</th>
+                      <th>Premium Type</th>
+                      <th>Any Loading Or Exclusions?</th>
+                      <th>Waiting Period</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {InsuranceDataPartnerList.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.CoverType}</th>
+                                <th>{elem.LifeCover}</th>
+                                <th>{elem.TPDCover}</th>
+                                <th>{elem.CostPA}</th>
+                                <th>{elem.PremiumType}</th>
+                                <th>{elem.LoadingExecutions}</th>
+                                <th>{elem.WaitingPeriod}</th>
+
+                                <th>
+                                <button type='button' onClick={(e)=>{InsuranceDataPartnerListDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{InsuranceDataPartnerListUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*PARTNER SUPER ACCOUNT Insurance  DISPLAY TABLE */}
+
+
+                    {/*PARTNER SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
+                    <h3>Partner Benficiaries</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>No_ofBeneficiaries</th>
+                      <th>NominatedBeneficiary</th>
+                      <th>NominationType</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {BeneficiaryDataPartnerList.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.No_ofBeneficiaries}</th>
+                                <th>{elem.NominatedBeneficiary}</th>
+                                <th>{elem.NominationType}</th>
+
+                                <th>
+                                <button type='button' onClick={(e)=>{BeneficiaryDataPartnerListDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{BeneficiaryDataPartnerListUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*PARTNER SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
+
+                    {/*PARTNER SUPER ACCOUNT CONTRIBUTION  DISPLAY TABLE */}
+                    <h3>Partner Contributions</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>Non Concessional Fy2023</th>
+                      <th>Salary Sac & Ded Fy2023</th>
+                      <th>Non Concessional Fy2022</th>
+                      <th>Salary Sac & Ded Fy2022</th>
+                      <th>Non Concessional Fy2021</th>
+                      <th>Salary Sac & Ded Fy2021</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {contributionPartnerModal.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.NonConcessional1}</th>
+                                <th>{elem.SalaryPersonalDed1}</th>
+                                <th>{elem.NonConcessional2}</th>
+                                <th>{elem.SalaryPersonalDed2}</th>
+                                <th>{elem.NonConcessional3}</th>
+                                <th>{elem.SalaryPersonalDed3}</th>
+                                <th>
+                                <button type='button' onClick={(e)=>{contributionPartnerModalDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{contributionPartnerModalUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*PARTNER SUPER ACCOUNT CONTRIBUTION  DISPLAY TABLE */}
+
 
                   {/* Super Details */}
 
@@ -6448,12 +7598,12 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={clientPensionDataListEdit ? clientPensionDataList[0] : InitialValuesMainClientPensionAccount}
+                        initialValues={clientPensionDataListEdit ? clientPensionDataListObj[0] : InitialValuesMainClientPensionAccount}
                         validationSchema={clientPensionAccountMainValidationSchema}
                         onSubmit={ClientPensionAccount_onSubmit}
                         enableReinitialize
                       >
-                        {({ values, setFieldValue, setValues, handleChange, formik }) =>
+                        {({ values, setFieldValue, setValues, handleChange,handleBlur, formik }) =>
                           <Form>
                             <Modal.Body>
                               {/* Professional Advisor Detail Form */}
@@ -6589,16 +7739,55 @@ function SuperRetriement() {
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="AccountPension_CommencementDate" className="form-label">Commencment Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="AccountPension_CommencementDate" name='AccountPension_CommencementDate' />
+                                  {/**   <Field type="date" className="form-control shadow inputDesign"
+                                        id="AccountPension_CommencementDate" name='AccountPension_CommencementDate' /> */} 
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="AccountPension_CommencementDate"
+                                          name="AccountPension_CommencementDate"
+                                          selected={values.AccountPension_CommencementDate}
+                                          onChange={(date) =>
+                                            setFieldValue("AccountPension_CommencementDate", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
+
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AccountPension_CommencementDate' />
                                     </div>
                                   </div>
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="AccountPension_EligibleService" className="form-label">Eligible Service Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="AccountPension_EligibleService" name='AccountPension_EligibleService' />
+                               {/**       <Field type="date" className="form-control shadow inputDesign"
+                                        id="AccountPension_EligibleService" name='AccountPension_EligibleService' /> */}
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="AccountPension_EligibleService"
+                                          name="AccountPension_EligibleService"
+                                          selected={values.AccountPension_EligibleService}
+                                          onChange={(date) =>
+                                            setFieldValue("AccountPension_EligibleService", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AccountPension_EligibleService' />
                                     </div>
                                   </div>
@@ -6700,6 +7889,7 @@ function SuperRetriement() {
                               {/* Solicitor */}
 
                               {/* Bank Account Detail Form */}
+
                               {/* NESTED MODAL CLIENT PENSION -> INVESTMENTS START*/}
                               <button type='button' onClick={handleShowPensionClient} className='btn bgColor modalBtn mx-2'>Investments</button>
                               <Modal
@@ -6718,7 +7908,7 @@ function SuperRetriement() {
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Formik
-                                  initialValues={PensionClientInvestmentModalEdit ? PensionClientInvestmentModal[0] : initialValuesClientPensionNestedModal}
+                                  initialValues={PensionClientInvestmentModalEdit ? PensionClientInvestmentModalObj[0] : initialValuesClientPensionNestedModal}
                                   validationSchema={validateYupSchemaClientPensionNestedModal}
                                   onSubmit={On_submit_validateClientPensionNestedModal}
                                   enableReinitialize
@@ -6779,17 +7969,15 @@ function SuperRetriement() {
                                               <tbody>
                                                 {
                                                   PensionClientInvestmentModal.map((elem, index) => {
-                                                    let { InvestmentClientPensionOption, InvestmentClientPensionCurrentValue } = elem;
                                                     return (
                                                       <tr>
                                                         <td>2r5rs</td>
-                                                        <td>{InvestmentClientPensionOption}</td>
-                                                        <td> {InvestmentClientPensionCurrentValue}</td>
+                                                        <td>{elem.InvestmentOption}</td>
+                                                        <td> {elem.CurrentValue}</td>
 
                                                         <td >
                                                           <button type='button' onClick={() => ClientPensionInvestmentModaldeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                                          <button type='button' onClick={ClientPensionInvestmentModalupdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
-
+                                                          <button type='button' onClick={() => ClientPensionInvestmentModalupdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
                                                         </td>
 
                                                       </tr>
@@ -6811,7 +7999,7 @@ function SuperRetriement() {
                                           >
                                             Save
                                           </button>
-                                          <button
+                                          <button type='button'
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={handleClosePensionClient}
                                           >
@@ -6824,380 +8012,11 @@ function SuperRetriement() {
                                 </Formik>
                               </Modal>
                               {/* NESTED MODAL CLIENT PENSION -> INVESTMENTS ENDS*/}
+
                               {/* NESTED MODAL CLIENT PENSION -> BENEFICIARY */}
                               <button type='button' onClick={handleShowClientBeneficiary} className='btn bgColor modalBtn'>Beneficiaries</button>
                               {/* NESTED PARTNER PENSION BENEFICIARY MODAL  */}
-                              <Modal
-                                show={showClientBeneficiary}
-                                onHide={handleCloseClientBeneficiary}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Beneficiaries Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesPensionBeneficiaryClient}
-                                  validationSchema={validateSchemaPensionClientBeneficiary}
-                                  onSubmit={On_submit_PenionBeneficiaryClient}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
-                                        {/* Family Assets Details*/}
 
-                                        <div className=''>
-
-                                          <label className="form-label">
-                                            Do you have any Nominated Beneficiaries on the Account?
-                                          </label>
-                                          {/* switch button style */}
-                                          <div className="form-check form-switch m-0 p-0 ">
-                                            <div className="radiobutton">
-                                              <input type="radio" name="clientPensionBeneficiaryAttached"
-                                                id="clientPensionBeneficiaryAttached1" value="Yes"
-                                                // onClick={() => beneficiariesRadioHandler("Yes")}
-                                                onChange={handleChange}
-                                                checked={values.clientPensionBeneficiaryAttached === "Yes"}
-                                              />
-                                              <label htmlFor="clientPensionBeneficiaryAttached1" className="label1">
-                                                <span>YES</span>
-                                              </label>
-                                              <input type="radio" name="clientPensionBeneficiaryAttached"
-                                                id="clientPensionBeneficiaryAttached2" value="No"
-                                                // onClick={() => beneficiariesRadioHandler("No")}
-                                                onChange={handleChange}
-                                                checked={values.clientPensionBeneficiaryAttached === "No"}
-                                              />
-                                              <label htmlFor="clientPensionBeneficiaryAttached2" className="label2">
-                                                <span>NO</span>
-                                              </label>
-                                            </div>
-                                          </div>
-                                        </div>
-
-                                        {values.clientPensionBeneficiaryAttached == "Yes" && <div className=''>
-                                          <div className="row">
-                                            <div className="col-md-6">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="NomiationTypeBeneficiary" className="form-label">
-                                                  Nomination Type
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="NomiationTypePensionClientBeneficiary"
-                                                  name="NomiationTypePensionClientBeneficiary"
-                                                  className="form-select shadow  inputDesign"
-                                                  onChange={(e) => setFieldValue("NomiationTypePensionClientBeneficiary", e.target.value)}
-                                                  value={values.NomiationTypePensionClientBeneficiary}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
-                                                  <option value="Binding Death Nominations">Binding Death Nominations</option>
-                                                  <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
-                                                  <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
-                                                  <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypePensionClientBeneficiary" />
-
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-6">
-                                              <div className="mb-3 mt-5">
-                                                <label htmlFor="BeneficiariesOptionDetailsBeneficiaries" className="form-label">
-                                                  How many beneficiaries do you have?
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="BeneficiariesOptionDetailsBeneficiaries"
-                                                  name="BeneficiariesOptionDetailsBeneficiaries"
-                                                  className="form-select shadow  inputDesign"
-                                                  onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
-                                                  value={values.BeneficiariesOptionDetailsBeneficiaries}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="1">1</option>
-                                                  <option value="2">2</option>
-                                                  <option value="3">3</option>
-                                                  <option value="4">4</option>
-                                                  <option value="5">5</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
-
-                                              </div>
-                                            </div>
-                                          </div>
-
-                                          {/* Row 1*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPensionClient1" className="form-label">Beneficiary 1</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPensionClient1" name='BeneficiaryPensionClient1' placeholder="Beneficiary 1" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient1' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPensionClient1" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPensionClient1" name='ShareofBenefitPensionClient1' placeholder="Share of Benefits 1" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient1' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsPensionClient1" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsPensionClient1"
-                                                  name="RelationshipOptionDetailsPensionClient1"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient1", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsPensionClient1}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient1" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-
-                                          {/* Row 2*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPensionClient2" className="form-label">Beneficiary 2</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPensionClient2" name='BeneficiaryPensionClient2' placeholder="Beneficiary 2" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient2' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefit2PensionClient2" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefit2PensionClient2" name='ShareofBenefit2PensionClient2' placeholder="Share of Benefits 2" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit2PensionClient2' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsPensionClient2" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsPensionClient2"
-                                                  name="RelationshipOptionDetailsPensionClient2"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient2", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsPensionClient2}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient2" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 2*/}
-
-
-                                          {/* Row 3*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPensionClient3" className="form-label">Beneficiary 3</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPensionClient3" name='BeneficiaryPensionClient3' placeholder="Beneficiary 3" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient3' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPensionClient3" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPensionClient3" name='ShareofBenefitPensionClient3' placeholder="Share of Benefits 3" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient3' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsPensionClient3" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsPensionClient3"
-                                                  name="RelationshipOptionDetailsPensionClient3"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient3", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsPensionClient3}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient3" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 3*/}
-
-
-                                          {/* Row 4*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPensionClient4" className="form-label">Beneficiary 4</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPensionClient4" name='BeneficiaryPensionClient4' placeholder="Beneficiary 4" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient4' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPensionClient4" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPensionClient4" name='ShareofBenefitPensionClient4' placeholder="Share of Benefits 4" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient4' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsPensionClient4" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsPensionClient4"
-                                                  name="RelationshipOptionDetailsPensionClient4"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient4", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsPensionClient4}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient4" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 4*/}
-
-
-                                          {/* Row 5*/}
-                                          <div className="row justify-content-around mt-4 mb-3">
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="BeneficiaryPensionClient5" className="form-label">Beneficiary 5</   label>
-                                                <Field className="form-control shadow inputDesign"
-                                                  id="BeneficiaryPensionClient5" name='BeneficiaryPensionClient5' placeholder="Beneficiary 5" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient5' />
-                                              </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="ShareofBenefitPensionClient5" className="form-label">Share of Benefits % </   label>
-                                                <Field type="number" className="form-control shadow inputDesign"
-                                                  id="ShareofBenefitPensionClient5" name='ShareofBenefitPensionClient5' placeholder="Share of Benefits 5" />
-                                                <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient5' />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-md-4">
-                                              <div className="mb-3">
-                                                <label htmlFor="RelationshipOptionDetailsPensionClient5" className="form-label">
-                                                  Relationship
-                                                </label>
-                                                <Field
-                                                  as='select'
-                                                  id="RelationshipOptionDetailsPensionClient5"
-                                                  name="RelationshipOptionDetailsPensionClient5"
-                                                  className="form-select shadow  inputDesign"
-                                                  //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient5", e.target.value)}
-                                                  value={values.RelationshipOptionDetailsPensionClient5}
-                                                >
-                                                  <option value="">Select</option>
-                                                  <option value="Spouse">Spouse</option>
-                                                  <option value="Child">Child</option>
-                                                  <option value="Other">Other</option>
-                                                  <option value="Interdependency">Interdependency</option>
-                                                </Field>
-                                                <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient5" />
-
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                          {/* Row 5*/}
-
-
-                                        </div>}
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            // onClick={handleClose3}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleCloseClientBeneficiary}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED MODAL CLIENT PENSION -> BENEFICIARY */}
                             </Modal.Body>
                             <Modal.Footer>
                               <div className="col-md-12">
@@ -7208,7 +8027,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={PensionhandleClose}
                                 >
@@ -7220,6 +8039,380 @@ function SuperRetriement() {
                         }
                       </Formik>
                     </Modal>
+
+                    {/* NESTED PARTNER PENSION BENEFICIARY MODAL  */}
+                    <Modal
+                    show={showClientBeneficiary}
+                    onHide={handleCloseClientBeneficiary}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                    >
+                    <Modal.Header
+                    className="text-light modalBG "
+                    closeButton
+                    >
+                    <Modal.Title className="fontStyle">
+                    Beneficiaries Details
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                    initialValues={ClientBeneficiaryDataListUpdateFlag ? ClientBeneficiaryDataListObj[0] : initialValuesPensionBeneficiaryClient}
+                    validationSchema={validateSchemaPensionClientBeneficiary}
+                    onSubmit={On_submit_PenionBeneficiaryClient}
+                    enableReinitialize
+                    >
+                    {({ values, handleChange, setFieldValue, formik }) =>
+                    <Form>
+                    <Modal.Body>
+                    {/* Family Assets Details*/}
+
+                    <div className=''>
+
+                    <label className="form-label">
+                    Do you have any Nominated Beneficiaries on the Account?
+                    </label>
+                    {/* switch button style */}
+                    <div className="form-check form-switch m-0 p-0 ">
+                    <div className="radiobutton">
+                    <input type="radio" name="clientPensionBeneficiaryAttached"
+                    id="clientPensionBeneficiaryAttached1" value="Yes"
+                    // onClick={() => beneficiariesRadioHandler("Yes")}
+                    onChange={handleChange}
+                    checked={values.clientPensionBeneficiaryAttached === "Yes"}
+                    />
+                    <label htmlFor="clientPensionBeneficiaryAttached1" className="label1">
+                    <span>YES</span>
+                    </label>
+                    <input type="radio" name="clientPensionBeneficiaryAttached"
+                    id="clientPensionBeneficiaryAttached2" value="No"
+                    // onClick={() => beneficiariesRadioHandler("No")}
+                    onChange={handleChange}
+                    checked={values.clientPensionBeneficiaryAttached === "No"}
+                    />
+                    <label htmlFor="clientPensionBeneficiaryAttached2" className="label2">
+                    <span>NO</span>
+                    </label>
+                    </div>
+                    </div>
+                    </div>
+
+                    {values.clientPensionBeneficiaryAttached == "Yes" && <div className=''>
+                    <div className="row">
+                    <div className="col-md-6">
+                    <div className="mb-3 mt-5">
+                    <label htmlFor="NomiationTypeBeneficiary" className="form-label">
+                    Nomination Type
+                    </label>
+                    <Field
+                    as='select'
+                    id="NomiationTypePensionClientBeneficiary"
+                    name="NomiationTypePensionClientBeneficiary"
+                    className="form-select shadow  inputDesign"
+                    onChange={(e) => setFieldValue("NomiationTypePensionClientBeneficiary", e.target.value)}
+                    value={values.NomiationTypePensionClientBeneficiary}
+                    >
+                    <option value="">Select</option>
+                    <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
+                    <option value="Binding Death Nominations">Binding Death Nominations</option>
+                    <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
+                    <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
+                    <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypePensionClientBeneficiary" />
+
+                    </div>
+                    </div>
+
+                    <div className="col-md-6">
+                    <div className="mb-3 mt-5">
+                    <label htmlFor="BeneficiariesOptionDetailsBeneficiaries" className="form-label">
+                    How many beneficiaries do you have?
+                    </label>
+                    <Field
+                    as='select'
+                    id="BeneficiariesOptionDetailsBeneficiaries"
+                    name="BeneficiariesOptionDetailsBeneficiaries"
+                    className="form-select shadow  inputDesign"
+                    onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
+                    value={values.BeneficiariesOptionDetailsBeneficiaries}
+                    >
+                    <option value="">Select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
+
+                    </div>
+                    </div>
+                    </div>
+
+                    {/* Row 1*/}
+                    <div className="row justify-content-around mt-4 mb-3">
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="BeneficiaryPensionClient1" className="form-label">Beneficiary 1</   label>
+                    <Field className="form-control shadow inputDesign"
+                    id="BeneficiaryPensionClient1" name='BeneficiaryPensionClient1' placeholder="Beneficiary 1" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient1' />
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="ShareofBenefitPensionClient1" className="form-label">Share of Benefits % </   label>
+                    <Field type="number" className="form-control shadow inputDesign"
+                    id="ShareofBenefitPensionClient1" name='ShareofBenefitPensionClient1' placeholder="Share of Benefits 1" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient1' />
+                    </div>
+                    </div>
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="RelationshipOptionDetailsPensionClient1" className="form-label">
+                    Relationship
+                    </label>
+                    <Field
+                    as='select'
+                    id="RelationshipOptionDetailsPensionClient1"
+                    name="RelationshipOptionDetailsPensionClient1"
+                    className="form-select shadow  inputDesign"
+                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient1", e.target.value)}
+                    value={values.RelationshipOptionDetailsPensionClient1}
+                    >
+                    <option value="">Select</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Child">Child</option>
+                    <option value="Other">Other</option>
+                    <option value="Interdependency">Interdependency</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient1" />
+
+                    </div>
+                    </div>
+
+                    </div>
+
+                    {/* Row 2*/}
+                    <div className="row justify-content-around mt-4 mb-3">
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="BeneficiaryPensionClient2" className="form-label">Beneficiary 2</   label>
+                    <Field className="form-control shadow inputDesign"
+                    id="BeneficiaryPensionClient2" name='BeneficiaryPensionClient2' placeholder="Beneficiary 2" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient2' />
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="ShareofBenefit2PensionClient2" className="form-label">Share of Benefits % </   label>
+                    <Field type="number" className="form-control shadow inputDesign"
+                    id="ShareofBenefit2PensionClient2" name='ShareofBenefit2PensionClient2' placeholder="Share of Benefits 2" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit2PensionClient2' />
+                    </div>
+                    </div>
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="RelationshipOptionDetailsPensionClient2" className="form-label">
+                    Relationship
+                    </label>
+                    <Field
+                    as='select'
+                    id="RelationshipOptionDetailsPensionClient2"
+                    name="RelationshipOptionDetailsPensionClient2"
+                    className="form-select shadow  inputDesign"
+                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient2", e.target.value)}
+                    value={values.RelationshipOptionDetailsPensionClient2}
+                    >
+                    <option value="">Select</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Child">Child</option>
+                    <option value="Other">Other</option>
+                    <option value="Interdependency">Interdependency</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient2" />
+
+                    </div>
+                    </div>
+
+                    </div>
+                    {/* Row 2*/}
+
+
+                    {/* Row 3*/}
+                    <div className="row justify-content-around mt-4 mb-3">
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="BeneficiaryPensionClient3" className="form-label">Beneficiary 3</   label>
+                    <Field className="form-control shadow inputDesign"
+                    id="BeneficiaryPensionClient3" name='BeneficiaryPensionClient3' placeholder="Beneficiary 3" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient3' />
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="ShareofBenefitPensionClient3" className="form-label">Share of Benefits % </   label>
+                    <Field type="number" className="form-control shadow inputDesign"
+                    id="ShareofBenefitPensionClient3" name='ShareofBenefitPensionClient3' placeholder="Share of Benefits 3" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient3' />
+                    </div>
+                    </div>
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="RelationshipOptionDetailsPensionClient3" className="form-label">
+                    Relationship
+                    </label>
+                    <Field
+                    as='select'
+                    id="RelationshipOptionDetailsPensionClient3"
+                    name="RelationshipOptionDetailsPensionClient3"
+                    className="form-select shadow  inputDesign"
+                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient3", e.target.value)}
+                    value={values.RelationshipOptionDetailsPensionClient3}
+                    >
+                    <option value="">Select</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Child">Child</option>
+                    <option value="Other">Other</option>
+                    <option value="Interdependency">Interdependency</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient3" />
+
+                    </div>
+                    </div>
+
+                    </div>
+                    {/* Row 3*/}
+
+
+                    {/* Row 4*/}
+                    <div className="row justify-content-around mt-4 mb-3">
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="BeneficiaryPensionClient4" className="form-label">Beneficiary 4</   label>
+                    <Field className="form-control shadow inputDesign"
+                    id="BeneficiaryPensionClient4" name='BeneficiaryPensionClient4' placeholder="Beneficiary 4" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient4' />
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="ShareofBenefitPensionClient4" className="form-label">Share of Benefits % </   label>
+                    <Field type="number" className="form-control shadow inputDesign"
+                    id="ShareofBenefitPensionClient4" name='ShareofBenefitPensionClient4' placeholder="Share of Benefits 4" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient4' />
+                    </div>
+                    </div>
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="RelationshipOptionDetailsPensionClient4" className="form-label">
+                    Relationship
+                    </label>
+                    <Field
+                    as='select'
+                    id="RelationshipOptionDetailsPensionClient4"
+                    name="RelationshipOptionDetailsPensionClient4"
+                    className="form-select shadow  inputDesign"
+                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient4", e.target.value)}
+                    value={values.RelationshipOptionDetailsPensionClient4}
+                    >
+                    <option value="">Select</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Child">Child</option>
+                    <option value="Other">Other</option>
+                    <option value="Interdependency">Interdependency</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient4" />
+
+                    </div>
+                    </div>
+
+                    </div>
+                    {/* Row 4*/}
+
+
+                    {/* Row 5*/}
+                    <div className="row justify-content-around mt-4 mb-3">
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="BeneficiaryPensionClient5" className="form-label">Beneficiary 5</   label>
+                    <Field className="form-control shadow inputDesign"
+                    id="BeneficiaryPensionClient5" name='BeneficiaryPensionClient5' placeholder="Beneficiary 5" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionClient5' />
+                    </div>
+                    </div>
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="ShareofBenefitPensionClient5" className="form-label">Share of Benefits % </   label>
+                    <Field type="number" className="form-control shadow inputDesign"
+                    id="ShareofBenefitPensionClient5" name='ShareofBenefitPensionClient5' placeholder="Share of Benefits 5" />
+                    <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionClient5' />
+                    </div>
+                    </div>
+
+                    <div className="col-md-4">
+                    <div className="mb-3">
+                    <label htmlFor="RelationshipOptionDetailsPensionClient5" className="form-label">
+                    Relationship
+                    </label>
+                    <Field
+                    as='select'
+                    id="RelationshipOptionDetailsPensionClient5"
+                    name="RelationshipOptionDetailsPensionClient5"
+                    className="form-select shadow  inputDesign"
+                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionClient5", e.target.value)}
+                    value={values.RelationshipOptionDetailsPensionClient5}
+                    >
+                    <option value="">Select</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Child">Child</option>
+                    <option value="Other">Other</option>
+                    <option value="Interdependency">Interdependency</option>
+                    </Field>
+                    <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionClient5" />
+
+                    </div>
+                    </div>
+
+                    </div>
+                    {/* Row 5*/}
+
+
+                    </div>}
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <div className="col-md-12">
+                    <button
+                    className="float-end btn w-25  bgColor modalBtn"
+                    // onClick={handleClose3}
+                    type='submit'
+                    >
+                    Save
+                    </button>
+                    <button type='button'
+                    className="float-end btn w-25  btn-outline  backBtn mx-3"
+                    onClick={handleCloseClientBeneficiary}
+                    >
+                    Cancel
+                    </button>
+                    </div>
+                    </Modal.Footer>
+                    </Form>
+                    }
+                    </Formik>
+                    </Modal>
+                    {/* NESTED MODAL CLIENT PENSION -> BENEFICIARY */}
+
                     {/*CLIENT PENSION ACCOUNT DISPLAY TABLE */}
                     <div className='table-responsive my-3' id="ClientPensionAccountDisplayTable">
                       <table className="table table-bordered table-hover text-center">
@@ -7235,7 +8428,6 @@ function SuperRetriement() {
                         </thead>
                         <tbody>
                           {
-
                             clientPensionDataList.map((elem, index) => {
                               let { AccountPension_FundName, AccountPension_MemberNO, AccountPension_CurrentBalance, AccountPension_OriginalPrice, AccountPension_LumpsumTaken } = elem;
                               return (
@@ -7247,7 +8439,7 @@ function SuperRetriement() {
                                   <td> {AccountPension_LumpsumTaken}</td>
                                   <td >
                                     <button type='button' onClick={() => clientPensiondeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                    <button type='button' onClick={clientPensionupdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    <button type='button' onClick={() => clientPensionupdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
                                   </td>
 
                                 </tr>
@@ -7257,6 +8449,38 @@ function SuperRetriement() {
                       </table>
                     </div>
                     {/*CLIENT SUPER ACCOUNT DISPLAY TABLE */}
+                    {/*PARTNER SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
+                    <h3>Partner Benficiaries</h3>
+                    <div className='table-responsive my-3' >
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>No_ofBeneficiaries</th>
+                      <th>NominatedBeneficiary</th>
+                      <th>NominationType</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {ClientBeneficiaryDataList.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.No_ofBeneficiaries}</th>
+                                <th>{elem.NominatedBeneficiary}</th>
+                                <th>{elem.NominationType}</th>
+
+                                <th>
+                                <button type='button' onClick={(e)=>{ClientBeneficiaryDataListDeleteHandler(elem,index)}} className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{ClientBeneficiaryDataListUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                      
+                    </table>
+                    </div>
+                    {/*PARTNER SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
                     {/* ---------------------------------------------------- */}
                     <h3 className="">Partner Pension Account</h3>
 
@@ -7339,10 +8563,10 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={Pension2PartnerDataListEdit ? Pension2PartnerDataList[0] : InitialValuesMainPartnerPensionAccount}
+                        initialValues={Pension2PartnerDataListEdit ? PartnerSuperAccountsObj[0] : InitialValuesMainPartnerPensionAccount}
                         validationSchema={partnerPensionAccountMainValidationSchema}
                         onSubmit={PartnerPensionAccount_onSubmit}>
-                        {({ values, setFieldValue, setValues, handleChange, formik }) =>
+                        {({ values, setFieldValue, setValues, handleChange,handleBlur, formik }) =>
                           <Form>
                             <Modal.Body>
                               {/* Professional Advisor Detail Form */}
@@ -7478,16 +8702,54 @@ function SuperRetriement() {
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="AccountPension_CommencementDate" className="form-label">Commencment Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="AccountPension_CommencementDate" name='AccountPension_CommencementDate' />
+                             {/**         <Field type="date" className="form-control shadow inputDesign"
+                                        id="AccountPension_CommencementDate" name='AccountPension_CommencementDate' /> */}
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="AccountPension_CommencementDate"
+                                          name="AccountPension_CommencementDate"
+                                          selected={values.AccountPension_CommencementDate}
+                                          onChange={(date) =>
+                                            setFieldValue("AccountPension_CommencementDate", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AccountPension_CommencementDate' />
                                     </div>
                                   </div>
                                   <div className="col-md-6">
                                     <div className="mb-3">
                                       <label htmlFor="AccountPension_EligibleService" className="form-label">Eligible Service Date</   label>
-                                      <Field type="date" className="form-control shadow inputDesign"
-                                        id="AccountPension_EligibleService" name='AccountPension_EligibleService' />
+                                   {/**   <Field type="date" className="form-control shadow inputDesign"
+                                        id="AccountPension_EligibleService" name='AccountPension_EligibleService' /> */}
+                                        <div>
+                                        <DatePicker
+                                          className="form-control inputDesign shadow"
+                                          showIcon
+                                          id="AccountPension_EligibleService"
+                                          name="AccountPension_EligibleService"
+                                          selected={values.AccountPension_EligibleService}
+                                          onChange={(date) =>
+                                            setFieldValue("AccountPension_EligibleService", date)
+                                          }
+                                          dateFormat="dd/MM/yyyy"
+                                          placeholderText="dd/mm/yyyy"
+                                          maxDate={new Date()}
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dropdownMode="select"
+                                          onBlur={handleBlur}
+                                        />
+                                      </div>
                                       <ErrorMessage component='div' className='text-danger fw-bold' name='AccountPension_EligibleService' />
                                     </div>
                                   </div>
@@ -7607,7 +8869,7 @@ function SuperRetriement() {
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Formik
-                                  initialValues={PensionPartnerInvestmentModalEdit ? PensionPartnerInvestmentModal[0] : initialValuesPartnerPensionNestedModal}
+                                  initialValues={PensionPartnerInvestmentModalEdit ? PensionPartnerInvestmentModalObj[0] : initialValuesPartnerPensionNestedModal}
                                   validationSchema={validateYupSchemaPartnerPensionNestedModal}
                                   onSubmit={On_submit_validatePartnerPensionNestedModal}
                                   enableReinitialize
@@ -7668,16 +8930,16 @@ function SuperRetriement() {
                                               <tbody>
                                                 {
                                                   PensionPartnerInvestmentModal.map((elem, index) => {
-                                                    let { InvestmentPartnerPensionOption, InvestmentPartnerPensionCurrentValue } = elem;
+
                                                     return (
                                                       <tr>
                                                         <td>2r5rs</td>
-                                                        <td>{InvestmentPartnerPensionOption}</td>
-                                                        <td> {InvestmentPartnerPensionCurrentValue}</td>
+                                                        <td>{elem.InvestmentOption}</td>
+                                                        <td> {elem.CurrentValue}</td>
 
                                                         <td >
                                                           <button type='button' onClick={() => PartnerPensionInvestmentModaldeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                                          <button type='button' onClick={PartnerPensionInvestmentModalupdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
+                                                          <button type='button' onClick={()=>PartnerPensionInvestmentModalupdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
 
                                                         </td>
 
@@ -7700,7 +8962,7 @@ function SuperRetriement() {
                                           >
                                             Save
                                           </button>
-                                          <button
+                                          <button type='button'
                                             className="float-end btn w-25  btn-outline  backBtn mx-3"
                                             onClick={handleClosePensionPartner}
                                           >
@@ -7716,375 +8978,7 @@ function SuperRetriement() {
 
                               <button type='button' onClick={handleShowPartnerBeneficiary} className='btn bgColor modalBtn'>Beneficiaries</button>
                               {/* NESTED PARTNER PENSION BENEFICIARY MODAL  */}
-                              <Modal
-                                show={showPartnerBeneficiary}
-                                onHide={handleClosePartnerBeneficiary}
-                                backdrop="static"
-                                className="modal-lg"
-                                keyboard={false}
-                              >
-                                <Modal.Header
-                                  className="text-light modalBG "
-                                  closeButton
-                                >
-                                  <Modal.Title className="fontStyle">
-                                    Beneficiaries Details
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Formik
-                                  initialValues={initialValuesPensionBeneficiaryPartner}
-                                  validationSchema={validateSchemaPensionPartnerBeneficiary}
-                                  onSubmit={On_submit_PenionBeneficiaryPartner}
-                                  enableReinitialize
-                                >
-                                  {({ values, handleChange, setFieldValue, formik }) =>
-                                    <Form>
-                                      <Modal.Body>
-                                        {/* Family Assets Details*/}
 
-
-                                        <label className="form-label">
-                                          Do you have any Nominated Beneficiaries on the Account?
-                                        </label>
-                                        {/* switch button style */}
-                                        <div className="form-check form-switch m-0 p-0 ">
-                                          <div className="radiobutton">
-                                            <input type="radio" name="partnerPensionBeneficiaryAttached"
-                                              id="partnerPensionBeneficiaryAttached1" value="Yes"
-                                              //  onClick={() => beneficiariesRadioHandler("Yes")}
-                                              onChange={handleChange}
-                                              checked={values.partnerPensionBeneficiaryAttached === "Yes"}
-                                            />
-                                            <label htmlFor="partnerPensionBeneficiaryAttached1" className="label1">
-                                              <span>YES</span>
-                                            </label>
-                                            <input type="radio" name="partnerPensionBeneficiaryAttached"
-                                              id="partnerPensionBeneficiaryAttached2" value="No"
-                                              //onClick={() => beneficiariesRadioHandler("No")}
-                                              onChange={handleChange}
-                                              checked={values.partnerPensionBeneficiaryAttached === "No"}
-                                            />
-                                            <label htmlFor="partnerPensionBeneficiaryAttached2" className="label2">
-                                              <span>NO</span>
-                                            </label>
-                                          </div>
-                                        </div>
-                                        {values.partnerPensionBeneficiaryAttached == "Yes" &&
-                                          <div className=''>
-
-                                            <div className="row">
-                                              <div className="col-md-6">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="NomiationTypeBeneficiary" className="form-label">
-                                                    Nomination Type
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="NomiationTypePensionPartnerBeneficiary"
-                                                    name="NomiationTypePensionPartnerBeneficiary"
-                                                    className="form-select shadow  inputDesign"
-                                                    onChange={(e) => setFieldValue("NomiationTypePensionPartnerBeneficiary", e.target.value)}
-                                                    value={values.NomiationTypePensionPartnerBeneficiary}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
-                                                    <option value="Binding Death Nominations">Binding Death Nominations</option>
-                                                    <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
-                                                    <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
-                                                    <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypePensionPartnerBeneficiary" />
-
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-6">
-                                                <div className="mb-3 mt-5">
-                                                  <label htmlFor="BeneficiariesOptionDetailsBeneficiaries" className="form-label">
-                                                    How many beneficiaries do you have?
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="BeneficiariesOptionDetailsBeneficiaries"
-                                                    name="BeneficiariesOptionDetailsBeneficiaries"
-                                                    className="form-select shadow  inputDesign"
-                                                    onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
-                                                    value={values.BeneficiariesOptionDetailsBeneficiaries}
-                                                  >
-                                                    <option value="Select">Select</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
-
-                                                </div>
-                                              </div>
-                                            </div>
-
-                                            {/* Row 1*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="BeneficiaryPensionPartner1" className="form-label">Beneficiary 1</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="BeneficiaryPensionPartner1" name='BeneficiaryPensionPartner1' placeholder="Beneficiary 1" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner1' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefitPensionPartner1" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefitPensionPartner1" name='ShareofBenefitPensionPartner1' placeholder="Share of Benefits 1" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner1' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsPensionPartner1" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsPensionPartner1"
-                                                    name="RelationshipOptionDetailsPensionPartner1"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner1", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsPensionPartner1}
-                                                  >
-                                                    <option value="Select">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner1" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-
-                                            {/* Row 2*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="BeneficiaryPensionPartner2" className="form-label">Beneficiary 2</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="BeneficiaryPensionPartner2" name='BeneficiaryPensionPartner2' placeholder="Beneficiary 2" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner2' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefit2PensionPartner2" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefit2PensionPartner2" name='ShareofBenefit2PensionPartner2' placeholder="Share of Benefits 2" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit2PensionPartner2' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsPensionPartner2" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsPensionPartner2"
-                                                    name="RelationshipOptionDetailsPensionPartner2"
-                                                    className="form-select shadow  inputDesign"
-                                                    onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner2", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsPensionPartner2}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner2" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 2*/}
-
-
-                                            {/* Row 3*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="BeneficiaryPensionPartner3" className="form-label">Beneficiary 3</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="BeneficiaryPensionPartner3" name='BeneficiaryPensionPartner3' placeholder="Beneficiary 3" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner3' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefitPensionPartner3" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefitPensionPartner3" name='ShareofBenefitPensionPartner3' placeholder="Share of Benefits 3" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner3' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsPensionPartner3" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsPensionPartner3"
-                                                    name="RelationshipOptionDetailsPensionPartner3"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner3", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsPensionPartner3}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner3" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 3*/}
-
-
-                                            {/* Row 4*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="BeneficiaryPensionPartner4" className="form-label">Beneficiary 4</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="BeneficiaryPensionPartner4" name='BeneficiaryPensionPartner4' placeholder="Beneficiary 4" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner4' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefitPensionPartner4" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefitPensionPartner4" name='ShareofBenefitPensionPartner4' placeholder="Share of Benefits 4" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner4' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsPensionPartner4" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsPensionPartner4"
-                                                    name="RelationshipOptionDetailsPensionPartner4"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner4", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsPensionPartner4}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner4" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 4*/}
-
-
-                                            {/* Row 5*/}
-                                            <div className="row justify-content-around mt-4 mb-3">
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="BeneficiaryPensionPartner5" className="form-label">Beneficiary 5</   label>
-                                                  <Field className="form-control shadow inputDesign"
-                                                    id="BeneficiaryPensionPartner5" name='BeneficiaryPensionPartner5' placeholder="Beneficiary 5" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner5' />
-                                                </div>
-                                              </div>
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="ShareofBenefitPensionPartner5" className="form-label">Share of Benefits % </   label>
-                                                  <Field type="number" className="form-control shadow inputDesign"
-                                                    id="ShareofBenefitPensionPartner5" name='ShareofBenefitPensionPartner5' placeholder="Share of Benefits 5" />
-                                                  <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner5' />
-                                                </div>
-                                              </div>
-
-                                              <div className="col-md-4">
-                                                <div className="mb-3">
-                                                  <label htmlFor="RelationshipOptionDetailsPensionPartner5" className="form-label">
-                                                    Relationship
-                                                  </label>
-                                                  <Field
-                                                    as='select'
-                                                    id="RelationshipOptionDetailsPensionPartner5"
-                                                    name="RelationshipOptionDetailsPensionPartner5"
-                                                    className="form-select shadow  inputDesign"
-                                                    //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner5", e.target.value)}
-                                                    value={values.RelationshipOptionDetailsPensionPartner5}
-                                                  >
-                                                    <option value="">Select</option>
-                                                    <option value="Spouse">Spouse</option>
-                                                    <option value="Child">Child</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Interdependency">Interdependency</option>
-                                                  </Field>
-                                                  <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner5" />
-
-                                                </div>
-                                              </div>
-
-                                            </div>
-                                            {/* Row 5*/}
-
-                                          </div>}
-                                      </Modal.Body>
-                                      <Modal.Footer>
-                                        <div className="col-md-12">
-                                          <button
-                                            className="float-end btn w-25  bgColor modalBtn"
-                                            // onClick={handleClose3}
-                                            type='submit'
-                                          >
-                                            Save
-                                          </button>
-                                          <button
-                                            className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                            onClick={handleClosePartnerBeneficiary}
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
-                                      </Modal.Footer>
-                                    </Form>
-                                  }
-                                </Formik>
-                              </Modal>
-                              {/* NESTED PARTNER PENSION BENEFICIARY MODAL  */}
 
                             </Modal.Body>
                             <Modal.Footer>
@@ -8096,7 +8990,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={Pension2handleClose}
                                 >
@@ -8108,6 +9002,376 @@ function SuperRetriement() {
                         }
                       </Formik>
                     </Modal>
+                    {/* NESTED PARTNER PENSION BENEFICIARY MODAL  */}
+                    <Modal
+                    show={showPartnerBeneficiary}
+                    onHide={handleClosePartnerBeneficiary}
+                    backdrop="static"
+                    className="modal-lg"
+                    keyboard={false}
+                  >
+                    <Modal.Header
+                      className="text-light modalBG "
+                      closeButton
+                    >
+                      <Modal.Title className="fontStyle">
+                        Beneficiaries Details
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                      initialValues={PartnerBeneficiaryDataListUpdateFlag ? PartnerBeneficiaryDataListObj[0] : initialValuesPensionBeneficiaryPartner}
+                      validationSchema={validateSchemaPensionPartnerBeneficiary}
+                      onSubmit={On_submit_PenionBeneficiaryPartner}
+                      enableReinitialize
+                    >
+                      {({ values, handleChange, setFieldValue, formik }) =>
+                        <Form>
+                          <Modal.Body>
+                            {/* Family Assets Details*/}
+
+
+                            <label className="form-label">
+                              Do you have any Nominated Beneficiaries on the Account?
+                            </label>
+                            {/* switch button style */}
+                            <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input type="radio" name="partnerPensionBeneficiaryAttached"
+                                  id="partnerPensionBeneficiaryAttached1" value="Yes"
+                                  //  onClick={() => beneficiariesRadioHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.partnerPensionBeneficiaryAttached === "Yes"}
+                                />
+                                <label htmlFor="partnerPensionBeneficiaryAttached1" className="label1">
+                                  <span>YES</span>
+                                </label>
+                                <input type="radio" name="partnerPensionBeneficiaryAttached"
+                                  id="partnerPensionBeneficiaryAttached2" value="No"
+                                  //onClick={() => beneficiariesRadioHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.partnerPensionBeneficiaryAttached === "No"}
+                                />
+                                <label htmlFor="partnerPensionBeneficiaryAttached2" className="label2">
+                                  <span>NO</span>
+                                </label>
+                              </div>
+                            </div>
+                            {values.partnerPensionBeneficiaryAttached == "Yes" &&
+                              <div className=''>
+
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <div className="mb-3 mt-5">
+                                      <label htmlFor="NomiationTypeBeneficiary" className="form-label">
+                                        Nomination Type
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="NomiationTypePensionPartnerBeneficiary"
+                                        name="NomiationTypePensionPartnerBeneficiary"
+                                        className="form-select shadow  inputDesign"
+                                        onChange={(e) => setFieldValue("NomiationTypePensionPartnerBeneficiary", e.target.value)}
+                                        value={values.NomiationTypePensionPartnerBeneficiary}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Non-Lapsing Binding Death Nominations">Non-Lapsing Binding Death Nominations</option>
+                                        <option value="Binding Death Nominations">Binding Death Nominations</option>
+                                        <option value="Non-Binding Death Nominations">Non-Binding Death Nominations</option>
+                                        <option value="Legal Representative(Your Estate)">Legal Representative(Your Estate)</option>
+                                        <option value="Reversionary Beneficiary">Reversionary Beneficiary</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="NomiationTypePensionPartnerBeneficiary" />
+
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-6">
+                                    <div className="mb-3 mt-5">
+                                      <label htmlFor="BeneficiariesOptionDetailsBeneficiaries" className="form-label">
+                                        How many beneficiaries do you have?
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="BeneficiariesOptionDetailsBeneficiaries"
+                                        name="BeneficiariesOptionDetailsBeneficiaries"
+                                        className="form-select shadow  inputDesign"
+                                        onChange={(e) => setFieldValue("BeneficiariesOptionDetailsBeneficiaries", e.target.value)}
+                                        value={values.BeneficiariesOptionDetailsBeneficiaries}
+                                      >
+                                        <option value="Select">Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="BeneficiariesOptionDetailsBeneficiaries" />
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Row 1*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="BeneficiaryPensionPartner1" className="form-label">Beneficiary 1</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="BeneficiaryPensionPartner1" name='BeneficiaryPensionPartner1' placeholder="Beneficiary 1" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner1' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefitPensionPartner1" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefitPensionPartner1" name='ShareofBenefitPensionPartner1' placeholder="Share of Benefits 1" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner1' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsPensionPartner1" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsPensionPartner1"
+                                        name="RelationshipOptionDetailsPensionPartner1"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner1", e.target.value)}
+                                        value={values.RelationshipOptionDetailsPensionPartner1}
+                                      >
+                                        <option value="Select">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner1" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                                {/* Row 2*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="BeneficiaryPensionPartner2" className="form-label">Beneficiary 2</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="BeneficiaryPensionPartner2" name='BeneficiaryPensionPartner2' placeholder="Beneficiary 2" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner2' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefit2PensionPartner2" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefit2PensionPartner2" name='ShareofBenefit2PensionPartner2' placeholder="Share of Benefits 2" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefit2PensionPartner2' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsPensionPartner2" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsPensionPartner2"
+                                        name="RelationshipOptionDetailsPensionPartner2"
+                                        className="form-select shadow  inputDesign"
+                                        onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner2", e.target.value)}
+                                        value={values.RelationshipOptionDetailsPensionPartner2}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner2" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 2*/}
+
+
+                                {/* Row 3*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="BeneficiaryPensionPartner3" className="form-label">Beneficiary 3</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="BeneficiaryPensionPartner3" name='BeneficiaryPensionPartner3' placeholder="Beneficiary 3" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner3' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefitPensionPartner3" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefitPensionPartner3" name='ShareofBenefitPensionPartner3' placeholder="Share of Benefits 3" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner3' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsPensionPartner3" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsPensionPartner3"
+                                        name="RelationshipOptionDetailsPensionPartner3"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner3", e.target.value)}
+                                        value={values.RelationshipOptionDetailsPensionPartner3}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner3" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 3*/}
+
+
+                                {/* Row 4*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="BeneficiaryPensionPartner4" className="form-label">Beneficiary 4</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="BeneficiaryPensionPartner4" name='BeneficiaryPensionPartner4' placeholder="Beneficiary 4" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner4' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefitPensionPartner4" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefitPensionPartner4" name='ShareofBenefitPensionPartner4' placeholder="Share of Benefits 4" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner4' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsPensionPartner4" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsPensionPartner4"
+                                        name="RelationshipOptionDetailsPensionPartner4"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner4", e.target.value)}
+                                        value={values.RelationshipOptionDetailsPensionPartner4}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner4" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 4*/}
+
+
+                                {/* Row 5*/}
+                                <div className="row justify-content-around mt-4 mb-3">
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="BeneficiaryPensionPartner5" className="form-label">Beneficiary 5</   label>
+                                      <Field className="form-control shadow inputDesign"
+                                        id="BeneficiaryPensionPartner5" name='BeneficiaryPensionPartner5' placeholder="Beneficiary 5" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='BeneficiaryPensionPartner5' />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="ShareofBenefitPensionPartner5" className="form-label">Share of Benefits % </   label>
+                                      <Field type="number" className="form-control shadow inputDesign"
+                                        id="ShareofBenefitPensionPartner5" name='ShareofBenefitPensionPartner5' placeholder="Share of Benefits 5" />
+                                      <ErrorMessage component='div' className='text-danger fw-bold' name='ShareofBenefitPensionPartner5' />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-md-4">
+                                    <div className="mb-3">
+                                      <label htmlFor="RelationshipOptionDetailsPensionPartner5" className="form-label">
+                                        Relationship
+                                      </label>
+                                      <Field
+                                        as='select'
+                                        id="RelationshipOptionDetailsPensionPartner5"
+                                        name="RelationshipOptionDetailsPensionPartner5"
+                                        className="form-select shadow  inputDesign"
+                                        //onChange={(e) => setFieldValue("RelationshipOptionDetailsPensionPartner5", e.target.value)}
+                                        value={values.RelationshipOptionDetailsPensionPartner5}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Interdependency">Interdependency</option>
+                                      </Field>
+                                      <ErrorMessage component='div' className="text-danger fw-bold" name="RelationshipOptionDetailsPensionPartner5" />
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {/* Row 5*/}
+
+                              </div>}
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <div className="col-md-12">
+                              <button
+                                className="float-end btn w-25  bgColor modalBtn"
+                                // onClick={handleClose3}
+                                type='submit'
+                              >
+                                Save
+                              </button>
+                              <button type='button'
+                                className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                onClick={handleClosePartnerBeneficiary}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Modal.Footer>
+                        </Form>
+                      }
+                    </Formik>
+                  </Modal>
+                  {/* NESTED PARTNER PENSION BENEFICIARY MODAL  */}
                     {/* ---------------------------------------------------- */}
                   </div>
                   {/* Pension Account Details */}
@@ -8139,8 +9403,8 @@ function SuperRetriement() {
                                 <td> {AccountPension_OriginalPrice}</td>
                                 <td> {AccountPension_LumpsumTaken}</td>
                                 <td >
-                                  <button type='button' onClick={() => partnerPensiondeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                  <button type='button' onClick={partnerPensionupdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
+                                  <button type='button' onClick={() =>partnerPensiondeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
+                                  <button type='button' onClick={()=>partnerPensionupdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
                                 </td>
 
                               </tr>
@@ -8150,6 +9414,37 @@ function SuperRetriement() {
                     </table>
                   </div>
                   {/*PARTNER PENSION ACCOUNT DISPLAY TABLE */}
+
+                    {/*PARTNER SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
+                    <h3>Partner Benficiaries</h3>
+                    <div className='table-responsive my-3'>
+                    <table className="table table-bordered table-hover text-center">
+                      <thead  className="text-light" id="tableHead">
+                      <tr>
+                      <th>No_ofBeneficiaries</th>
+                      <th>NominatedBeneficiary</th>
+                      <th>NominationType</th>
+                      <th>Operations</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                          {PartnerBeneficiaryDataList.map((elem,index)=>{
+                            return(
+                              <tr>
+                                <th>{elem.No_ofBeneficiaries}</th>
+                                <th>{elem.NominatedBeneficiary}</th>
+                                <th>{elem.NominationType}</th>
+                                <th>
+                                <button type='button' onClick={(e)=>{PartnerBeneficiaryDataListDeleteHandler(elem,index)}}  className='btn btn-danger btn-sm'>delete</button>
+                                <button type='button' onClick={(e)=>{PartnerBeneficiaryDataListUpdateHandler(elem,index)}}  className='btn btn-warning btn-sm mx-2'>update</button>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                    </div>
+                    {/*PARTNER SUPER ACCOUNT BENFICIARIES  DISPLAY TABLE */}
 
                   {/* --------------------------------------------- */}
                   {/* Annuities Details */}
@@ -8410,7 +9705,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={AnnuitieshandleClose}
                                 >
@@ -8716,7 +10011,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={Annuities2handleClose}
                                 >
@@ -8816,7 +10111,8 @@ function SuperRetriement() {
                         </label>
                         <br />
 
-                        <span
+                        <button
+                        type='button'
                           className=" btn h-50 w-50
                                 btn-outline-success "
                           onClick={LifetimePensionhandleShow}
@@ -8826,7 +10122,7 @@ function SuperRetriement() {
 
                           </div>
                           Enter Details
-                        </span>
+                        </button>
                       </div>}
                     </div>
                     {/* 1 row */}
@@ -8853,7 +10149,7 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={InitialValuesMainClientLifetimePensionAccount}
+                        initialValues={ClientLifetimePensionUpdateFlag?ClientLifetimePensionObj[0]:InitialValuesMainClientLifetimePensionAccount}
                         validationSchema={clientLifetimePensionAccountMainValidationSchema}
                         onSubmit={ClientLifetimePension_onSubmit}>
                         {({ values, setFieldValue, setValues, handleChange, formik }) =>
@@ -8972,7 +10268,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={LifetimePensionhandleClose}
                                 >
@@ -8994,20 +10290,29 @@ function SuperRetriement() {
                             <th>Original Investment</th>
                             <th>Deductable Amount</th>
                             <th>Taxable Pension Amount</th>
+                            <th>Operations</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {
-                                                  InvestmentModal.map((elem, index) => {
-                                                    let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
-                                                    return ( */}
+                           { ClientLifetimePension.map((elem, index) => {
+                              let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
+                              return ( 
                           <tr>
-                            <td>Sunny</td>
-                            <td>12</td>
-                            <td> 10000</td>
-                            <td> 800</td>
-                            <td> 200</td>
+                            <td>{elem.LifePension_FundName}</td>
+                            <td>{elem.LifePension_RegularIncome}</td>
+                            <td>{elem.LifePension_Frequency}</td>
+                            <td>{elem.LifePension_DeductibleAmount}</td>
+                            <td>{elem.LifePension_TaxFree_Pension}</td>
+                            <td> 
+                            <button type="button" onClick={(e)=>{ClientLifetimePensionDeleteHandler(elem,index)}}
+                            className="btn btn-danger btn-sm"> delete </button>
+
+                            <button type="button" onClick={(e)=>{ClientLifetimePensionUpdateHandler(elem,index)}}
+                              className="btn btn-warning btn-sm mx-2">  update </button>
+                            </td>
                           </tr>
+                              )})}
+
                         </tbody>
                       </table>
                     </div>
@@ -9091,7 +10396,7 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={InitialValuesMainPartnerLifetimePensionAccount}
+                        initialValues={PartnerLifetimePensionUpdateFlag ? PartnerLifetimePensionObj[0] : InitialValuesMainPartnerLifetimePensionAccount}
                         validationSchema={partnerLifetimePensionAccountMainValidationSchema}
                         onSubmit={PartnerLifetimePension_onSubmit}>
                         {({ values, setFieldValue, setValues, handleChange, formik }) =>
@@ -9210,7 +10515,7 @@ function SuperRetriement() {
                                 >
                                   Save
                                 </button>
-                                <button
+                                <button type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={LifetimePension2handleClose}
                                 >
@@ -9232,20 +10537,29 @@ function SuperRetriement() {
                             <th>Original Investment</th>
                             <th>Deductable Amount</th>
                             <th>Taxable Pension Amount</th>
+                            <th>Operations</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {
-                                                  InvestmentModal.map((elem, index) => {
-                                                    let { InvestmentOptionDetailsInvestment, InvestmentOptionDetailsCurrentValue } = elem;
-                                                    return ( */}
+                        {
+                          PartnerLifetimePension.map((elem, index) => {
+                            return ( 
                           <tr>
-                            <td>Sunny</td>
-                            <td>12</td>
-                            <td> 10000</td>
-                            <td> 800</td>
-                            <td> 200</td>
+                          <td>{elem.LifePension_FundName}</td>
+                          <td>{elem.LifePension_RegularIncome}</td>
+                          <td>{elem.LifePension_Frequency}</td>
+                          <td>{elem.LifePension_DeductibleAmount}</td>
+                          <td>{elem.LifePension_TaxFree_Pension}</td>
+                            <td>    
+                             <button type="button" onClick={(e)=>{PartnerLifetimePensionDeleteHandler(elem,index)}}
+                            className="btn btn-danger btn-sm"> delete </button>
+
+                            <button type="button" onClick={(e)=>{PartnerLifetimePensionUpdateHandler(elem,index)}}
+                              className="btn btn-warning btn-sm mx-2">  update </button>
+                              </td>
                           </tr>
+                            )})
+                          }
                         </tbody>
                       </table>
                     </div>

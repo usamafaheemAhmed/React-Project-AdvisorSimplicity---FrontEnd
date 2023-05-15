@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./personalDetail.css";
 
 import {Formik , Field,Form, ErrorMessage} from 'formik';
@@ -52,6 +52,30 @@ const PersonalDetail = () => {
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+
+    let email=localStorage.getItem("EditClient")
+   
+       // child
+   
+       axios
+       .get(`http://127.0.0.1:7000/Child`)
+       .then((res) => {
+       console.log(res.data)
+       let childObj=(res.data)
+       let childFilterObj=childObj.filter((item) => item.Email ==email);
+   
+       let date = new Date(childFilterObj[0].ChildDOB);
+       childFilterObj[0].ChildDOB=date;
+   
+       setListOfChild(childFilterObj)
+      //  console.log("child",childFilterObj);
+   
+       setIsChildTable(true);
+       })
+    
+     }, [])
 
   let partnerHandler=(value)=>{
     //  alert(value)
@@ -350,7 +374,7 @@ let partnerAgeHandler=(Dob,Age)=>{
 const initialValues={
   titleID:'',
   maritalStatus:'',
-  givenNameID:'zaid',
+  givenNameID:' ',
   employmentStatusID:'',
   surnameID:'',
   HealthID:'',
@@ -628,9 +652,6 @@ const initialValues2={
   }
   const onSubmit2= (values,action) => {
   
-
-
-
     let age= parseFloat(document.getElementById("childAge").value)||0;
     console.log(age);
 
@@ -652,6 +673,8 @@ const initialValues2={
       ChildUniversityEducationCost:parseFloat(values.CostofUniEducation)||0,
       ChildCourseYear:parseFloat(values.courseYears)||0,    
     }
+
+    console.log(ChildDetails);
     
     if(SubmitFlag){
       console.log("true")
@@ -659,12 +682,31 @@ const initialValues2={
 
       console.log(listOfChild)
 
-      setListOfChild((current) =>current.filter((listOfChild) => listOfChild.ChildNO !== numOfChild));
-      
-      setListOfChild(listOfChild=>[...listOfChild, ChildDetails]);
-
       setSubmitFlag(false);
 
+      let email=localStorage.getItem("EditClient")
+      let id = values.id;
+        // alert(id);
+      axios
+      .patch(`http://localhost:7000/Child/Update-Child/${email}/${id}`, ChildDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Updated Complete");
+      })
+  
+      setTimeout(() => {
+  
+      axios
+      .get(`http://localhost:7000/Child`)
+      .then((res) => {
+        console.log("got it");
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setListOfChild(clientFilterObj);
+      //  console.log(clientFilterObj);
+      })
+  
+      }, 500);
 
     }
     else{
@@ -675,7 +717,7 @@ const initialValues2={
       axios
     .post('http://localhost:7000/Child/Add-Child', ChildDetails)
     .then((res) => console.log("Child Successfully Added!"))
-  
+
   
        console.log(listOfChild)
      
@@ -685,6 +727,24 @@ const initialValues2={
         handleClose ();
         setNumOfChild(1)
         setIsChildTable(true)
+
+        let email=localStorage.getItem("EditClient")
+
+           
+        setTimeout(() => {
+          
+          axios
+          .get(`http://localhost:7000/Child`)
+          .then((res) => {
+          let clientObj=(res.data)
+          let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+          setListOfChild(clientFilterObj);
+          console.log("got after deleting")
+          //  console.log(clientFilterObj);
+          })
+
+        }, 500);
+
       }
       else{
         setNumOfChild(numOfChild+1)
@@ -699,11 +759,8 @@ const initialValues2={
       }
     }
 
-  
-
-   
-  
   }
+  
   
     const validationSchema2=Yup.object({
     childNameID: Yup.string().matches(letters, "only letters").required('Required') ,
@@ -825,21 +882,45 @@ const initialValues2={
 
     let ChildNO = e.ChildNO;
 
-    setListOfChild((current) => 
-    current.filter((listOfChild) => listOfChild.ChildNO !== ChildNO));
+    
+    let email=localStorage.getItem("EditClient")
+    let id = e._id;
 
+    axios
+    .delete(`http://localhost:7000/Child/Delete-Child/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Chilled Remove")
+    })
 
     setTimeout(() => {
-          console.log(listOfChild);
-    }, 500);
+      
+      axios
+      .get(`http://localhost:7000/Child`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setListOfChild(clientFilterObj);
+      console.log("got after deleting")
+      //  console.log(clientFilterObj);
+      })
 
+    }, 500);
 
    }
 
    let updateHandler=(e)=>{
     // console.log("update",e);
     setNumOfChild(e.ChildNO);
+
+
+    let date = new Date(e.ChildDOB);
+    e.ChildDOB=date;
+
+
+
     let data = {
+      id: e._id,
       ChildNO: parseFloat(numOfChild),
       childNameID:e.ChildName,
       childDoBID:e.ChildDOB,
@@ -2593,7 +2674,7 @@ const initialValues2={
   <thead className="text-light" id="tableHead">
   <tr>
         <th>Child Name</th>
-        <th>Date of Birth</th>
+
         <th>Age</th>
         <th>Gender</th>
         <th>Relationship</th>
@@ -2602,14 +2683,14 @@ const initialValues2={
   </thead>
   <tbody>
   {  listOfChild.map((elem,index)=>{
-        // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
-       
+      // console.log("In Mapp Getting Date",elem.ChildDOB)
 return(
     
     <tr key={index}>
         <td>{elem.ChildName}</td>
-        <td>{elem.ChildDOB}</td>
-        <td>{elem.ChildAge}</td>
+     
+       
+        <td>{elem.ChildAge}</td> 
         <td>{elem.ChildGender}</td>
         <td>{elem.ChildRelation}</td>
         <td >
