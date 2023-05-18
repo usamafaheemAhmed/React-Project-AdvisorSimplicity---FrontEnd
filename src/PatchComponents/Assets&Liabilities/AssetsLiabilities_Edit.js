@@ -1,3084 +1,4496 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
-import * as Yup from 'yup';
-import 'yup-phone';
-import plus from "./images/plus.svg"
-import notebook from './images/notebook.svg';
+import * as Yup from "yup";
+import "yup-phone";
+import plus from "./images/plus.svg";
+import notebook from "./images/notebook.svg";
 import "./assets.css";
 
-
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const AssetsLiabilities_Edit = () => {
+  let postCodePattern = /^\d{4}$/;
+  const [ownFamily, setOwnFamily] = useState(false);
+  const [propertyLoanState, setPropertyLoanState] = useState(false);
+  const [personalAssetsState, setPersonalAssetsState] = useState(false);
+  const [personalLoanState, setPersonalLoanState] = useState(false);
 
-    let postCodePattern=/^\d{4}$/;
+  const [updateIndex, setUpdateIndex] = useState();
+
+  const [HomeIndex, setHomeIndex] = useState(1);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
+
+  const [show3, setShow3] = useState(false);
+  const handleClose3 = () => setShow3(false);
+  const handleShow3 = () => setShow3(true);
+
+  const [ownFamilyList, setOwnFamilyList] = useState([]);
+  const [ownFamilyListObj, setOwnFamilyListObj] = useState([]);
+  const [ownFamilyEdit, setOwnFamilyEdit] = useState(false); /////added
+
+  const [personalAssetDetailsEdit, setpersonalAssetDetailsEdit] =
+    useState(false);
+
+  const [PersonalAssets, setPersonalAssets] = useState([]);
+  const [PersonalAssetsEdit, setPersonalAssetsEdit] = useState(false);
+
+  // table3 state lists
+  const [PersonalLoans, setPersonalLoans] = useState([]);
+  const [PersonalLoansEdit, setPersonalLoansEdit] = useState(false);
   
-    const [ownFamily, setOwnFamily] = useState(false)
-    const [propertyLoanState, setPropertyLoanState] = useState(false)
-    const [personalAssetsState, setPersonalAssetsState] = useState(false)
-    const [personalLoanState, setPersonalLoanState] = useState(false)
+  
+  const [clientData, setclientData] = useState([]);
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
-    const [show2, setShow2] = useState(false);
-    const handleClose2 = () => setShow2(false);
-    const handleShow2 = () => setShow2(true);
 
-    const [show3, setShow3] = useState(false);
-    const handleClose3 = () => setShow3(false);
-    const handleShow3 = () => setShow3(true);
+  useEffect(() => {
 
-    const [ownFamilyList, setOwnFamilyList] = useState([])
-    
-    const [contentList, setContentList] = useState([])
-    const [MotorVehicle1, setMotorVehicle1] = useState([])
-    const [MotorVehicle2, setMotorVehicle2] = useState([])
-    const [Boat, setBoat] = useState([])
-    const [Caravan, setCaravan] = useState([])
-    const [personalOther, setPersonalOther] = useState([])
+    let email=localStorage.getItem("EditClient")
+    axios
+      .get(`http://localhost:7000/Client-Assets`)
+      .then((res) => {
+      let clientObj=(res.data)
+      let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      setclientData(clientFilterObj[0])
+        //  console.log(res.data)
+        
+      })
+  
 
-    // table3 state lists
-    const [CreditCardList1, setCreditCardList1] = useState([])
-    const [CreditCardList2, setCreditCardList2] = useState([])
-    const [PersonalLoanList1, setPersonalLoanList1] = useState([])
-    const [PersonalLoanList2, setPersonalLoanList2] = useState([])
-
-    const [clientData, setclientData] = useState([])
-    const [familyHomeModal, setFamilyHomeModal] = useState([])
-    const [personalAssetsModal, setPersonalAssetsModal] = useState([])
-    const [personalLoanModal, setPersonalLoanModal] = useState([])
-
-    useEffect(() => {
-
-      let email=localStorage.getItem("EditClient")
+  
+      // FamilyHome Modal
       axios
-        .get(`http://localhost:7000/Client-Assets`)
-        .then((res) => {
-        let clientObj=(res.data)
-        let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-        setclientData(clientFilterObj[0])
-          //  console.log(res.data)
-          
-        })
-    
-  
-    
-        // FamilyHome Modal
-        axios
-        .get(`http://localhost:7000/Client-FamilyHome`)
-        .then((res) => {
-        let modalObj=(res.data)
-        let objectFilterObj=modalObj.filter((item) => item.Email ==email);
-        setFamilyHomeModal(objectFilterObj[0])
-        // console.log(res.data)
-        setOwnFamilyList(objectFilterObj)
-        })
+      .get(`http://localhost:7000/Client-FamilyHome`)
+      .then((res) => {
+      let modalObj=(res.data)
+      let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+      setOwnFamilyList(objectFilterObj)
+      })
 
-        // Modal personal assets
+      // // Modal personal assets
 
-        axios
-        .get(`http://localhost:7000/Client-PersonalAssets`)
-        .then((res) => {
-        let modalObj=(res.data)
-        let objectFilterObj=modalObj.filter((item) => item.Email ==email);
-        setPersonalAssetsModal(objectFilterObj[0])
-        console.log(res.data)
-        
-        setContentList([objectFilterObj[0]])
-        setMotorVehicle1([objectFilterObj[0]])
-        setMotorVehicle2([objectFilterObj[0]])
-        setBoat([objectFilterObj[0]])
-        setCaravan([objectFilterObj[0]])
-        setPersonalOther([objectFilterObj[0]])
-        })
+      // axios
+      // .get(`http://localhost:7000/Client-PersonalAssets`)
+      // .then((res) => {
+      // let modalObj=(res.data)
+      // let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+      // setPersonalAssetsModal(objectFilterObj[0])
+      // console.log(res.data)
 
-        // personal loan modal
-        axios
-        .get(`http://localhost:7000/Client-PersonalDebts`)
-        .then((res) => {
-        let modalObj=(res.data)
-        let objectFilterObj=modalObj.filter((item) => item.Email ==email);
-        setPersonalLoanModal(objectFilterObj[0])
-        console.log(res.data)
+      // })
 
-        setCreditCardList1([objectFilterObj[0]])
-        setCreditCardList2([objectFilterObj[0]])
-        setPersonalLoanList1([objectFilterObj[0]])
-        setPersonalLoanList2([objectFilterObj[0]])
-        
-        })
-    
+      // // personal loan modal
+      // axios
+      // .get(`http://localhost:7000/Client-PersonalDebts`)
+      // .then((res) => {
+      // let modalObj=(res.data)
+      // let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+      // setPersonalLoanModal(objectFilterObj[0])
+      // console.log(res.data)
+
+
       
-       }, [])
-
-
-
-
-    let ownFamilyHandler=(elem)=>{
-        if (elem==="No"){
-            setOwnFamily(false)
-        }
-        else{
-            setOwnFamily(true)
-        }
-        
-        }
-    let propertyLoanradioHandler=(elem)=>{
-            if (elem==="No"){
-                setPropertyLoanState(false)
-            }
-            else{
-                setPropertyLoanState(true)
-            }
-            
-        }
-
-    let personalLoansHandler=(elem)=>{
-              if (elem==="No"){
-                setPersonalLoanState(false)
-              }
-              else{
-                setPersonalLoanState(true)
-              }
-              
-      }
-
-            let personalAssetsHandler=(elem)=>{
-                if (elem==="No"){
-                    setPersonalAssetsState(false)
-                }
-                else{
-                    setPersonalAssetsState(true)
-                }
-                
-                }
-
-        let initialValues={
-           
-            //  ownFamilyradio: clientData.FamilyHome,
-            //  personalAssetsradio:clientData.PersonalAssets,
-            //  personalLoansradio:clientData.PersonalDebts
-            ownFamilyradio:'Yes' ,
-             personalAssetsradio:'Yes',
-             personalLoansradio:'Yes',
-        }
-        let validationSchema = Yup.object({})
-        
-        let Navigate = useNavigate();
-
-        function BackFunction(){
-          Navigate('/Edit-Professional-Advisors')
-        }
-        let onSubmit = (Values) => {
-
-          let AssetsDetails = {
-            Email: localStorage.getItem("ClientEmail"),
-            FamilyHome: Values.ownFamilyradio,
-            PersonalAssets: Values.personalAssetsradio,
-            PersonalDebts: Values.personalLoansradio
-          }
-
-          axios
-          .patch(`http://localhost:7000/Client-Assets/Update-Client-Assets/${localStorage.getItem("EditClient")}`, AssetsDetails)
-          .then((res) => console.log("Assets Details Updated Successfully!"));
-
-        console.log(AssetsDetails)
-        Navigate('/Edit-Investments');
-        
-        }
-
-        let own_initialValues={
-           home:familyHomeModal.HomeNO,
-           currentValue:  familyHomeModal.CurrentValue,
-           clientPercentage: familyHomeModal.ClientOwnership,
-           partnerPercentage: familyHomeModal.PartnerOwnership,
-           costBasePurchasePrice:  familyHomeModal.CostBase,
-           address: familyHomeModal.Address,
-           postcodeSuburb: familyHomeModal.Postcode,
-           AmountAssessedForCentrelink: familyHomeModal.AmountAssessed,
-
-           propertyLoanradio: familyHomeModal.PropertyLoan,
-           clientPercentageofBorrowing: familyHomeModal.ClientBorrowingPercentage,
-           partnerPercentageofBorrowing: familyHomeModal.PartnerBorrowingPercentage,
-           currentBalance: familyHomeModal.CurrentBalance,
-           repaymentsAmount: familyHomeModal.RepaymentAmounts,
-           frequency: familyHomeModal.Frequency,
-           annualRepayments: familyHomeModal.AnnualRepayments, // readOnly
-           interestRatePA: familyHomeModal.InterestRate,
-           loanTerm: familyHomeModal.LoanTerm,
-           loanType: familyHomeModal.LoanType,
-           yearsRemaining: familyHomeModal.YearsRemaining,
-            
-        }
-        let own_validationSchema = Yup.object({
-            // home:Yup.number().required('Required') ,
-            currentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            clientPercentage:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            partnerPercentage:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            costBasePurchasePrice:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            address:Yup.string().required('Required') ,
-            postcodeSuburb:Yup.string().matches(postCodePattern,"invalid postcode").required('Required'),
-
-            AmountAssessedForCentrelink:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            
-
-            clientPercentageofBorrowing:Yup.number()
-    .when('propertyLoanradio',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
-    }),
-
-            partnerPercentageofBorrowing:Yup.number()
-    .when('propertyLoanradio',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
-    }),
-
-            currentBalance:Yup.number()
-    .when('propertyLoanradio',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
-    }),
-
-            repaymentsAmount:Yup.number()
-    .when('propertyLoanradio',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
-      .test(
-        "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
-      ),
-      otherwise: Yup.number().notRequired()
-    }),
-
+      // })
   
+    
+     }, [])
 
-            interestRatePA:Yup.number()
-    .when('propertyLoanradio',{
-      is: val => val && val.length ===3,
-      then:Yup.number().required("Required")
+
+  let ownFamilyHandler = (elem) => {
+    if (elem === "No") {
+      setOwnFamily(false);
+    } else {
+      setOwnFamily(true);
+    }
+  };
+  let propertyLoanradioHandler = (elem) => {
+    if (elem === "No") {
+      setPropertyLoanState(false);
+    } else {
+      setPropertyLoanState(true);
+    }
+  };
+
+  let personalLoansHandler = (elem) => {
+    if (elem === "No") {
+      setPersonalLoanState(false);
+    } else {
+      setPersonalLoanState(true);
+    }
+  };
+
+  let personalAssetsHandler = (elem) => {
+    if (elem === "No") {
+      setPersonalAssetsState(false);
+    } else {
+      setPersonalAssetsState(true);
+    }
+  };
+  let initialValues={
+           
+     ownFamilyradio: clientData.FamilyHome,
+     personalAssetsradio:clientData.PersonalAssets,
+     personalLoansradio:clientData.PersonalDebts
+}
+  let validationSchema = Yup.object({});
+
+  let Navigate = useNavigate();
+
+  function BackFunction() {
+    Navigate("/Professional-Advisors");
+  }
+  let onSubmit = (Values) => {
+    let AssetsDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      FamilyHome: Values.ownFamilyradio,
+      PersonalAssets: Values.personalAssetsradio,
+      PersonalDebts: Values.personalLoansradio,
+    };
+
+    axios
+      .post(
+        "http://localhost:7000/Client-Assets/Add-Client-Assets",
+        AssetsDetails
+      )
+      .then((res) => console.log("Assets Details Added Successfully!"));
+
+    console.log(AssetsDetails);
+    Navigate("/Investments");
+  };
+
+  let own_initialValues = {
+    home: HomeIndex,
+    CurrentValue: "",
+    ClientOwnership: 50,
+    PartnerOwnership: 50,
+    CostBase: "",
+    Address: "",
+    Postcode: "",
+    AmountAssessed: "",
+
+    propertyLoanradio: "No",
+    ClientBorrowingPercentage: "",
+    PartnerBorrowingPercentage: "",
+    CurrentBalance: "",
+    RepaymentAmounts: "",
+    Frequency: "",
+    annualRepayments: "",
+    InterestRate: "",
+    LoanTerm: "",
+    LoanType: "",
+    YearsRemaining: "",
+  };
+  let own_validationSchema = Yup.object({
+    // home:Yup.number().required('Required') ,
+    CurrentValue: Yup.number()
+      .required("Required")
       .test(
         "Is positive?",
-        "Must be a positive number",
-        (value)=> value >0
+        "Value must be a positive number",
+        (value) => value > 0
       ),
-      otherwise: Yup.number().notRequired()
+    ClientOwnership: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    PartnerOwnership: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    CostBase: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Address: Yup.string().required("Required"),
+    Postcode: Yup.string()
+      .matches(postCodePattern, "invalid postcode")
+      .required("Required"),
+
+    AmountAssessed: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+
+    ClientBorrowingPercentage: Yup.number().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.number()
+        .required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+      otherwise: Yup.number().notRequired(),
+    }),
+
+    PartnerBorrowingPercentage: Yup.number().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.number()
+        .required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+      otherwise: Yup.number().notRequired(),
+    }),
+
+    CurrentBalance: Yup.number().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.number()
+        .required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+      otherwise: Yup.number().notRequired(),
+    }),
+
+    RepaymentAmounts: Yup.number().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.number()
+        .required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+      otherwise: Yup.number().notRequired(),
     }),
 
 
-
-            frequency:Yup.string()
-    .when("propertyLoanradio",{
-      is: val => val && val.length===3,
-      then:Yup.string().required("Required")
-      ,otherwise: Yup.string()
-      .notRequired()
+    InterestRate: Yup.number().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.number()
+        .required("Required")
+        .test(
+          "Is positive?",
+          "Must be a positive number",
+          (value) => value > 0
+        ),
+      otherwise: Yup.number().notRequired(),
     }),
 
-            loanTerm:Yup.string()
-    .when("propertyLoanradio",{
-      is: val => val && val.length===3,
-      then:Yup.string().required("Required")
-      ,otherwise: Yup.string()
-      .notRequired()
+    Frequency: Yup.string().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired(),
     }),
 
-            loanType:Yup.string()
-    .when("propertyLoanradio",{
-      is: val => val && val.length===3,
-      then:Yup.string().required("Required")
-      ,otherwise: Yup.string()
-      .notRequired()
+    LoanTerm: Yup.string().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired(),
     }),
 
-            yearsRemaining:Yup.string()
-    .when("propertyLoanradio",{
-      is: val => val && val.length===3,
-      then:Yup.string().required("Required")
-      ,otherwise: Yup.string()
-      .notRequired()
+    LoanType: Yup.string().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired(),
     }),
 
-        })
-        
-        let own_onSubmit = (Values) => {
+    YearsRemaining: Yup.string().when("propertyLoanradio", {
+      is: (val) => val && val.length === 3,
+      then: Yup.string().required("Required"),
+      otherwise: Yup.string().notRequired(),
+    }),
+  });
 
-          let ClientFamilyHomeDetails={
-            Email: localStorage.getItem("ClientEmail"),
-            HomeNO:  parseFloat(Values.home)||0,
-            CurrentValue:  Values.currentValue,
-            ClientOwnership: Values.clientPercentage,
-            PartnerOwnership: Values.partnerPercentage,
-            CostBase:  Values.costBasePurchasePrice,
-            Address: Values.address,
-            Postcode: Values.postcodeSuburb,
-            AmountAssessed: Values.AmountAssessedForCentrelink,
+  let own_onSubmit = (Values) => {
+    let Email = localStorage.getItem("ClientEmail");
 
-            PropertyLoan: Values.propertyLoanradio,
-            ClientBorrowingPercentage: Values.clientPercentageofBorrowing,
-            PartnerBorrowingPercentage: Values.partnerPercentageofBorrowing,
-            CurrentBalance: Values.currentBalance,
-            RepaymentAmounts: Values.repaymentsAmount,
-            Frequency: Values.frequency,
-            AnnualRepayments: 5000,
-            InterestRate: Values.interestRatePA,
-            LoanTerm: Values.loanTerm,
-            LoanType: Values.loanType,
-            YearsRemaining: Values.yearsRemaining,
-            
-          }
+    let ClientFamilyHomeDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      HomeNO: parseFloat(Values.home) || 0,
+      CurrentValue: Values.CurrentValue,
+      ClientOwnership: Values.ClientOwnership,
+      PartnerOwnership: Values.PartnerOwnership,
+      CostBase: Values.CostBase,
+      Address: Values.Address,
+      Postcode: Values.Postcode,
+      AmountAssessed: Values.AmountAssessed,
 
-
-          setOwnFamilyList([ClientFamilyHomeDetails])
-          setFamilyHomeModal(ClientFamilyHomeDetails)
-
-          axios
-          .patch(`http://localhost:7000/Client-FamilyHome/Update-Client-FamilyHome/${localStorage.getItem("EditClient")}`, ClientFamilyHomeDetails)
-
-          // .post('http://localhost:7000/Client-FamilyHome/Add-Client-FamilyHome', ClientFamilyHomeDetails)
-          .then((res) => console.log("Family Home Updated Successfully!"))
-          
-          console.log(ClientFamilyHomeDetails)
-        handleClose();
-        }
-
-        let personalAssetsInitialValues={
-           contentCurrentValue:  personalAssetsModal.Contents_CurrentValue,
-             contentCentrelinkValue:  personalAssetsModal.Contents_CentreLinkValue,
-             contentradio:  personalAssetsModal.Contents_Security,
-
-             motor1CurrentValue: personalAssetsModal.MotorVehicle1_CurrentValue,
-             motor1CentrelinkValue: personalAssetsModal.MotorVehicle1_CentreLinkValue,
-             motor1radio:  personalAssetsModal.MotorVehicle1_Security,
-            
-             motor2CurrentValue: personalAssetsModal.MotorVehicle2_CurrentValue,
-             motor2CentrelinkValue: personalAssetsModal.MotorVehicle2_CentreLinkValue,
-             motor2radio:  personalAssetsModal.MotorVehicle2_Security,
-
-             boatCurrentValue: personalAssetsModal.Boat_CurrentValue,
-             boatCentrelinkValue: personalAssetsModal.Boat_CentreLinkValue,
-             boatradio: personalAssetsModal.Boat_Security,
-             carvanCurrentValue:  personalAssetsModal.Caravan_CurrentValue,
-             carvanCentrelinkValue:  personalAssetsModal.Caravan_CentreLinkValue,
-             carvanradio: personalAssetsModal.Caravan_Security,
-             otherCurrentValue: personalAssetsModal.Other_CurrentValue,
-             otherCentrelinkValue:  personalAssetsModal.Other_CentreLinkValue,
-             otherradio: personalAssetsModal.Other_Security,
-            
-        }
-        let personalAssetsValidationSchema = Yup.object({
-            contentCurrentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            contentCentrelinkValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            motor1CurrentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            motor1CentrelinkValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            motor2CurrentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            motor2CentrelinkValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            boatCurrentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            boatCentrelinkValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            carvanCurrentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            carvanCentrelinkValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            otherCurrentValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-            otherCentrelinkValue:Yup.number().required("Required")
-           .test(
-             "Is positive?",
-             "Value must be a positive number",
-             (value) => value > 0
-           ),
-           
-        })
-        
-        let personalAssetsOnSubmit = (Values) => {
-        
-          let ClientPersonalAssets={
-            Email: localStorage.getItem("ClientEmail"),
-            Contents_CurrentValue:  Values.contentCurrentValue,
-            Contents_CentreLinkValue:  Values.contentCentrelinkValue,
-            Contents_Security:  Values.contentradio,
-
-            MotorVehicle1_CurrentValue: Values.motor1CurrentValue,
-            MotorVehicle1_CentreLinkValue: Values.motor1CentrelinkValue,
-            MotorVehicle1_Security:  Values.motor1radio,
-
-            MotorVehicle2_CurrentValue: Values.motor2CurrentValue,
-            MotorVehicle2_CentreLinkValue: Values.motor2CentrelinkValue,
-            MotorVehicle2_Security:Values.motor2radio,
-
-            Boat_CurrentValue: Values.boatCurrentValue,
-            Boat_CentreLinkValue: Values.boatCentrelinkValue,
-            Boat_Security: Values.boatradio,
-            Caravan_CurrentValue:  Values.carvanCurrentValue,
-            Caravan_CentreLinkValue:  Values.carvanCentrelinkValue,
-            Caravan_Security: Values.carvanradio,
-            Other_CurrentValue: Values.otherCurrentValue,
-            Other_CentreLinkValue:  Values.otherCentrelinkValue,
-            Other_Security: Values.otherradio,
-            
-        }
-
-        
-        setPersonalAssetsModal(ClientPersonalAssets) 
-
-        setContentList([ClientPersonalAssets])
-        setMotorVehicle1([ClientPersonalAssets])
-        setMotorVehicle2([ClientPersonalAssets])
-        setBoat([ClientPersonalAssets])
-        setCaravan([ClientPersonalAssets])
-        setPersonalOther([ClientPersonalAssets])
-
-        axios
-        .patch(`http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${localStorage.getItem("EditClient")}`, ClientPersonalAssets)
-        .then((res) => console.log("Personal Assets Updated Successfully!"))
-
-          console.log(ClientPersonalAssets)
-         handleClose2();
-
-        }
-
-            let personalLoansInitialValues={
-               debtCurrentBalance1:personalLoanModal.CreditCard1_CurrentBalance ,
-               debtRepaymentAmount1:personalLoanModal.CreditCard1_RepaymentAmount,
-               DebtFrequency1:personalLoanModal.CreditCard1_Frequency,
-               debtAnnualRepayment1: personalLoanModal.CreditCard1_AnnualRepayment,
-               debtInterestRate1: personalLoanModal.CreditCard1_InterestRate,
-               debtLoanTerm1: personalLoanModal.CreditCard1_LoanTerm,
-               debtloanType1: personalLoanModal.CreditCard1_LoanType,
-               debtYearRemaining1: personalLoanModal.CreditCard1_YearRemaining,
-              
-              
-              // 2
-               debtCurrentBalance2: personalLoanModal.CreditCard2_CurrentBalance,
-               debtRepaymentAmount2: personalLoanModal.CreditCard2_RepaymentAmount,
-               DebtFrequency2: personalLoanModal.CreditCard2_Frequency,
-               debtAnnualRepayment2:personalLoanModal.CreditCard2_AnnualRepayment,
-               debtInterestRate2: personalLoanModal.CreditCard2_InterestRate,
-               debtLoanTerm2: personalLoanModal.CreditCard2_LoanTerm,
-               debtloanType2: personalLoanModal.CreditCard2_LoanType,
-               debtYearRemaining2: personalLoanModal.CreditCard2_YearRemaining,
-              
-              
-               // 3
-               debtCurrentBalance3: personalLoanModal.PersonalLoan1_CurrentBalance,
-               debtRepaymentAmount3: personalLoanModal.PersonalLoan1_RepaymentAmount,
-               DebtFrequency3: personalLoanModal.PersonalLoan1_Frequency,
-               debtAnnualRepayment3: personalLoanModal.PersonalLoan1_AnnualRepayment,
-               debtInterestRate3: personalLoanModal.PersonalLoan1_InterestRate,
-               debtLoanTerm3: personalLoanModal.PersonalLoan1_LoanTerm,
-               debtloanType3: personalLoanModal.PersonalLoan1_LoanType,
-               debtYearRemaining3: personalLoanModal.PersonalLoan1_YearRemaining,
-              
-               // 4
-               debtCurrentBalance4: personalLoanModal.PersonalLoan2_CurrentBalance,
-               debtRepaymentAmount4: personalLoanModal.PersonalLoan2_RepaymentAmount,
-               DebtFrequency4: personalLoanModal.PersonalLoan2_Frequency,
-               debtAnnualRepayment4: personalLoanModal.PersonalLoan2_AnnualRepayment,
-               debtInterestRate4: personalLoanModal.PersonalLoan2_InterestRate,
-               debtLoanTerm4: personalLoanModal.PersonalLoan2_LoanTerm,
-               debtloanType4: personalLoanModal.PersonalLoan2_LoanType,
-               debtYearRemaining4: personalLoanModal.PersonalLoan2_YearRemaining,
-              }
-
-              let personalLoansvalidationSchema = Yup.object({
-                debtCurrentBalance1:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-                debtRepaymentAmount1:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-                debtInterestRate1:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-                DebtFrequency1:Yup.string().required('Required') ,
-                debtLoanTerm1:Yup.string().required('Required') ,
-                debtloanType1:Yup.string().required('Required') ,
-                debtYearRemaining1:Yup.string().required('Required') ,
-                
-                // 2
-                debtCurrentBalance2:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-            debtRepaymentAmount2:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-            debtInterestRate2:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-
-                      DebtFrequency2:Yup.string().required('Required') ,
-                      debtLoanTerm2:Yup.string().required('Required') ,
-                      debtloanType2:Yup.string().required('Required') ,
-                      debtYearRemaining2:Yup.string().required('Required') ,
-
-            // 3
-            debtCurrentBalance3:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-            debtRepaymentAmount3:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-            debtInterestRate3:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-
-                      DebtFrequency3:Yup.string().required('Required') ,
-                      debtLoanTerm3:Yup.string().required('Required') ,
-                      debtloanType3:Yup.string().required('Required') ,
-                      debtYearRemaining3:Yup.string().required('Required') ,
-            // 4
-            debtCurrentBalance4:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-            debtRepaymentAmount4:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-            debtInterestRate4:Yup.number().required("Required")
-                      .test(
-                        "Is positive?",
-                        "Value must be a positive number",
-                        (value) => value > 0
-                      ),
-                      DebtFrequency4:Yup.string().required('Required') ,
-                      debtLoanTerm4:Yup.string().required('Required') ,
-                      debtloanType4:Yup.string().required('Required') ,
-                      debtYearRemaining4:Yup.string().required('Required') ,
-              })
+      PropertyLoan: Values.propertyLoanradio,
+      ClientBorrowingPercentage: Values.ClientBorrowingPercentage,
+      PartnerBorrowingPercentage: Values.PartnerBorrowingPercentage,
+      CurrentBalance: Values.CurrentBalance,
+      RepaymentAmounts: Values.RepaymentAmounts,
+      Frequency: Values.Frequency,
+      AnnualRepayments: 5000,
+      InterestRate: Values.InterestRate,
+      LoanTerm: Values.LoanTerm,
+      LoanType: Values.LoanType,
+      YearsRemaining: Values.YearsRemaining,
+    };
 
 
-              let personalLoansonSubmit = (Values) => {
+    if (ownFamilyEdit == false) {
+      axios
+        .post(
+          "http://localhost:7000/Client-FamilyHome/Add-Client-FamilyHome",
+          ClientFamilyHomeDetails
+        )
+        .then((res) => console.log("Family Home Added Successfully!"));
+    } else {
+      // gogo
 
-                let ClientPersonalDebts={
-                  Email: localStorage.getItem("ClientEmail"),
-                  CreditCard1_CurrentBalance:Values. debtCurrentBalance1,
-                  CreditCard1_RepaymentAmount:Values. debtRepaymentAmount1,
-                  CreditCard1_Frequency:Values. DebtFrequency1,
-                  CreditCard1_AnnualRepayment: 5000,
-                  CreditCard1_InterestRate: Values.debtInterestRate1,
-                  CreditCard1_LoanTerm: Values.debtLoanTerm1,
-                  CreditCard1_LoanType: Values.debtloanType1,
-                  CreditCard1_YearRemaining: Values.debtYearRemaining1,
-                  
-                  
-                   // 2
-                  CreditCard2_CurrentBalance: Values.debtCurrentBalance2,
-                  CreditCard2_RepaymentAmount: Values.debtRepaymentAmount2,
-                  CreditCard2_Frequency: Values.DebtFrequency2,
-                  CreditCard2_AnnualRepayment:5000,
-                  CreditCard2_InterestRate: Values.debtInterestRate2,
-                  CreditCard2_LoanTerm: Values.debtLoanTerm2,
-                  CreditCard2_LoanType: Values.debtloanType2,
-                  CreditCard2_YearRemaining: Values.debtYearRemaining2,
-                  
-                  
-                  // // 3
-                  PersonalLoan1_CurrentBalance: Values.debtCurrentBalance3,
-                  PersonalLoan1_RepaymentAmount: Values.debtRepaymentAmount3,
-                  PersonalLoan1_Frequency: Values.DebtFrequency3,
-                  PersonalLoan1_AnnualRepayment: 5000,
-                  PersonalLoan1_InterestRate: Values.debtInterestRate3,
-                  PersonalLoan1_LoanTerm: Values.debtLoanTerm3,
-                  PersonalLoan1_LoanType: Values.debtloanType3,
-                  PersonalLoan1_YearRemaining: Values.debtYearRemaining3,
-                  
-                  // // 4
-                  PersonalLoan2_CurrentBalance: Values.debtCurrentBalance4,
-                  PersonalLoan2_RepaymentAmount: Values.debtRepaymentAmount4,
-                  PersonalLoan2_Frequency: Values.DebtFrequency4,
-                  PersonalLoan2_AnnualRepayment: 5000,
-                  PersonalLoan2_InterestRate: Values.debtInterestRate4,
-                  PersonalLoan2_LoanTerm: Values.debtLoanTerm4,
-                  PersonalLoan2_LoanType: Values.debtloanType4,
-                  PersonalLoan2_YearRemaining: Values.debtYearRemaining4,
-                  
-                    }
-                    setPersonalLoanModal(ClientPersonalDebts)
-                    setCreditCardList1([ClientPersonalDebts])
-                    setCreditCardList2([ClientPersonalDebts])
-                    setPersonalLoanList1([ClientPersonalDebts])
-                    setPersonalLoanList2([ClientPersonalDebts])
+      axios
+        .patch(
+          `http://localhost:7000/Client-FamilyHome/Update-Client-FamilyHome/${Email}`,
+          ClientFamilyHomeDetails
+        )
+        .then((res) => console.log("Family Home Updated Successfully!"));
+    }
+    setOwnFamilyList([ClientFamilyHomeDetails]);
 
-                axios
-        .patch(`http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${localStorage.getItem("EditClient")}`, ClientPersonalDebts)
+    // setOwnFamilyEdit(true);
+    setOwnFamilyEdit(false);
 
-                // .post('http://localhost:7000/Client-PersonalDebts/Add-Client-PersonalDebts', ClientPersonalDebts)
-                .then((res) => console.log("Personal Debts Updated Successfully!"))
+    handleClose();
+  };
 
-                console.log(ClientPersonalDebts)
-                handleClose3();
+  let personalAssetsInitialValues = {
+    Contents_CurrentValue: "",
+    Contents_CentreLinkValue: "",
+    Contents_Security: "No",
+    MotorVehicle1_CurrentValue: "",
+    MotorVehicle1_CentreLinkValue: "",
+    MotorVehicle1_Security: "No",
+    MotorVehicle2_CurrentValue: "",
+    MotorVehicle2_CentreLinkValue: "",
+    MotorVehicle2_Security: "No",
+    Boat_CurrentValue: "",
+    Boat_CentreLinkValue: "",
+    Boat_Security: "No",
+    Caravan_CurrentValue: "",
+    Caravan_CentreLinkValue: "",
+    Caravan_Security: "No",
+    Other_CurrentValue: "",
+    Other_CentreLinkValue: "",
+    Other_Security: "No",
+  };
+  let personalAssetsValidationSchema = Yup.object({
+    Contents_CurrentValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Contents_CentreLinkValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    MotorVehicle1_CurrentValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    MotorVehicle1_CentreLinkValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    MotorVehicle2_CurrentValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    MotorVehicle2_CentreLinkValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Boat_CurrentValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Boat_CentreLinkValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Caravan_CurrentValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Caravan_CentreLinkValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Other_CurrentValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    Other_CentreLinkValue: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+  });
 
-              }
+  let personalAssetsOnSubmit = (Values) => {
+    let Email = localStorage.getItem("ClientEmail");
 
-              let assetUpdateHandler=()=>{
-               
-                handleShow();
-              }
+    let ClientPersonalAssets = {
+      Email: localStorage.getItem("ClientEmail"),
+      Contents_CurrentValue: Values.Contents_CurrentValue,
+      Contents_CentreLinkValue: Values.Contents_CentreLinkValue,
+      Contents_Security: Values.Contents_Security,
 
-              let personalAssetUpdateHandler=()=>{
-                
-                handleShow2();
-              }
-              let personalLoanUpdateHandler=()=>{
-                
-                handleShow3();
-              }
+      MotorVehicle1_CurrentValue: Values.MotorVehicle1_CurrentValue,
+      MotorVehicle1_CentreLinkValue: Values.MotorVehicle1_CentreLinkValue,
+      MotorVehicle1_Security: Values.MotorVehicle1_Security,
 
+      MotorVehicle2_CurrentValue: Values.MotorVehicle2_CurrentValue,
+      MotorVehicle2_CentreLinkValue: Values.MotorVehicle2_CentreLinkValue,
+      MotorVehicle2_Security: Values.MotorVehicle2_Security,
 
+      Boat_CurrentValue: Values.Boat_CurrentValue,
+      Boat_CentreLinkValue: Values.Boat_CentreLinkValue,
+      Boat_Security: Values.Boat_Security,
+
+      Caravan_CurrentValue: Values.Caravan_CurrentValue,
+      Caravan_CentreLinkValue: Values.Caravan_CentreLinkValue,
+      Caravan_Security: Values.Caravan_Security,
+
+      Other_CurrentValue: Values.Other_CurrentValue,
+      Other_CentreLinkValue: Values.Other_CentreLinkValue,
+      Other_Security: Values.Other_Security,
+    };
+
+    setPersonalAssets([ClientPersonalAssets]);
+
+    if (PersonalAssetsEdit == true) {
+      axios
+        .patch(
+          `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+          ClientPersonalAssets
+        )
+        .then((res) => console.log("Personal Assets Updated Successfully!"));
+    } else {
+      axios
+        .post(
+          "http://localhost:7000/Client-PersonalAssets/Add-Client-PersonalAssets",
+          ClientPersonalAssets
+        )
+        .then((res) => console.log("Personal Assets Added Successfully!"));
+    }
+    console.log(ClientPersonalAssets);
+    handleClose2();
+
+    setPersonalAssetsEdit(true);
+  };
+
+  let personalLoansInitialValues = {
+    CreditCard1_CurrentBalance: "",
+    CreditCard1_RepaymentAmount: "",
+    CreditCard1_InterestRate: "",
+
+    CreditCard1_Frequency: "",
+    CreditCard1_LoanTerm: "",
+    CreditCard1_LoanType: "",
+    CreditCard1_YearRemaining: "",
+
+    CreditCard1_AnnualRepayment: "",
+
+    // 2
+    CreditCard2_CurrentBalance: "",
+    CreditCard2_RepaymentAmount: "",
+    CreditCard2_InterestRate: "",
+
+    CreditCard2_Frequency: "",
+    CreditCard2_LoanTerm: "",
+    CreditCard2_LoanType: "",
+    CreditCard2_YearRemaining: "",
+
+    debtAnnualRepayment2: "",
+
+    // 3
+    PersonalLoan1_CurrentBalance: "",
+    PersonalLoan1_RepaymentAmount: "",
+    PersonalLoan1_InterestRate: "",
+    PersonalLoan1_Frequency: "",
+    PersonalLoan1_LoanTerm: "",
+    PersonalLoan1_LoanType: "",
+    PersonalLoan1_YearRemaining: "",
+    PersonalLoan1_AnnualRepayment: "",
+
+    // 4
+    PersonalLoan2_CurrentBalance: "",
+    PersonalLoan2_RepaymentAmount: "",
+    PersonalLoan2_InterestRate: "",
+
+    PersonalLoan2_Frequency: "",
+    PersonalLoan2_LoanTerm: "",
+    PersonalLoan2_LoanType: "",
+    PersonalLoan2_YearRemaining: "",
+
+    PersonalLoan2_AnnualRepayment: "",
+  };
+
+  let personalLoansvalidationSchema = Yup.object({
+    CreditCard1_CurrentBalance: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    CreditCard1_RepaymentAmount: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    CreditCard1_InterestRate: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    CreditCard1_Frequency: Yup.string().required("Required"),
+    CreditCard1_LoanTerm: Yup.string().required("Required"),
+    CreditCard1_LoanType: Yup.string().required("Required"),
+    CreditCard1_YearRemaining: Yup.string().required("Required"),
+
+    // 2
+    CreditCard2_CurrentBalance: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    CreditCard2_RepaymentAmount: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    CreditCard2_InterestRate: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+
+    CreditCard2_Frequency: Yup.string().required("Required"),
+    CreditCard2_LoanTerm: Yup.string().required("Required"),
+    CreditCard2_LoanType: Yup.string().required("Required"),
+    CreditCard2_YearRemaining: Yup.string().required("Required"),
+
+    // 3
+    PersonalLoan1_CurrentBalance: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    PersonalLoan1_RepaymentAmount: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    PersonalLoan1_InterestRate: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+
+    PersonalLoan1_Frequency: Yup.string().required("Required"),
+    PersonalLoan1_LoanTerm: Yup.string().required("Required"),
+    PersonalLoan1_LoanType: Yup.string().required("Required"),
+    PersonalLoan1_YearRemaining: Yup.string().required("Required"),
+    // 4
+    PersonalLoan2_CurrentBalance: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    PersonalLoan2_RepaymentAmount: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    PersonalLoan2_InterestRate: Yup.number()
+      .required("Required")
+      .test(
+        "Is positive?",
+        "Value must be a positive number",
+        (value) => value > 0
+      ),
+    PersonalLoan2_Frequency: Yup.string().required("Required"),
+    PersonalLoan2_LoanTerm: Yup.string().required("Required"),
+    PersonalLoan2_LoanType: Yup.string().required("Required"),
+    PersonalLoan2_YearRemaining: Yup.string().required("Required"),
+  });
+
+  let personalLoansonSubmit = (Values) => {
+    let Email = localStorage.getItem("ClientEmail");
+    let ClientPersonalDebts = {
+      Email: localStorage.getItem("ClientEmail"),
+      CreditCard1_CurrentBalance: Values.CreditCard1_CurrentBalance,
+      CreditCard1_RepaymentAmount: Values.CreditCard1_RepaymentAmount,
+      CreditCard1_Frequency: Values.CreditCard1_Frequency,
+      CreditCard1_AnnualRepayment: 5000,
+      CreditCard1_InterestRate: Values.CreditCard1_InterestRate,
+      CreditCard1_LoanTerm: Values.CreditCard1_LoanTerm,
+      CreditCard1_LoanType: Values.CreditCard1_LoanType,
+      CreditCard1_YearRemaining: Values.CreditCard1_YearRemaining,
+
+      // 2
+
+      CreditCard2_CurrentBalance: Values.CreditCard2_CurrentBalance,
+      CreditCard2_RepaymentAmount: Values.CreditCard2_RepaymentAmount,
+      CreditCard2_Frequency: Values.CreditCard2_Frequency,
+      CreditCard2_AnnualRepayment: 5000,
+      CreditCard2_InterestRate: Values.CreditCard2_InterestRate,
+      CreditCard2_LoanTerm: Values.CreditCard2_LoanTerm,
+      CreditCard2_LoanType: Values.CreditCard2_LoanType,
+      CreditCard2_YearRemaining: Values.CreditCard2_YearRemaining,
+
+      // 3
+
+      PersonalLoan1_CurrentBalance: Values.PersonalLoan1_CurrentBalance,
+      PersonalLoan1_RepaymentAmount: Values.PersonalLoan1_RepaymentAmount,
+      PersonalLoan1_Frequency: Values.PersonalLoan1_Frequency,
+      PersonalLoan1_AnnualRepayment: 5000,
+      PersonalLoan1_InterestRate: Values.PersonalLoan1_InterestRate,
+      PersonalLoan1_LoanTerm: Values.PersonalLoan1_LoanTerm,
+      PersonalLoan1_LoanType: Values.PersonalLoan1_LoanType,
+      PersonalLoan1_YearRemaining: Values.PersonalLoan1_YearRemaining,
+
+      // // 4
+
+      PersonalLoan2_CurrentBalance: Values.PersonalLoan2_CurrentBalance,
+      PersonalLoan2_RepaymentAmount: Values.PersonalLoan2_RepaymentAmount,
+      PersonalLoan2_Frequency: Values.PersonalLoan2_Frequency,
+      PersonalLoan2_AnnualRepayment: 5000,
+      PersonalLoan2_InterestRate: Values.PersonalLoan2_InterestRate,
+      PersonalLoan2_LoanTerm: Values.PersonalLoan2_LoanTerm,
+      PersonalLoan2_LoanType: Values.PersonalLoan2_LoanType,
+      PersonalLoan2_YearRemaining: Values.PersonalLoan2_YearRemaining,
+    };
+
+    setPersonalLoansEdit(true);
+
+    setPersonalLoans([ClientPersonalDebts]);
+
+    handleClose3();
+
+    if (PersonalLoansEdit == true) {
+      axios
+        .patch(
+          `http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${Email}`,
+          ClientPersonalDebts
+        )
+        .then((res) => console.log("Personal Loan Updated Successfully!"));
+    } else {
+      axios
+        .post(
+          "http://localhost:7000/Client-PersonalDebts/Add-Client-PersonalDebts",
+          ClientPersonalDebts
+        )
+        .then((res) => console.log("Personal Loan Added Successfully!"));
+    }
+
+    console.log(ClientPersonalDebts);
+    handleClose3();
+  };
+
+  let FamilyHomedeleteHandler = (e, ind) => {
+   
+    setOwnFamilyEdit(false);
+    setOwnFamilyList([]);
+    let Email = localStorage.getItem("ClientEmail");
+
+    axios
+      .delete(
+        `http://localhost:7000/Client-FamilyHome/Delete-Client-FamilyHome/${Email}`
+      )
+      .then((res) => console.log("Family Home  delete Successfully!"));
+  };
+
+  let FamilyHomeupdateHandler = (elem, ind) => {
+    setOwnFamilyEdit(true);
+
+    let ClientFamilyHomeDetails = {
+      Email: localStorage.getItem("ClientEmail"),
+      home: elem.HomeNO,
+      CurrentValue: elem.CurrentValue,
+      ClientOwnership: elem.ClientOwnership,
+      PartnerOwnership: elem.PartnerOwnership,
+      CostBase: elem.CostBase,
+      Address: elem.Address,
+      Postcode: elem.Postcode,
+      AmountAssessed: elem.AmountAssessed,
+
+      propertyLoanradio: elem.PropertyLoan,
+      ClientBorrowingPercentage: elem.ClientBorrowingPercentage,
+      PartnerBorrowingPercentage: elem.PartnerBorrowingPercentage,
+      CurrentBalance: elem.CurrentBalance,
+      RepaymentAmounts: elem.RepaymentAmounts,
+      Frequency: elem.Frequency,
+      annualRepayments: elem.AnnualRepayments,
+      InterestRate: elem.InterestRate,
+      LoanTerm: elem.LoanTerm,
+      LoanType: elem.LoanType,
+      YearsRemaining: elem.YearsRemaining,
+    };
+
+    setOwnFamilyListObj([ClientFamilyHomeDetails]);
+    setUpdateIndex(ind);
+    handleShow();
+  };
+
+  let personalAssetsContentDeleteHandler = (elem) => {
+    // abc
+    let data = elem;
+    data.Contents_CurrentValue = "";
+    data.Contents_CentreLinkValue = "";
+    data.Contents_Security = "No";
+    setPersonalAssets([data]);
+
+    let Email = localStorage.getItem("ClientEmail");
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+        data
+      )
+      .then((res) => console.log("Personal Assets Updated Successfully!"));
+  };
+
+  let personalAssetsVehicle1deleteHandler = (elem) => {
+    let data = elem;
+    data.MotorVehicle1_CurrentValue = "";
+    data.MotorVehicle1_CentreLinkValue = "";
+    data.MotorVehicle1_Security = "No";
+    setPersonalAssets([data]);
+
+    let Email = localStorage.getItem("ClientEmail");
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+        data
+      )
+      .then((res) => console.log("Personal Assets Updated Successfully!"));
+  };
+
+  let personalAssetsVehicle2deleteHandler = (elem) => {
+    let data = elem;
+    data.MotorVehicle2_CurrentValue = "";
+    data.MotorVehicle2_CentreLinkValue = "";
+    data.MotorVehicle2_Security = "No";
+    setPersonalAssets([data]);
+    let Email = localStorage.getItem("ClientEmail");
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+        data
+      )
+      .then((res) => console.log("Personal Assets Updated Successfully!"));
+  };
+
+  let personalAssetsBoatdeleteHandler = (elem) => {
+    let data = elem;
+    data.Boat_CurrentValue = "";
+    data.Boat_CentreLinkValue = "";
+    data.Boat_Security = "No";
+    setPersonalAssets([data]);
+    let Email = localStorage.getItem("ClientEmail");
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+        data
+      )
+      .then((res) => console.log("Personal Assets Updated Successfully!"));
+  };
+
+  let personalAssetsCaravandeleteHandler = (elem) => {
+    let data = elem;
+    data.Caravan_CurrentValue = "";
+    data.Caravan_CentreLinkValue = "";
+    data.Caravan_Security = "No";
+    setPersonalAssets([data]);
+    let Email = localStorage.getItem("ClientEmail");
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+        data
+      )
+      .then((res) => console.log("Personal Assets Updated Successfully!"));
+  };
+
+  let personalAssetsPersonalOtherdeleteHandler = (elem) => {
+    let data = elem;
+    data.Other_CurrentValue = "";
+    data.Other_CentreLinkValue = "";
+    data.Other_Security = "No";
+    setPersonalAssets([data]);
+    let Email = localStorage.getItem("ClientEmail");
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalAssets/Update-Client-PersonalAssets/${Email}`,
+        data
+      )
+      .then((res) => console.log("Personal Assets Updated Successfully!"));
+  };
+
+  // PERSONAL LOANS OR CREDIT CARD
+  let personalLoansCreditCard1UpdateHandler = (e) => {};
+  let personalLoansCreditCard1DeleteHandler = (e) => {
+    let Email = localStorage.getItem("ClientEmail");
+
+    // 123
+    let data = e;
+    data.CreditCard1_CurrentBalance = "";
+    data.CreditCard1_RepaymentAmount = "";
+    data.CreditCard1_Frequency = "";
+    data.CreditCard1_InterestRate = "";
+    data.CreditCard1_LoanTerm = "";
+    data.CreditCard1_LoanType = "";
+    data.CreditCard1_YearRemaining = "";
+    data.CreditCard1_AnnualRepayment = "";
+
+    setPersonalLoanState([data]);
+
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${Email}`,
+        data
+      )
+      .then((res) =>
+        console.log("Personal Loan CreditCard1 Deleted Successfully!")
+      );
+    // console.log("shazi",personalLoanState)
+  };
+
+  let personalLoansCreditCard2UpdateHandler = (e) => {};
+  let personalLoansCreditCard2DeleteHandler = (e) => {
+    let Email = localStorage.getItem("ClientEmail");
+
+    let userData = e;
+    userData.CreditCard2_CurrentBalance = "";
+    userData.CreditCard2_RepaymentAmount = "";
+    userData.CreditCard2_Frequency = "";
+    userData.debtAnnualRepayment2 = "";
+    userData.CreditCard2_InterestRate = "";
+    userData.CreditCard2_LoanTerm = "";
+    userData.CreditCard2_LoanType = "";
+    userData.CreditCard2_YearRemaining = "";
+
+    setPersonalLoanState([userData]);
+
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${Email}`,
+        userData
+      )
+      .then((res) =>
+        console.log("Personal Loan CreditCard2 Deleted Successfully!")
+      );
+  };
+  let personalLoans1UpdateHandler = (e) => {};
+
+  let personalLoans1DeleteHandler = (e) => {
+    let Email = localStorage.getItem("ClientEmail");
+
+    let userData = e;
+    userData.PersonalLoan1_CurrentBalance = "";
+    userData.PersonalLoan1_RepaymentAmount = "";
+    userData.PersonalLoan1_Frequency = "";
+    userData.PersonalLoan1_AnnualRepayment = "";
+    userData.PersonalLoan1_InterestRate = "";
+    userData.PersonalLoan1_LoanTerm = "";
+    userData.PersonalLoan1_LoanType = "";
+    userData.PersonalLoan1_YearRemaining = "";
+    setPersonalLoanState([userData]);
+
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${Email}`,
+        userData
+      )
+      .then((res) =>
+        console.log("Personal Loan PersonalLoan1 Deleted Successfully!")
+      );
+  };
+  let personalLoans2UpdateHandler = (e) => {
+    // setPersonalLoanList1Edit(true)
+  };
+  let personalLoans2DeleteHandler = (e) => {
+    let Email = localStorage.getItem("ClientEmail");
+
+    let userData = e;
+    userData.PersonalLoan2_CurrentBalance = "";
+    userData.PersonalLoan2_RepaymentAmount = "";
+    userData.PersonalLoan2_Frequency = "";
+    userData.PersonalLoan2_AnnualRepayment = "";
+    userData.PersonalLoan2_InterestRate = "";
+    userData.PersonalLoan2_LoanTerm = "";
+    userData.PersonalLoan2_LoanType = "";
+    userData.PersonalLoan2_YearRemaining = "";
+
+    setPersonalLoanState([userData]);
+
+    axios
+      .patch(
+        `http://localhost:7000/Client-PersonalDebts/Update-Client-PersonalDebts/${Email}`,
+        userData
+      )
+      .then((res) =>
+        console.log("Personal Loan PersonalLoan2 Deleted Successfully!")
+      );
+  };
   return (
     <>
-    <div className="container-fluid">
+      <div className="container-fluid">
         <div className="row px-0 m-0">
-            <div className="col-md-12">
-                <div className='shadow py-4 px-4'>
-                 <div>
-                   
-                     <h3 className="text-center">Assets & Liabilities</h3>
-                        <Formik 
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={onSubmit}>
-                        {({values,handleChange})=>
-                            <Form>
-
-                        <div className="row">
-                          
-                         <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you own a Family Home?
+          <div className="col-md-12">
+            <div className="shadow py-4 px-4">
+              <div>
+                <h3 className="text-center">Assets & Liabilities</h3>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={onSubmit}
+                  enableReinitialize
+                >
+                  {({ values, handleChange }) => (
+                    <Form>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label className="form-label">
+                              Do you own a Family Home?
                             </label>
-                          {/* switch button style */}
+                            {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="ownFamilyradio"
-                             id="ownFamilyopt1" value="Yes"
-                             onClick={()=>ownFamilyHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.ownFamilyradio==="Yes"}
-                             />
-                            <label htmlFor="ownFamilyopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="ownFamilyradio"
-                             id="ownFamilyopt2" value="No"
-                             onClick={()=>ownFamilyHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.ownFamilyradio==="No"}
-                           />
-                            <label htmlFor="ownFamilyopt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        {values.ownFamilyradio=="Yes" &&
-                        <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please Enter Detailed Information
-                        </label>
-                            <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
-                            btn-outline-success "
-                            onClick={handleShow}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                       
-                        </div>
-
-                          {/* Modal  Family Home Details*/}
-                          <Modal
-                            show={show}
-                            onHide={handleClose}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
-                            >
-                              <Modal.Title className="fontStyle">
-                              Family Home Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={own_initialValues}
-                            validationSchema={own_validationSchema}
-                            onSubmit={own_onSubmit}>
-                          {({values,handleChange,setFieldValue,formik})=>
-                            <Form>
-                            <Modal.Body>
-                                {/* Personal Assets Details*/}
-
-                         <div className=''>
-
-                        {/* Row 1*/}
-                        <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="home" className="form-label">Home</label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="home" name='home' placeholder="Home" readOnly/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='home' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="currentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="currentValue" name='currentValue' placeholder="Current Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='currentValue' />
-                        </div>            
-                        </div>
-                        </div>
-                        {/* Row 1*/}
-
-                        {/* Row 2*/}
-                        <div className="row">
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="clientPercentage" className="form-label">Client % of Ownership</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="clientPercentage" name='clientPercentage' />
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='clientPercentage' />
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="partnerPercentage" className="form-label">Partner % of Ownership</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="partnerPercentage" name='partnerPercentage'/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='partnerPercentage' />
-                        </div>            
-                         </div>
-
-                        </div>
-                        {/* Row 2*/}
-
-                         {/* Row 3*/}
-                        <div className="row">
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="costBasePurchasePrice" className="form-label">Cost base /(Purchase Price)</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="costBasePurchasePrice" name='costBasePurchasePrice' placeholder="Cost base /(Purchase Price)" />
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='costBasePurchasePrice' />
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="address" className="form-label">Address</   label>
-                          <Field type="text" className="form-control shadow inputDesign" 
-                          id="address" name='address' placeholder="Address"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='address' />
-                        </div>            
-                         </div>
-
-                        </div>
-                        {/* Row 3*/}
-
-                        {/* Row 4*/}
-                        <div className="row">
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="postcodeSuburb" className="form-label">Postcode/Suburb</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="postcodeSuburb" name='postcodeSuburb' placeholder="Postcode/Suburb" />
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='postcodeSuburb' />
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="AmountAssessedForCentrelink" className="form-label">Amount Assessed For Centrelink Assets Test</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="AmountAssessedForCentrelink" name='AmountAssessedForCentrelink' placeholder="Amount Assessed"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='AmountAssessedForCentrelink' />
-                        </div>            
-                         </div>
-
-                        </div>
-                        {/* Row 4*/}
-
-
-                         {/* radio button*/}
-                         <div className="row">
-
-                         <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Does this property have a loan attached to it?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="propertyLoanradio"
-                             id="propertyLoanopt1" value="Yes"
-                             onClick={()=>propertyLoanradioHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.propertyLoanradio==="Yes"}
-                             />
-                            <label htmlFor="propertyLoanopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="propertyLoanradio"
-                             id="propertyLoanopt2" value="No"
-                             onClick={()=>propertyLoanradioHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.propertyLoanradio==="No"}
-                           />
-                            <label htmlFor="propertyLoanopt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-                            </div>
-                              </div>    
-                        </div>
-                        </div>
-                        {/* radio button*/}
-                        {/* conditional rendering */}
-                          {values.propertyLoanradio=="Yes" &&  <div> 
-                           {/* Row 1*/}
-                           <div className="row">
-                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="clientPercentageofBorrowing" className="form-label">Client % of Borrowing</label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="clientPercentageofBorrowing" name='clientPercentageofBorrowing'/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='clientPercentageofBorrowing' />
-                        </div>            
-                        </div>
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="partnerPercentageofBorrowing" className="form-label">Partner % of Borrowing</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="partnerPercentageofBorrowing" name='partnerPercentageofBorrowing' />
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='partnerPercentageofBorrowing' />
-                        </div>            
-                        </div>
-                        </div>
-                        {/* Row 1*/}
-
-                        {/* Row 2*/}
-                        <div className="row">
-
-                        <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="currentBalance" className="form-label">Current Balance</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="currentBalance" name='currentBalance' placeholder="Current Balance" />
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='currentBalance' />
-                        </div>            
-                        </div>
-
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="repaymentsAmount" className="form-label">Repayments Amount</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="repaymentsAmount" name='repaymentsAmount' placeholder="Repayments Amount"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='repaymentsAmount' />
-                        </div>            
-                         </div>
-
-                        </div>
-                        {/* Row 2*/}
-
-                        {/* Row 3*/}
-                        <div className="row">
-                            <div className="col-md-6">
-                        <div className="mb-3">
-                            <label htmlFor="frequency" className="form-label">
-                            Frequency
-                            </label>
-                            <Field
-                            as='select'
-                            id="frequency"
-                            name="frequency"
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("frequency", e.target.value)}
-                            value={values.frequency}
-                            >
-                            <option value="">Select</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Fortnightly">Fortnightly</option>
-                            <option value="Monthly">Monthly</option>
-                            <option value="Annually">Annually</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="frequency" />
-
-                        </div>
-                            </div>
-
-                            <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="annualRepayments" className="form-label">Annual Repayments</   label>
-                          <Field readOnly={true} type="number" className="form-control shadow inputDesign" 
-                          id="annualRepayments" name='annualRepayments' placeholder="Annual Repayments"/>
-                          
-                        </div>            
-                            </div>
-                        </div>
-                        {/* Row 3*/}
-
-                         {/* Row 4*/}
-                         <div className="row">
-                            
-                         <div className="col-md-6">
-                        <div className="mb-3">
-                          <label htmlFor="interestRatePA" className="form-label">Interest Rate (p.a)</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="interestRatePA" name='interestRatePA' placeholder="Interest Rate (p.a)"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='interestRatePA' />
-                        </div>            
-                            </div>
-                            <div className="col-md-6">
-                        <div className="mb-3">
-                            <label htmlFor="loanTerm" className="form-label">
-                            Loan Term (1 - 30 Years)
-                            </label>
-                            <Field
-                            as='select'
-                            id="loanTerm"
-                            name="loanTerm"
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("loanTerm", e.target.value)}
-                            value={values.loanTerm}
-                            >
-                            <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="loanTerm" />
-
-                        </div>
-                            </div>
-                        </div>
-                        {/* Row 4*/}
-
-                                {/* Row 5*/}
-                            <div className="row">
-                            
-                            <div className="col-md-6">
-                        <div className="mb-3">
-                            <label htmlFor="loanType" className="form-label">
-                            Loan Type
-                            </label>
-                            <Field
-                            as='select'
-                            id="loanType"
-                            name='loanType'
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("loanType", e.target.value)}
-                            value={values.loanType}
-                            >
-                            <option value="">Select</option>
-                            <option value="I/Only">I/Only</option>
-                            <option value="P&I">P & I</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="loanType" />
-
-                        </div>
-                            </div>
-                               <div className="col-md-6">
-                           <div className="mb-3">
-                               <label htmlFor="yearsRemaining" className="form-label">
-                               Years Remaining (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="yearsRemaining"
-                               name='yearsRemaining'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("yearsRemaining", e.target.value)}
-                               value={values.yearsRemaining}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
-
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="yearsRemaining" />
-   
-                           </div>
-                               </div>
-                           </div>
-                           {/* Row 5*/}
-
-                           </div>}
-                         </div>
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={handleClose}
-                                  type='submit'
+                              <div className="radiobutton">
+                                <input
+                                  type="radio"
+                                  name="ownFamilyradio"
+                                  id="ownFamilyopt1"
+                                  value="Yes"
+                                  onClick={() => ownFamilyHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.ownFamilyradio === "Yes"}
+                                />
+                                <label
+                                  htmlFor="ownFamilyopt1"
+                                  className="label1"
                                 >
-                                  Save
-                                </button>
-                                <button
-                                type="button"
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={handleClose}
+                                  <span>YES</span>
+                                </label>
+                                <input
+                                  type="radio"
+                                  name="ownFamilyradio"
+                                  id="ownFamilyopt2"
+                                  value="No"
+                                  onClick={() => ownFamilyHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.ownFamilyradio === "No"}
+                                />
+                                <label
+                                  htmlFor="ownFamilyopt2"
+                                  className="label2"
                                 >
-                                  Cancel
-                                </button>
+                                  <span>NO</span>
+                                </label>
                               </div>
-                            </Modal.Footer>
-                            </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                          {/* Modal  Family Home Details*/}
-
-
-                          {/* Table1  Family Home Details*/}
-                          { 
-        //  isChildTable && 
-         <div   className='table-responsive my-3' id="childTable">
-         <table className="table table-bordered table-hover text-center">
-  <thead className="text-light" id="tableHead">
-  <tr>
-        <th>Address</th>
-        <th>Current Value</th>
-        <th>Ownership</th>
-        <th>Home Loan Balance</th>
-        <th>Repayments p.a</th>
-        <th>Operations</th>
-       
-    </tr>
-  </thead>
-  <tbody>
-  {  ownFamilyList.map((elem,index)=>{
-        let {Address,CurrentValue,ClientOwnership,PartnerOwnership,CurrentBalance,AnnualRepayments}=elem;
-       
-return(
-    
-    <tr key={index}>
-        <td>{Address}</td>
-        <td>{CurrentValue}</td>
-        <td>Client {ClientOwnership} Partner{PartnerOwnership}</td>
-        <td>{CurrentBalance}</td>
-        <td>{AnnualRepayments}</td>
-        <td >
-         <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-         <span  type='btn' onClick={(e)=>assetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-         </td> 
-    
-    </tr>
-    );
-        
-    }) }
-  </tbody>
-</table>
-         </div>
-         }
-
-                          {/* Table1  Family Home Details*/}
-
-
-
-
-                          {/*main second row */}
-                          <div className="row my-3">
-                         <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you have any personal assets?
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="personalAssetsradio"
-                             id="personalAssetsopt1" value="Yes"
-                             onClick={()=>personalAssetsHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.personalAssetsradio==="Yes"}
-                             />
-                            <label htmlFor="personalAssetsopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="personalAssetsradio"
-                             id="personalAssetsopt2" value="No"
-                             onClick={()=>personalAssetsHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.personalAssetsradio==="No"}
-                           />
-                            <label htmlFor="personalAssetsopt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
                             </div>
-                              </div>    
+                          </div>
                         </div>
-                        {values.personalAssetsradio=="Yes" &&
-                        <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please Enter Detailed Information
-                        </label>
+                        {ownFamily && (
+                          <div className="col-md-6">
+                            <label className="form-label">
+                              Please Enter Detailed Information
+                            </label>
                             <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
+
+                            <span
+                              className=" btn h-50 w-50
                             btn-outline-success "
-                            onClick={handleShow2}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                       
-                          </div>
-                     {/* Model 2*/}
-
-                         <Modal
-                            show={show2}
-                            onHide={handleClose2}
-                            backdrop="static"
-                            className="modal-lg"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
+                              onClick={handleShow}
                             >
-                              <Modal.Title className="fontStyle">
-                              Personal Assets Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
-
-                            </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={personalAssetsInitialValues}
-                            // validationSchema={personalAssetsValidationSchema}
-                            onSubmit={personalAssetsOnSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
-                            <Form>
-                            <Modal.Body>
-                               
-
-                        
-
-                        {/* content */}
-                      <div>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div> */}
-                            Contents
-                            </h3>
-                            
-                        <div className="row justify-content-around">
-                       <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="contentCurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="contentCurrentValue" name='contentCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='contentCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="contentCentrelinkValue" className="form-label">Centrelink Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="contentCentrelinkValue" name='contentCentrelinkValue' placeholder="Centrelink Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='contentCentrelinkValue' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-3">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Security For Loan
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="contentradio"
-                             id="contentopt1" value="Yes"
-                             onClick={()=>ownFamilyHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.contentradio==="Yes"}
-                             />
-                            <label htmlFor="contentopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="contentradio"
-                             id="contentopt2" value="No"
-                             onClick={()=>ownFamilyHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.contentradio==="No"}
-                           />
-                            <label htmlFor="contentopt2" className="label2">
-                              <span>NO</span>
-                            </label>
+                              <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+                              </div>
+                              Enter Details
+                            </span>
                           </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        </div>
+                        )}
                       </div>
-                        {/* content */}
 
-                           {/* Motor Vehicle 1 */}
-                        <div className='my-2'>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div> */}
-                            Motor Vehicle 1
-                            </h3>
-                            
-                        <div className="row justify-content-around">
-                       <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="motor1CurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="motor1CurrentValue" name='motor1CurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='motor1CurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="motor1CentrelinkValue" className="form-label">Centrelink Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="motor1CentrelinkValue" name='motor1CentrelinkValue' placeholder="Centrelink Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='motor1CentrelinkValue' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-3">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Security For Loan
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="motor1radio"
-                             id="motor1opt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.motor1radio==="Yes"}
-                             />
-                            <label htmlFor="motor1opt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="motor1radio"
-                             id="motor1opt2" value="No"
-                             onChange={handleChange}
-                             checked={values.motor1radio==="No"}
-                           />
-                            <label htmlFor="motor1opt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
+                      {/* Modal  Family Home Details*/}
+                      <Modal
+                        show={show}
+                        onHide={handleClose}
+                        backdrop="static"
+                        className="modal-lg"
+                        keyboard={false}
+                      >
+                        <Modal.Header
+                          className="text-light modalBG "
+                          closeButton
+                        >
+                          <Modal.Title className="fontStyle">
+                            Family Home Details
+                            <div className="iconContainerLg">
+                              <img
+                                className="img-fluid"
+                                src={notebook}
+                                alt=""
+                              />
                             </div>
-                              </div>    
-                        </div>
-                        </div>
-                        </div>
-                        {/* Motor Vehicle 1 */}
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Formik
+                          // ownFamily123
+                          initialValues={
+                            ownFamilyEdit
+                              ? ownFamilyListObj[0]
+                              : own_initialValues
+                          }
+                          validationSchema={own_validationSchema}
+                          onSubmit={own_onSubmit}
+                          enableReinitialize
+                        >
+                          {({
+                            values,
+                            handleChange,
+                            setFieldValue,
+                            formik,
+                          }) => (
+                            <Form>
+                              <Modal.Body>
+                                {/* Family Assets Details*/}
 
-                             {/* Motor Vehicle 2 */}
-                             <div className='my-2'>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
+                                <div className="">
+                                  {/* Row 1*/}
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="home"
+                                          className="form-label"
+                                        >
+                                          Home
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="home"
+                                          name="home"
+                                          placeholder="Home"
+                                          readOnly
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="home"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="CurrentValue"
+                                          name="CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Row 1*/}
 
-                            </div> */}
-                            Motor Vehicle 2
-                            </h3>
-                            
-                        <div className="row justify-content-around">
-                       <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="motor2CurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="motor2CurrentValue" name='motor2CurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='motor2CurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="motor2CentrelinkValue" className="form-label">Centrelink Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="motor2CentrelinkValue" name='motor2CentrelinkValue' placeholder="Centrelink Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='motor2CentrelinkValue' />
-                        </div>            
-                        </div>
+                                  {/* Row 2*/}
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="ClientOwnership"
+                                          className="form-label"
+                                        >
+                                          Client % of Ownership
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="ClientOwnership"
+                                          name="ClientOwnership"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="ClientOwnership"
+                                        />
+                                      </div>
+                                    </div>
 
-                        <div className="col-md-3">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Security For Loan
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="motor2radio"
-                             id="motor2opt1" value="Yes"
-                             onChange={handleChange}
-                             checked={values.motor2radio==="Yes"}
-                             />
-                            <label htmlFor="motor2opt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="motor2radio"
-                             id="motor2opt2" value="No"
-                             onChange={handleChange}
-                             checked={values.motor2radio==="No"}
-                           />
-                            <label htmlFor="motor2opt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="PartnerOwnership"
+                                          className="form-label"
+                                        >
+                                          Partner % of Ownership
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="PartnerOwnership"
+                                          name="PartnerOwnership"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="PartnerOwnership"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Row 2*/}
 
+                                  {/* Row 3*/}
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="CostBase"
+                                          className="form-label"
+                                        >
+                                          Cost base /(Purchase Price)
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="CostBase"
+                                          name="CostBase"
+                                          placeholder="Cost base /(Purchase Price)"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="CostBase"
+                                        />
+                                      </div>
+                                    </div>
 
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Address"
+                                          className="form-label"
+                                        >
+                                          Address
+                                        </label>
+                                        <Field
+                                          type="text"
+                                          className="form-control shadow inputDesign"
+                                          id="Address"
+                                          name="Address"
+                                          placeholder="Address"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Address"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Row 3*/}
 
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        </div>
-                            </div>
-                            {/* Motor Vehicle 2 */}
+                                  {/* Row 4*/}
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Postcode"
+                                          className="form-label"
+                                        >
+                                          Postcode/Suburb
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Postcode"
+                                          name="Postcode"
+                                          placeholder="Postcode/Suburb"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Postcode"
+                                        />
+                                      </div>
+                                    </div>
 
-                             {/* Boat */}
-                             <div className='my-2'>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="AmountAssessed"
+                                          className="form-label"
+                                        >
+                                          Amount Assessed For Centrelink Assets
+                                          Test
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="AmountAssessed"
+                                          name="AmountAssessed"
+                                          placeholder="Amount Assessed"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="AmountAssessed"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Row 4*/}
 
-                            </div> */}
-                            Boat
-                            </h3>
-                            
-                           <div className="row justify-content-around">
-                       <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="boatCurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="boatCurrentValue" name='boatCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='boatCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="boatCentrelinkValue" className="form-label">Centrelink Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="boatCentrelinkValue" name='boatCentrelinkValue' placeholder="Centrelink Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='boatCentrelinkValue' />
-                        </div>            
-                        </div>
+                                  {/* radio button*/}
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Does this property have a loan
+                                          attached to it?
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="propertyLoanradio"
+                                              id="propertyLoanopt1"
+                                              value="Yes"
+                                              onClick={() =>
+                                                propertyLoanradioHandler("Yes")
+                                              }
+                                              onChange={handleChange}
+                                              checked={
+                                                values.propertyLoanradio ===
+                                                "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="propertyLoanopt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="propertyLoanradio"
+                                              id="propertyLoanopt2"
+                                              value="No"
+                                              onClick={() =>
+                                                propertyLoanradioHandler("No")
+                                              }
+                                              onChange={handleChange}
+                                              checked={
+                                                values.propertyLoanradio ===
+                                                "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="propertyLoanopt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* radio button*/}
+                                  {/* conditional rendering */}
+                                  {propertyLoanState && (
+                                    <div>
+                                      {/* Row 1*/}
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="ClientBorrowingPercentage"
+                                              className="form-label"
+                                            >
+                                              Client % of Borrowing
+                                            </label>
+                                            <Field
+                                              type="number"
+                                              className="form-control shadow inputDesign"
+                                              id="ClientBorrowingPercentage"
+                                              name="ClientBorrowingPercentage"
+                                            />
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="ClientBorrowingPercentage"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="PartnerBorrowingPercentage"
+                                              className="form-label"
+                                            >
+                                              Partner % of Borrowing
+                                            </label>
+                                            <Field
+                                              type="number"
+                                              className="form-control shadow inputDesign"
+                                              id="PartnerBorrowingPercentage"
+                                              name="PartnerBorrowingPercentage"
+                                            />
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="PartnerBorrowingPercentage"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* Row 1*/}
 
-                        <div className="col-md-3">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Security For Loan
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="boatradio"
-                             id="boatopt1" value="Yes"
-                           
-                             onChange={handleChange}
-                             checked={values.boatradio==="Yes"}
-                             />
-                            <label htmlFor="boatopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="boatradio"
-                             id="boatopt2" value="No"
-                             onChange={handleChange}
-                             checked={values.boatradio==="No"}
-                           />
-                            <label htmlFor="boatopt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
+                                      {/* Row 2*/}
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="CurrentBalance"
+                                              className="form-label"
+                                            >
+                                              Current Balance
+                                            </label>
+                                            <Field
+                                              type="number"
+                                              className="form-control shadow inputDesign"
+                                              id="CurrentBalance"
+                                              name="CurrentBalance"
+                                              placeholder="Current Balance"
+                                            />
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="CurrentBalance"
+                                            />
+                                          </div>
+                                        </div>
 
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="RepaymentAmounts"
+                                              className="form-label"
+                                            >
+                                              Repayments Amount
+                                            </label>
+                                            <Field
+                                              type="number"
+                                              className="form-control shadow inputDesign"
+                                              id="RepaymentAmounts"
+                                              name="RepaymentAmounts"
+                                              placeholder="Repayments Amount"
+                                            />
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="RepaymentAmounts"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* Row 2*/}
 
+                                      {/* Row 3*/}
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="Frequency"
+                                              className="form-label"
+                                            >
+                                              Frequency
+                                            </label>
+                                            <Field
+                                              as="select"
+                                              id="Frequency"
+                                              name="Frequency"
+                                              className="form-select shadow  inputDesign"
+                                              onChange={(e) =>
+                                                setFieldValue(
+                                                  "Frequency",
+                                                  e.target.value
+                                                )
+                                              }
+                                              value={values.Frequency}
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="Weekly">
+                                                Weekly
+                                              </option>
+                                              <option value="Fortnightly">
+                                                Fortnightly
+                                              </option>
+                                              <option value="Monthly">
+                                                Monthly
+                                              </option>
+                                              <option value="Annually">
+                                                Annually
+                                              </option>
+                                            </Field>
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="Frequency"
+                                            />
+                                          </div>
+                                        </div>
 
-                              
-                            </div>
-                              </div>    
-                        </div>
-                        </div>
-                            </div>
-                            {/* Boat */}
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="annualRepayments"
+                                              className="form-label"
+                                            >
+                                              Annual Repayments
+                                            </label>
+                                            <Field
+                                              readOnly={true}
+                                              type="number"
+                                              className="form-control shadow inputDesign"
+                                              id="annualRepayments"
+                                              name="annualRepayments"
+                                              placeholder="Annual Repayments"
+                                            />
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="annualRepayments"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* Row 3*/}
 
-                             {/* Caravan */}
-                             <div className='my-2'>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
+                                      {/* Row 4*/}
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="InterestRate"
+                                              className="form-label"
+                                            >
+                                              Interest Rate (p.a)
+                                            </label>
+                                            <Field
+                                              type="number"
+                                              className="form-control shadow inputDesign"
+                                              id="InterestRate"
+                                              name="InterestRate"
+                                              placeholder="Interest Rate (p.a)"
+                                            />
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="InterestRate"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="LoanTerm"
+                                              className="form-label"
+                                            >
+                                              Loan Term (1 - 30 Years)
+                                            </label>
+                                            <Field
+                                              as="select"
+                                              id="LoanTerm"
+                                              name="LoanTerm"
+                                              className="form-select shadow  inputDesign"
+                                              onChange={(e) =>
+                                                setFieldValue(
+                                                  "LoanTerm",
+                                                  e.target.value
+                                                )
+                                              }
+                                              value={values.LoanTerm}
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                              <option value="11">11</option>
+                                              <option value="12">12</option>
+                                              <option value="13">13</option>
+                                              <option value="14">14</option>
+                                              <option value="15">15</option>
+                                              <option value="16">16</option>
+                                              <option value="17">17</option>
+                                              <option value="18">18</option>
+                                              <option value="19">19</option>
+                                              <option value="20">20</option>
+                                              <option value="21">21</option>
+                                              <option value="22">22</option>
+                                              <option value="23">23</option>
+                                              <option value="24">24</option>
+                                              <option value="25">25</option>
+                                              <option value="26">26</option>
+                                              <option value="27">27</option>
+                                              <option value="28">28</option>
+                                              <option value="29">29</option>
+                                              <option value="30">30</option>
+                                            </Field>
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="LoanTerm"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* Row 4*/}
 
-                            </div> */}
-                            Caravan
-                            </h3>
-                            
-                            <div className="row justify-content-around">
-                       <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="carvanCurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="carvanCurrentValue" name='carvanCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='carvanCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="carvanCentrelinkValue" className="form-label">Centrelink Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="carvanCentrelinkValue" name='carvanCentrelinkValue' placeholder="Centrelink Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='carvanCentrelinkValue' />
-                        </div>            
-                        </div>
+                                      {/* Row 5*/}
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="LoanType"
+                                              className="form-label"
+                                            >
+                                              Loan Type
+                                            </label>
+                                            <Field
+                                              as="select"
+                                              id="LoanType"
+                                              name="LoanType"
+                                              className="form-select shadow  inputDesign"
+                                              onChange={(e) =>
+                                                setFieldValue(
+                                                  "LoanType",
+                                                  e.target.value
+                                                )
+                                              }
+                                              value={values.LoanType}
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="I/Only">
+                                                I/Only
+                                              </option>
+                                              <option value="P&I">P & I</option>
+                                            </Field>
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="LoanType"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <div className="mb-3">
+                                            <label
+                                              htmlFor="YearsRemaining"
+                                              className="form-label"
+                                            >
+                                              Years Remaining (1 - 30 Years)
+                                            </label>
 
-                        <div className="col-md-3">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Security For Loan
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="carvanradio"
-                             id="carvanopt1" value="Yes"
-                           
-                             onChange={handleChange}
-                             checked={values.carvanradio==="Yes"}
-                             />
-                            <label htmlFor="carvanopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="carvanradio"
-                             id="carvanopt2" value="No"
-                             onChange={handleChange}
-                             checked={values.carvanradio==="No"}
-                           />
-                            <label htmlFor="carvanopt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                           </div>
-                            </div>
-                            {/* Caravan */}
-
-                             {/* Other */}
-                             <div className='my-2'>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
-                            <img className="img-fluid" src={lawyer} alt="" />
-
-                            </div> */}
-                            Other
-                            </h3>
-                            
-                            <div className="row justify-content-around">
-                       <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="otherCurrentValue" className="form-label">Current Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="otherCurrentValue" name='otherCurrentValue' placeholder="Current Value"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='otherCurrentValue' />
-                        </div>            
-                        </div>
-                        <div className="col-md-4">
-                        <div className="mb-3">
-                          <label htmlFor="otherCentrelinkValue" className="form-label">Centrelink Value</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="otherCentrelinkValue" name='otherCentrelinkValue' placeholder="Centrelink Value"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='otherCentrelinkValue' />
-                        </div>            
-                        </div>
-
-                        <div className="col-md-3">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Security For Loan
-                            </label>
-                          {/* switch button style */}
-                            <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="otherradio"
-                             id="otheropt1" value="Yes"
-                           
-                             onChange={handleChange}
-                             checked={values.otherradio==="Yes"}
-                             />
-                            <label htmlFor="otheropt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="otherradio"
-                             id="otheropt2" value="No"
-                             onChange={handleChange}
-                             checked={values.otherradio==="No"}
-                           />
-                            <label htmlFor="otheropt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
-                            </div>
-                              </div>    
-                        </div>
-                           </div>
-                            </div>
-                            {/* Other */}
-                     
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={handleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                type="button"
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={handleClose2}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
+                                            <Field
+                                              as="select"
+                                              id="YearsRemaining"
+                                              name="YearsRemaining"
+                                              className="form-select shadow  inputDesign myselect"
+                                              onChange={(e) =>
+                                                setFieldValue(
+                                                  "YearsRemaining",
+                                                  e.target.value
+                                                )
+                                              }
+                                              value={values.YearsRemaining}
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                              <option value="11">11</option>
+                                              <option value="12">12</option>
+                                              <option value="13">13</option>
+                                              <option value="14">14</option>
+                                              <option value="15">15</option>
+                                              <option value="16">16</option>
+                                              <option value="17">17</option>
+                                              <option value="18">18</option>
+                                              <option value="19">19</option>
+                                              <option value="20">20</option>
+                                              <option value="21">21</option>
+                                              <option value="22">22</option>
+                                              <option value="23">23</option>
+                                              <option value="24">24</option>
+                                              <option value="25">25</option>
+                                              <option value="26">26</option>
+                                              <option value="27">27</option>
+                                              <option value="28">28</option>
+                                              <option value="29">29</option>
+                                              <option value="30">30</option>
+                                            </Field>
+                                            <ErrorMessage
+                                              component="div"
+                                              className="text-danger fw-bold"
+                                              name="YearsRemaining"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* Row 5*/}
+                                    </div>
+                                  )}
+                                </div>
+                              </Modal.Body>
+                              <Modal.Footer>
+                                <div className="col-md-12">
+                                  <button
+                                    className="float-end btn w-25  bgColor modalBtn"
+                                    // onClick={handleClose}
+                                    type="submit"
+                                  >
+                                    Save
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                    onClick={handleClose}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </Modal.Footer>
                             </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                      {/* Model 2*/}
-                        
-                        {/*main second row */}
+                          )}
+                        </Formik>
+                      </Modal>
+                      {/* Modal  Family Home Details*/}
 
-                        {/*Table2 main second row */}
-
-                        <div   className='table-responsive my-3'>
-         <table className="table table-bordered table-hover text-center">
-  <thead className="text-light" id="tableHead">
-  <tr>
-    <th>Description</th>
-        <th>Current Value</th>
-        <th>Centrelink Value</th>
-        <th>Security for Loan</th>
-        <th>Operations</th>
-
-       
-    </tr>
-  </thead>
-  <tbody>
-  
-    {/* content  */}
-   {  contentList.map((elem,index)=>{
-      let {Contents_CurrentValue,Contents_CentreLinkValue,Contents_Security}=elem;
-      if(contentList[0].Contents_CurrentValue =='' || 
-      contentList[0].Contents_CentreLinkValue =='' ){
-       
-      }
-
-      else{
-     return(
-    
-          <tr key={index}>
-            <td className='fw-bold'>Contents</td>
-              <td>{Contents_CurrentValue}</td>
-              <td>{Contents_CentreLinkValue}</td>
-              <td>{Contents_Security}</td>
-    
-             
-             <td >
-              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-               <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-           </td> 
-      
-               
-          
-          </tr>
-          );
-      }
-
-    }) }
-    {/* content  */}
-
-     {/* motor 1  */}
-   {  MotorVehicle1.map((elem,index)=>{
-      let {MotorVehicle1_CurrentValue,MotorVehicle1_CentreLinkValue,MotorVehicle1_Security}=elem;
-      if(MotorVehicle1[0].MotorVehicle1_CurrentValue =='' || 
-      MotorVehicle1[0].MotorVehicle1_CentreLinkValue =='' ){
-       
-      }
-
-      else{
-     return(
-    
-          <tr key={index}>
-            <td className='fw-bold'>Motor Vehicle 1</td>
-              <td>{MotorVehicle1_CurrentValue}</td>
-              <td>{MotorVehicle1_CentreLinkValue}</td>
-              <td>{MotorVehicle1_Security}</td>
-    
-              <td >
-              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-      
-               </td> 
-          
-          </tr>
-          );
-      }
-
-    }) }
-    {/* motor 1  */}
-
-     {/* motor 2  */}
-   {  MotorVehicle2.map((elem,index)=>{
-      let {MotorVehicle2_CurrentValue,MotorVehicle2_CentreLinkValue,MotorVehicle2_Security}=elem;
-      if(MotorVehicle2[0].MotorVehicle2_CurrentValue ==''){
-       
-      }
-
-      else{
-     return(
-    
-          <tr key={index}>
-            <td className='fw-bold'>Motor Vehicle 22</td>
-              <td>{MotorVehicle2_CurrentValue}</td>
-              <td>{MotorVehicle2_CentreLinkValue}</td>
-              <td>{MotorVehicle2_Security}</td>
-    
-              <td >
-              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-      
-               </td> 
-          
-          </tr>
-          );
-      }
-
-    }) }
-    {/* motor 2  */}
-
-
-      {/* Boat */}
-   {  Boat.map((elem,index)=>{
-      let {Boat_CurrentValue,Boat_CentreLinkValue,Boat_Security}=elem;
-      if(Boat[0].Boat_CurrentValue =='' || 
-      Boat[0].Boat_CentreLinkValue =='' ){
-       
-      }
-
-      else{
-     return(
-    
-          <tr key={index}>
-            <td className='fw-bold'>Boat</td>
-              <td>{Boat_CurrentValue}</td>
-              <td>{Boat_CentreLinkValue}</td>
-              <td>{Boat_Security}</td>
-    
-              <td >
-              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-               </td> 
-          
-          </tr>
-          );
-      }
-
-    }) }
-    {/* Boat  */}
-
-     {/* Carvan */}
-   {  Caravan.map((elem,index)=>{
-      let {Caravan_CurrentValue,Caravan_CentreLinkValue,Caravan_Security}=elem;
-      if(Caravan[0].Caravan_CurrentValue =='' || 
-      Caravan[0].Caravan_CentreLinkValue =='' ){
-       
-      }
-
-      else{
-     return(
-    
-          <tr key={index}>
-            <td className='fw-bold'>Caravan</td>
-              <td>{Caravan_CurrentValue}</td>
-              <td>{Caravan_CentreLinkValue}</td>
-              <td>{Caravan_Security}</td>
-    
-              <td >
-              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-              <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-               </td> 
-          
-          </tr>
-          );
-      }
-
-    }) }
-    {/* Carvan */}
-
-     {/* Other */}
-   {  personalOther.map((elem,index)=>{
-      let {Other_CurrentValue,Other_CentreLinkValue,Other_Security}=elem;
-      if(personalOther[0].Other_CurrentValue =='' || 
-      personalOther[0].Other_CentreLinkValue =='' ){
-       
-      }
-
-      else{
-     return(
-    
-          <tr key={index}>
-            <td className='fw-bold'>Other</td>
-              <td>{Other_CurrentValue}</td>
-              <td>{Other_CentreLinkValue}</td>
-              <td>{Other_Security}</td>
-    
-              <td >
-              <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-         <span  type='btn' onClick={(e)=>personalAssetUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-
-               </td> 
-          
-          </tr>
-          );
-      }
-
-    }) }
-    {/* Carvan */}
-
-
-  </tbody>
-</table>
+                      {/* Table1  Family Home Details*/}
+                      {
+                        //  isChildTable &&
+                        <div className="table-responsive my-3" id="childTable">
+                          <table className="table table-bordered table-hover text-center">
+                            <thead className="text-light" id="tableHead">
+                              <tr>
+                                <th>Address</th>
+                                <th>Current Value</th>
+                                <th>Ownership</th>
+                                <th>Home Loan Balance</th>
+                                <th>Repayments p.a</th>
+                                <th>Operations</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {ownFamilyList.map((elem, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>{elem.Address}</td>
+                                    <td>{elem.CurrentValue}</td>
+                                    <td>
+                                      Client {elem.ClientOwnership} Partner
+                                      {elem.PartnerOwnership}
+                                    </td>
+                                    <td>{elem.CurrentBalance}</td>
+                                    <td>{elem.AnnualRepayments}</td>
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          FamilyHomedeleteHandler(elem, index)
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          FamilyHomeupdateHandler(elem, index)
+                                        }
+                                        className="btn btn-warning btn-sm mx-2"
+                                      >
+                                        update
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
                         </div>
+                      }
 
-                        {/*Table2 main second row */}
+                      {/* Table1  Family Home Details*/}
 
-
-
-
-
-                          {/*main Third row */}
-
-               
-                           {/* 3 row */}
-                           <div className="row">
+                      {/*main second row */}
+                      <div className="row my-3">
                         <div className="col-md-6">
-                              <div className="mb-3">
-                            <label  className="form-label">
-                            Do you have Personal Loans or Credit cards?
+                          <div className="mb-3">
+                            <label className="form-label">
+                              Do you have any personal assets?
                             </label>
-                          {/* switch button style */}
+                            {/* switch button style */}
                             <div className="form-check form-switch m-0 p-0 ">
-                          <div className="radiobutton">
-                            <input type="radio" name="personalLoansradio"
-                             id="personalLoansopt1" value="Yes"
-                             onClick={()=>personalLoansHandler("Yes")} 
-                             onChange={handleChange}
-                             checked={values.personalLoansradio==="Yes"}
-                             />
-                            <label htmlFor="personalLoansopt1" className="label1">
-                              <span>YES</span>
-                            </label>
-                            <input type="radio" name="personalLoansradio"
-                             id="personalLoansopt2" value="No"
-                             onClick={()=>personalLoansHandler("No")} 
-                             onChange={handleChange}
-                             checked={values.personalLoansradio==="No"}
-                           />
-                            <label htmlFor="personalLoansopt2" className="label2">
-                              <span>NO</span>
-                            </label>
-                          </div>
-
-
-
-                              
+                              <div className="radiobutton">
+                                <input
+                                  type="radio"
+                                  name="personalAssetsradio"
+                                  id="personalAssetsopt1"
+                                  value="Yes"
+                                  onClick={() => personalAssetsHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.personalAssetsradio === "Yes"}
+                                />
+                                <label
+                                  htmlFor="personalAssetsopt1"
+                                  className="label1"
+                                >
+                                  <span>YES</span>
+                                </label>
+                                <input
+                                  type="radio"
+                                  name="personalAssetsradio"
+                                  id="personalAssetsopt2"
+                                  value="No"
+                                  onClick={() => personalAssetsHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.personalAssetsradio === "No"}
+                                />
+                                <label
+                                  htmlFor="personalAssetsopt2"
+                                  className="label2"
+                                >
+                                  <span>NO</span>
+                                </label>
+                              </div>
                             </div>
-                              </div>    
+                          </div>
                         </div>
-                        {
-                        values.personalLoansradio=="Yes" && 
-                        <div className='col-md-6'>
-                        <label  className="form-label">
-                        Please Enter Detailed Information
+                        {personalAssetsState && (
+                          <div className="col-md-6">
+                            <label className="form-label">
+                              Please Enter Detailed Information
                             </label>
                             <br />
-                          
-                          <span
-                            className=" btn h-50 w-50
+
+                            <span
+                              className=" btn h-50 w-50
                             btn-outline-success "
-                            onClick={handleShow3}
-                          >
-                            <div className="iconContainer mx-1">
-                            <img className="img-fluid" src={plus} alt="" />
-
-                            </div>
-                            Enter Details
-                          </span>
-                        </div>}
-                           </div>
-                           {/* 3 row */}
-                           
-                           {/* --------------------------------------------- */}
-
-                           <Modal
-                            show={show3}
-                            onHide={handleClose3}
-                            backdrop="static"
-                            className="modal-xl"
-                            keyboard={false}
-                          >
-                            <Modal.Header
-                              className="text-light modalBG "
-                              closeButton
+                              onClick={handleShow2}
                             >
-                              <Modal.Title className="fontStyle">
-                              Personal Debts Details
-                                <div className="iconContainerLg">
-                            <img className="img-fluid" src={notebook} alt="" />
+                              <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+                              </div>
+                              Enter Details
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      {/* Model 2*/}
 
+                      <Modal
+                        show={show2}
+                        onHide={handleClose2}
+                        backdrop="static"
+                        className="modal-lg"
+                        keyboard={false}
+                      >
+                        <Modal.Header
+                          className="text-light modalBG "
+                          closeButton
+                        >
+                          <Modal.Title className="fontStyle">
+                            Personal Assets Details
+                            <div className="iconContainerLg">
+                              <img
+                                className="img-fluid"
+                                src={notebook}
+                                alt=""
+                              />
                             </div>
-                              </Modal.Title>
-                            </Modal.Header>
-                           <Formik
-                            initialValues={personalLoansInitialValues}
-                            // validationSchema={personalLoansvalidationSchema}
-                            onSubmit={personalLoansonSubmit}>
-                          {({values , setFieldValue ,setValues,handleChange,formik})=>
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Formik
+                          // Assets123
+                          initialValues={
+                            PersonalAssetsEdit
+                              ? PersonalAssets[0]
+                              : personalAssetsInitialValues
+                          }
+                          validationSchema={personalAssetsValidationSchema}
+                          onSubmit={personalAssetsOnSubmit}
+                          enableReinitialize
+                        >
+                          {({
+                            values,
+                            setFieldValue,
+                            setValues,
+                            handleChange,
+                            formik,
+                          }) => (
                             <Form>
-                            <Modal.Body>
+                              <Modal.Body>
+                                {/* content */}
+                                <div>
+                                  <h3 className="">
+                                    {/* <div className="iconContainerLg mx-1">
+                            <img className="img-fluid" src={lawyer} alt="" />
+
+                            </div> */}
+                                    Contents
+                                  </h3>
+
+                                  <div className="row justify-content-around">
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Contents_CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Contents_CurrentValue"
+                                          name="Contents_CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Contents_CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Contents_CentreLinkValue"
+                                          className="form-label"
+                                        >
+                                          Centrelink Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Contents_CentreLinkValue"
+                                          name="Contents_CentreLinkValue"
+                                          placeholder="Centrelink Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Contents_CentreLinkValue"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Security For Loan
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="Contents_Security"
+                                              id="contentopt1"
+                                              value="Yes"
+                                              onClick={() =>
+                                                ownFamilyHandler("Yes")
+                                              }
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Contents_Security ===
+                                                "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="contentopt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="Contents_Security"
+                                              id="contentopt2"
+                                              value="No"
+                                              onClick={() =>
+                                                ownFamilyHandler("No")
+                                              }
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Contents_Security ===
+                                                "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="contentopt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/* content */}
+
+                                {/* Motor Vehicle 1 */}
+                                <div className="my-2">
+                                  <h3 className="">
+                                    {/* <div className="iconContainerLg mx-1">
+                            <img className="img-fluid" src={lawyer} alt="" />
+
+                            </div> */}
+                                    Motor Vehicle 1
+                                  </h3>
+
+                                  <div className="row justify-content-around">
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="MotorVehicle1_CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="MotorVehicle1_CurrentValue"
+                                          name="MotorVehicle1_CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="MotorVehicle1_CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="MotorVehicle1_CentreLinkValue"
+                                          className="form-label"
+                                        >
+                                          Centrelink Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="MotorVehicle1_CentreLinkValue"
+                                          name="MotorVehicle1_CentreLinkValue"
+                                          placeholder="Centrelink Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="MotorVehicle1_CentreLinkValue"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Security For Loan
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="MotorVehicle1_Security"
+                                              id="motor1opt1"
+                                              value="Yes"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.MotorVehicle1_Security ===
+                                                "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="motor1opt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="MotorVehicle1_Security"
+                                              id="motor1opt2"
+                                              value="No"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.MotorVehicle1_Security ===
+                                                "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="motor1opt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/* Motor Vehicle 1 */}
+
+                                {/* Motor Vehicle 2 */}
+                                <div className="my-2">
+                                  <h3 className="">
+                                    {/* <div className="iconContainerLg mx-1">
+                            <img className="img-fluid" src={lawyer} alt="" />
+
+                            </div> */}
+                                    Motor Vehicle 2
+                                  </h3>
+
+                                  <div className="row justify-content-around">
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="MotorVehicle2_CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="MotorVehicle2_CurrentValue"
+                                          name="MotorVehicle2_CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="MotorVehicle2_CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="MotorVehicle2_CentreLinkValue"
+                                          className="form-label"
+                                        >
+                                          Centrelink Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="MotorVehicle2_CentreLinkValue"
+                                          name="MotorVehicle2_CentreLinkValue"
+                                          placeholder="Centrelink Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="MotorVehicle2_CentreLinkValue"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Security For Loan
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="MotorVehicle2_Security"
+                                              id="motor2opt1"
+                                              value="Yes"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.MotorVehicle2_Security ===
+                                                "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="motor2opt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="MotorVehicle2_Security"
+                                              id="motor2opt2"
+                                              value="No"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.MotorVehicle2_Security ===
+                                                "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="motor2opt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/* Motor Vehicle 2 */}
+
+                                {/* Boat */}
+                                <div className="my-2">
+                                  <h3 className="">
+                                    {/* <div className="iconContainerLg mx-1">
+                            <img className="img-fluid" src={lawyer} alt="" />
+
+                            </div> */}
+                                    Boat
+                                  </h3>
+
+                                  <div className="row justify-content-around">
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Boat_CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Boat_CurrentValue"
+                                          name="Boat_CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Boat_CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Boat_CentreLinkValue"
+                                          className="form-label"
+                                        >
+                                          Centrelink Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Boat_CentreLinkValue"
+                                          name="Boat_CentreLinkValue"
+                                          placeholder="Centrelink Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Boat_CentreLinkValue"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Security For Loan
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="Boat_Security"
+                                              id="boatopt1"
+                                              value="Yes"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Boat_Security === "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="boatopt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="Boat_Security"
+                                              id="boatopt2"
+                                              value="No"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Boat_Security === "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="boatopt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/* Boat */}
+
+                                {/* Caravan */}
+                                <div className="my-2">
+                                  <h3 className="">
+                                    {/* <div className="iconContainerLg mx-1">
+                            <img className="img-fluid" src={lawyer} alt="" />
+
+                            </div> */}
+                                    Caravan
+                                  </h3>
+
+                                  <div className="row justify-content-around">
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Caravan_CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Caravan_CurrentValue"
+                                          name="Caravan_CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Caravan_CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Caravan_CentreLinkValue"
+                                          className="form-label"
+                                        >
+                                          Centrelink Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Caravan_CentreLinkValue"
+                                          name="Caravan_CentreLinkValue"
+                                          placeholder="Centrelink Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Caravan_CentreLinkValue"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Security For Loan
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="Caravan_Security"
+                                              id="carvanopt1"
+                                              value="Yes"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Caravan_Security ===
+                                                "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="carvanopt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="Caravan_Security"
+                                              id="carvanopt2"
+                                              value="No"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Caravan_Security === "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="carvanopt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/* Caravan */}
+
+                                {/* Other */}
+                                <div className="my-2">
+                                  <h3 className="">
+                                    {/* <div className="iconContainerLg mx-1">
+                            <img className="img-fluid" src={lawyer} alt="" />
+
+                            </div> */}
+                                    Other
+                                  </h3>
+
+                                  <div className="row justify-content-around">
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Other_CurrentValue"
+                                          className="form-label"
+                                        >
+                                          Current Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Other_CurrentValue"
+                                          name="Other_CurrentValue"
+                                          placeholder="Current Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Other_CurrentValue"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="Other_CentreLinkValue"
+                                          className="form-label"
+                                        >
+                                          Centrelink Value
+                                        </label>
+                                        <Field
+                                          type="number"
+                                          className="form-control shadow inputDesign"
+                                          id="Other_CentreLinkValue"
+                                          name="Other_CentreLinkValue"
+                                          placeholder="Centrelink Value"
+                                        />
+                                        <ErrorMessage
+                                          component="div"
+                                          className="text-danger fw-bold"
+                                          name="Other_CentreLinkValue"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                      <div className="mb-3">
+                                        <label className="form-label">
+                                          Security For Loan
+                                        </label>
+                                        {/* switch button style */}
+                                        <div className="form-check form-switch m-0 p-0 ">
+                                          <div className="radiobutton">
+                                            <input
+                                              type="radio"
+                                              name="Other_Security"
+                                              id="otheropt1"
+                                              value="Yes"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Other_Security === "Yes"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="otheropt1"
+                                              className="label1"
+                                            >
+                                              <span>YES</span>
+                                            </label>
+                                            <input
+                                              type="radio"
+                                              name="Other_Security"
+                                              id="otheropt2"
+                                              value="No"
+                                              onChange={handleChange}
+                                              checked={
+                                                values.Other_Security === "No"
+                                              }
+                                            />
+                                            <label
+                                              htmlFor="otheropt2"
+                                              className="label2"
+                                            >
+                                              <span>NO</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/* Other */}
+                              </Modal.Body>
+                              <Modal.Footer>
+                                <div className="col-md-12">
+                                  <button
+                                    className="float-end btn w-25  bgColor modalBtn"
+                                    // onClick={handleClose}
+                                    type="submit"
+                                  >
+                                    Save
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                    onClick={handleClose2}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </Modal.Footer>
+                            </Form>
+                          )}
+                        </Formik>
+                      </Modal>
+                      {/* Model 2*/}
+
+                      {/*main second row */}
+
+                      {/*Table2 main second row */}
+
+                      <div className="table-responsive my-3">
+                        <table className="table table-bordered table-hover text-center">
+                          <thead className="text-light" id="tableHead">
+                            <tr>
+                              <th>Description</th>
+                              <th>Current Value</th>
+                              <th>Centrelink Value</th>
+                              <th>Security for Loan</th>
+                              <th>Operations</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/* content  */}
+                            {PersonalAssets.map((elem, index) => {
+                              let {
+                                Contents_CurrentValue,
+                                Contents_CentreLinkValue,
+                                Contents_Security,
+                              } = elem;
+                              if (
+                                Contents_CurrentValue == "" ||
+                                Contents_CentreLinkValue == ""
+                              ) {
+                              } else {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Contents</td>
+                                    <td>{Contents_CurrentValue}</td>
+                                    <td>{Contents_CentreLinkValue}</td>
+                                    <td>{Contents_Security}</td>
+
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow2();
+                                        }}
+                                        className="btn btn-warning btn-sm m-2"
+                                      >
+                                        update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalAssetsContentDeleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                            {/* content  */}
+
+                            {/* motor 1  */}
+                            {PersonalAssets.map((elem, index) => {
+                              let {
+                                MotorVehicle1_CurrentValue,
+                                MotorVehicle1_CentreLinkValue,
+                                MotorVehicle1_Security,
+                              } = elem;
+                              if (
+                                MotorVehicle1_CurrentValue == "" ||
+                                MotorVehicle1_CentreLinkValue == ""
+                              ) {
+                              } else {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Motor Vehicle 1</td>
+                                    <td>{MotorVehicle1_CurrentValue}</td>
+                                    <td>{MotorVehicle1_CentreLinkValue}</td>
+                                    <td>{MotorVehicle1_Security}</td>
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow2();
+                                        }}
+                                        className="btn btn-warning btn-sm m-2"
+                                      >
+                                        update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalAssetsVehicle1deleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                            {/* motor 1  */}
+
+                            {/* motor 2  */}
+                            {PersonalAssets.map((elem, index) => {
+                              let {
+                                MotorVehicle2_CurrentValue,
+                                MotorVehicle2_CentreLinkValue,
+                                MotorVehicle2_Security,
+                              } = elem;
+                              if (
+                                MotorVehicle2_CurrentValue == "" ||
+                                MotorVehicle2_CentreLinkValue == ""
+                              ) {
+                              } else {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Motor Vehicle 2</td>
+                                    <td>{MotorVehicle2_CurrentValue}</td>
+                                    <td>{MotorVehicle2_CentreLinkValue}</td>
+                                    <td>{MotorVehicle2_Security}</td>
+
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow2();
+                                        }}
+                                        className="btn btn-warning btn-sm m-2"
+                                      >
+                                        update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={(e) =>
+                                          personalAssetsVehicle2deleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                            {/* motor 2  */}
+
+                            {/* Boat */}
+                            {PersonalAssets.map((elem, index) => {
+                              let {
+                                Boat_CurrentValue,
+                                Boat_CentreLinkValue,
+                                Boat_Security,
+                              } = elem;
+                              if (
+                                Boat_CurrentValue == "" ||
+                                Boat_CentreLinkValue == ""
+                              ) {
+                              } else {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Boat</td>
+                                    <td>{Boat_CurrentValue}</td>
+                                    <td>{Boat_CentreLinkValue}</td>
+                                    <td>{Boat_Security}</td>
+
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow2();
+                                        }}
+                                        className="btn btn-warning btn-sm m-2"
+                                      >
+                                        update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={(e) =>
+                                          personalAssetsBoatdeleteHandler(elem)
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                            {/* Boat  */}
+
+                            {/* Carvan */}
+                            {PersonalAssets.map((elem, index) => {
+                              let {
+                                Caravan_CurrentValue,
+                                Caravan_CentreLinkValue,
+                                Caravan_Security,
+                              } = elem;
+                              if (
+                                Caravan_CurrentValue == "" ||
+                                Caravan_CentreLinkValue == ""
+                              ) {
+                              } else {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Caravan</td>
+                                    <td>{Caravan_CurrentValue}</td>
+                                    <td>{Caravan_CentreLinkValue}</td>
+                                    <td>{Caravan_Security}</td>
+
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow2();
+                                        }}
+                                        className="btn btn-warning btn-sm m-2"
+                                      >
+                                        update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalAssetsCaravandeleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                            {/* Carvan */}
+
+                            {/* Other */}
+                            {PersonalAssets.map((elem, index) => {
+                              let {
+                                Other_CurrentValue,
+                                Other_CentreLinkValue,
+                                Other_Security,
+                              } = elem;
+                              if (
+                                Other_CurrentValue == "" ||
+                                Other_CentreLinkValue == ""
+                              ) {
+                              } else {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Other</td>
+                                    <td>{Other_CurrentValue}</td>
+                                    <td>{Other_CentreLinkValue}</td>
+                                    <td>{Other_Security}</td>
+
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow2();
+                                        }}
+                                        className="btn btn-warning btn-sm m-2"
+                                      >
+                                        update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={(e) =>
+                                          personalAssetsPersonalOtherdeleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                            {/* Carvan */}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/*Table2 main second row */}
+
+                      {/*main Third row */}
+
+                      {/* 3 row */}
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label className="form-label">
+                              Do you have Personal Loans or Credit cards?
+                            </label>
+                            {/* switch button style */}
+                            <div className="form-check form-switch m-0 p-0 ">
+                              <div className="radiobutton">
+                                <input
+                                  type="radio"
+                                  name="personalLoansradio"
+                                  id="personalLoansopt1"
+                                  value="Yes"
+                                  onClick={() => personalLoansHandler("Yes")}
+                                  onChange={handleChange}
+                                  checked={values.personalLoansradio === "Yes"}
+                                />
+                                <label
+                                  htmlFor="personalLoansopt1"
+                                  className="label1"
+                                >
+                                  <span>YES</span>
+                                </label>
+                                <input
+                                  type="radio"
+                                  name="personalLoansradio"
+                                  id="personalLoansopt2"
+                                  value="No"
+                                  onClick={() => personalLoansHandler("No")}
+                                  onChange={handleChange}
+                                  checked={values.personalLoansradio === "No"}
+                                />
+                                <label
+                                  htmlFor="personalLoansopt2"
+                                  className="label2"
+                                >
+                                  <span>NO</span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {personalLoanState && (
+                          <div className="col-md-6">
+                            <label className="form-label">
+                              Please Enter Detailed Information
+                            </label>
+                            <br />
+
+                            <span
+                              className=" btn h-50 w-50
+                            btn-outline-success "
+                              onClick={handleShow3}
+                            >
+                              <div className="iconContainer mx-1">
+                                <img className="img-fluid" src={plus} alt="" />
+                              </div>
+                              Enter Details
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      {/* 3 row */}
+
+                      {/* --------------------------------------------- */}
+
+                      <Modal
+                        show={show3}
+                        onHide={handleClose3}
+                        backdrop="static"
+                        className="modal-xl"
+                        keyboard={false}
+                      >
+                        <Modal.Header
+                          className="text-light modalBG "
+                          closeButton
+                        >
+                          <Modal.Title className="fontStyle">
+                            Personal Debts Details
+                            <div className="iconContainerLg">
+                              <img
+                                className="img-fluid"
+                                src={notebook}
+                                alt=""
+                              />
+                            </div>
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Formik
+                          //loan123
+                          initialValues={
+                            PersonalLoansEdit
+                              ? PersonalLoans[0]
+                              : personalLoansInitialValues
+                          }
+                          validationSchema={personalLoansvalidationSchema}
+                          onSubmit={personalLoansonSubmit}
+                          enableReinitialize
+                        >
+                          {({
+                            values,
+                            setFieldValue,
+                            setValues,
+                            handleChange,
+                            formik,
+                          }) => (
+                            <Form>
+                              <Modal.Body>
                                 {/* Personal Loans Detail Form */}
 
-                         <div className=''>
-
-                        {/* Credit Card 1 */}
-                        <div className=' '>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
+                                <div className="">
+                                  {/* Credit Card 1 */}
+                                  <div className=" ">
+                                    <h3 className="">
+                                      {/* <div className="iconContainerLg mx-1">
                             <img className="img-fluid" src={lawyer} alt="" />
 
                             </div> */}
-                            Credit Card 1
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtCurrentBalance1" className="form-label">Current Balance</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtCurrentBalance1" name='debtCurrentBalance1' placeholder="Current Balance"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtCurrentBalance1' />
-                        </div>            
-                        </div>
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtRepaymentAmount1" className="form-label">Repayment Amount</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="debtRepaymentAmount1" name='debtRepaymentAmount1' placeholder="Repayment Amount"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='debtRepaymentAmount1' />
-                        </div>            
-                        </div>
+                                      Credit Card 1
+                                    </h3>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_CurrentBalance"
+                                            className="form-label"
+                                          >
+                                            Current Balance
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard1_CurrentBalance"
+                                            name="CreditCard1_CurrentBalance"
+                                            placeholder="Current Balance"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_CurrentBalance"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_RepaymentAmount"
+                                            className="form-label"
+                                          >
+                                            Repayment Amount
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard1_RepaymentAmount"
+                                            name="CreditCard1_RepaymentAmount"
+                                            placeholder="Repayment Amount"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_RepaymentAmount"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="DebtFrequency1" className="form-label">
-                            Frequency
-                            </label>
-                            <Field
-                            as='select'
-                            id="DebtFrequency1"
-                            name="DebtFrequency1"
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("DebtFrequency1", e.target.value)}
-                            value={values.DebtFrequency1}
-                            >
-                            <option value="">Select</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Fortnightly">Fortnightly</option>
-                            <option value="Monthly">Monthly</option>
-                            <option value="Annually">Annually</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="DebtFrequency1" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_Frequency"
+                                            className="form-label"
+                                          >
+                                            Frequency
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard1_Frequency"
+                                            name="CreditCard1_Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard1_Frequency",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={values.CreditCard1_Frequency}
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="Weekly">
+                                              Weekly
+                                            </option>
+                                            <option value="Fortnightly">
+                                              Fortnightly
+                                            </option>
+                                            <option value="Monthly">
+                                              Monthly
+                                            </option>
+                                            <option value="Annually">
+                                              Annually
+                                            </option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_Frequency"
+                                          />
+                                        </div>
+                                      </div>
 
-                        </div>
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_AnnualRepayment"
+                                            className="form-label"
+                                          >
+                                            Annual Repayment
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard1_AnnualRepayment"
+                                            name="CreditCard1_AnnualRepayment"
+                                            readOnly={true}
+                                          />
+                                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='CreditCard1_AnnualRepayment' /> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_InterestRate"
+                                            className="form-label"
+                                          >
+                                            Interest Rate
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard1_InterestRate"
+                                            name="CreditCard1_InterestRate"
+                                            placeholder="Interest Rate"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_InterestRate"
+                                          />
+                                        </div>
+                                      </div>
 
-                         <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtAnnualRepayment1" className="form-label">Annual Repayment</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtAnnualRepayment1" name='debtAnnualRepayment1' readOnly={true} />
-                        </div>            
-                        </div>
-                        </div>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtInterestRate1" className="form-label">Interest Rate</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtInterestRate1" name='debtInterestRate1' placeholder="Interest Rate"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtInterestRate1' />
-                        </div>            
-                      </div>
-                        
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_LoanTerm"
+                                            className="form-label"
+                                          >
+                                            Loan Terms (1 - 30 Years)
+                                          </label>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                               <label htmlFor="debtLoanTerm1" className="form-label">
-                                Loan Terms (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtLoanTerm1"
-                               name='debtLoanTerm1'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtLoanTerm1", e.target.value)}
-                               value={values.debtLoanTerm1}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard1_LoanTerm"
+                                            name="CreditCard1_LoanTerm"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard1_LoanTerm",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={values.CreditCard1_LoanTerm}
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_LoanTerm"
+                                          />
+                                        </div>
+                                      </div>
 
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtLoanTerm1" />
-   
-                           </div>           
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_LoanType"
+                                            className="form-label"
+                                          >
+                                            Loan Type
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard1_LoanType"
+                                            name="CreditCard1_LoanType"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard1_LoanType",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={values.CreditCard1_LoanType}
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="I/Only">
+                                              I/Only
+                                            </option>
+                                            <option value="P&I">P & I</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_LoanType"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="debtloanType1" className="form-label">
-                            Loan Type
-                            </label>
-                            <Field
-                            as='select'
-                            id="debtloanType1"
-                            name='debtloanType1'
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("debtloanType1", e.target.value)}
-                            value={values.debtloanType1}
-                            >
-                            <option value="">Select</option>
-                            <option value="I/Only">I/Only</option>
-                            <option value="P&I">P & I</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="debtloanType1" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard1_YearRemaining"
+                                            className="form-label"
+                                          >
+                                            Year Remaining (1 - 30 Years)
+                                          </label>
 
-                        </div>           
-                        </div>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard1_YearRemaining"
+                                            name="CreditCard1_YearRemaining"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard1_YearRemaining",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.CreditCard1_YearRemaining
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard1_YearRemaining"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Credit Card 1 */}
 
-                         <div className="col-md-3">
-                         <div className="mb-3">
-                               <label htmlFor="debtYearRemaining1" className="form-label">
-                                Year Remaining (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtYearRemaining1"
-                               name='debtYearRemaining1'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtYearRemaining1", e.target.value)}
-                               value={values.debtYearRemaining1}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
-
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtYearRemaining1" />
-   
-                           </div>             
-                        </div>
-                        </div>
-                        
-                        </div>
-                        {/* Credit Card 1 */}
-
-                        {/* Credit Card 2 */}
-                        <div className='mt-3 '>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
+                                  {/* Credit Card 2 */}
+                                  <div className="mt-3 ">
+                                    <h3 className="">
+                                      {/* <div className="iconContainerLg mx-1">
                             <img className="img-fluid" src={lawyer} alt="" />
 
                             </div> */}
-                            Credit Card 2
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtCurrentBalance2" className="form-label">Current Balance</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtCurrentBalance2" name='debtCurrentBalance2' placeholder="Current Balance"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtCurrentBalance2' />
-                        </div>            
-                        </div>
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtRepaymentAmount2" className="form-label">Repayment Amount</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="debtRepaymentAmount2" name='debtRepaymentAmount2' placeholder="Repayment Amount"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='debtRepaymentAmount2' />
-                        </div>            
-                        </div>
+                                      Credit Card 2
+                                    </h3>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_CurrentBalance"
+                                            className="form-label"
+                                          >
+                                            Current Balance
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard2_CurrentBalance"
+                                            name="CreditCard2_CurrentBalance"
+                                            placeholder="Current Balance"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_CurrentBalance"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_RepaymentAmount"
+                                            className="form-label"
+                                          >
+                                            Repayment Amount
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard2_RepaymentAmount"
+                                            name="CreditCard2_RepaymentAmount"
+                                            placeholder="Repayment Amount"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_RepaymentAmount"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="DebtFrequency2" className="form-label">
-                            Frequency
-                            </label>
-                            <Field
-                            as='select'
-                            id="DebtFrequency2"
-                            name="DebtFrequency2"
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("DebtFrequency2", e.target.value)}
-                            value={values.DebtFrequency2}
-                            >
-                            <option value="">Select</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Fortnightly">Fortnightly</option>
-                            <option value="Monthly">Monthly</option>
-                            <option value="Annually">Annually</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="DebtFrequency2" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_Frequency"
+                                            className="form-label"
+                                          >
+                                            Frequency
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard2_Frequency"
+                                            name="CreditCard2_Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard2_Frequency",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={values.CreditCard2_Frequency}
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="Weekly">
+                                              Weekly
+                                            </option>
+                                            <option value="Fortnightly">
+                                              Fortnightly
+                                            </option>
+                                            <option value="Monthly">
+                                              Monthly
+                                            </option>
+                                            <option value="Annually">
+                                              Annually
+                                            </option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_Frequency"
+                                          />
+                                        </div>
+                                      </div>
 
-                        </div>
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="debtAnnualRepayment2"
+                                            className="form-label"
+                                          >
+                                            Annual Repayment
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="debtAnnualRepayment2"
+                                            name="debtAnnualRepayment2"
+                                            readOnly={true}
+                                          />
+                                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='CreditCard1_AnnualRepayment' /> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_InterestRate"
+                                            className="form-label"
+                                          >
+                                            Interest Rate
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="CreditCard2_InterestRate"
+                                            name="CreditCard2_InterestRate"
+                                            placeholder="Interest Rate"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_InterestRate"
+                                          />
+                                        </div>
+                                      </div>
 
-                         <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtAnnualRepayment2" className="form-label">Annual Repayment</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtAnnualRepayment2" name='debtAnnualRepayment2' readOnly={true} />
-                        </div>            
-                        </div>
-                        </div>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtInterestRate2" className="form-label">Interest Rate</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtInterestRate2" name='debtInterestRate2' placeholder="Interest Rate"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtInterestRate2' />
-                        </div>            
-                      </div>
-                        
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_LoanTerm"
+                                            className="form-label"
+                                          >
+                                            Loan Terms (1 - 30 Years)
+                                          </label>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                               <label htmlFor="debtLoanTerm2" className="form-label">
-                                Loan Terms (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtLoanTerm2"
-                               name='debtLoanTerm2'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtLoanTerm2", e.target.value)}
-                               value={values.debtLoanTerm2}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard2_LoanTerm"
+                                            name="CreditCard2_LoanTerm"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard2_LoanTerm",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={values.CreditCard2_LoanTerm}
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_LoanTerm"
+                                          />
+                                        </div>
+                                      </div>
 
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtLoanTerm2" />
-   
-                           </div>           
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_LoanType"
+                                            className="form-label"
+                                          >
+                                            Loan Type
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard2_LoanType"
+                                            name="CreditCard2_LoanType"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard2_LoanType",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={values.CreditCard2_LoanType}
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="I/Only">
+                                              I/Only
+                                            </option>
+                                            <option value="P&I">P & I</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_LoanType"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="debtloanType2" className="form-label">
-                            Loan Type
-                            </label>
-                            <Field
-                            as='select'
-                            id="debtloanType2"
-                            name='debtloanType2'
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("debtloanType2", e.target.value)}
-                            value={values.debtloanType2}
-                            >
-                            <option value="">Select</option>
-                            <option value="I/Only">I/Only</option>
-                            <option value="P&I">P & I</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="debtloanType2" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="CreditCard2_YearRemaining"
+                                            className="form-label"
+                                          >
+                                            Year Remaining (1 - 30 Years)
+                                          </label>
 
-                        </div>           
-                        </div>
+                                          <Field
+                                            as="select"
+                                            id="CreditCard2_YearRemaining"
+                                            name="CreditCard2_YearRemaining"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "CreditCard2_YearRemaining",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.CreditCard2_YearRemaining
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="CreditCard2_YearRemaining"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Credit Card 2 */}
 
-                         <div className="col-md-3">
-                         <div className="mb-3">
-                               <label htmlFor="debtYearRemaining2" className="form-label">
-                                Year Remaining (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtYearRemaining2"
-                               name='debtYearRemaining2'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtYearRemaining2", e.target.value)}
-                               value={values.debtYearRemaining2}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
-
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtYearRemaining2" />
-   
-                           </div>             
-                        </div>
-                        </div>
-                        
-                        </div>
-                        {/* Credit Card 2 */}
-
-                         {/* Personal Loan 1 */}
-                         <div className='mt-3 '>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
+                                  {/* Personal Loan 1 */}
+                                  <div className="mt-3 ">
+                                    <h3 className="">
+                                      {/* <div className="iconContainerLg mx-1">
                             <img className="img-fluid" src={lawyer} alt="" />
 
                             </div> */}
-                            Personal Loan 1
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtCurrentBalance3" className="form-label">Current Balance</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtCurrentBalance3" name='debtCurrentBalance3' placeholder="Current Balance"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtCurrentBalance3' />
-                        </div>            
-                        </div>
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtRepaymentAmount3" className="form-label">Repayment Amount</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="debtRepaymentAmount3" name='debtRepaymentAmount3' placeholder="Repayment Amount"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='debtRepaymentAmount3' />
-                        </div>            
-                        </div>
+                                      Personal Loan 1
+                                    </h3>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_CurrentBalance"
+                                            className="form-label"
+                                          >
+                                            Current Balance
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan1_CurrentBalance"
+                                            name="PersonalLoan1_CurrentBalance"
+                                            placeholder="Current Balance"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_CurrentBalance"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_RepaymentAmount"
+                                            className="form-label"
+                                          >
+                                            Repayment Amount
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan1_RepaymentAmount"
+                                            name="PersonalLoan1_RepaymentAmount"
+                                            placeholder="Repayment Amount"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_RepaymentAmount"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="DebtFrequency3" className="form-label">
-                            Frequency
-                            </label>
-                            <Field
-                            as='select'
-                            id="DebtFrequency3"
-                            name="DebtFrequency3"
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("DebtFrequency3", e.target.value)}
-                            value={values.DebtFrequency3}
-                            >
-                            <option value="">Select</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Fortnightly">Fortnightly</option>
-                            <option value="Monthly">Monthly</option>
-                            <option value="Annually">Annually</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="DebtFrequency3" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_Frequency"
+                                            className="form-label"
+                                          >
+                                            Frequency
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan1_Frequency"
+                                            name="PersonalLoan1_Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan1_Frequency",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan1_Frequency
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="Weekly">
+                                              Weekly
+                                            </option>
+                                            <option value="Fortnightly">
+                                              Fortnightly
+                                            </option>
+                                            <option value="Monthly">
+                                              Monthly
+                                            </option>
+                                            <option value="Annually">
+                                              Annually
+                                            </option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_Frequency"
+                                          />
+                                        </div>
+                                      </div>
 
-                        </div>
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_AnnualRepayment"
+                                            className="form-label"
+                                          >
+                                            Annual Repayment
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan1_AnnualRepayment"
+                                            name="PersonalLoan1_AnnualRepayment"
+                                            readOnly={true}
+                                          />
+                                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='CreditCard1_AnnualRepayment' /> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_InterestRate"
+                                            className="form-label"
+                                          >
+                                            Interest Rate
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan1_InterestRate"
+                                            name="PersonalLoan1_InterestRate"
+                                            placeholder="Interest Rate"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_InterestRate"
+                                          />
+                                        </div>
+                                      </div>
 
-                         <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtAnnualRepayment3" className="form-label">Annual Repayment</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtAnnualRepayment3" name='debtAnnualRepayment3' readOnly={true} />
-                        </div>            
-                        </div>
-                        </div>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtInterestRate3" className="form-label">Interest Rate</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtInterestRate3" name='debtInterestRate3' placeholder="Interest Rate"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtInterestRate3' />
-                        </div>            
-                      </div>
-                        
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_LoanTerm"
+                                            className="form-label"
+                                          >
+                                            Loan Terms (1 - 30 Years)
+                                          </label>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                               <label htmlFor="debtLoanTerm3" className="form-label">
-                                Loan Terms (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtLoanTerm3"
-                               name='debtLoanTerm3'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtLoanTerm3", e.target.value)}
-                               value={values.debtLoanTerm3}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan1_LoanTerm"
+                                            name="PersonalLoan1_LoanTerm"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan1_LoanTerm",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan1_LoanTerm
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_LoanTerm"
+                                          />
+                                        </div>
+                                      </div>
 
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtLoanTerm3" />
-   
-                           </div>           
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_LoanType"
+                                            className="form-label"
+                                          >
+                                            Loan Type
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan1_LoanType"
+                                            name="PersonalLoan1_LoanType"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan1_LoanType",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan1_LoanType
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="I/Only">
+                                              I/Only
+                                            </option>
+                                            <option value="P&I">P & I</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_LoanType"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="debtloanType3" className="form-label">
-                            Loan Type
-                            </label>
-                            <Field
-                            as='select'
-                            id="debtloanType3"
-                            name='debtloanType3'
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("debtloanType3", e.target.value)}
-                            value={values.debtloanType3}
-                            >
-                            <option value="">Select</option>
-                            <option value="I/Only">I/Only</option>
-                            <option value="P&I">P & I</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="debtloanType3" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan1_YearRemaining"
+                                            className="form-label"
+                                          >
+                                            Year Remaining (1 - 30 Years)
+                                          </label>
 
-                        </div>           
-                        </div>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan1_YearRemaining"
+                                            name="PersonalLoan1_YearRemaining"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan1_YearRemaining",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan1_YearRemaining
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan1_YearRemaining"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Personal Loan 1 */}
 
-                         <div className="col-md-3">
-                         <div className="mb-3">
-                               <label htmlFor="debtYearRemaining3" className="form-label">
-                                Year Remaining (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtYearRemaining3"
-                               name='debtYearRemaining3'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtYearRemaining3", e.target.value)}
-                               value={values.debtYearRemaining3}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
-
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtYearRemaining3" />
-   
-                           </div>             
-                        </div>
-                        </div>
-                        
-                        </div>
-                        {/* Personal Loan 1 */}
-
-                          {/* Personal Loan 2 */}
-                          <div className='mt-3'>
-                        <h3 className=''>
-                        {/* <div className="iconContainerLg mx-1">
+                                  {/* Personal Loan 2 */}
+                                  <div className="mt-3">
+                                    <h3 className="">
+                                      {/* <div className="iconContainerLg mx-1">
                             <img className="img-fluid" src={lawyer} alt="" />
 
                             </div> */}
-                            Personal Loan 2
-                            </h3>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtCurrentBalance4" className="form-label">Current Balance</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtCurrentBalance4" name='debtCurrentBalance4' placeholder="Current Balance"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtCurrentBalance4' />
-                        </div>            
-                        </div>
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtRepaymentAmount4" className="form-label">Repayment Amount</   label>
-                          <Field type="number" className="form-control shadow inputDesign"
-                           id="debtRepaymentAmount4" name='debtRepaymentAmount4' placeholder="Repayment Amount"/>
-                           <ErrorMessage component='div' className='text-danger fw-bold' name='debtRepaymentAmount4' />
-                        </div>            
-                        </div>
+                                      Personal Loan 2
+                                    </h3>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_CurrentBalance"
+                                            className="form-label"
+                                          >
+                                            Current Balance
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan2_CurrentBalance"
+                                            name="PersonalLoan2_CurrentBalance"
+                                            placeholder="Current Balance"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_CurrentBalance"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_RepaymentAmount"
+                                            className="form-label"
+                                          >
+                                            Repayment Amount
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan2_RepaymentAmount"
+                                            name="PersonalLoan2_RepaymentAmount"
+                                            placeholder="Repayment Amount"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_RepaymentAmount"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="DebtFrequency4" className="form-label">
-                            Frequency
-                            </label>
-                            <Field
-                            as='select'
-                            id="DebtFrequency4"
-                            name="DebtFrequency4"
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("DebtFrequency4", e.target.value)}
-                            value={values.DebtFrequency4}
-                            >
-                            <option value="">Select</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Fortnightly">Fortnightly</option>
-                            <option value="Monthly">Monthly</option>
-                            <option value="Annually">Annually</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="DebtFrequency4" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_Frequency"
+                                            className="form-label"
+                                          >
+                                            Frequency
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan2_Frequency"
+                                            name="PersonalLoan2_Frequency"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan2_Frequency",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan2_Frequency
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="Weekly">
+                                              Weekly
+                                            </option>
+                                            <option value="Fortnightly">
+                                              Fortnightly
+                                            </option>
+                                            <option value="Monthly">
+                                              Monthly
+                                            </option>
+                                            <option value="Annually">
+                                              Annually
+                                            </option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_Frequency"
+                                          />
+                                        </div>
+                                      </div>
 
-                        </div>
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_AnnualRepayment"
+                                            className="form-label"
+                                          >
+                                            Annual Repayment
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan2_AnnualRepayment"
+                                            name="PersonalLoan2_AnnualRepayment"
+                                            readOnly={true}
+                                          />
+                                          {/* <ErrorMessage component='div' className='text-danger fw-bold' name='CreditCard1_AnnualRepayment' /> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_InterestRate"
+                                            className="form-label"
+                                          >
+                                            Interest Rate
+                                          </label>
+                                          <Field
+                                            type="number"
+                                            className="form-control shadow inputDesign"
+                                            id="PersonalLoan2_InterestRate"
+                                            name="PersonalLoan2_InterestRate"
+                                            placeholder="Interest Rate"
+                                          />
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_InterestRate"
+                                          />
+                                        </div>
+                                      </div>
 
-                         <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtAnnualRepayment4" className="form-label">Annual Repayment</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtAnnualRepayment4" name='debtAnnualRepayment4' readOnly={true} />
-                        </div>            
-                        </div>
-                        </div>
-                        <div className="row">
-                       <div className="col-md-3">
-                        <div className="mb-3">
-                          <label htmlFor="debtInterestRate4" className="form-label">Interest Rate</   label>
-                          <Field type="number" className="form-control shadow inputDesign" 
-                          id="debtInterestRate4" name='debtInterestRate4' placeholder="Interest Rate"/>
-                          <ErrorMessage component='div' className='text-danger fw-bold' name='debtInterestRate4' />
-                        </div>            
-                      </div>
-                        
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_LoanTerm"
+                                            className="form-label"
+                                          >
+                                            Loan Terms (1 - 30 Years)
+                                          </label>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                               <label htmlFor="debtLoanTerm4" className="form-label">
-                                Loan Terms (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtLoanTerm4"
-                               name='debtLoanTerm4'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtLoanTerm4", e.target.value)}
-                               value={values.debtLoanTerm4}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan2_LoanTerm"
+                                            name="PersonalLoan2_LoanTerm"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan2_LoanTerm",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan2_LoanTerm
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_LoanTerm"
+                                          />
+                                        </div>
+                                      </div>
 
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtLoanTerm4" />
-   
-                           </div>           
-                        </div>
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_LoanType"
+                                            className="form-label"
+                                          >
+                                            Loan Type
+                                          </label>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan2_LoanType"
+                                            name="PersonalLoan2_LoanType"
+                                            className="form-select shadow  inputDesign"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan2_LoanType",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan2_LoanType
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="I/Only">
+                                              I/Only
+                                            </option>
+                                            <option value="P&I">P & I</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_LoanType"
+                                          />
+                                        </div>
+                                      </div>
 
-                        <div className="col-md-3">
-                        <div className="mb-3">
-                            <label htmlFor="debtloanType4" className="form-label">
-                            Loan Type
-                            </label>
-                            <Field
-                            as='select'
-                            id="debtloanType4"
-                            name='debtloanType4'
-                            className="form-select shadow  inputDesign"
-                            onChange={(e) => setFieldValue("debtloanType4", e.target.value)}
-                            value={values.debtloanType4}
-                            >
-                            <option value="">Select</option>
-                            <option value="I/Only">I/Only</option>
-                            <option value="P&I">P & I</option>
-                            </Field>
-                            <ErrorMessage component='div' className="text-danger fw-bold"name="debtloanType4" />
+                                      <div className="col-md-3">
+                                        <div className="mb-3">
+                                          <label
+                                            htmlFor="PersonalLoan2_YearRemaining"
+                                            className="form-label"
+                                          >
+                                            Year Remaining (1 - 30 Years)
+                                          </label>
 
-                        </div>           
-                        </div>
-
-                         <div className="col-md-3">
-                         <div className="mb-3">
-                               <label htmlFor="debtYearRemaining4" className="form-label">
-                                Year Remaining (1 - 30 Years)
-                               </label>
-                               
-                               <Field
-                               as='select'
-                               id="debtYearRemaining4"
-                               name='debtYearRemaining4'
-                               className="form-select shadow  inputDesign myselect"
-                               onChange={(e) => setFieldValue("debtYearRemaining4", e.target.value)}
-                               value={values.debtYearRemaining4}
-                               >
-                               <option value="">Select</option>
-                               <option value="1">1</option>
-                               <option value="2">2</option>
-                               <option value="3">3</option>
-                               <option value="4">4</option>
-                               <option value="5">5</option>
-                               <option value="6">6</option>
-                               <option value="7">7</option>
-                               <option value="8">8</option>
-                               <option value="9">9</option>
-                               <option value="10">10</option>
-                               <option value="11">11</option>
-                               <option value="12">12</option>
-                               <option value="13">13</option>
-                               <option value="14">14</option>
-                               <option value="15">15</option>
-                               <option value="16">16</option>
-                               <option value="17">17</option>
-                               <option value="18">18</option>
-                               <option value="19">19</option>
-                               <option value="20">20</option>
-                               <option value="21">21</option>
-                               <option value="22">22</option>
-                               <option value="23">23</option>
-                               <option value="24">24</option>
-                               <option value="25">25</option>
-                               <option value="26">26</option>
-                               <option value="27">27</option>
-                               <option value="28">28</option>
-                               <option value="29">29</option>
-                               <option value="30">30</option>
-
-                               </Field>
-                               <ErrorMessage component='div' className="text-danger fw-bold"name="debtYearRemaining4" />
-   
-                           </div>             
-                        </div>
-                        </div>
-                        
-                        </div>
-                        {/* Personal Loan 2 */}
-
-                         </div>
-                         {/* Personal Loans Detail Form */}
-                           
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <div className="col-md-12">
-                                <button
-                                  className="float-end btn w-25  bgColor modalBtn"
-                                  // onClick={handleClose}
-                                  type='submit'
-                                >
-                                  Save
-                                </button>
-                                <button
-                                type="button"
-                                  className="float-end btn w-25  btn-outline  backBtn mx-3"
-                                  onClick={handleClose3}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Modal.Footer>
+                                          <Field
+                                            as="select"
+                                            id="PersonalLoan2_YearRemaining"
+                                            name="PersonalLoan2_YearRemaining"
+                                            className="form-select shadow  inputDesign myselect"
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "PersonalLoan2_YearRemaining",
+                                                e.target.value
+                                              )
+                                            }
+                                            value={
+                                              values.PersonalLoan2_YearRemaining
+                                            }
+                                          >
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                          </Field>
+                                          <ErrorMessage
+                                            component="div"
+                                            className="text-danger fw-bold"
+                                            name="PersonalLoan2_YearRemaining"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* Personal Loan 2 */}
+                                </div>
+                                {/* Personal Loans Detail Form */}
+                              </Modal.Body>
+                              <Modal.Footer>
+                                <div className="col-md-12">
+                                  <button
+                                    className="float-end btn w-25  bgColor modalBtn"
+                                    // onClick={handleClose}
+                                    type="submit"
+                                  >
+                                    Save
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="float-end btn w-25  btn-outline  backBtn mx-3"
+                                    onClick={handleClose3}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </Modal.Footer>
                             </Form>
-                            }
-                           </Formik>
-                          </Modal>
-                           {/* ---------------------------------------------------- */}
-               
+                          )}
+                        </Formik>
+                      </Modal>
+                      {/* ---------------------------------------------------- */}
+
                       {/* Client Professional Advisors */}
 
-                       {/*Table3  */}
+                      {/*Table3  */}
 
-                       <div   className='table-responsive my-3'>
-         <table className="table table-bordered table-hover text-center">
-        <thead className="text-light" id="tableHead">
-              <tr>
-                <th>Description</th>
-                    <th>Current Belance</th>
-                    <th>Annual Repayments</th>
-                    <th>Interest Rate</th>
-                    <th>Operations</th>
-               </tr>
-       </thead>
+                      <div className="table-responsive my-3">
+                        <table className="table table-bordered table-hover text-center">
+                          <thead className="text-light" id="tableHead">
+                            <tr>
+                              <th>Description</th>
+                              <th>Current Belance</th>
+                              <th>Annual Repayments</th>
+                              <th>Interest Rate</th>
+                              <th>Operations</th>
+                            </tr>
+                          </thead>
 
-        <tbody>
-        
-          {/* CreditCardList1  */}
-        {  CreditCardList1.map((elem,index)=>{
-            let {CreditCard1_CurrentBalance,CreditCard1_AnnualRepayment
-              ,CreditCard1_InterestRate}=elem;
-            if(CreditCardList1[0].CreditCard1_CurrentBalance !=='' ){
-              return(
-                <tr key={index}>
-                  <td className='fw-bold'>Credit Card 1</td>
-                    <td>{CreditCard1_CurrentBalance}</td>
-                    <td>{CreditCard1_AnnualRepayment}</td>
-                    <td>{CreditCard1_InterestRate}</td>
-                    <td >
-                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-               
-                     </td> 
-              
-                
-                </tr>
-                );
-            }
-            else{
-         
-            }
+                          <tbody>
+                            {/* CreditCardList1  */}
+                            {PersonalLoans.map((elem, index) => {
+                              let {
+                                CreditCard1_CurrentBalance,
+                                CreditCard1_AnnualRepayment,
+                                CreditCard1_InterestRate,
+                              } = elem;
+                              if (CreditCard1_CurrentBalance !== "") {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Credit Card 1</td>
+                                    <td>{CreditCard1_CurrentBalance}</td>
+                                    <td>{CreditCard1_AnnualRepayment}</td>
+                                    <td>{CreditCard1_InterestRate}</td>
 
-          }) }
-          {/* CreditCardList1  */}
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalLoansCreditCard1DeleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setPersonalAssetsEdit(true);
+                                          handleShow3();
+                                        }}
+                                        className="btn btn-warning btn-sm mx-2"
+                                      >
+                                        update
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              } else {
+                              }
+                            })}
+                            {/* CreditCardList1  */}
 
-           {/* CreditCardList2  */}
-           {  CreditCardList2.map((elem,index)=>{
-            let {CreditCard2_CurrentBalance,CreditCard2_AnnualRepayment
-              ,CreditCard2_InterestRate}=elem;
-            if(CreditCardList2[0].CreditCard2_CurrentBalance !=='' ){
-              return(
-                <tr key={index}>
-                  <td className='fw-bold'>Credit Card 2</td>
-                    <td>{CreditCard2_CurrentBalance}</td>
-                    <td>{CreditCard2_AnnualRepayment}</td>
-                    <td>{CreditCard2_InterestRate}</td>
-                    <td >
-                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-               
-                     </td> 
-                  </tr>
-                );
-            }
-            else{
-         
-            }
+                            {/* CreditCardList2  */}
+                            {PersonalLoans.map((elem, index) => {
+                              let {
+                                CreditCard2_CurrentBalance,
+                                CreditCard2_AnnualRepayment,
+                                CreditCard2_InterestRate,
+                              } = elem;
+                              if (CreditCard2_CurrentBalance !== "") {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Credit Card 2</td>
+                                    <td>{CreditCard2_CurrentBalance}</td>
+                                    <td>{CreditCard2_AnnualRepayment}</td>
+                                    <td>{CreditCard2_InterestRate}</td>
 
-          }) }
-          {/* CreditCardList2  */}
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalLoansCreditCard2DeleteHandler(
+                                            elem
+                                          )
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={handleShow3}
+                                        className="btn btn-warning btn-sm mx-2"
+                                      >
+                                        update
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              } else {
+                              }
+                            })}
+                            {/* CreditCardList2  */}
 
+                            {/* PersonalLoan1  */}
+                            {PersonalLoans.map((elem, index) => {
+                              let {
+                                PersonalLoan1_CurrentBalance,
+                                PersonalLoan1_AnnualRepayment,
+                                PersonalLoan1_InterestRate,
+                              } = elem;
+                              if (PersonalLoan1_CurrentBalance !== "") {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Personal Loan 1</td>
+                                    <td>{PersonalLoan1_CurrentBalance}</td>
+                                    <td>{PersonalLoan1_AnnualRepayment}</td>
+                                    <td>{PersonalLoan1_InterestRate}</td>
 
-            {/* PersonalLoan1  */}
-            {  CreditCardList1.map((elem,index)=>{
-            let {PersonalLoan1_CurrentBalance,PersonalLoan1_AnnualRepayment
-              ,PersonalLoan1_InterestRate}=elem;
-            if(CreditCardList1[0].PersonalLoan1_CurrentBalance !=='' ){
-              return(
-                <tr key={index}>
-                  <td className='fw-bold'>Personal Loan 1</td>
-                    <td>{PersonalLoan1_CurrentBalance}</td>
-                    <td>{PersonalLoan1_AnnualRepayment}</td>
-                    <td>{PersonalLoan1_InterestRate}</td>
-                    <td >
-                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-               
-                     </td> 
-                  </tr>
-                );
-            }
-            else{
-         
-            }
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalLoans1DeleteHandler(elem)
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={handleShow3}
+                                        className="btn btn-warning btn-sm mx-2"
+                                      >
+                                        update
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              } else {
+                              }
+                            })}
+                            {/* PersonalLoan1  */}
 
-          }) }
-          {/* PersonalLoan1  */}
+                            {/* PersonalLoan2  */}
+                            {PersonalLoans.map((elem, index) => {
+                              let {
+                                PersonalLoan2_CurrentBalance,
+                                PersonalLoan2_AnnualRepayment,
+                                PersonalLoan2_InterestRate,
+                              } = elem;
+                              if (PersonalLoan2_CurrentBalance !== "") {
+                                return (
+                                  <tr key={index}>
+                                    <td className="fw-bold">Personal Loan 2</td>
+                                    <td>{PersonalLoan2_CurrentBalance}</td>
+                                    <td>{PersonalLoan2_AnnualRepayment}</td>
+                                    <td>{PersonalLoan2_InterestRate}</td>
 
-          {/* PersonalLoan2  */}
-          {  PersonalLoanList2.map((elem,index)=>{
-            let {PersonalLoan2_CurrentBalance,PersonalLoan2_AnnualRepayment
-              ,PersonalLoan2_InterestRate}=elem;
-            if(PersonalLoanList2[0].PersonalLoan2_CurrentBalance !=='' ){
-              return(
-                <tr key={index}>
-                  <td className='fw-bold'>Personal Loan 2</td>
-                    <td>{PersonalLoan2_CurrentBalance}</td>
-                    <td>{PersonalLoan2_AnnualRepayment}</td>
-                    <td>{PersonalLoan2_InterestRate}</td>
-                    <td >
-                        <span  type='btn'  className='btn btn-danger btn-sm'>delete</span>
-                        <span  type='btn' onClick={(e)=>personalLoanUpdateHandler(elem)} className='btn btn-warning m-1 py-1 btn-sm mx-2'>update</span>
-               
-                     </td> 
-                  </tr>
-                );
-            }
-            else{
-         
-            }
+                                    <td>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          personalLoans2DeleteHandler(elem)
+                                        }
+                                        className="btn btn-danger btn-sm"
+                                      >
+                                        delete
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={handleShow3}
+                                        className="btn btn-warning btn-sm mx-2"
+                                      >
+                                        update
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              } else {
+                              }
+                            })}
+                            {/* PersonalLoan2  */}
+                          </tbody>
+                        </table>
+                      </div>
 
-          }) }
-          {/* PersonalLoan2  */}
+                      {/*Table3 */}
 
-        </tbody>
-</table>
-                        </div>
-
-                        {/*Table3 */}
-
-     
-                          <div className="row mt-5 mb-3">
+                      <div className="row mt-5 mb-3">
                         <div className="col-md-12">
-                          <button  type='submit' className="float-end btn w-25  bgColor modalBtn">Next</button>
-                          <button className="float-end btn w-25  btn-outline  backBtn mx-3" onClick={BackFunction}>Back</button>
+                          <button
+                            type="submit"
+                            className="float-end btn w-25  bgColor modalBtn"
+                          >
+                            Next
+                          </button>
+                          <button
+                            type="button"
+                            className="float-end btn w-25  btn-outline  backBtn mx-3"
+                            onClick={BackFunction}
+                          >
+                            Back
+                          </button>
                         </div>
                       </div>
-                        </Form>
-                        }</Formik> 
-                      </div>
-                     
+                    </Form>
+                  )}
+                </Formik>
+              </div>
             </div>
-
-            </div>
+          </div>
         </div>
-    </div>
-    
+      </div>
     </>
-  ) 
-}
+  );
+};
 
-export default AssetsLiabilities_Edit
+export default AssetsLiabilities_Edit;

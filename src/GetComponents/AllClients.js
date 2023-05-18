@@ -14,9 +14,10 @@ function AllClients() {
 
   let UpdateClient = (Element) => {
     localStorage.setItem("EditClient", Element.Email);
-    console.log(Element.Email);
+    console.log(Element.Email);             
     Navigate("/Edit-Client");
   };
+
 
   let DeleteClient = (Element) => {};
   return (

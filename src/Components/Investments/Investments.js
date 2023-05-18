@@ -29,7 +29,6 @@ function Investments() {
   const [OthersList, setOthersList] = useState([]);
 
   const [BankEdit, setBankEdit] = useState(false);
-    
   const [BankAccount, setBankAccount] = useState(false);
   const [Bankshow, setBankShow] = useState(false);
   const [Bankshow2, setBankShow2] = useState(false);
@@ -46,7 +45,6 @@ function Investments() {
   }
 
   const [TermDepositEdit, setTermDepositEdit] = useState(false);
-
   const [TermDeposit, setTermDeposit] = useState(false);
   const [TermDepositshow, setTermDepositShow] = useState(false);
   const TermDeposithandleClose = () => setTermDepositShow(false);
@@ -61,7 +59,6 @@ function Investments() {
   }
 
   const [AustralianShareMarketEdit, setAustralianShareMarketEdit] = useState(false);
-
   const [AustralianShareMarket, setAustralianShareMarket] = useState(false);
   const [AustralianShareMarketshow, setAustralianShareMarketShow] = useState(false);
   const AustralianShareMarkethandleClose = () => setAustralianShareMarketShow(false);
@@ -77,7 +74,6 @@ function Investments() {
 
 
   const [AustralianSharePortfolioEdit, setAustralianSharePortfolioEdit] = useState(false);
-
   const [AustralianSharePortfolio, setAustralianSharePortfolio] = useState(false);
   const [AustralianSharePortfolioshow, setAustralianSharePortfolioShow] = useState(false);
   const AustralianSharePortfoliohandleClose = () => setAustralianSharePortfolioShow(false);
@@ -93,7 +89,6 @@ function Investments() {
 
 
   const [ManagedFundsEdit, setManagedFundsEdit] = useState(false);
-
   const [ManagedFunds, setManagedFunds] = useState(false);
   const [ManagedFundsshow, setManagedFundsShow] = useState(false);
   const ManagedFundshandleClose = () => setManagedFundsShow(false);
@@ -108,7 +103,6 @@ function Investments() {
   }
 
   const [ManagedFundsLoanEdit, setManagedFundsLoanEdit] = useState(false);
-
   const [ManagedFundsPortfolio, setManagedFundsPortfolio] = useState(false);
   const [ManagedFundsPortfolioshow, setManagedFundsPortfolioShow] = useState(false);
   const ManagedFundsPortfoliohandleClose = () => setManagedFundsPortfolioShow(false);
@@ -123,7 +117,6 @@ function Investments() {
   }
 
   const [InvestmentBondsEdit, setInvestmentBondsEdit] = useState(false);
-
   const [InvestmentBonds, setInvestmentBonds] = useState(false);
   const [InvestmentBondsshow, setInvestmentBondsShow] = useState(false);
   const InvestmentBondshandleClose = () => setInvestmentBondsShow(false);
@@ -139,7 +132,6 @@ function Investments() {
 
   
   const [OthersEdit, setOthersEdit] = useState(false);
-
   const [Others, setOthers] = useState(false);
   const [Othersshow, setOthersShow] = useState(false);
   const OthershandleClose = () => setOthersShow(false);
@@ -154,7 +146,6 @@ function Investments() {
   }
 
   const [InvestmentPropertiesEdit, setInvestmentPropertiesEdit] = useState(false);
-
   const [InvestmentProperties, setInvestmentProperties] = useState(false);
   const [InvestmentPropertiesshow, setInvestmentPropertiesShow] = useState(false);
   const InvestmentPropertieshandleClose = () => setInvestmentPropertiesShow(false);
@@ -167,7 +158,6 @@ function Investments() {
       setInvestmentProperties(true)
     }
   }
-
 
 
   const [InvestmentProperties2, setInvestmentProperties2] = useState(false);
@@ -324,8 +314,6 @@ function Investments() {
   }
 
   let Client_validationSchemaOtherFunds = Yup.object({
-
-
 
     OtherInvestmentName: Yup.string(),
     OtherCurrentValue: Yup.number().test("Is positive?", "Must be a positive value", (value) => value > 0),
@@ -902,9 +890,9 @@ function Investments() {
   } 
   console.log(InvestmentDetails)
 
-  axios
-  .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
-  .then((res) => console.log("Investment Added Successfully!"))
+  // axios
+  // .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
+  // .then((res) => console.log("Investment Added Successfully!"))
 
   Navigate('/Estate-Planning');
   }
@@ -922,7 +910,26 @@ function Investments() {
     data.BankRegularSavings= '';
     data.BankReinvestedIncome= '';
     // console.log(data);
-    setBankAccountList([data]);
+    // setBankAccountList([data]);
+
+    let email = localStorage.getItem("ClientEmail");
+
+    axios
+    .patch(`http://localhost:7000/Client-Investment/Update-Client-Investment/${email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Bank Updated Complete");
+      })
+
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Investment`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == email);
+          setBankAccountList(clientFilterObj);
+        });
+      }, 500);
 
    }
    let deleteHandler2 =(e)=>{ 
@@ -938,17 +945,7 @@ function Investments() {
         setBankAccountList([data]);
 
    }
-   let updateHandler=(e)=>{
-        // console.log("update",e)
-        setBankEdit(true);
-    
-        console.log(BankEdit);
-        setTimeout(() => {
-    
-          BankhandleShow();
-    
-        }, 500);
-   }
+
     // Bank delete and Update end
 
     // TeamsD delete and Update start
@@ -1549,7 +1546,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{BankReinvestedIncome}</td>
                                              <td >
                                             <span type='button'  onClick={()=>deleteHandler1(elem)} className='btn btn-danger btn-sm'>delete</span>
-                                            <span type='button'  onClick={updateHandler} className='btn btn-warning btn-sm mx-2 my-1'>update</span>
+                                            <span type='button'  onClick={()=>{setBankEdit(true);BankhandleShow();}} className='btn btn-warning btn-sm mx-2 my-1'>update</span>
                                     
                                             </td> 
                                         
@@ -1577,7 +1574,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{Bank2ReinvestedIncome}</td>
                                              <td >
                                             <span  type='button' onClick={()=>deleteHandler2(elem)}  className='btn btn-danger btn-sm'>delete</span>
-                                            <span  type='button' onClick={updateHandler}  className='btn btn-warning btn-sm mx-2 my-1'>update</span>
+                                            <span  type='button'  onClick={()=>{setBankEdit(true);BankhandleShow();}}  className='btn btn-warning btn-sm mx-2 my-1'>update</span>
                                     
                                             </td>  
                                         

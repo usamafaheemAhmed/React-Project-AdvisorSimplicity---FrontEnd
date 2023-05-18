@@ -51,74 +51,32 @@ function App() {
               <Route path="/All-Clients" element={<AllClients />} />
 
               {/* POST ROUTING */}
-              <Route path="/" element={<PersonalDetail />} />
-              <Route
-                path="/Business-Tax-Structure"
-                element={<BusinessTextStucture />}
-              />
+              <Route path="/" element={<PersonalDetail />}/>
+              <Route path="/Business-Tax-Structure" element={<BusinessTextStucture />}/>
               <Route path="/Income-And-Expenses" element={<IncomeExpenses />} />
-              <Route
-                path="/Professional-Advisors"
-                element={<ProfessionalAdvisers />}
-              />
-              <Route
-                path="/Assets-And-Liabilities"
-                element={<AssetsLiabilities />}
-              />
+              <Route path="/Professional-Advisors" element={<ProfessionalAdvisers />}/>
+              <Route path="/Assets-And-Liabilities" element={<AssetsLiabilities />}/>
               <Route path="/Investments" element={<Investments />} />
               <Route path="/Estate-Planning" element={<EstatePlanning />} />
-              <Route
-                path="/Super-And-Retirment"
-                element={<SuperRetriement />}
-              />
+              <Route path="/Super-And-Retirment" element={<SuperRetriement />}/>
               <Route path="/SMSF" element={<SMSF />} />
               <Route path="/Investment-Trust" element={<InvestmentTrust />} />
-              <Route
-                path="/Personal-Insurance"
-                element={<PersonalInsurance />}
-              />
+              <Route path="/Personal-Insurance" element={<PersonalInsurance />}/>
               <Route path="/Risk-Profile" element={<RiskProfile />} />
-              <Route
-                path="/Goals-And-Objectives"
-                element={<GoalsObjectives />}
-              />
+              <Route path="/Goals-And-Objectives" element={<GoalsObjectives />}/>
 
               {/* PATCH ROUTING */}
               <Route path="/Edit-Client" element={<PersonalDetail_Edit />} />
-              <Route
-                path="/Edit-Business-TextStucture"
-                element={<BusinessTextStucture_Edit />}
-              />
-              <Route
-                path="/Edit-Income-And-Expenses"
-                element={<IncomeExpenses_Edit />}
-              />
-              <Route
-                path="/Edit-Professional-Advisors"
-                element={<ProfessionalAdvisers_Edit />}
-              />
-              <Route
-                path="/Edit-Assets-And-Liabilities"
-                element={<AssetsLiabilities_Edit />}
-              />
+              <Route path="/Edit-Business-TextStucture" element={<BusinessTextStucture_Edit />}/>
+              <Route path="/Edit-Income-And-Expenses" element={<IncomeExpenses_Edit />}/>
+              <Route path="/Edit-Professional-Advisors" element={<ProfessionalAdvisers_Edit />}/>
+              <Route path="/Edit-Assets-And-Liabilities" element={<AssetsLiabilities_Edit />}/>
               <Route path="/Edit-Investments" element={<Investments_Edit />} />
-              <Route
-                path="/Edit-Estate-Planning"
-                element={<EstatePlanning_Edit />}
-              />
-              <Route
-                path="/Edit-Super-And-Retirment"
-                element={<Edit_SuperRetriement />}
-              />
+              <Route path="/Edit-Estate-Planning" element={<EstatePlanning_Edit />}/>
+              <Route path="/Edit-Super-And-Retirment" element={<Edit_SuperRetriement />}/>
               <Route path="/Edit-SMSF" element={<SMSF_Edit />} />
-              <Route
-                path="/Edit-Investment-Trust"
-                element={<InvestmentTrust_Edit />}
-              />
-              <Route
-                path="/Edit-Personal-Insurance"
-                element={<PersonalInsurance_Edit />}
-              />
+              <Route path="/Edit-Investment-Trust" element={<InvestmentTrust_Edit />}/>
+              <Route path="/Edit-Personal-Insurance" element={<PersonalInsurance_Edit />}/>
               {/* <Route path='/Edit-Risk-Profile' element={<RiskProfile/>} /> */}
               {/* <Route path='/Edit-Goals-And-Objectives' element={<GoalsObjectives/>} /> */}
             </Routes>

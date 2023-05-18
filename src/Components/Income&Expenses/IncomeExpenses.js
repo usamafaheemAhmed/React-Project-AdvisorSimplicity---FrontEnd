@@ -17,6 +17,13 @@ import axios from "axios";
 
 
 const IncomeExpenses = () => {
+
+  const [totalExpense, setTotalExpense] = useState(0)
+  const [totalHouseHold, setTotalHouseHold] = useState(0)
+  const [totalPersonal, setTotalPersonal] = useState(0)
+  const [totalTransport, setTotalTransport] = useState(0)
+  const [totalInsurance, setTotalInsurance] = useState(0)
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -1337,6 +1344,14 @@ TransInsuranceType:'',
 
   const onSubmit2=(values)=>{
     
+    console.log(values.houseHoldElectricity)
+
+    console.log(values.houseHoldElectricityType)
+
+    let result=(values.houseHoldElectricity * values.houseHoldElectricityType)
+    console.log(result)
+
+
     let ExpensesModal = {
       Email: localStorage.getItem("ClientEmail"),
   //********************** Household Expense **********************
@@ -1417,7 +1432,7 @@ TransInsuranceType:'',
     axios
     .post('http://localhost:7000/Client-ExpensesModal/Add-Client-ExpensesModal', ExpensesModal)
     .then((res) => console.log("Expenses Modal Added Succesfully!"))
-    // handleClose();
+    handleClose();
     
   }
 
@@ -3928,6 +3943,7 @@ TransInsuranceType:'',
                               initialValues={initialValues2}
                               validationSchema={validationSchema2}
                               onSubmit={onSubmit2} >
+                             {({values , setFieldValue ,setValues})=>
                                 
                               <Form>  
                                 <Modal.Body>
@@ -3938,7 +3954,8 @@ TransInsuranceType:'',
                                   <div className="col-md-6">
                                   <label id="HouseholdTotalValue" 
                                   className="float-end form-label mb-0">
-                                    $ 2500
+                                   
+                                    ${totalExpense.toFixed(2)}
                                     <div className="iconContainer mx-1">
                                 <img className="img-fluid" src={moneyBag} alt="" />
 
@@ -3960,7 +3977,8 @@ TransInsuranceType:'',
                                     <label className="form-label mb-0">Household</label>
                                   </div>
                                   <div className="col-md-6">
-                                  <label id="HouseholdTotalValue" className="float-end form-label mb-0">$0
+                                  <label id="HouseholdTotalValue" className="float-end form-label mb-0">
+                                  ${totalHouseHold.toFixed(2)}
                                   <div className="iconContainer mx-1">
                                 <img className="img-fluid" src={down} alt="" />
 
@@ -3979,6 +3997,73 @@ TransInsuranceType:'',
                                   <div className="row">
                                     <div className="col-md-12">
 
+              {/* Total Expense Formula1 */}
+              {
+                setTotalExpense(totalHouseHold+ totalPersonal + totalTransport + totalInsurance)
+              }
+                                        {/* Sum of HouseHold Formula2 */}
+                                 { setTotalHouseHold(
+                                  parseFloat ((values.houseHoldrent * values.houseHoldrentType).toFixed(2)) +
+                                  parseFloat ((values.houseHoldElectricity * values.houseHoldElectricityType).toFixed(2)) +
+                                  parseFloat((values.houseHoldWaterRates * values.houseHoldWaterRateType).toFixed(2)) +
+                                  parseFloat((values.houseHoldGas * values.houseHoldGasType).toFixed(2) ) +
+
+                                  parseFloat((values.houseHoldPhone * values.houseHoldPhoneType).toFixed(2)) +
+                                  parseFloat((values.houseHoldCouncilRates * values.houseHoldCouncilRatesType).toFixed(2))+
+
+                                  parseFloat((values.houseHoldInternet * values.houseHoldInternetType).toFixed(2)) +
+                                  parseFloat((values.houseHoldOther * values.houseHoldOtherType).toFixed(2))
+
+
+
+                                    )}
+                                 {/* Sum of HouseHold Formula2 */}
+
+                                        {/* Sum of Personal Formula3 */}
+                                        {setTotalPersonal(
+                                          parseFloat((values.PersonalFood * values.PersonalFoodType).toFixed(2))+
+                                          parseFloat((values.PersonalClothing * values.PersonalClothingValueType).toFixed(2))+
+                                          parseFloat((values.PersonalCigarettes * values.PersonalCigarettesType).toFixed(2))+
+                                          parseFloat((values.PersonalAlcohol * values.PersonalAlcoholType).toFixed(2))+
+
+                                          parseFloat((values.PersonalSubscriptionFees * values.PersonalSubscriptionFeesType).toFixed(2))+
+                                          parseFloat((values.PersonalMembershipsClubs * values.PersonalMembershipsClubsType).toFixed(2))+
+                                          parseFloat((values.PersonalOther * values.PersonalOtherType).toFixed(2))+
+                                          parseFloat((values.PersonalHolidays * values.PersonalHolidaysType).toFixed(2))+
+                                          parseFloat((values.PersonalDiningOut * values.PersonalDiningOutType).toFixed(2))+
+                                          parseFloat((values.PersonalMobilePhone * values.PersonalMobilePhoneType).toFixed(2))+
+                                          parseFloat((values.PersonalMedicalExpenses * values.PersonalMedicalExpensesType).toFixed(2))
+                                        )}
+
+                                        {/* Sum of TransportFormula4 */}
+
+                                     {   setTotalTransport(
+
+                                      parseFloat((values.TransportPetrol * values.TransportPetrolType).toFixed(2))+
+                                      parseFloat((values.TransportCarRepairs * values.TransportCarRepairsType).toFixed(2))+
+                                      parseFloat((values.TransportCarRegistration * values.TransportCarRegistrationType).toFixed(2))+
+                                      parseFloat((values.PublicTransport * values.PublicTransportType).toFixed(2))+
+                                      parseFloat((values.TransportOther * values.TransportOtherType).toFixed(2))
+
+                                        )}
+
+                                        {/* Sum of Insurance Formula5 */}
+
+                                        {
+                                         setTotalInsurance(
+                                parseFloat((values.PrivateHealth * values.PrivateHealthType).toFixed(2))+
+                                parseFloat((values.LifeTPDTrauma * values.LifeTPDTraumaType).toFixed(2))+
+                                parseFloat((values.InsuranceIncomeProtection * values.InsuranceIncomeProtectionType).toFixed(2))+
+                                parseFloat((values.InsuranceCar * values.InsuranceCarType).toFixed(2))+
+                                parseFloat((values.InsuranceHomeContents * values.InsuranceHomeContentsType).toFixed(2))+
+                                parseFloat((values.InsuranceOther * values.TransInsuranceType).toFixed(2))
+                                          )
+                                        }
+
+
+
+                                    
+
                                       {/* houseHold row 1 */}
                                       <div className="row  my-3">
                                     
@@ -3988,7 +4073,7 @@ TransInsuranceType:'',
                                     <div className="row">
                                       <div className="col-7">
                                       <label htmlFor="houseHoldrent" className="form-label">
-                                      Rent
+                                      Rent123 
                                     </label>
                                     <Field type="number" className="form-control inputDesign shadow"
                                     id="houseHoldrent" placeholder="Rent" name="houseHoldrent"/>
@@ -3999,7 +4084,9 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label htmlFor="" className="form-label float-end">
-                                    $0 
+                                  ${(values.houseHoldrent * values.houseHoldrentType).toFixed(2)}
+                                 
+                               
                                     </label>
                                       <Field
                                       as="select"
@@ -4007,13 +4094,13 @@ TransInsuranceType:'',
                                       className="form-select shadow  inputDesign"
                                     name="houseHoldrentType"
                                     >
-                                      <option value="">Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                    <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                     </Field>
                                     
                                     < ErrorMessage name="houseHoldrentType" component="div"
@@ -4039,7 +4126,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label htmlFor="" className="form-label float-end">
-                                    $0 
+                                  
+                                ${(values.houseHoldElectricity * values.houseHoldElectricityType).toFixed(2)}
                                     </label>
                                     <Field
                                     as="select"
@@ -4048,12 +4136,12 @@ TransInsuranceType:'',
                                       name="houseHoldElectricityType"
                                     >
                                       <option value="">Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="houseHoldElectricityType" component="div"
                                   className="text-danger fw-bold" />
@@ -4083,7 +4171,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="houseHoldWaterRateValue" className="form-label float-end">
-                                    $0 
+                ${(values.houseHoldWaterRates * values.houseHoldWaterRateType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as="select"
@@ -4091,13 +4180,13 @@ TransInsuranceType:'',
                                       className="form-select shadow  inputDesign"
                                       name="houseHoldWaterRateType"
                                     >
-                                      <option value="">Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                     <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       
                                       </Field>
                                       < ErrorMessage name="houseHoldWaterRateType" component="div"
@@ -4122,7 +4211,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="houseHoldGasValue" className="form-label float-end ">
-                                      $0
+                                      ${(values.houseHoldGas * values.houseHoldGasType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as="select"
@@ -4130,13 +4220,13 @@ TransInsuranceType:'',
                                       className="form-select shadow  inputDesign"
                                       name="houseHoldGasType"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="houseHoldGasType" component="div"
                                   className="text-danger fw-bold" />
@@ -4166,7 +4256,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="houseHoldPhoneValue" className="form-label float-end">
-                                    $0 
+                            ${(values.houseHoldPhone * values.houseHoldPhoneType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as="select"
@@ -4175,14 +4266,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value="">Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
-                                      
+                                       <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="houseHoldPhoneType" component="div"
                                   className="text-danger fw-bold" />
@@ -4208,7 +4298,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="houseHoldCouncilRatesValue" className="form-label float-end ">
-                                      $0
+                          ${(values.houseHoldCouncilRates * values.houseHoldCouncilRatesType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as="select"
@@ -4217,12 +4308,12 @@ TransInsuranceType:'',
                                       name="houseHoldCouncilRatesType"
                                     >
                                       <option value="">Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="houseHoldCouncilRatesType" component="div"
                                       className="text-danger fw-bold" />
@@ -4256,7 +4347,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="houseHoldInternetValue" className="form-label float-end ">
-                                      $0
+                           ${(values.houseHoldInternet * values.houseHoldInternetType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as="select"
@@ -4265,13 +4357,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                     <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="houseHoldInternetType" component="div"
                                   className="text-danger fw-bold" />
@@ -4297,7 +4389,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="houseHoldOtherValue" className="form-label float-end ">
-                                      $0
+                              ${(values.houseHoldOther * values.houseHoldOtherType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as="select"
@@ -4306,13 +4399,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                       <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="houseHoldOtherType" component="div"
                                       className="text-danger fw-bold" />
@@ -4327,7 +4420,7 @@ TransInsuranceType:'',
                                         {/* houseHold row 4 */}
                                       
                                       
-                                      </div>
+                                    </div>
                                   </div>
                                 
                                 
@@ -4349,7 +4442,8 @@ TransInsuranceType:'',
                                     <label className="form-label mb-0">Personal</label>
                                   </div>
                                   <div className="col-md-6">
-                                  <label className="float-end mb-0">$0
+                                  <label className="float-end mb-0">
+                                  ${totalPersonal.toFixed(2)}
                                   <div className="iconContainer mx-1">
                                 <img className="img-fluid" src={down} alt="" />
 
@@ -4386,7 +4480,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label htmlFor="PersonalFoodValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalFood * values.PersonalFoodType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -4395,13 +4490,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalFoodType" component="div"
                                   className="text-danger fw-bold" />
@@ -4424,7 +4519,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PersonalClothingValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalClothing * values.PersonalClothingValueType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as='select'
@@ -4432,13 +4528,13 @@ TransInsuranceType:'',
                                       id="PersonalClothingValueType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalClothingValueType" component="div"
                                   className="text-danger fw-bold" />
@@ -4467,7 +4563,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PersonalCigarettesValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalCigarettes * values.PersonalCigarettesType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -4476,14 +4573,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
-                                      
+                                     <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalCigarettesType" component="div"
                                   className="text-danger fw-bold" />
@@ -4507,7 +4603,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="PersonalAlcoholValue" className="form-label float-end ">
-                                      $0
+                                      ${(values.PersonalAlcohol * values.PersonalAlcoholType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as='select'
@@ -4515,13 +4612,13 @@ TransInsuranceType:'',
                                       name="PersonalAlcoholType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalAlcoholType" component="div"
                                   className="text-danger fw-bold" />
@@ -4551,7 +4648,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PersonalSubscriptionFeesValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalSubscriptionFees * values.PersonalSubscriptionFeesType).toFixed(2)}
+
                                     </label>
                                       <Field 
                                       as='select'
@@ -4560,14 +4658,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
-                                      
+                                    <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalSubscriptionFeesType" component="div"
                                   className="text-danger fw-bold" />
@@ -4594,7 +4691,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="PersonalMembershipsClubsValue" className="form-label float-end ">
-                                      $0
+                                      ${(values.PersonalMembershipsClubs * values.PersonalMembershipsClubsType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as='select'
@@ -4602,13 +4700,13 @@ TransInsuranceType:'',
                                       name="PersonalMembershipsClubsType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                     <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalMembershipsClubsType" component="div"
                                   className="text-danger fw-bold" />
@@ -4639,7 +4737,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PersonalOtherValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalOther * values.PersonalOtherType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -4648,14 +4747,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
-                                      
+                                   <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalOtherType" component="div"
                                   className="text-danger fw-bold" />
@@ -4681,20 +4779,21 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="PersonalHolidaysValue" className="form-label float-end ">
-                                      $0
+                                      ${(values.PersonalHolidays * values.PersonalHolidaysType).toFixed(2)}
+
                                     </label>
                                     <Field as='select'
                                       id="PersonalHolidaysType"
                                       name="PersonalHolidaysType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalHolidaysType" component="div"
                                   className="text-danger fw-bold" />
@@ -4726,7 +4825,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PersonalDiningOutValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalDiningOut * values.PersonalDiningOutType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -4734,13 +4834,13 @@ TransInsuranceType:'',
                                       name="PersonalDiningOutType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                 <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       
                                       </Field>
                                       < ErrorMessage name="PersonalDiningOutType" component="div"
@@ -4767,7 +4867,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label   id="PersonalMobilePhoneValue" className="form-label float-end ">
-                                      $0
+                                      ${(values.PersonalMobilePhone * values.PersonalMobilePhoneType).toFixed(2)}
+
                                     </label>
                                     <Field
                                     as='select'
@@ -4776,13 +4877,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PersonalMobilePhoneType" component="div"
                                   className="text-danger fw-bold" />
@@ -4815,7 +4916,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PersonalMedicalExpensesValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.PersonalMedicalExpenses * values.PersonalMedicalExpensesType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -4823,13 +4925,13 @@ TransInsuranceType:'',
                                       name="PersonalMedicalExpensesType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                     <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       
                                       </Field>
                                       < ErrorMessage name="PersonalMedicalExpensesType" component="div"
@@ -4864,7 +4966,8 @@ TransInsuranceType:'',
                                     <label className="form-label mb-0">Transport</label>
                                   </div>
                                   <div className="col-md-6">
-                                  <label id="TransportTotalValue" className="float-end form-label mb-0">$0
+                                  <label id="TransportTotalValue" className="float-end form-label mb-0">
+                                  ${totalTransport.toFixed(2)}
                                   <div className="iconContainer mx-1">
                                 <img className="img-fluid" src={down} alt="" />
 
@@ -4891,7 +4994,7 @@ TransInsuranceType:'',
                                     <div className="row">
                                       
                                       <div className="col-7">
-                                        <br />
+                                       
                                       <label htmlFor="TransportPetrol" className="form-label">
                                       Petrol
                                     </label>
@@ -4903,9 +5006,10 @@ TransInsuranceType:'',
 
                                       </div>
                                       <div className="col-5">
-                                      <br />
+                                     
                                       <label id="TransportPetrolValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.TransportPetrol * values.TransportPetrolType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -4914,13 +5018,13 @@ TransInsuranceType:'',
 
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                    <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                     </Field>
                                     < ErrorMessage name="TransportPetrolType" component="div"
                                   className="text-danger fw-bold" />
@@ -4936,7 +5040,7 @@ TransInsuranceType:'',
                                     <div className="row">
                                         <div className="col-7">
                                         <label htmlFor="TransportCarRepairs" className="form-label">
-                                        Car Repairs & Maintenance
+                                        Car Maintenance
                                       </label>
                                       <Field type="number" className="form-control inputDesign shadow"
                                       id="TransportCarRepairs"
@@ -4946,10 +5050,11 @@ TransInsuranceType:'',
 
                                         </div>
                                         <div className="col-5">
-                                        <br />
+                                        
 
                                         <label id="TransportCarRepairsValue" className="form-label float-end">
-                                      $0 
+                                        ${(values.TransportCarRepairs * values.TransportCarRepairsType).toFixed(2)}
+
                                       </label>
                                         <Field
                                         as='select'
@@ -4957,13 +5062,13 @@ TransInsuranceType:'',
                                         name="TransportCarRepairsType"
                                         className="form-select shadow  inputDesign"
                                       >
-                                        <option value=''>Select</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Fortnightly">Fortnightly</option>
-                                        <option value="Monthly">Monthly</option>
-                                        <option value="Quarterly">Quarterly</option>
-                                        <option value="Six-Monthly">Six-Monthly</option>
-                                        <option value="Annually">Annually</option>
+                                    <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                           </Field>
                                           < ErrorMessage name="TransportCarRepairsType" component="div"
                                   className="text-danger fw-bold" />
@@ -4994,7 +5099,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="TransportCarRegistrationValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.TransportCarRegistration * values.TransportCarRegistrationType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -5002,13 +5108,13 @@ TransInsuranceType:'',
                                       name="TransportCarRegistrationType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                     </Field>
                                     < ErrorMessage name="TransportCarRegistrationType" component="div"
                                   className="text-danger fw-bold" />
@@ -5031,7 +5137,8 @@ TransInsuranceType:'',
                                         </div>
                                         <div className="col-5">
                                         <label id="PublicTransportValue" className="form-label float-end">
-                                      $0 
+                                        ${(values.PublicTransport * values.PublicTransportType).toFixed(2)}
+
                                       </label>
                                         <Field
                                         as='select'
@@ -5039,13 +5146,13 @@ TransInsuranceType:'',
                                         name="PublicTransportType"
                                         className="form-select shadow  inputDesign"
                                       >
-                                        <option value=''>Select</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Fortnightly">Fortnightly</option>
-                                        <option value="Monthly">Monthly</option>
-                                        <option value="Quarterly">Quarterly</option>
-                                        <option value="Six-Monthly">Six-Monthly</option>
-                                        <option value="Annually">Annually</option>
+                                         <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                         </Field>
                                         < ErrorMessage name="PublicTransportType" component="div"
                                   className="text-danger fw-bold" />
@@ -5073,8 +5180,10 @@ TransInsuranceType:'',
                                   className="text-danger fw-bold" />
                                       </div>
                                       <div className="col-5">
+                                      
                                       <label id="TransportOtherValue" className="form-label float-end">
-                                    $0 
+                                      ${(values.TransportOther * values.TransportOtherType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -5082,13 +5191,13 @@ TransInsuranceType:'',
                                       id="TransportOtherType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="TransportOtherType" component="div"
                                   className="text-danger fw-bold" />
@@ -5122,7 +5231,8 @@ TransInsuranceType:'',
                                     <label className="form-label mb-0">Insurance</label>
                                   </div>
                                   <div className="col-md-6">
-                                  <label id="InsuranceTotalValue" className="float-end form-label mb-0">$0
+                                  <label id="InsuranceTotalValue" className="float-end form-label mb-0">${totalInsurance.toFixed(2)}
+                                  
                                   <div className="iconContainer mx-1">
                                 <img className="img-fluid" src={down} alt="" />
 
@@ -5160,7 +5270,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="PrivateHealthValue" className="form-label float-end">
-                                    $0 
+                                   ${(values.PrivateHealth * values.PrivateHealthType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as='select'
@@ -5168,13 +5279,13 @@ TransInsuranceType:'',
                                       name="PrivateHealthType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                                   <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="PrivateHealthType" component="div"
                                   className="text-danger fw-bold" />
@@ -5200,7 +5311,8 @@ TransInsuranceType:'',
                                         </div>
                                         <div className="col-5">
                                     <label id="LifeTPDTraumaValue" className="form-label float-end">
-                                      $0 
+                                ${(values.LifeTPDTrauma * values.LifeTPDTraumaType).toFixed(2)}
+                                      
                                       </label>
                                         <Field
                                         as="select"
@@ -5208,13 +5320,13 @@ TransInsuranceType:'',
                                         name="LifeTPDTraumaType"
                                         className="form-select shadow  inputDesign"
                                       >
-                                        <option value="">Select</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Fortnightly">Fortnightly</option>
-                                        <option value="Monthly">Monthly</option>
-                                        <option value="Quarterly">Quarterly</option>
-                                        <option value="Six-Monthly">Six-Monthly</option>
-                                        <option value="Annually">Annually</option>
+                                         <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                         </Field>
 
                                         < ErrorMessage name="LifeTPDTraumaType" component="div"
@@ -5246,7 +5358,8 @@ TransInsuranceType:'',
                                       </div>
                                       <div className="col-5">
                                       <label id="InsuranceIncomeProtectionValue" className="form-label float-end">
-                                    $0 
+                                    ${(values.InsuranceIncomeProtection * values.InsuranceIncomeProtectionType).toFixed(2)}
+
                                     </label>
                                       <Field
                                       as="select"
@@ -5254,13 +5367,13 @@ TransInsuranceType:'',
                                       name="InsuranceIncomeProtectionType"
                                       className="form-select shadow  inputDesign"
                                     >
-                                      <option value=''>Select</option>
-                                      <option value="Weekly">Weekly</option>
-                                      <option value="Fortnightly">Fortnightly</option>
-                                      <option value="Monthly">Monthly</option>
-                                      <option value="Quarterly">Quarterly</option>
-                                      <option value="Six-Monthly">Six-Monthly</option>
-                                      <option value="Annually">Annually</option>
+                            <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                       </Field>
                                       < ErrorMessage name="InsuranceIncomeProtectionType" component="div"
                                   className="text-danger fw-bold" />
@@ -5285,7 +5398,8 @@ TransInsuranceType:'',
                                         </div>
                                         <div className="col-5">
                                         <label id="InsuranceCarValue" className="form-label float-end">
-                                      $0 
+                                    ${(values.InsuranceCar * values.InsuranceCarType).toFixed(2)}
+                                      
                                       </label>
                                         <Field
                                         as="select"
@@ -5293,13 +5407,13 @@ TransInsuranceType:'',
                                         name="InsuranceCarType"
                                         className="form-select shadow  inputDesign"
                                       >
-                                        <option value=''>Select</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Fortnightly">Fortnightly</option>
-                                        <option value="Monthly">Monthly</option>
-                                        <option value="Quarterly">Quarterly</option>
-                                        <option value="Six-Monthly">Six-Monthly</option>
-                                        <option value="Annually">Annually</option>
+                                    <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                         </Field>
                                         < ErrorMessage name="InsuranceCarType" component="div"
                                   className="text-danger fw-bold" />
@@ -5330,7 +5444,8 @@ TransInsuranceType:'',
                                           </div>
                                           <div className="col-5">
                                           <label id="InsuranceHomeContentsValue" className="form-label float-end">
-                                        $0 
+                        ${(values.InsuranceHomeContents * values.InsuranceHomeContentsType) .toFixed(2)}
+
                                         </label>
                                           <Field
                                           as="select"
@@ -5338,13 +5453,13 @@ TransInsuranceType:'',
                                           name="InsuranceHomeContentsType"
                                           className="form-select shadow  inputDesign"
                                         >
-                                          <option value=''>Select</option>
-                                          <option value="Weekly">Weekly</option>
-                                          <option value="Fortnightly">Fortnightly</option>
-                                          <option value="Monthly">Monthly</option>
-                                          <option value="Quarterly">Quarterly</option>
-                                          <option value="Six-Monthly">Six-Monthly</option>
-                                          <option value="Annually">Annually</option>
+                                        <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                           </Field>
                                           < ErrorMessage name="InsuranceHomeContentsType" component="div"
                                   className="text-danger fw-bold" />
@@ -5368,7 +5483,8 @@ TransInsuranceType:'',
                                           </div>
                                           <div className="col-5">
                                           <label id="TransInsuranceValue" className="form-label float-end">
-                                        $0 
+                               ${(values.InsuranceOther * values.TransInsuranceType).toFixed(2)}
+
                                         </label>
                                           <Field
                                           as="select"
@@ -5376,13 +5492,13 @@ TransInsuranceType:'',
                                           name="TransInsuranceType"
                                           className="form-select shadow  inputDesign"
                                         >
-                                          <option value=''>Select</option>
-                                          <option value="Weekly">Weekly</option>
-                                          <option value="Fortnightly">Fortnightly</option>
-                                          <option value="Monthly">Monthly</option>
-                                          <option value="Quarterly">Quarterly</option>
-                                          <option value="Six-Monthly">Six-Monthly</option>
-                                          <option value="Annually">Annually</option>
+                                      <option value="">Select</option>
+                                      <option value={4}>Weekly</option>
+                                      <option value={2}>Fortnightly</option>
+                                      <option value={1}>Monthly</option>
+                                      <option value={1/3}>Quarterly</option>
+                                      <option value={1/6}>Six-Monthly</option>
+                                      <option value={1/12}>Annually</option>
                                           </Field>
                                           < ErrorMessage name="TransInsuranceType" component="div"
                                   className="text-danger fw-bold" />
@@ -5425,6 +5541,8 @@ TransInsuranceType:'',
                                 </Modal.Footer>
 
                               </Form>
+                              
+                              }
                               
                             </Formik>
                           </Modal>
