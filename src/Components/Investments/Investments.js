@@ -21,6 +21,7 @@ function Investments() {
   const [BankAccountList, setBankAccountList] = useState([]);
   const [TermDepositList, setTermDepositList] = useState([]);
   const [AustralianShareMarketList, setAustralianShareMarketList] = useState([]);
+  const [AustralianShareMarketListObj, setAustralianShareMarketListObj] = useState([]);
   const [AustralianSharePortfolioList, setAustralianSharePortfolioList] = useState([]);
   const [ManagedFundsList, setManagedFundsList] = useState([]);
   const [ManagedFundsPortfolioList, setManagedFundsPortfolioList] = useState([]);
@@ -172,6 +173,7 @@ function Investments() {
       setInvestmentProperties2(true)
     }
   }
+
 
   let phonePattern=/^[1-9][0-9]{9}$/;
   let letters = /^[a-zA-Z ]*$/;
@@ -542,13 +544,52 @@ function Investments() {
       Bank2ReinvestedIncome: values.Bank2ReinvestedIncome
     }
 
-    setBankAccountList([BankDetails])
-    BankhandleClose();
-    setBankEdit(true);
+    // setBankAccountList([BankDetails])
+    if (BankEdit) {
 
-    axios
-    .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
-    .then((res) => console.log("Bank Accounts Added Successfully!"))
+      axios
+      .patch(`http://localhost:7000/Client-BankAccounts/Update-Client-BankAccounts/${BankDetails.Email}`, BankDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Bank Updated Complete");
+        })
+  
+  
+        setTimeout(() => {
+          axios.get(`http://localhost:7000/Client-BankAccounts`).then((res) => {
+            console.log("got it");
+            let clientObj = res.data;
+            let clientFilterObj = clientObj.filter((item) => item.Email == BankDetails.Email);
+            setBankAccountList(clientFilterObj);
+          });
+        }, 500);
+
+
+    } else {
+
+      axios
+      .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
+      .then((res) => console.log("Bank Accounts Added Successfully!"))
+  
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-BankAccounts`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == BankDetails.Email);
+  
+          setBankAccountList(clientFilterObj);
+          console.log(clientFilterObj[0]);
+          setBankEdit(true);
+        });
+      }, 500);
+
+    }
+
+
+
+    BankhandleClose();
+
+
     console.log(BankDetails)
   }
 
@@ -573,15 +614,45 @@ function Investments() {
       TermDeposit2ReinvestedIncome: values.TermDeposit2ReinvestedIncome
     }
 
-    setTermDepositList([TermDepositDetails])
-    TermDeposithandleClose();
-    setTermDepositEdit(true);
+    if (TermDepositEdit) {
 
-    axios
-    .post('http://localhost:7000/Client-TermDeposit/Add-Client-TermDeposit', TermDepositDetails)
-    .then((res) => console.log("Term Deposit Added Successfully!"))
-    console.log(TermDepositDetails)
-  TermDeposithandleClose();
+      axios
+      .patch(`http://localhost:7000/Client-TermDeposit/Update-Client-TermDeposit/${TermDepositDetails.Email}`, TermDepositDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Bank Updated Complete");
+        })
+  
+  
+        setTimeout(() => {
+          axios.get(`http://localhost:7000/Client-TermDeposit`).then((res) => {
+            console.log("got it");
+            let clientObj = res.data;
+            let clientFilterObj = clientObj.filter((item) => item.Email == TermDepositDetails.Email);
+            setTermDepositList(clientFilterObj);
+          });
+        }, 500);
+      
+      
+    } else {
+      setTermDepositEdit(true);
+
+      axios
+      .post('http://localhost:7000/Client-TermDeposit/Add-Client-TermDeposit', TermDepositDetails)
+        .then((res) => console.log("Term Deposit Added Successfully!"))
+      
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-TermDeposit`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == TermDepositDetails.Email);
+          setTermDepositList(clientFilterObj);
+        });
+      }, 500);
+
+    }
+
+    TermDeposithandleClose();
   }
 
   let AustralianShareMarket_onSubmit = (values) => {
@@ -602,15 +673,39 @@ function Investments() {
       AustralianMarketRegInvestments: values.AustralianMarketRegInvestments,
     }
 
-    setAustralianShareMarketList([AustralianShareMarketDetails])
-    AustralianShareMarkethandleClose();
 
-    setAustralianShareMarketEdit(true);
+    if (AustralianShareMarketEdit) {
+
+      axios
+      .patch(`http://localhost:7000/Client-Australian-Market-Share/Update-Client-Australian-Market-Share/${AustralianShareMarketDetails.Email}/${values.id}`, AustralianShareMarketDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Bank Updated Complete");
+        })
+
+    }
+    else {
+     
 
     axios
     .post('http://localhost:7000/Client-Australian-Market-Share/Add-Client-Australian-Market-Share', AustralianShareMarketDetails)
     .then((res) => console.log("Australian Share Market Added Successfully!"))
-    console.log(AustralianShareMarketDetails)
+      console.log(AustralianShareMarketDetails) 
+      
+    }
+
+        setTimeout(() => {
+          axios.get(`http://localhost:7000/Client-Australian-Market-Share`).then((res) => {
+            console.log("got it");
+            let clientObj = res.data;
+            let clientFilterObj = clientObj.filter((item) => item.Email == AustralianShareMarketDetails.Email);
+            setAustralianShareMarketList(clientFilterObj);
+          });
+        }, 500);
+
+
+    AustralianShareMarkethandleClose();
+
   }
 
   let AustralianSharePortfolio_onSubmit = (values) => {
@@ -915,7 +1010,7 @@ function Investments() {
     let email = localStorage.getItem("ClientEmail");
 
     axios
-    .patch(`http://localhost:7000/Client-Investment/Update-Client-Investment/${email}`, data)
+    .patch(`http://localhost:7000/Client-BankAccounts/Update-Client-BankAccounts/${email}`, data)
     .then((res) => {
       //Popper Massage
       console.log("Bank Updated Complete");
@@ -923,7 +1018,7 @@ function Investments() {
 
 
       setTimeout(() => {
-        axios.get(`http://localhost:7000/Client-Investment`).then((res) => {
+        axios.get(`http://localhost:7000/Client-BankAccounts`).then((res) => {
           console.log("got it");
           let clientObj = res.data;
           let clientFilterObj = clientObj.filter((item) => item.Email == email);
@@ -942,8 +1037,28 @@ function Investments() {
         data.Bank2RegularSavings= '';
         data.Bank2ReinvestedIncome= '';
         // console.log(data);
-        setBankAccountList([data]);
+        // setBankAccountList([data]);
 
+        let email = localStorage.getItem("ClientEmail");
+
+        axios
+        .patch(`http://localhost:7000/Client-BankAccounts/Update-Client-BankAccounts/${email}`, data)
+        .then((res) => {
+          //Popper Massage
+          console.log("Bank Updated Complete");
+          })
+    
+    
+          setTimeout(() => {
+            axios.get(`http://localhost:7000/Client-BankAccounts`).then((res) => {
+              console.log("got it");
+              let clientObj = res.data;
+              let clientFilterObj = clientObj.filter((item) => item.Email == email);
+              setBankAccountList(clientFilterObj);
+            });
+          }, 500);
+     
+     
    }
 
     // Bank delete and Update end
@@ -962,7 +1077,29 @@ function Investments() {
         data.TermDepositRegularSavings= '';
         data.TermDepositReinvestedIncome= '';
         // console.log(data);
-        setTermDepositList([data]);
+        // setTermDepositList([data]);
+
+        let email = localStorage.getItem("ClientEmail");
+
+        axios
+        .patch(`http://localhost:7000/Client-TermDeposit/Update-Client-TermDeposit/${email}`, data)
+        .then((res) => {
+          //Popper Massage
+          console.log("Bank Updated Complete");
+          })
+    
+    
+          setTimeout(() => {
+            axios.get(`http://localhost:7000/Client-TermDeposit`).then((res) => {
+              console.log("got it");
+              let clientObj = res.data;
+              let clientFilterObj = clientObj.filter((item) => item.Email == email);
+              setTermDepositList(clientFilterObj);
+            });
+          }, 500);
+     
+     
+     
 
       }
    let TeamDepositDeleteHandler2 =(e)=>{ 
@@ -977,18 +1114,27 @@ function Investments() {
         data.TermDeposit2RegularSavings= '';
         data.TermDeposit2ReinvestedIncome= '';
 
-        setTermDepositList([data]);
-      }
-   let TeamDepositUpdateHandler=()=>{
+    //  setTermDepositList([data]);
+     
+     let email = localStorage.getItem("ClientEmail");
+     
 
-        setTermDepositEdit(true);
-
-        console.log(TermDepositEdit);
-        setTimeout(() => {
-
-         TermDeposithandleShow();
-    
-        }, 500);
+       axios
+       .patch(`http://localhost:7000/Client-TermDeposit/Update-Client-TermDeposit/${email}`, data)
+       .then((res) => {
+         //Popper Massage
+         console.log("Bank Updated Complete");
+         })
+   
+   
+         setTimeout(() => {
+           axios.get(`http://localhost:7000/Client-TermDeposit`).then((res) => {
+             console.log("got it");
+             let clientObj = res.data;
+             let clientFilterObj = clientObj.filter((item) => item.Email == email);
+             setTermDepositList(clientFilterObj);
+           });
+         }, 500);
 
       }
     
@@ -996,23 +1142,62 @@ function Investments() {
 
     // AustralianDeleteHandler delete start
 
-    let AustralianDeleteHandler=(e)=>{
-            //  console.log(e);
-            let data = e;
-            data.AustralianMarketCostBase= '';
-            data.AustralianMarketFrankedAmount= '';
-            data.AustralianMarketIncomePA= '';
-            data.AustralianMarketIncomePAType= '';
-            data.AustralianMarketInvestmentName= '';
-            data.AustralianMarketPurchaseDate= '';
-            data.AustralianMarketRegInvestments= '';
-            data.AustralianMarketReinvestedIncome= '';
-            data.AustralianMarketSharePrice= '';
-            data.AustralianMarketTotalIncomePA= '';
-            data.AustralianMarketTotalShareValue= '';
+    let AustralianDeleteHandler=(elem)=>{
+          
     
-            setAustralianShareMarketList([data]);
+      // /Delete-Client-Australian-Market-Share
+      let id = elem._id;
+      let email = elem.Email;
+
+      axios
+      .delete(`http://localhost:7000/Client-Australian-Market-Share/Delete-Client-Australian-Market-Share/${email}/${id}`)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Market Remove");
+      });
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Australian-Market-Share`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == email);
+          setAustralianShareMarketList(clientFilterObj);
+        });
+      }, 500);
+
+
+      
     }
+
+    let AustralianUpdateHandler = (elem) => {
+
+
+
+      let date = new Date(elem.AustralianMarketPurchaseDate);
+      elem.AustralianMarketPurchaseDate = date;
+      
+      let AustralianShareMarketDetails = {
+        id: elem._id,
+        AustralianMarketInvestmentName: elem.AustralianMarketInvestmentName,
+        AustralianMarketNumberOfShares: elem.AustralianMarketNumberOfShares,
+        AustralianMarketSharePrice: elem.AustralianMarketSharePrice,
+        AustralianMarketTotalShareValue: elem.AustralianMarketTotalShareValue,
+        AustralianMarketCostBase: elem.AustralianMarketCostBase,
+        AustralianMarketPurchaseDate: elem.AustralianMarketPurchaseDate,
+        AustralianMarketIncomePA: elem.AustralianMarketIncomePA,
+        AustralianMarketIncomePAType: elem.AustralianMarketIncomePAType,
+        AustralianMarketTotalIncomePA: elem.AustralianMarketTotalIncomePA,
+        AustralianMarketFrankedAmount: elem.AustralianMarketFrankedAmount,
+        AustralianMarketReinvestedIncome: elem.AustralianMarketReinvestedIncome,
+        AustralianMarketRegInvestments: elem.AustralianMarketRegInvestments,
+      }
+  
+      setAustralianShareMarketListObj([AustralianShareMarketDetails])
+      setAustralianShareMarketEdit(true);
+      AustralianShareMarkethandleShow();
+    }
+
+  
     // AustralianDeleteHandler delete end
     
     // AustralianLoanDeleteHandler delete start
@@ -1534,16 +1719,14 @@ let OtherDeleteHandler2 =(e)=>{
                                 
                                   {/* Bank #1  */}
                                 {  BankAccountList.map((elem,index)=>{
-                                    let {BankCurrentValue, BankFinancialInstitution, BankIncomePA, BankReinvestedIncome}=elem;
-                                    if(BankAccountList[0].BankCurrentValue !=='' || 
-                                    BankAccountList[0].BankFinancialInstitution !=='' ){
+                                    if(elem.BankFinancialInstitution){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
-                                            <td>{BankCurrentValue}</td>
-                                            <td>{BankFinancialInstitution}</td>
-                                            <td>{BankIncomePA}</td>
-                                            <td>{BankReinvestedIncome}</td>
+                                            <td>{elem.BankCurrentValue}</td>
+                                            <td>{elem.BankFinancialInstitution}</td>
+                                            <td>{elem.BankIncomePA}</td>
+                                            <td>{elem.BankReinvestedIncome}</td>
                                              <td >
                                             <span type='button'  onClick={()=>deleteHandler1(elem)} className='btn btn-danger btn-sm'>delete</span>
                                             <span type='button'  onClick={()=>{setBankEdit(true);BankhandleShow();}} className='btn btn-warning btn-sm mx-2 my-1'>update</span>
@@ -1562,20 +1745,17 @@ let OtherDeleteHandler2 =(e)=>{
                                 
                                   {/* Bank #2  */}
                                 {  BankAccountList.map((elem,index)=>{
-                                    let {Bank2CurrentValue, Bank2FinancialInstitution, Bank2IncomePA, Bank2ReinvestedIncome}=elem;
-                                    if(BankAccountList[0].Bank2CurrentValue !=='' || 
-                                    BankAccountList[0].Bank2FinancialInstitution !=='' ){
+                                    if(elem.Bank2FinancialInstitution !=='' ){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
-                                            <td>{Bank2CurrentValue}</td>
-                                            <td>{Bank2FinancialInstitution}</td>
-                                            <td>{Bank2IncomePA}</td>
-                                            <td>{Bank2ReinvestedIncome}</td>
-                                             <td >
+                                            <td>{elem.Bank2CurrentValue}</td>
+                                            <td>{elem.Bank2FinancialInstitution}</td>
+                                            <td>{elem.Bank2IncomePA}</td>
+                                            <td>{elem.Bank2ReinvestedIncome}</td>
+                                             <td>
                                             <span  type='button' onClick={()=>deleteHandler2(elem)}  className='btn btn-danger btn-sm'>delete</span>
                                             <span  type='button'  onClick={()=>{setBankEdit(true);BankhandleShow();}}  className='btn btn-warning btn-sm mx-2 my-1'>update</span>
-                                    
                                             </td>  
                                         
                                         </tr>
@@ -1944,23 +2124,20 @@ let OtherDeleteHandler2 =(e)=>{
                                 <tbody>
                                 
                                   {/* Term Deposit #1  */}
-                                {  TermDepositList.map((elem,index)=>{
-                                    let {TermDepositCurrentValue, TermDepositFinancialInstitution, TermDepositIncomePA, TermDepositReinvestedIncome}=elem;
-                                    if(TermDepositList[0].TermDepositCurrentValue !=='' || 
-                                    TermDepositList[0].TermDepositFinancialInstitution !=='' ){
+                                {TermDepositList.map((elem, index) => {
+                                  
+                                    if(elem.TermDepositFinancialInstitution !=='' ){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
-                                            <td>{TermDepositCurrentValue}</td>
-                                            <td>{TermDepositFinancialInstitution}</td>
-                                            <td>{TermDepositIncomePA}</td>
-                                            <td>{TermDepositReinvestedIncome}</td>
+                                            <td>{elem.TermDepositCurrentValue}</td>
+                                            <td>{elem.TermDepositFinancialInstitution}</td>
+                                            <td>{elem.TermDepositIncomePA}</td>
+                                            <td>{elem.TermDepositReinvestedIncome}</td>
                                             <td>
                                             <button  type='button' onClick={(e)=>TeamDepositDeleteHandler1(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={TeamDepositUpdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
-                                    
+                                            <button  type='button' onClick={()=>{TermDeposithandleShow();}} className='btn btn-warning btn-sm mx-2'>update</button>
                                             </td>  
-                                        
                                         </tr>
                                         );
                                     }
@@ -1972,20 +2149,19 @@ let OtherDeleteHandler2 =(e)=>{
                                   {/* Term Deposit #1  */}
                                 
                                   {/* Term Deposit #2  */}
-                                {  TermDepositList.map((elem,index)=>{
-                                    let {TermDeposit2CurrentValue, TermDeposit2FinancialInstitution, TermDeposit2IncomePA, TermDeposit2ReinvestedIncome}=elem;
-                                    if(TermDepositList[0].TermDeposit2CurrentValue !=='' || 
-                                    TermDepositList[0].TermDeposit2FinancialInstitution !=='' ){
+                                {TermDepositList.map((elem, index) => {
+                                  
+                                    if(elem.TermDeposit2FinancialInstitution !=='' ){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
-                                            <td>{TermDeposit2CurrentValue}</td>
-                                            <td>{TermDeposit2FinancialInstitution}</td>
-                                            <td>{TermDeposit2IncomePA}</td>
-                                            <td>{TermDeposit2ReinvestedIncome}</td>
+                                            <td>{elem.TermDeposit2CurrentValue}</td>
+                                            <td>{elem.TermDeposit2FinancialInstitution}</td>
+                                            <td>{elem.TermDeposit2IncomePA}</td>
+                                            <td>{elem.TermDeposit2ReinvestedIncome}</td>
                                            <td >
                                             <button  type='button' onClick={(e)=>TeamDepositDeleteHandler2(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={TeamDepositUpdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button' onClick={()=>{TermDeposithandleShow();}} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
                                             </td>  
                                         
@@ -2088,7 +2264,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={AustralianShareMarketEdit?  AustralianShareMarketList[0] :  Client_initialValues}
+                                initialValues={AustralianShareMarketEdit?  AustralianShareMarketListObj[0] :  Client_initialValues}
                                 validationSchema={Client_validationSchemaAustralianMarket}
                                 onSubmit={AustralianShareMarket_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
@@ -2328,10 +2504,8 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{AustralianMarketReinvestedIncome}</td>
                                            <td >
                                             <button  type='button' onClick={(e)=>AustralianDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={()=>{AustralianShareMarkethandleShow()}} className='btn btn-warning btn-sm mx-2'>update</button>
-                                    
+                                            <button  type='button' onClick={(e)=>AustralianUpdateHandler(elem,index)} className='btn btn-warning btn-sm mx-2'>update</button>
                                             </td>  
-                                        
                                         </tr>
                                         );
                                     }
