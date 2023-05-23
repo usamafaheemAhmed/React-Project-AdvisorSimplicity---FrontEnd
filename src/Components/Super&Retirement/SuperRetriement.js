@@ -182,7 +182,7 @@ function SuperRetriement() {
 
   const [Pension, setPension] = useState(false);
   const [Pensionshow, setPensionShow] = useState(false);
-  const PensionhandleClose = () => setPensionShow(false);
+  const PensionhandleClose = () => { setPensionShow(false); setclientPensionDataListEdit(false); }
   const PensionhandleShow = () => setPensionShow(true);
 
   const [clientPensionDataList, setclientPensionDataList] = useState([]);
@@ -222,6 +222,7 @@ function SuperRetriement() {
   const AnnuitieshandleShow = () => setAnnuitiesShow(true);
 
   const [AnnuitiesDataList, setAnnuitiesDataList] = useState([])
+  const [AnnuitiesDataListObj, setAnnuitiesDataListObj] = useState([])
   const [AnnuitiesDataListEdit, setAnnuitiesDataListEdit] = useState(false)
   let AnnuitiesHandler = (elem) => {
     if (elem === "No") {
@@ -305,7 +306,7 @@ function SuperRetriement() {
 
   //NESTED PENSION Client BENEFICIARY MODAL STATES
   const [showClientBeneficiary, setShowClientBeneficiary] = useState(false);
-  const handleCloseClientBeneficiary = () => setShowClientBeneficiary(false);
+  const handleCloseClientBeneficiary = () => { setShowClientBeneficiary(false); setClientBeneficiaryDataListUpdateFlag(false); }
   const handleShowClientBeneficiary = () => setShowClientBeneficiary(true);
 
   const [ClientBeneficiaryDataList, setClientBeneficiaryDataList] = useState([]);
@@ -997,18 +998,109 @@ function SuperRetriement() {
 
     if(clientPensionDataListEdit){
 
-      setclientPensionDataList(clientPensionDataList.filter((clientPensionDataList, index) => index !== updateIndex));
-      setclientPensionDataList(clientPensionDataList =>[...clientPensionDataList, PensionAccountDetails]);
-      setclientPensionDataListEdit(false);
+      let id = values.id;
+
+      axios
+        .patch(`http://localhost:7000/Client-Pension-Retirement/Update-Client-PensionAccount/${PensionAccountDetails.Email}/${id}`, PensionAccountDetails)
+        .then((res) => { console.log("data Updated successfully"); PensionhandleClose(); setclientPensionDataListEdit(false); });
       
     }else{
-      setclientPensionDataList([PensionAccountDetails]);
+      // setclientPensionDataList([PensionAccountDetails]);
       axios
         .post('http://localhost:7000/Client-Pension-Retirement/Add-Client-PensionAccount', PensionAccountDetails)
-        .then((res) => console.log('Client Pension Account Added Successfully!'))
+        .then((res) => {
+          console.log('Client Pension Account Added Successfully!');
+          PensionhandleClose();
+        })
       console.log(PensionAccountDetails)
     }
-    PensionhandleClose();
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Pension-Retirement`).then((res) => {
+        console.log("Client Pension Account get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == PensionAccountDetails.Email);
+        setclientPensionDataList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+
+
+  }
+    //CLIENT PENSION
+  let clientPensionupdateHandler = (elem,ind) => {
+
+    setclientPensionDataListEdit(true);
+
+    let AccountPension_EligibleService= new Date(elem.AccountPension_EligibleService);
+    elem.AccountPension_EligibleService=AccountPension_EligibleService;
+
+    let AccountPension_CommencementDate= new Date(elem.AccountPension_CommencementDate);
+    elem.AccountPension_CommencementDate=AccountPension_CommencementDate;
+
+
+
+    let PensionAccountDetails = {
+      id:elem._id,
+      Email: localStorage.getItem("ClientEmail"),
+      AccountPension_FundName: elem.AccountPension_FundName,
+      AccountPension_MemberNO: elem.AccountPension_MemberNO,
+      AccountPension_FundType: elem.AccountPension_FundType,
+      AccountPension_ContactNO: elem.AccountPension_ContactNO,
+      AccountPension_FaxNO: elem.AccountPension_FaxNO,
+      AccountPension_PostalAddress: elem.AccountPension_PostalAddress,
+      AccountPension_ABN: elem.AccountPension_ABN,
+      AccountPension_SPIN: elem.AccountPension_SPIN,
+      AccountPension_Website: elem.AccountPension_Website,
+      AccountPension_Email: elem.AccountPension_Email,
+      AccountPension_PensionType: elem.AccountPension_PensionType,
+      AccountPension_CurrentBalance: elem.AccountPension_CurrentBalance,
+      AccountPension_TaxFree: elem.AccountPension_TaxFree,
+      AccountPension_Taxed: elem.AccountPension_Taxed,
+      AccountPension_EligibleService: elem.AccountPension_EligibleService,
+      AccountPension_CommencementDate: elem.AccountPension_CommencementDate,
+      AccountPension_OriginalPrice: elem.AccountPension_OriginalPrice,
+      AccountPension_IncomeDrawn: elem.AccountPension_IncomeDrawn,
+      AccountPension_Frequency: elem.AccountPension_Frequency,
+      AccountPension_MinimumRequired: elem.AccountPension_MinimumRequired,
+      AccountPension_RelevantNumber: elem.AccountPension_RelevantNumber,
+      AccountPension_LumpsumTaken: elem.AccountPension_LumpsumTaken,
+      AccountPension_DeductibleAmount: elem.AccountPension_DeductibleAmount,
+    }
+
+
+    setclientPensionDataListObj([PensionAccountDetails]);
+    setUpdateIndex(ind);
+    PensionhandleShow();
+
+
+  }
+  let clientPensiondeleteHandler = (elem) => {
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-Pension-Retirement/Delete-Client-PensionAccount/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("client Pension List Removed");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Pension-Retirement`).then((res) => {
+        console.log("Client Pension Account get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setclientPensionDataList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+
+
+
   }
 
   let PartnerPensionAccount_onSubmit = (values) => {
@@ -1063,9 +1155,11 @@ function SuperRetriement() {
      Pension2handleClose();
   }
 
+
+
+
   let ClientAnnuities_onSubmit = (values) => {
 
-    AnnuitieshandleClose();
     let ClientAnnuitiesDetails = {
       Email: localStorage.getItem("ClientEmail"),
       Annuities_ProductProvider: values.Annuities_ProductProvider,
@@ -1079,14 +1173,88 @@ function SuperRetriement() {
       Annuities_Frequency: values.Annuities_Frequency,
       Annuities_AnnualInflation: values.Annuities_AnnualInflation
     }
-    setAnnuitiesDataList([ClientAnnuitiesDetails]);
+
+
+    if (AnnuitiesDataListEdit) {
+      let id = values.id;
+
+      axios
+        .patch(`http://localhost:7000/Client-Annuities-Retirement/Update-Client-AnnuitiesAccount/${ClientAnnuitiesDetails.Email}/${id}`, ClientAnnuitiesDetails)
+        .then((res) => { console.log("data Updated successfully"); AnnuitieshandleClose(); setAnnuitiesDataListEdit(false); });
+      
+    } else {
+
+      axios
+      .post('http://localhost:7000/Client-Annuities-Retirement/Add-Client-AnnuitiesAccount', ClientAnnuitiesDetails)
+        .then((res) => { console.log('Client Annuities Added Successfully!'); AnnuitieshandleClose(); })
+      
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Annuities-Retirement`).then((res) => {
+        console.log("Client Annuities get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == ClientAnnuitiesDetails.Email);
+        setAnnuitiesDataList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+    // console.log(ClientAnnuitiesDetails)
+
+  }
+    //CLIENT ANNUITY EVENT HANDLER
+  let clientAnnuitiesupdateHandler = (elem) => {
+
     setAnnuitiesDataListEdit(true);
 
-    axios
-      .post('http://localhost:7000/Client-Annuities-Retirement/Add-Client-AnnuitiesAccount', ClientAnnuitiesDetails)
-      .then((res) => console.log('Client Annuities Added Successfully!'))
-    console.log(ClientAnnuitiesDetails)
+    let ClientAnnuitiesDetails = {
+      id:elem._id,
+      Annuities_ProductProvider: elem.Annuities_ProductProvider,
+      Annuities_InvestmentAmount: elem.Annuities_InvestmentAmount,
+      Annuities_CurrentValue: elem.Annuities_CurrentValue,
+      Annuities_AnnuityType: elem.Annuities_AnnuityType,
+      Annuities_RCV: elem.Annuities_RCV,
+      Annuities_Term: elem.Annuities_Term,
+      Annuities_YearsUntilMaturity: elem.Annuities_YearsUntilMaturity,
+      Annuities_RegularIncome: elem.Annuities_RegularIncome,
+      Annuities_Frequency: elem.Annuities_Frequency,
+      Annuities_AnnualInflation: elem.Annuities_AnnualInflation,
+    }
+    
+    setAnnuitiesDataListObj([ClientAnnuitiesDetails])
+    AnnuitieshandleShow();
+
   }
+  let clientAnnuitiesdeleteHandler = (elem) => {
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-Annuities-Retirement/Delete-Client-AnnuitiesAccount/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("client Pension List Removed");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Annuities-Retirement`).then((res) => {
+        console.log("Client Annuities get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setAnnuitiesDataList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+
+
+  }
+
+
+
+
 
   let PartnerAnnuities_onSubmit = (values) => {
     Annuities2handleClose();
@@ -2697,16 +2865,22 @@ function SuperRetriement() {
     }
 
     if(PensionClientInvestmentModalEdit){
-      setPensionClientInvestmentModal(PensionClientInvestmentModal.filter((PensionClientInvestmentModal, index) => index !== updateIndex));
-      setPensionClientInvestmentModal(PensionClientInvestmentModal =>[...PensionClientInvestmentModal, InvestmentOptionDetailsData]);
-      // handleClose5();
-      setInvestmentModalPartnerEdit(false);
-      handleClosePensionClient();
-      handleShowPensionClient();
+      let id = values.id;
+
+      axios
+        .patch(`http://localhost:7000/Client-Retirement-PensionInvestment/Update-Client-PensionAccount-Investment/${InvestmentOptionDetailsData.Email}/${id}`, InvestmentOptionDetailsData)
+        .then((res) => { console.log("data Updated successfully");
+        handleClosePensionClient(); 
+        setPensionClientInvestmentModalEdit(false); 
+        handleShowPensionClient(); });
+  
+       
+      // handleClosePensionClient();
+      
     }
     else{
-      setPensionClientInvestmentModal([...PensionClientInvestmentModal,InvestmentOptionDetailsData]);
-      setPensionClientInvestmentModalEdit(false);
+      // setPensionClientInvestmentModal([...PensionClientInvestmentModal,InvestmentOptionDetailsData]);
+      // setPensionClientInvestmentModalEdit(false);
       console.log(InvestmentOptionDetailsData);
   
       axios
@@ -2717,7 +2891,62 @@ function SuperRetriement() {
       })
     }
 
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Retirement-PensionInvestment`).then((res) => {
+        console.log("Client Pension Account get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == InvestmentOptionDetailsData.Email);
+        setPensionClientInvestmentModal(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
   }
+  //CLIENT PENSION->NESTED INVESTED MODAL EVENT HANDLERS
+  let ClientPensionInvestmentModalupdateHandler = (elem,ind) => {
+
+    let InvestmentOptionDetailsData = {
+      id: elem._id,
+      Email: localStorage.getItem("ClientEmail"),
+      InvestmentClientPensionOption: elem.InvestmentOption,
+      InvestmentClientPensionCurrentValue: elem.CurrentValue,
+    }
+
+    setPensionClientInvestmentModalObj([InvestmentOptionDetailsData])
+    setPensionClientInvestmentModalEdit(true);
+
+    // setUpdateIndex(ind);
+    handleClosePensionClient();
+    handleShowPensionClient();
+  }
+  let ClientPensionInvestmentModaldeleteHandler = (elem) => {
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-Retirement-PensionInvestment/Delete-Client-PensionAccount-Investment/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Client Pension Investment Removed");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Retirement-PensionInvestment`).then((res) => {
+        console.log("Client Pension Investment get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setPensionClientInvestmentModal(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+
+
+  }
+
+
+
   //PENSION PARTNER NESTED INVESTMNENT MODAL
   let initialValuesPartnerPensionNestedModal = {
     InvestmentPartnerPensionOption: "",
@@ -3201,25 +3430,100 @@ function SuperRetriement() {
 
     }
    if (ClientBeneficiaryDataListUpdateFlag){
-    setClientBeneficiaryDataList(ClientBeneficiaryDataList.filter((ClientBeneficiaryDataList, index) => index !== updateIndex));
-    setClientBeneficiaryDataList(ClientBeneficiaryDataList =>[...ClientBeneficiaryDataList, BeneficiaryData]);
-    setClientBeneficiaryDataListUpdateFlag(false);
+
+    let id = values.id;
+
+    axios
+      .patch(`http://localhost:7000/Client-Retirement-PensionBeneficiaries/Update-Client-PensionAccount-Beneficiaries/${BeneficiaryData.Email}/${id}`, BeneficiaryData)
+       .then((res) => { console.log("data Updated successfully"); handleCloseClientBeneficiary(); setClientBeneficiaryDataListUpdateFlag(false); });
+     
    }
    else{
-    // console.log(BeneficiaryData)
-    setClientBeneficiaryDataList([...ClientBeneficiaryDataList,BeneficiaryData])
 
     axios
     .post('http://localhost:7000/Client-Retirement-PensionBeneficiaries/Add-Client-PensionAccount-Beneficiaries',BeneficiaryData)
     .then((ref)=>{
      console.log("data added successfully!")
-     
+     handleCloseClientBeneficiary();
     })
    }
-
-   handleCloseClientBeneficiary();
+   setTimeout(() => {
+    axios.get(`http://localhost:7000/Client-Retirement-PensionBeneficiaries`).then((res) => {
+      console.log("Client Pension Account get Successfully");
+      let clientObj = res.data;
+      let clientFilterObj = clientObj.filter((item) => item.Email == BeneficiaryData.Email);
+      setClientBeneficiaryDataList(clientFilterObj);
+      console.log(clientFilterObj);
+    });
+  }, 500);
+   
 
   }
+
+  let ClientBeneficiaryDataListDeleteHandler=(elem,ind)=>{
+    // setClientBeneficiaryDataList(ClientBeneficiaryDataList.filter((ClientBeneficiaryDataList, index) => index !== ind));
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-Retirement-PensionBeneficiaries/Delete-Client-PensionAccount-Beneficiaries/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("client Pension List Removed");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Retirement-PensionBeneficiaries`).then((res) => {
+        console.log("Client Pension Account get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setClientBeneficiaryDataList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+  }
+  let ClientBeneficiaryDataListUpdateHandler = (elem, ind)=>{
+    setClientBeneficiaryDataListUpdateFlag(true);
+
+    let BeneficiaryData = {
+      id:elem._id,
+      Email: localStorage.getItem("ClientEmail"),
+      clientPensionBeneficiaryAttached: elem.NominatedBeneficiary,
+
+      NomiationTypePensionClientBeneficiary: elem.NominationType,
+      BeneficiariesOptionDetailsBeneficiaries: elem.No_ofBeneficiaries,
+
+      BeneficiaryPensionClient1: elem.Beneficiary1,
+      ShareofBenefitPensionClient1: elem.BenefitShare1,
+      RelationshipOptionDetailsPensionClient1: elem.Relationship1,
+
+      BeneficiaryPensionClient2: elem.Beneficiary2,
+      ShareofBenefit2PensionClient2: elem.BenefitShare2,
+      RelationshipOptionDetailsPensionClient2: elem.Relationship2,
+
+      BeneficiaryPensionClient3: elem.Beneficiary3,
+      ShareofBenefitPensionClient3: elem.BenefitShare3,
+      RelationshipOptionDetailsPensionClient3: elem.Relationship3,
+
+      BeneficiaryPensionClient4: elem.Beneficiary4,
+      ShareofBenefitPensionClient4: elem.BenefitShare4,
+      RelationshipOptionDetailsPensionClient4: elem.Relationship4,
+
+      BeneficiaryPensionClient5: elem.Beneficiary5,
+      ShareofBenefitPensionClient5: elem.BenefitShare5,
+      RelationshipOptionDetailsPensionClient5: elem.Relationship5,
+
+    }
+
+    setClientBeneficiaryDataListObj([BeneficiaryData]);
+    // setUpdateIndex(ind);
+    PensionhandleShow();
+    handleShowClientBeneficiary();
+  }
+
+
+
   //INVESTMENT CLIENT NESTED MODAL EVENT HANDLER
   let InvestmentModalupdateHandler = (elem,ind) => {
 
@@ -3270,29 +3574,7 @@ function SuperRetriement() {
       current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
     setInvestmentModalPartnerEdit(false)
   }
-  //CLIENT PENSION->NESTED INVESTED MODAL EVENT HANDLERS
-  let ClientPensionInvestmentModalupdateHandler = (elem,ind) => {
 
-    let InvestmentOptionDetailsData = {
-      Email: localStorage.getItem("ClientEmail"),
-      InvestmentClientPensionOption: elem.InvestmentOption,
-      InvestmentClientPensionCurrentValue: elem.CurrentValue,
-    }
-
-    setPensionClientInvestmentModalObj([InvestmentOptionDetailsData])
-    setPensionClientInvestmentModalEdit(true);
-
-    setUpdateIndex(ind);
-    handleClosePensionClient();
-    handleShowPensionClient();
-  }
-  let ClientPensionInvestmentModaldeleteHandler = (e) => {
-    let data = e;
-
-    setPensionClientInvestmentModal((current) =>
-      current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
-    setPensionClientInvestmentModalEdit(false)
-  }
   //PARTNER PENSION->NESTED INVESTED MODAL EVENT HANDLERS
   let PartnerPensionInvestmentModalupdateHandler = (elem,ind) => {
 
@@ -3317,25 +3599,7 @@ function SuperRetriement() {
       current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
     setPensionPartnerInvestmentModalEdit(false)
   }
-  //CLIENT ANNUITY EVENT HANDLER
-  let clientAnnuitiesupdateHandler = (e) => {
 
-    setAnnuitiesDataListEdit(true);
-
-    console.log(AnnuitiesDataList)
-    setTimeout(() => {
-
-      AnnuitieshandleShow();
-
-    }, 500)
-  }
-  let clientAnnuitiesdeleteHandler = (e) => {
-    let data = e;
-
-    setAnnuitiesDataList((current) =>
-      current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
-    setAnnuitiesDataListEdit(false)
-  }
   //PARTNER ANNUITY 
   let partnerAnnuitiesupdateHandler = (e) => {
 
@@ -3355,60 +3619,7 @@ function SuperRetriement() {
       current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
     setAnnuitiesData2ListEdit(false)
   }
-  //CLIENT PENSION
-  let clientPensionupdateHandler = (elem,ind) => {
 
-    setclientPensionDataListEdit(true);
-
-    let AccountPension_EligibleService= new Date(elem.AccountPension_EligibleService);
-    elem.AccountPension_EligibleService=AccountPension_EligibleService;
-
-    let AccountPension_CommencementDate= new Date(elem.AccountPension_CommencementDate);
-    elem.AccountPension_CommencementDate=AccountPension_CommencementDate;
-
-
-
-    let PensionAccountDetails = {
-      Email: localStorage.getItem("ClientEmail"),
-      AccountPension_FundName: elem.AccountPension_FundName,
-      AccountPension_MemberNO: elem.AccountPension_MemberNO,
-      AccountPension_FundType: elem.AccountPension_FundType,
-      AccountPension_ContactNO: elem.AccountPension_ContactNO,
-      AccountPension_FaxNO: elem.AccountPension_FaxNO,
-      AccountPension_PostalAddress: elem.AccountPension_PostalAddress,
-      AccountPension_ABN: elem.AccountPension_ABN,
-      AccountPension_SPIN: elem.AccountPension_SPIN,
-      AccountPension_Website: elem.AccountPension_Website,
-      AccountPension_Email: elem.AccountPension_Email,
-      AccountPension_PensionType: elem.AccountPension_PensionType,
-      AccountPension_CurrentBalance: elem.AccountPension_CurrentBalance,
-      AccountPension_TaxFree: elem.AccountPension_TaxFree,
-      AccountPension_Taxed: elem.AccountPension_Taxed,
-      AccountPension_EligibleService: elem.AccountPension_EligibleService,
-      AccountPension_CommencementDate: elem.AccountPension_CommencementDate,
-      AccountPension_OriginalPrice: elem.AccountPension_OriginalPrice,
-      AccountPension_IncomeDrawn: elem.AccountPension_IncomeDrawn,
-      AccountPension_Frequency: elem.AccountPension_Frequency,
-      AccountPension_MinimumRequired: elem.AccountPension_MinimumRequired,
-      AccountPension_RelevantNumber: elem.AccountPension_RelevantNumber,
-      AccountPension_LumpsumTaken: elem.AccountPension_LumpsumTaken,
-      AccountPension_DeductibleAmount: elem.AccountPension_DeductibleAmount,
-    }
-
-
-    setclientPensionDataListObj([PensionAccountDetails]);
-    setUpdateIndex(ind);
-    PensionhandleShow();
-
-
-  }
-  let clientPensiondeleteHandler = (e) => {
-    let data = e;
-
-    setclientPensionDataList((current) =>
-      current.filter((InvestmentModalPartner) => InvestmentModalPartner !== data))
-    setclientPensionDataListEdit(false)
-  }
   //PARTNER PENSION
   let partnerPensionupdateHandler = (elem , ind) => {
 
@@ -3861,47 +4072,7 @@ function SuperRetriement() {
 
   }
 
-  let ClientBeneficiaryDataListDeleteHandler=(elem,ind)=>{
-    setClientBeneficiaryDataList(ClientBeneficiaryDataList.filter((ClientBeneficiaryDataList, index) => index !== ind));
-  }
-  let ClientBeneficiaryDataListUpdateHandler = (elem, ind)=>{
-    setClientBeneficiaryDataListUpdateFlag(true);
 
-    let BeneficiaryData = {
-
-      Email: localStorage.getItem("ClientEmail"),
-      clientPensionBeneficiaryAttached: elem.NominatedBeneficiary,
-
-      NomiationTypePensionClientBeneficiary: elem.NominationType,
-      BeneficiariesOptionDetailsBeneficiaries: elem.No_ofBeneficiaries,
-
-      BeneficiaryPensionClient1: elem.Beneficiary1,
-      ShareofBenefitPensionClient1: elem.BenefitShare1,
-      RelationshipOptionDetailsPensionClient1: elem.Relationship1,
-
-      BeneficiaryPensionClient2: elem.Beneficiary2,
-      ShareofBenefit2PensionClient2: elem.BenefitShare2,
-      RelationshipOptionDetailsPensionClient2: elem.Relationship2,
-
-      BeneficiaryPensionClient3: elem.Beneficiary3,
-      ShareofBenefitPensionClient3: elem.BenefitShare3,
-      RelationshipOptionDetailsPensionClient3: elem.Relationship3,
-
-      BeneficiaryPensionClient4: elem.Beneficiary4,
-      ShareofBenefitPensionClient4: elem.BenefitShare4,
-      RelationshipOptionDetailsPensionClient4: elem.Relationship4,
-
-      BeneficiaryPensionClient5: elem.Beneficiary5,
-      ShareofBenefitPensionClient5: elem.BenefitShare5,
-      RelationshipOptionDetailsPensionClient5: elem.Relationship5,
-
-    }
-
-    setClientBeneficiaryDataListObj([BeneficiaryData]);
-    setUpdateIndex(ind);
-    PensionhandleShow();
-    handleShowClientBeneficiary();
-  }
 
   let PartnerBeneficiaryDataListDeleteHandler=(elem,ind)=>{
     setPartnerBeneficiaryDataList(PartnerBeneficiaryDataList.filter((PartnerBeneficiaryDataList, index) => index !== ind));
@@ -9510,6 +9681,10 @@ function SuperRetriement() {
 
                     {/* --------------------------------------------- */}
 
+
+
+
+
                     <Modal
                       show={Annuitiesshow}
                       onHide={AnnuitieshandleClose}
@@ -9530,7 +9705,7 @@ function SuperRetriement() {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={AnnuitiesDataListEdit ? AnnuitiesDataList[0] : InitialValuesMainClientAnnuitiesAccount}
+                        initialValues={AnnuitiesDataListEdit ? AnnuitiesDataListObj[0] : InitialValuesMainClientAnnuitiesAccount}
                         validationSchema={clientAnnuitiesAccountMainValidationSchema}
                         onSubmit={ClientAnnuities_onSubmit}
                         enableReinitialize
@@ -9745,7 +9920,7 @@ function SuperRetriement() {
                                   <td> {Annuities_RCV}</td>
                                   <td >
                                     <button type='button' onClick={() => clientAnnuitiesdeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                    <button type='button' onClick={clientAnnuitiesupdateHandler} className='btn btn-warning btn-sm mx-2'>update</button>
+                                    <button type='button' onClick={() => clientAnnuitiesupdateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
                                   </td>
 
                                 </tr>
@@ -9756,6 +9931,11 @@ function SuperRetriement() {
                     </div>
                     {/*CLIENT ANNUTIES ACCOUNT DISPLAY TABLE */}
                     {/* ---------------------------------------------------- */}
+
+
+
+
+
 
                     <h3 className="">Partner Annuities</h3>
 
