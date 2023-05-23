@@ -555,30 +555,30 @@ const ProfessionalAdvisors = () => {
       ProfessionalAdvisor: values.ProfessionalAdvisors2radio,
     };
     if (isPartnered === true) {
-      console.log(ProfessionalAdvisor1);
-      console.log(ProfessionalAdvisor2);
+      // console.log(ProfessionalAdvisor1);
+      // console.log(ProfessionalAdvisor2);
       axios
-        .post(
-          "http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor",
+        .patch(
+          `http://localhost:7000/Client-ProfessionalAdvisor/Update-ClientAdvisor/${ProfessionalAdvisor1.Email}`,
           ProfessionalAdvisor1
         )
-        .then((res) => console.log("Client Advisor Added Successfully!"));
+        .then((res) => console.log("Client Advisor Updated Successfully!"));
 
       axios
-        .post(
-          "http://localhost:7000/Partner-ProfessionalAdvisor/Add-PartnerAdvisor",
+        .patch(
+          `http://localhost:7000/Partner-ProfessionalAdvisor/Update-PartnerAdvisor/${ProfessionalAdvisor2.Email}`,
           ProfessionalAdvisor2
         )
-        .then((res) => console.log("Partner Advisor Added Successfully!"));
+        .then((res) => console.log("Partner Advisor Updated Successfully!"));
     } else {
       console.log(ProfessionalAdvisor1);
 
       axios
-        .post(
-          "http://localhost:7000/Client-ProfessionalAdvisor/Add-ClientAdvisor",
-          ProfessionalAdvisor1
-        )
-        .then((res) => console.log("Client Advisor Added Successfully!"));
+      .patch(
+        `http://localhost:7000/Client-ProfessionalAdvisor/Update-ClientAdvisor/${ProfessionalAdvisor1.Email}`,
+        ProfessionalAdvisor1
+      )
+        .then((res) => console.log("Client Advisor Updated Successfully!"));
     }
   };
 

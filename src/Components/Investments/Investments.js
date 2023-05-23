@@ -19,21 +19,11 @@ function Investments() {
 
 
   const [BankAccountList, setBankAccountList] = useState([]);
-  const [TermDepositList, setTermDepositList] = useState([]);
-  const [AustralianShareMarketList, setAustralianShareMarketList] = useState([]);
-  const [AustralianShareMarketListObj, setAustralianShareMarketListObj] = useState([]);
-  const [AustralianSharePortfolioList, setAustralianSharePortfolioList] = useState([]);
-  const [ManagedFundsList, setManagedFundsList] = useState([]);
-  const [ManagedFundsPortfolioList, setManagedFundsPortfolioList] = useState([]);
-  const [InvestmentBondsList, setInvestmentBondsList] = useState([]);
-  const [InvestmentPropertiesList, setInvestmentPropertiesList] = useState([]);
-  const [OthersList, setOthersList] = useState([]);
-
   const [BankEdit, setBankEdit] = useState(false);
   const [BankAccount, setBankAccount] = useState(false);
   const [Bankshow, setBankShow] = useState(false);
   const [Bankshow2, setBankShow2] = useState(false);
-  const BankhandleClose = () => setBankShow(false);
+  const BankhandleClose = () => setBankShow(false); 
   const BankhandleShow = () => setBankShow(true);
  
   let BankAccountHandler=(elem)=>{
@@ -45,6 +35,8 @@ function Investments() {
     }
   }
 
+
+  const [TermDepositList, setTermDepositList] = useState([]);
   const [TermDepositEdit, setTermDepositEdit] = useState(false);
   const [TermDeposit, setTermDeposit] = useState(false);
   const [TermDepositshow, setTermDepositShow] = useState(false);
@@ -59,10 +51,13 @@ function Investments() {
     }
   }
 
+
+  const [AustralianShareMarketList, setAustralianShareMarketList] = useState([]);
+  const [AustralianShareMarketListObj, setAustralianShareMarketListObj] = useState([]);
   const [AustralianShareMarketEdit, setAustralianShareMarketEdit] = useState(false);
   const [AustralianShareMarket, setAustralianShareMarket] = useState(false);
   const [AustralianShareMarketshow, setAustralianShareMarketShow] = useState(false);
-  const AustralianShareMarkethandleClose = () => setAustralianShareMarketShow(false);
+  const AustralianShareMarkethandleClose = () => { setAustralianShareMarketShow(false); setAustralianShareMarketEdit(false); }
   const AustralianShareMarkethandleShow = () => setAustralianShareMarketShow(true);
   let AustralianShareMarketHandler=(elem)=>{
     if (elem==="No"){
@@ -73,11 +68,12 @@ function Investments() {
     }
   }
 
-
+  const [AustralianSharePortfolioList, setAustralianSharePortfolioList] = useState([]);
+  const [AustralianSharePortfolioListObj, setAustralianSharePortfolioListObj] = useState([]);
   const [AustralianSharePortfolioEdit, setAustralianSharePortfolioEdit] = useState(false);
   const [AustralianSharePortfolio, setAustralianSharePortfolio] = useState(false);
   const [AustralianSharePortfolioshow, setAustralianSharePortfolioShow] = useState(false);
-  const AustralianSharePortfoliohandleClose = () => setAustralianSharePortfolioShow(false);
+  const AustralianSharePortfoliohandleClose = () => { setAustralianSharePortfolioShow(false); setAustralianSharePortfolioEdit(false); }
   const AustralianSharePortfoliohandleShow = () => setAustralianSharePortfolioShow(true);
   let AustralianSharePortfolioHandler=(elem)=>{
     if (elem==="No"){
@@ -88,11 +84,12 @@ function Investments() {
     }
   }
 
-
+  const [ManagedFundsList, setManagedFundsList] = useState([]);
+  const [ManagedFundsListObj, setManagedFundsListObj] = useState([]);
   const [ManagedFundsEdit, setManagedFundsEdit] = useState(false);
   const [ManagedFunds, setManagedFunds] = useState(false);
   const [ManagedFundsshow, setManagedFundsShow] = useState(false);
-  const ManagedFundshandleClose = () => setManagedFundsShow(false);
+  const ManagedFundshandleClose = () => { setManagedFundsShow(false); setManagedFundsEdit(false); }
   const ManagedFundshandleShow = () => setManagedFundsShow(true);
   let ManagedFundsHandler=(elem)=>{
     if (elem==="No"){
@@ -103,10 +100,12 @@ function Investments() {
     }
   }
 
+  const [ManagedFundsPortfolioList, setManagedFundsPortfolioList] = useState([]);
+  const [ManagedFundsPortfolioListObj, setManagedFundsPortfolioListObj] = useState([]);
   const [ManagedFundsLoanEdit, setManagedFundsLoanEdit] = useState(false);
   const [ManagedFundsPortfolio, setManagedFundsPortfolio] = useState(false);
   const [ManagedFundsPortfolioshow, setManagedFundsPortfolioShow] = useState(false);
-  const ManagedFundsPortfoliohandleClose = () => setManagedFundsPortfolioShow(false);
+  const ManagedFundsPortfoliohandleClose = () => {setManagedFundsPortfolioShow(false); setManagedFundsLoanEdit(false);}
   const ManagedFundsPortfoliohandleShow = () => setManagedFundsPortfolioShow(true);
   let ManagedFundsPortfolioHandler=(elem)=>{
     if (elem==="No"){
@@ -117,10 +116,13 @@ function Investments() {
     }
   }
 
+
+  const [InvestmentBondsList, setInvestmentBondsList] = useState([]);
+  const [InvestmentBondsListObj, setInvestmentBondsListObj] = useState([]);
   const [InvestmentBondsEdit, setInvestmentBondsEdit] = useState(false);
   const [InvestmentBonds, setInvestmentBonds] = useState(false);
   const [InvestmentBondsshow, setInvestmentBondsShow] = useState(false);
-  const InvestmentBondshandleClose = () => setInvestmentBondsShow(false);
+  const InvestmentBondshandleClose = () => { setInvestmentBondsShow(false); setInvestmentBondsEdit(false); }
   const InvestmentBondshandleShow = () => setInvestmentBondsShow(true);
   let InvestmentBondsHandler=(elem)=>{
     if (elem==="No"){
@@ -131,11 +133,11 @@ function Investments() {
     }
   }
 
-  
+  const [OthersList, setOthersList] = useState([]);
   const [OthersEdit, setOthersEdit] = useState(false);
   const [Others, setOthers] = useState(false);
   const [Othersshow, setOthersShow] = useState(false);
-  const OthershandleClose = () => setOthersShow(false);
+  const OthershandleClose = () => setOthersShow(false); 
   const OthershandleShow = () => setOthersShow(true);
   let OthersHandler=(elem)=>{
     if (elem==="No"){
@@ -146,10 +148,13 @@ function Investments() {
     }
   }
 
+
+  const [InvestmentPropertiesList, setInvestmentPropertiesList] = useState([]);
+  const [InvestmentPropertiesListObj, setInvestmentPropertiesListObj] = useState([]);
   const [InvestmentPropertiesEdit, setInvestmentPropertiesEdit] = useState(false);
   const [InvestmentProperties, setInvestmentProperties] = useState(false);
   const [InvestmentPropertiesshow, setInvestmentPropertiesShow] = useState(false);
-  const InvestmentPropertieshandleClose = () => setInvestmentPropertiesShow(false);
+  const InvestmentPropertieshandleClose = () => {setInvestmentPropertiesShow(false); setInvestmentPropertiesEdit(false);}
   const InvestmentPropertieshandleShow = () => setInvestmentPropertiesShow(true);
   let InvestmentPropertiesHandler=(elem)=>{
     if (elem==="No"){
@@ -174,6 +179,125 @@ function Investments() {
     }
   }
 
+  
+useEffect(() => {
+  let email=localStorage.getItem("EditClient");
+  console.log(email)
+
+
+   // Client-BankAccounts
+   axios
+   .get(`http://localhost:7000/Client-BankAccounts`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+
+     let data = {
+      Email: localStorage.getItem("ClientEmail"),
+      BankCurrentValue: '',
+      BankFinancialInstitution: '',
+      BankIncomePA: '',
+      BankIncomePAType: '',
+      BankIncomeinDollars: '',
+      BankRegularSavings: '',
+      BankReinvestedIncome: 'No',
+      
+      Bank2CurrentValue: '',
+      Bank2FinancialInstitution: '',
+      Bank2IncomePA: '',
+      Bank2IncomePAType: '',
+      Bank2IncomeinDollars: '',
+      Bank2RegularSavings: '',
+      Bank2ReinvestedIncome: 'No',
+     }
+
+     
+     if (clientFilterObj.length != 0) {
+       setBankAccountList([data]);
+       setBankEdit(true);
+       console.log("true");
+     }
+  //  console.log(res.data)
+   })
+
+   // Client-TermDeposit
+   axios
+   .get(`http://localhost:7000/Client-TermDeposit`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+
+     let data = {
+      Email: localStorage.getItem("ClientEmail"),
+      TermDepositCurrentValue: '',
+      TermDepositFinancialInstitution: '',
+      TermDepositIncomePA: '',
+      TermDepositIncomePAType: '',
+      TermDepositIncomeinDollars: '',
+      TermDepositRegularSavings: '',
+      TermDepositReinvestedIncome: 'No',
+      
+      TermDeposit2CurrentValue: '',
+      TermDeposit2FinancialInstitution: '',
+      TermDeposit2IncomePA: '',
+      TermDeposit2IncomePAType: '',
+      TermDeposit2IncomeinDollars: '',
+      TermDeposit2RegularSavings: '',
+      TermDeposit2ReinvestedIncome: 'No',
+     }
+
+     
+     if (clientFilterObj.length != 0) {
+       setTermDepositList([data]);
+       setTermDepositEdit(true);
+       console.log("true");
+     }
+   })
+
+
+   axios
+   .get(`http://localhost:7000/Client-Others`)
+   .then((res) => {
+   let clientObj=(res.data)
+   let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+
+     let data = {
+      OtherInvestmentName: '',
+      OtherCurrentValue: '',
+      OtherCostBase: '',
+      OtherPurchaseDate: '',
+      OtherIncomePA: '',
+      OtherIncomePAType: '',
+      OtherTotalIncomePA: '',
+      OtherIncomePAType: '',
+      OtherReinvestedIncome: 'No',
+      OtherRegularInvestmentsPA: '',
+  
+      OtherInvestmentName2: '',
+      OtherCurrentValue2: '',
+      OtherCostBase2: '',
+      OtherPurchaseDate2: '',
+      OtherIncomePA2: '',
+      OtherIncomePAType2: '',
+      OtherTotalIncomePA2: '',
+      OtherIncomePAType2: '',
+      OtherReinvestedIncome2: 'No',
+      OtherRegularInvestmentsPA2: '',
+     }
+
+     if (clientFilterObj.length != 0) {
+       setOthersList([data]);
+       setOthersEdit(true);
+       console.log("true");
+     }
+
+   })
+
+
+}, [])
+
+
+  
 
   let phonePattern=/^[1-9][0-9]{9}$/;
   let letters = /^[a-zA-Z ]*$/;
@@ -544,6 +668,8 @@ function Investments() {
       Bank2ReinvestedIncome: values.Bank2ReinvestedIncome
     }
 
+    console.log(BankDetails)
+
     // setBankAccountList([BankDetails])
     if (BankEdit) {
 
@@ -554,15 +680,7 @@ function Investments() {
         console.log("Bank Updated Complete");
         })
   
-  
-        setTimeout(() => {
-          axios.get(`http://localhost:7000/Client-BankAccounts`).then((res) => {
-            console.log("got it");
-            let clientObj = res.data;
-            let clientFilterObj = clientObj.filter((item) => item.Email == BankDetails.Email);
-            setBankAccountList(clientFilterObj);
-          });
-        }, 500);
+
 
 
     } else {
@@ -571,7 +689,10 @@ function Investments() {
       .post('http://localhost:7000/Client-BankAccounts/Add-Client-BankAccounts', BankDetails)
       .then((res) => console.log("Bank Accounts Added Successfully!"))
   
-      setTimeout(() => {
+    
+    }
+
+  setTimeout(() => {
         axios.get(`http://localhost:7000/Client-BankAccounts`).then((res) => {
           console.log("got it");
           let clientObj = res.data;
@@ -582,8 +703,6 @@ function Investments() {
           setBankEdit(true);
         });
       }, 500);
-
-    }
 
 
 
@@ -722,18 +841,45 @@ function Investments() {
       AustralianPortfolioYearRemaining: values.AustralianPortfolioYearRemaining,
     }
 
-    setAustralianSharePortfolioList([AustralianSharePortfolioDetails])
-    AustralianSharePortfoliohandleClose();
+    // setAustralianSharePortfolioList([AustralianSharePortfolioDetails])
 
-    setAustralianSharePortfolioEdit(true);
+    
+    if (AustralianSharePortfolioEdit) {
+      axios
+      .patch(`http://localhost:7000/Client-Australian-Share-Portfolio/Update-Client-Australian-Share-Portfolio/${AustralianSharePortfolioDetails.Email}/${values.id}`, AustralianSharePortfolioDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Portfolio Updated Complete");
+      })
+      setAustralianSharePortfolioEdit(false);
+
+    } else {
+
     axios
     .post('http://localhost:7000/Client-Australian-Share-Portfolio/Add-Client-Australian-Share-Portfolio', AustralianSharePortfolioDetails)
-    .then((res) => console.log("Australian Share Portfolio Added Successfully!"))
+        .then((res) => console.log("Australian Share Portfolio Added Successfully!"))
+      
+    }
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Australian-Share-Portfolio`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == AustralianSharePortfolioDetails.Email);
+        setAustralianSharePortfolioList(clientFilterObj);
+      });
+    }, 500);
+
+
+    
+    
+    AustralianSharePortfoliohandleClose();
+
     console.log(AustralianSharePortfolioDetails)
   }
 
   let ManagedFunds_onSubmit = (values) => {
-    ManagedFundshandleClose();
 
     let ManagedFundsDetails = {
       Email: localStorage.getItem("ClientEmail"),
@@ -751,17 +897,39 @@ function Investments() {
       ManagedFundsRegInvestments: values.ManagedFundsRegInvestments
     }
 
-    setManagedFundsList([ManagedFundsDetails]);
-    setManagedFundsEdit(true);
+    if (ManagedFundsEdit) {
+      // update
 
-    axios
-    .post('http://localhost:7000/Client-ManagedFunds/Add-Client-ManagedFunds', ManagedFundsDetails)
-    .then((res) => console.log("Managed Funds Added Successfully!"))
-    console.log(ManagedFundsDetails)
+      axios
+      .patch(`http://localhost:7000/Client-ManagedFunds/Update-Client-ManagedFunds/${ManagedFundsDetails.Email}/${values.id}`, ManagedFundsDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Portfolio Updated Complete");
+      })
+
+      setManagedFundsEdit(false);
+    } else {
+
+      axios
+      .post('http://localhost:7000/Client-ManagedFunds/Add-Client-ManagedFunds', ManagedFundsDetails)
+      .then((res) => console.log("Managed Funds Added Successfully!"))
+      
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-ManagedFunds`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == ManagedFundsDetails.Email);
+        setManagedFundsList(clientFilterObj);
+      });
+    }, 500);
+
+    ManagedFundshandleClose();
+
   }
 
   let ManagedFundsPortfolio_onSubmit = (values) => {
-    ManagedFundsPortfoliohandleClose();
     let ManagedFundsPortfolioDetails = {
       Email: localStorage.getItem("ClientEmail"),
       ManagedFundsPortfolioLoanType: values.ManagedFundsPortfolioLoanType,
@@ -774,20 +942,40 @@ function Investments() {
       ManagedFundsPortfolioYearRemaining: values.ManagedFundsPortfolioYearRemaining
     }
 
-    setManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
+    // setManagedFundsPortfolioList([ManagedFundsPortfolioDetails])
+    if (ManagedFundsLoanEdit) {
 
-    setManagedFundsLoanEdit(true);
+      axios
+      .patch(`http://localhost:7000/Client-ManagedFunds-Portfolio/Update-Client-ManagedFunds-Portfolio/${ManagedFundsPortfolioDetails.Email}/${values.id}`, ManagedFundsPortfolioDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Portfolio Updated Complete");
+      })
 
-
+    setManagedFundsLoanEdit(false);
+      
+    } else {
+      
     axios
     .post('http://localhost:7000/Client-ManagedFunds-Portfolio/Add-Client-ManagedFunds-Portfolio', ManagedFundsPortfolioDetails)
-    .then((res) => console.log("Managed Funds Portfolio Added Successfully!"))
-    console.log(ManagedFundsPortfolioDetails)
+        .then((res) => console.log("Managed Funds Portfolio Added Successfully!"))
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-ManagedFunds-Portfolio`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == ManagedFundsPortfolioDetails.Email);
+        setManagedFundsPortfolioList(clientFilterObj);
+      });
+    }, 500);
+
+    ManagedFundsPortfoliohandleClose();
+    // console.log(ManagedFundsPortfolioDetails)
   }
 
   let InvestmentBonds_onSubmit = (values) => {
 
-    InvestmentBondshandleClose();
     let InvestmentBondsDetails = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentBondsPlatformName: values.InvestmentBondsPlatformName,
@@ -803,18 +991,49 @@ function Investments() {
       InvestmentBondsReinvestedIncome: values.InvestmentBondsReinvestedIncome,
       InvestmentBondsRegInvestments: values.InvestmentBondsRegInvestments,
     }
-    setInvestmentBondsList([InvestmentBondsDetails])
-    setInvestmentBondsEdit(true);
-    axios
-    .post('http://localhost:7000/Client-InvestmentBonds/Add-Client-Investment-Bonds', InvestmentBondsDetails)
-    .then((res) => console.log("Investment Bonds Added Successfully!"))
+
+    // setInvestmentBondsList([InvestmentBondsDetails])
+
+    if (InvestmentBondsEdit) {
+
+
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentBonds/Update-Client-Investment-Bonds/${InvestmentBondsDetails.Email}/${values.id}`, InvestmentBondsDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Portfolio Updated Complete");
+      })
+
+
+      
+    setInvestmentBondsEdit(false);
+      
+    }
+    else {
+
+      axios
+      .post('http://localhost:7000/Client-InvestmentBonds/Add-Client-Investment-Bonds', InvestmentBondsDetails)
+        .then((res) => console.log("Investment Bonds Added Successfully!"))   
+      
+    }
+    
+    
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentBonds`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == InvestmentBondsDetails.Email);
+        setInvestmentBondsList(clientFilterObj);
+      });
+    }, 500);
+
+    InvestmentBondshandleClose();
     console.log(InvestmentBondsDetails)
 
   }
 
   let InvestmentProperties_onSubmit = (values) => {
 // usama
-    InvestmentPropertieshandleClose();
     let InvestmentPropertiesDetails = {
       Email: localStorage.getItem("ClientEmail"),
       InvestmentPropertiesCurrentValue: values.InvestmentPropertiesCurrentValue,
@@ -841,21 +1060,41 @@ function Investments() {
 
      
     }
-    setInvestmentPropertiesList([InvestmentPropertiesDetails])
+    // setInvestmentPropertiesList([InvestmentPropertiesDetails])
 
-    setInvestmentPropertiesEdit(true);
+    if (InvestmentPropertiesEdit) {
+
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentProperties/Update-Client-Investment-Properties/${InvestmentPropertiesDetails.Email}/${values.id}`, InvestmentPropertiesDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Portfolio Updated Complete");
+      })
+
+      setInvestmentPropertiesEdit(false);
+      
+    } else {
+      axios
+      .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
+      .then((res) => console.log("Investment Properties Added Successfully!"))      
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentProperties`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == InvestmentPropertiesDetails.Email);
+        setInvestmentPropertiesList(clientFilterObj);
+      });
+    }, 500);
 
 
-
-    axios
-    .post('http://localhost:7000/Client-InvestmentProperties/Add-Client-Investment-Properties', InvestmentPropertiesDetails)
-    .then((res) => console.log("Investment Properties Added Successfully!"))
+    InvestmentPropertieshandleClose();
     console.log(InvestmentPropertiesDetails)
   }
 
   let Others_onSubmit = (values) => {
 
-    OthershandleClose();
     let OthersDetails = {
       Email: localStorage.getItem("ClientEmail"),
       OtherInvestmentName: values.OtherInvestmentName,
@@ -878,14 +1117,50 @@ function Investments() {
       OtherReinvestedIncome2: values.OtherReinvestedIncome2,
       OtherRegularInvestmentsPA2: values.OtherRegularInvestmentsPA2,
     }
-    setOthersList([OthersDetails])
+    // setOthersList([OthersDetails])
+    // OtherPurchaseDate2
+    // OtherPurchaseDate
+    if (OthersEdit) {
 
-    setOthersEdit(true);
-
-
+      axios
+      .patch(`http://localhost:7000/Client-Others/Update-Client-Others/${OthersDetails.Email}`, OthersDetails)
+      .then((res) => {
+        //Popper Massage
+        console.log("Bank Updated Complete");
+        })
+  
+    }
+    else {
+      setOthersEdit(true);
     axios
     .post('http://localhost:7000/Client-Others/Add-Client-Others', OthersDetails)
     .then((res) => console.log("Other Investments Added Successfully!"))
+
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Others`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == OthersDetails.Email);
+
+            // OtherPurchaseDate2
+    // OtherPurchaseDate
+        
+        let date = new  Date(clientFilterObj[0].OtherPurchaseDate2)
+        clientFilterObj[0].OtherPurchaseDate2 = date;
+
+        date = new  Date(clientFilterObj[0].OtherPurchaseDate)
+        clientFilterObj[0].OtherPurchaseDate = date;
+        
+
+        setOthersList(clientFilterObj);
+      });
+    }, 500);
+
+    OthershandleClose();
+
+
     console.log(OthersDetails)
   }
 
@@ -985,9 +1260,9 @@ function Investments() {
   } 
   console.log(InvestmentDetails)
 
-  // axios
-  // .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
-  // .then((res) => console.log("Investment Added Successfully!"))
+  axios
+  .post('http://localhost:7000/Client-Investment/Add-Client-Investment', InvestmentDetails)
+  .then((res) => console.log("Investment Added Successfully!"))
 
   Navigate('/Estate-Planning');
   }
@@ -1201,118 +1476,277 @@ function Investments() {
     // AustralianDeleteHandler delete end
     
     // AustralianLoanDeleteHandler delete start
-      let AustralianLoanDeleteHandler =(e)=>{
-        console.log(e)
-        let data = e;
-              data.AustralianInterestRatePA= '';
-              data.AustralianPortfolioCurrentBalance= '';
-              data.AustralianPortfolioDeductibleLoanAmount= '';
-              data.AustralianPortfolioLender= '';
-              data.AustralianPortfolioLoanTerm= '';
-              data.AustralianPortfolioLoanType= '';
-              data.AustralianPortfolioLoanType2= '';
-              data.AustralianPortfolioYearRemaining= '';
-              setAustralianSharePortfolioList([data]);
+      let AustralianLoanDeleteHandler =(elem)=>{
+        console.log(elem)
+
+        let id = elem._id;
+        let email = elem.Email;
+
+
+      axios
+      .delete(`http://localhost:7000/Client-Australian-Share-Portfolio/Delete-Client-Australian-Share-Portfolio/${email}/${id}`)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Market Remove");
+      });
+        
+        
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Australian-Share-Portfolio`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setAustralianSharePortfolioList(clientFilterObj);
+      });
+    }, 500);
+
+
+
+
+       }
+  
+       let AustralianLoanUpdateHandler =(elem)=>{
+        // console.log(elem)
+        let AustralianSharePortfolioDetails = {    
+          id:elem._id,
+          AustralianPortfolioLoanType: elem.AustralianPortfolioLoanType,
+          AustralianPortfolioCurrentBalance: elem.AustralianPortfolioCurrentBalance,
+          AustralianPortfolioLender: elem.AustralianPortfolioLender,
+          AustralianInterestRatePA: elem.AustralianInterestRatePA,
+          AustralianPortfolioLoanTerm: elem.AustralianPortfolioLoanTerm,
+          AustralianPortfolioLoanType2: elem.AustralianPortfolioLoanType2,
+          AustralianPortfolioDeductibleLoanAmount: elem.AustralianPortfolioDeductibleLoanAmount,
+          AustralianPortfolioYearRemaining: elem.AustralianPortfolioYearRemaining,
+        }
+         
+         setAustralianSharePortfolioListObj([AustralianSharePortfolioDetails])
+         setAustralianSharePortfolioEdit(true);
+         AustralianSharePortfoliohandleShow()
       }
     // AustralianLoanDeleteHandler delete end
 
    // ManagedFundsDeleteHandler delete start
 
-    let ManagedFundsDeleteHandler=(e)=>{
+    let ManagedFundsDeleteHandler=(elem)=>{
         // console.log(e);
-        let data = e;
-        data.ManagedFundsCurrentValue= '';
-        data.ManagedFundsIncomePA= '';
-        data.ManagedFundsIncomePAType= '';
-        data.ManagedFundsInvestmentName= '';
-        data.ManagedFundsNumberOfShares= '';
-        data.ManagedFundsOriginalInvestment= '';
-        data.ManagedFundsPlatformName= '';
-        data.ManagedFundsPurchaseDate= '';
-        data.ManagedFundsRegInvestments= '';
-        data.ManagedFundsReinvestedIncome= '';
-        data.ManagedFundsSharePrice= '';
-        data.ManagedFundsTotalIncomePA= '';
+        let id = elem._id;
+        let email = elem.Email;
 
-        setManagedFundsList([data]);
-    }
+
+      axios
+      .delete(`http://localhost:7000/Client-ManagedFunds/Delete-Client-ManagedFunds/${email}/${id}`)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Market Remove");
+      });
+        
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-ManagedFunds`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setManagedFundsList(clientFilterObj);
+      });
+    }, 500);
+
+      }
+  
+      let ManagedFundsUpdateHandler=(elem)=>{
+        // console.log(elem);
+
+        let date = new Date(elem.ManagedFundsPurchaseDate)
+        elem.ManagedFundsPurchaseDate = date;
+
+        let ManagedFundsDetails = {
+          id:elem._id,
+          ManagedFundsPlatformName: elem.ManagedFundsPlatformName,
+          ManagedFundsInvestmentName: elem.ManagedFundsInvestmentName,
+          ManagedFundsNumberOfShares: elem.ManagedFundsNumberOfShares,
+          ManagedFundsSharePrice: elem.ManagedFundsSharePrice,
+          ManagedFundsCurrentValue: elem.ManagedFundsCurrentValue,
+          ManagedFundsOriginalInvestment: elem.ManagedFundsOriginalInvestment,
+          ManagedFundsPurchaseDate: elem.ManagedFundsPurchaseDate,
+          ManagedFundsIncomePA: elem.ManagedFundsIncomePA,
+          ManagedFundsIncomePAType: elem.ManagedFundsIncomePAType,
+          ManagedFundsTotalIncomePA: elem.ManagedFundsTotalIncomePA,
+          ManagedFundsReinvestedIncome: elem.ManagedFundsReinvestedIncome,
+          ManagedFundsRegInvestments: elem.ManagedFundsRegInvestments,
+        }
+
+
+
+        setManagedFundsListObj([ManagedFundsDetails]);
+        setManagedFundsEdit(true);
+        ManagedFundshandleShow();
+
+      }
+
    // ManagedFundsDeleteHandler delete end
 
 
    // ManagedFundsLoanDeleteHandler delete start
 
-   let ManagedFundsLoanDeleteHandler=(e)=>{
+   let ManagedFundsLoanDeleteHandler=(elem)=>{
     // console.log(e);
-    let data = e;
-    data.ManagedFundsPortfolioCurrentBalance= '';
-    data.ManagedFundsPortfolioDeductibleLoanAmount= '';
-    data.ManagedFundsPortfolioInterestRatePA= '';
-    data.ManagedFundsPortfolioLender= '';
-    data.ManagedFundsPortfolioLoanTerm= '';
-    data.ManagedFundsPortfolioLoanType= '';
-    data.ManagedFundsPortfolioLoanType2= '';
-    data.ManagedFundsPortfolioYearRemaining= '';
+    let id = elem._id;
+    let email = elem.Email;
 
 
-    setManagedFundsPortfolioList([data]);
-}
+        axios
+        .delete(`http://localhost:7000/Client-ManagedFunds-Portfolio/Delete-Client-ManagedFunds-Portfolio/${email}/${id}`)
+        .then((res) => {
+          //Popper Massage
+          console.log("Australian Share Market Remove");
+        });
+          
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-ManagedFunds-Portfolio`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == email);
+          setManagedFundsPortfolioList(clientFilterObj);
+        });
+      }, 500);
+     
+
+  }
+  let ManagedFundsLoanUpdateHandler=(elem)=>{
+    // console.log(e);
+
+    let ManagedFundsPortfolioDetails = {
+      id:elem._id,
+      ManagedFundsPortfolioLoanType: elem.ManagedFundsPortfolioLoanType,
+      ManagedFundsPortfolioCurrentBalance: elem.ManagedFundsPortfolioCurrentBalance,
+      ManagedFundsPortfolioLender: elem.ManagedFundsPortfolioLender,
+      ManagedFundsPortfolioInterestRatePA: elem.ManagedFundsPortfolioInterestRatePA,
+      ManagedFundsPortfolioLoanTerm: elem.ManagedFundsPortfolioLoanTerm,
+      ManagedFundsPortfolioLoanType2: elem.ManagedFundsPortfolioLoanType2,
+      ManagedFundsPortfolioDeductibleLoanAmount: elem.ManagedFundsPortfolioDeductibleLoanAmount,
+      ManagedFundsPortfolioYearRemaining: elem.ManagedFundsPortfolioYearRemaining,
+    }
+
+    setManagedFundsPortfolioListObj([ManagedFundsPortfolioDetails])
+    setManagedFundsLoanEdit(true);
+    ManagedFundsPortfoliohandleShow()
+
+        }
 // ManagedFundsLoanDeleteHandler delete end
 
 
 // InvestmentBondsDeleteHandler delete start
 
-    let InvestmentBondsDeleteHandler =(e)=>{
-      console.log(e);
-        let data = e;
-        data.InvestmentBondsCurrentValue='';
-        data.InvestmentBondsIncomePA='';
-        data.InvestmentBondsIncomePAType='';
-        data.InvestmentBondsInvestmentName='';
-        data.InvestmentBondsNumberOfShares='';
-        data.InvestmentBondsOriginalInvestment='';
-        data.InvestmentBondsPlatformName='';
-        data.InvestmentBondsPurchaseDate='';
-        data.InvestmentBondsRegInvestments='';
-        data.InvestmentBondsReinvestedIncome='';
-        data.InvestmentBondsSharePrice='';
-        data.InvestmentBondsTotalIncomePA='';
+    let InvestmentBondsDeleteHandler =(elem)=>{
+
+      let id = elem._id;
+      let email = elem.Email;
+  
+  
+          axios
+          .delete(`http://localhost:7000/Client-InvestmentBonds/Delete-Client-Investment-Bonds/${email}/${id}`)
+          .then((res) => {
+            //Popper Massage
+            console.log("Australian Share Market Remove");
+          });
+            
+        setTimeout(() => {
+          axios.get(`http://localhost:7000/Client-InvestmentBonds`).then((res) => {
+            console.log("got it");
+            let clientObj = res.data;
+            let clientFilterObj = clientObj.filter((item) => item.Email == email);
+            setInvestmentBondsList(clientFilterObj);
+          });
+        }, 500);
+
+    }
+
+    let InvestmentBondsUpdateHandler =(elem)=>{
 
 
-        setInvestmentBondsList([data]);
+      let date = new Date (elem.InvestmentBondsPurchaseDate )
+      elem.InvestmentBondsPurchaseDate = date; 
 
-
+      let InvestmentBondsDetails = {
+        id: elem._id,
+        InvestmentBondsPlatformName: elem.InvestmentBondsPlatformName,
+        InvestmentBondsInvestmentName: elem.InvestmentBondsInvestmentName,
+        InvestmentBondsNumberOfShares: elem.InvestmentBondsNumberOfShares,
+        InvestmentBondsSharePrice: elem.InvestmentBondsSharePrice,
+        InvestmentBondsCurrentValue: elem.InvestmentBondsCurrentValue,
+        InvestmentBondsOriginalInvestment: elem.InvestmentBondsOriginalInvestment,
+        InvestmentBondsPurchaseDate: elem.InvestmentBondsPurchaseDate,
+        InvestmentBondsIncomePA: elem.InvestmentBondsIncomePA,
+        InvestmentBondsIncomePAType: elem.InvestmentBondsIncomePAType,
+        InvestmentBondsTotalIncomePA: elem.InvestmentBondsTotalIncomePA,
+        InvestmentBondsReinvestedIncome: elem.InvestmentBondsReinvestedIncome,
+        InvestmentBondsRegInvestments: elem.InvestmentBondsRegInvestments,
+      }
+  
+      setInvestmentBondsListObj([InvestmentBondsDetails]);
+      setInvestmentBondsEdit(true);
+      InvestmentBondshandleShow();
     }
 // InvestmentBondsDeleteHandler delete end
 
 
 // InvestmentPropertiesDeleteHandler delete start
 
-let InvestmentPropertiesDeleteHandler =(e)=>{
+let InvestmentPropertiesDeleteHandler =(elem)=>{
   // console.log(e);
-    let data = e;
-    data.InvestmentPropertiesAddress='';
-    data.InvestmentPropertiesAnnualRepaym='';
-    data.InvestmentPropertiesClientBorrowing='';
-    data.InvestmentPropertiesClientOwnership='';
-    data.InvestmentPropertiesCostBase='';
-    data.InvestmentPropertiesCurrentBalance='';
-    data.InvestmentPropertiesCurrentValue='';
-    data.InvestmentPropertiesDebtLoanAmount='';
-    data.InvestmentPropertiesExpensesPA='';
-    data.InvestmentPropertiesFrequency='';
-    data.InvestmentPropertiesFrequency2='';
-    data.InvestmentPropertiesInterestRatePA='';
-    data.InvestmentPropertiesLender='';
-    data.InvestmentPropertiesLoanAttached='';
-    data.InvestmentPropertiesLoanTerm='';
-    data.InvestmentPropertiesLoanType='';
-    data.InvestmentPropertiesPostcode='';
-    data.InvestmentPropertiesRentalIncome='';
-    data.InvestmentPropertiesRepaymentAmount='';
-    data.InvestmentPropertiesTotalAnnualIncome='';
-    data.InvestmentPropertiesYearsRemaining='';
 
-    setInvestmentPropertiesList([data]);
+  let id = elem._id;
+  let email = elem.Email;
+
+
+      axios
+      .delete(`http://localhost:7000/Client-InvestmentProperties/Delete-Client-Investment-Properties/${email}/${id}`)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Market Remove");
+      });
+        
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentProperties`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setInvestmentPropertiesList(clientFilterObj);
+      });
+    }, 500);
+}
+
+let InvestmentPropertiesUpdateHandler =(elem)=>{
+  // console.log(e);
+
+  let InvestmentPropertiesDetails = {
+    id:elem._id,
+    InvestmentPropertiesCurrentValue: elem.InvestmentPropertiesCurrentValue,
+    InvestmentPropertiesClientOwnership: elem.InvestmentPropertiesClientOwnership,
+    InvestmentPropertiesCostBase: elem.InvestmentPropertiesCostBase,
+    InvestmentPropertiesAddress: elem.InvestmentPropertiesAddress,
+    InvestmentPropertiesPostcode: elem.InvestmentPropertiesPostcode,
+    InvestmentPropertiesRentalIncome: elem.InvestmentPropertiesRentalIncome,
+    InvestmentPropertiesFrequency: elem.InvestmentPropertiesFrequency,
+    InvestmentPropertiesTotalAnnualIncome: elem.InvestmentPropertiesTotalAnnualIncome,
+    InvestmentPropertiesExpensesPA: elem.InvestmentPropertiesExpensesPA,
+    InvestmentPropertiesLoanAttached: elem.InvestmentPropertiesLoanAttached,
+    InvestmentPropertiesCurrentBalance: elem.InvestmentPropertiesCurrentBalance,
+    InvestmentPropertiesClientBorrowing: elem.InvestmentPropertiesClientBorrowing,
+    InvestmentPropertiesLender: elem.InvestmentPropertiesLender,
+    InvestmentPropertiesRepaymentAmount: elem.InvestmentPropertiesRepaymentAmount,
+    InvestmentPropertiesFrequency2: elem.InvestmentPropertiesFrequency2,
+    InvestmentPropertiesAnnualRepayment: elem.InvestmentPropertiesAnnualRepayment,
+    InvestmentPropertiesInterestRatePA: elem.InvestmentPropertiesInterestRatePA,
+    InvestmentPropertiesLoanTerm: elem.InvestmentPropertiesLoanTerm,
+    InvestmentPropertiesLoanType: elem.InvestmentPropertiesLoanType,
+    InvestmentPropertiesDebtLoanAmount: elem.InvestmentPropertiesDebtLoanAmount,
+    InvestmentPropertiesYearsRemaining: elem.InvestmentPropertiesYearsRemaining,
+
+   
+  }
+
+  setInvestmentPropertiesListObj([InvestmentPropertiesDetails]);
+  setInvestmentPropertiesEdit(true);
+  InvestmentPropertieshandleShow();
 }
 // InvestmentPropertiesDeleteHandler delete end
 
@@ -1332,7 +1766,40 @@ let OtherDeleteHandler =(e)=>{
     data.OtherRegularInvestmentsPA="";
     data.OtherReinvestedIncome="";
     data.OtherTotalIncomePA="";
-    setOthersList([data]);
+    // setOthersList([data]);
+
+    // let email = localStorage.getItem("ClientEmail");
+
+    axios
+    .patch(`http://localhost:7000/Client-Others/Update-Client-Others/${data.Email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Bank Updated Complete");
+      })
+
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Others`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+  
+              // OtherPurchaseDate2
+      // OtherPurchaseDate
+          
+          let date = new  Date(clientFilterObj[0].OtherPurchaseDate2)
+          clientFilterObj[0].OtherPurchaseDate2 = date;
+  
+          // date = new  Date(clientFilterObj[0].OtherPurchaseDate)
+          // clientFilterObj[0].OtherPurchaseDate = date;
+          
+  
+          setOthersList(clientFilterObj);
+        });
+      }, 500);
+  
+  
+  
 }
 
 
@@ -1349,8 +1816,28 @@ let OtherDeleteHandler2 =(e)=>{
     data.OtherPurchaseDate2="";
     data.OtherRegularInvestmentsPA2="";
     data.OtherReinvestedIncome2="";
-    data.OtherTotalIncomePA2="";
-    setOthersList([data]);
+    data.OtherTotalIncomePA2 = "";
+  
+    axios
+    .patch(`http://localhost:7000/Client-Others/Update-Client-Others/${data.Email}`, data)
+    .then((res) => {
+      //Popper Massage
+      console.log("Bank Updated Complete");
+      })
+
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Others`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+      
+          let date = new  Date(clientFilterObj[0].OtherPurchaseDate)
+          clientFilterObj[0].OtherPurchaseDate = date;
+  
+          setOthersList(clientFilterObj);
+        });
+      }, 500);
 }
 // OtherDeleteHandler delete end
 
@@ -2599,7 +3086,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={AustralianSharePortfolioEdit?  AustralianSharePortfolioList[0] :Client_initialValues}
+                                initialValues={AustralianSharePortfolioEdit?  AustralianSharePortfolioListObj[0] :Client_initialValues}
                                 validationSchema={Client_validationSchemaAssociatedLoan}
                                 onSubmit={AustralianSharePortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -2836,7 +3323,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{AustralianInterestRatePA}</td>
                                            <td >
                                             <button  type='button' onClick={(e)=>AustralianLoanDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={()=>AustralianSharePortfoliohandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button' onClick={(w)=>AustralianLoanUpdateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
                                 
                                             </td> 
                                         
@@ -2941,7 +3428,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={ManagedFundsEdit? ManagedFundsList[0] : Client_initialValues}
+                                initialValues={ManagedFundsEdit? ManagedFundsListObj[0] : Client_initialValues}
                                 validationSchema={Client_validationSchemaManagedFunds}
                                 onSubmit={ManagedFunds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
@@ -3186,7 +3673,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{ManagedFundsCurrentValue}</td>
                                              <td >
                                             <button  type='button' onClick={(e)=>ManagedFundsDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={(e)=>{ManagedFundshandleShow()}} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button' onClick={(e)=>{ManagedFundsUpdateHandler(elem)}} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
                                             </td>  
                                         
@@ -3283,7 +3770,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={ManagedFundsLoanEdit ? ManagedFundsPortfolioList[0] :   Client_initialValues}
+                                initialValues={ManagedFundsLoanEdit ? ManagedFundsPortfolioListObj[0] :   Client_initialValues}
                                 validationSchema={Client_validationSchemaManagedFundsLoan}
                                 onSubmit={ManagedFundsPortfolio_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -3521,7 +4008,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{ManagedFundsPortfolioInterestRatePA}</td>
                                            <td >
                                             <button  type='button' onClick={(e)=>ManagedFundsLoanDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={()=>ManagedFundsPortfoliohandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button' onClick={(e)=>ManagedFundsLoanUpdateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
                                             </td>  
                                         
@@ -3626,7 +4113,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={InvestmentBondsEdit? InvestmentBondsList[0] :Client_initialValues}
+                                initialValues={InvestmentBondsEdit? InvestmentBondsListObj[0] :Client_initialValues}
                                 validationSchema={Client_validationSchemaInvestmentBonds}
                                 onSubmit={InvestmentBonds_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,handleBlur})=>
@@ -3869,7 +4356,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{InvestmentBondsCurrentValue}</td>
                                             <td>
                                             <button  type='button' onClick={(e)=>InvestmentBondsDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={()=>InvestmentBondshandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button' onClick={(e)=>InvestmentBondsUpdateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
                                             </td>
                                         </tr>
                                         );
@@ -3972,7 +4459,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   </Modal.Title>
                                 </Modal.Header>
                               <Formik
-                                initialValues={InvestmentPropertiesEdit? InvestmentPropertiesList[0] : Client_initialValues}
+                                initialValues={InvestmentPropertiesEdit? InvestmentPropertiesListObj[0] : Client_initialValues}
                                 validationSchema={Client_validationSchemaInvestmentProperties}
                                 onSubmit={InvestmentProperties_onSubmit}>
                               {({values , setFieldValue ,setValues,handleChange,formik})=>
@@ -4535,7 +5022,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{InvestmentPropertiesRepaymentAmount}</td>
                                             <td >
                                             <button  type='button' onClick={(e)=>InvestmentPropertiesDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={()=>InvestmentPropertieshandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button' onClick={(e)=>InvestmentPropertiesUpdateHandler(elem)} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
                                             </td> 
                                         
@@ -4964,8 +5451,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   {/* Australian Share Market 1  */}
                                 {  OthersList.map((elem,index)=>{
                                     let { OtherInvestmentName, OtherCurrentValue, OtherIncomePA, OtherReinvestedIncome }=elem;
-                                    if(OthersList[0].OtherInvestmentName !=='' ||
-                                    OthersList[0].OtherCurrentValue !=='' ){
+                                    if(OthersList[0].OtherInvestmentName !=='' ){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
@@ -4975,7 +5461,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{OtherReinvestedIncome}</td>
                                              <td >
                                             <button  type='button' onClick={(e)=>OtherDeleteHandler(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button' onClick={()=>OthershandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button type='button' onClick={() => { setOthersEdit(true); OthershandleShow(); }} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
                                             </td>  
                                         
@@ -4992,8 +5478,7 @@ let OtherDeleteHandler2 =(e)=>{
                                   {/* Australian Share Market 2 */}
                                 {  OthersList.map((elem,index)=>{
                                     let { OtherInvestmentName2, OtherCurrentValue2, OtherIncomePA2, OtherReinvestedIncome2 }=elem;
-                                    if(OthersList[0].OtherInvestmentName2 !=='' ||
-                                    OthersList[0].OtherCurrentValue2 !=='' ){
+                                    if(OthersList[0].OtherInvestmentName2 !=='' ){
                                       return(
                                         <tr key={index}>
                                           {/* <td className='fw-bold'>Bank #1</td> */}
@@ -5003,7 +5488,7 @@ let OtherDeleteHandler2 =(e)=>{
                                             <td>{OtherReinvestedIncome2}</td>
                                            <td >
                                             <button  type='button' onClick={(e)=>OtherDeleteHandler2(elem)} className='btn btn-danger btn-sm'>delete</button>
-                                            <button  type='button'  onClick={()=>OthershandleShow()} className='btn btn-warning btn-sm mx-2'>update</button>
+                                            <button  type='button'  onClick={() => { setOthersEdit(true); OthershandleShow(); }} className='btn btn-warning btn-sm mx-2'>update</button>
                                     
                                             </td> 
                                         

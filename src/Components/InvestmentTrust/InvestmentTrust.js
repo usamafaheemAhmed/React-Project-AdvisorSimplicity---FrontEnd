@@ -140,7 +140,6 @@ const InvestmentTrust = () => {
   };
 
   const [bankAccountList, setBankAccountList] = useState([]);
-  const [bankAccountList2, setBankAccountList2] = useState([]);
   const [isEdit_bankAccountList, set_isEdit_BankAccountList] = useState(false);
 
   let Bank_initialValues = {
@@ -200,10 +199,10 @@ const InvestmentTrust = () => {
     ),
   });
 
-  const [bankObj, setBankObj] = useState([]);
   let Bank_onSubmit = (values) => {
-    set_isEdit_BankAccountList(true);
+  
     let emailasID = localStorage.getItem("ClientEmail");
+    // alert("data ");
     let Bank_Data = {
       Email: localStorage.getItem("ClientEmail"),
 
@@ -226,107 +225,115 @@ const InvestmentTrust = () => {
       AnnualIncome3: 5000,
     };
 
-    setBankAccountList2([Bank_Data]);
-
-    //  console.log(Bank_Data)
-
-    let bankAccount1 = {
-      id: 1,
-      CurrentValue: values.CurrentValue1,
-      FinancialInstitution: values.FinancialInstitution1,
-      IncomeYield: values.IncomeYield1,
-      // AnnualIncome1:values.AnnualIncome1,
-      AnnualIncome: 5000,
-    };
-    let bankAccount2 = {
-      id: 2,
-      CurrentValue: values.CurrentValue2,
-      FinancialInstitution: values.FinancialInstitution2,
-      IncomeYield: values.IncomeYield2,
-      // AnnualIncome2:values.AnnualIncome2,
-      AnnualIncome: 5000,
-    };
-    let bankAccount3 = {
-      id: 3,
-      CurrentValue: values.CurrentValue3,
-      FinancialInstitution: values.FinancialInstitution3,
-      IncomeYield: values.IncomeYield3,
-      // AnnualIncome3:values.AnnualIncome3,
-      AnnualIncome: 5000,
-    };
-    setBankAccountList([bankAccount1, bankAccount2, bankAccount3]);
-
-    console.log(bankAccountList);
-    set_isEdit_BankAccountList(true);
-    if (isEdit_bankAccountList == false) {
+    if (isEdit_bankAccountList) {
       axios
-        .post(
-          "http://localhost:7000/Client-InvestmentTrust-BankAccounts/Add-Client-BankAccounts",
-          Bank_Data
-        )
-        .then((res) => console.log("data added successfully"));
-    } else {
-      axios
-        .patch(
-          ` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,
-          Bank_Data
-        )
-        .then((res) => console.log("data Updated successfully"))
-        .catch((err) => {
-          if (err.response) {
-            console.log(err.response.status);
-            console.log(err.response.statusText);
-            console.log(err.message);
-            console.log(err.response.headers); // 👉️ {... response headers here}
-            console.log("ss", err.response.data); // 👉️ {... response data here}
-          }
-        });
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${Bank_Data.Email}`,Bank_Data)
+      .then((res) => console.log("data Updated successfully"));
     }
+    else {
+      axios
+        .post("http://localhost:7000/Client-InvestmentTrust-BankAccounts/Add-Client-BankAccounts",Bank_Data)
+        .then((res) => console.log("data added successfully"));
+      set_isEdit_BankAccountList(true);
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == Bank_Data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+
+
 
     handleClose();
   };
 
-  let updateHandler_Bank = (elem) => {
-    set_isEdit_BankAccountList(true);
-    handleShow();
-  };
 
-  let deleteHandler_Bank = (e, index) => {
-    let emailasID = localStorage.getItem("ClientEmail");
-    console.log(bankAccountList2);
+  let deleteHandler_Bank1 = (e) => {
 
-    setBankAccountList(
-      bankAccountList.filter((object) => {
-        return object.id !== e.id;
-      })
-    );
+    let data = e;
 
-    if (e.id == 1) {
-      bankAccountList2[0].CurrentValue1 = "";
-      bankAccountList2[0].FinancialInstitution1 = "";
-      bankAccountList2[0].IncomeYield1 = "";
-      bankAccountList2[0].AnnualIncome1 = "";
-    } else if (e.id == 2) {
-      bankAccountList2[0].CurrentValue2 = "";
-      bankAccountList2[0].FinancialInstitution2 = "";
-      bankAccountList2[0].IncomeYield2 = "";
-      bankAccountList2[0].AnnualIncome2 = "";
-    } else if (e.id == 3) {
-      bankAccountList2[0].CurrentValue3 = "";
-      bankAccountList2[0].FinancialInstitution3 = "";
-      bankAccountList2[0].IncomeYield3 = "";
-      bankAccountList2[0].AnnualIncome3 = "";
-    }
+    data.CurrentValue1 = '';
+    data.FinancialInstitution1='';
+    data.IncomeYield1 = '';
+    // AnnualIncome1:values.AnnualIncome1,
+    data.AnnualIncome1 = '';
+
+    // setBankAccountList([data]);
 
     axios
-      .patch(
-        `http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,
-        bankAccountList2[0]
-      )
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${data.Email}`,data)
       .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+
   };
 
-  const [depositList, setdepositList] = useState([]);
+  let deleteHandler_Bank2 = (e) => {
+    // let emailasID = localStorage.getItem("ClientEmail");
+
+    let data = e;
+
+    data.CurrentValue2 = '';
+    data.FinancialInstitution2='';
+    data.IncomeYield2 = '';
+    data.AnnualIncome2 = '';
+
+
+
+    axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${data.Email}`,data)
+      .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+  };
+
+  let deleteHandler_Bank3 = (e) => {
+
+      let data = e;
+
+      data.CurrentValue3 = '';
+      data.FinancialInstitution3='';
+      data.IncomeYield3 = '';
+      data.AnnualIncome3 = '';
+  
+
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${data.Email}`,data)
+      .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+  };
+
+
+  const [depositList, setDepositList] = useState([]);
   const [deposit_InitialValue2, setdeposit_InitialValue2] = useState([]);
 
   const [isEdit_deposit, set_isEdit_deposit] = useState(false);
@@ -389,7 +396,8 @@ const InvestmentTrust = () => {
   });
 
   let Deposit_onSubmit = (values) => {
-    set_isEdit_deposit(true);
+
+ 
 
     let depositData = {
       Email: localStorage.getItem("ClientEmail"),
@@ -413,94 +421,121 @@ const InvestmentTrust = () => {
       AnnualIncome3: 5000,
     };
 
-    let depositData2 = {
-      DepositCurrentValue1: values.DepositCurrentValue1,
-      DepositFinancialInstitution1: values.DepositFinancialInstitution1,
-      DepositIncomeYield1: values.DepositIncomeYield1,
-      // AnnualIncome1:values.DepositAnnualIncome1,
-      DepositAnnualIncome1: 5000,
 
-      DepositCurrentValue2: values.DepositCurrentValue2,
-      DepositFinancialInstitution2: values.DepositFinancialInstitution2,
-      DepositIncomeYield2: values.DepositIncomeYield2,
-      // AnnualIncome2:values.DepositAnnualIncome2,
-      DepositAnnualIncome2: 5000,
+    console.log(" Deposits ",depositData);
 
-      DepositCurrentValue3: values.DepositCurrentValue3,
-      DepositFinancialInstitution3: values.DepositFinancialInstitution3,
-      DepositIncomeYield3: values.DepositIncomeYield3,
-      // AnnualIncome3:values.DepositAnnualIncome3,
-      DepositAnnualIncome3: 5000,
-    };
+    if (isEdit_deposit) {
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${depositData.Email}`,depositData)
+      .then((res) => console.log("data Updated successfully"));  
 
-    let deposit1 = {
-      id: 1,
-      DepositCurrentValue: values.DepositCurrentValue1,
-      DepositFinancialInstituion: values.DepositFinancialInstitution1,
-      DepositIncomeYield: values.DepositIncomeYield1,
-      // AnnualIncome1:values.DepositAnnualIncome1,
-      DepositAnnualIncome: 5000,
-    };
+    } else {
+       
+      axios
+        .post("http://localhost:7000/Client-InvestmentTrust-TermDeposit/Add-Client-TermDeposit", depositData)
+        .then((res) => console.log("data added successfully"));
+    }
 
-    let deposit2 = {
-      id: 2,
-      DepositCurrentValue: values.DepositCurrentValue2,
-      DepositFinancialInstituion: values.DepositFinancialInstitution2,
-      DepositIncomeYield: values.DepositIncomeYield2,
-      // AnnualIncome2:values.DepositAnnualIncome2,
-      DepositAnnualIncome: 5000,
-    };
+    // setDepositList([depositData]);
+    // console.log(depositData);
+    // set_isEdit_deposit(true)
+  
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == depositData.Email);
+        setDepositList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
 
-    let deposit3 = {
-      id: 3,
-      DepositCurrentValue: values.DepositCurrentValue3,
-      DepositFinancialInstituion: values.DepositFinancialInstitution3,
-      DepositIncomeYield: values.DepositIncomeYield3,
-      // AnnualIncome:values.DepositAnnualIncome3,
-      DepositAnnualIncome: 5000,
-    };
 
-    setdepositList([deposit1, deposit2, deposit3]);
-
-    setdeposit_InitialValue2([depositData2]);
-
-    console.log(depositData);
-
-    axios
-      .post(
-        "http://localhost:7000/Client-InvestmentTrust-TermDeposit/Add-Client-TermDeposit",
-        depositData
-      )
-      .then((res) => console.log("data added successfully"));
     handleClose2();
   };
 
-  let updateHandler_Deposit = (elem) => {
-    set_isEdit_deposit(true);
-    handleShow2();
-  };
 
-  let deleteHandler_Deposit = (e, index) => {
+  let deleteHandler_Deposit1 = (e) => {
     // console.log(e)
-    setdepositList(
-      depositList.filter((object) => {
-        return object.id !== e.id;
-      })
-    );
+    // setDepositList(
+    
+    let data = e;
+    data.CurrentValue1='';
+    data.FinancialInstitution1='';
+    data.IncomeYield1='';
+    // AnnualIncome1:values.DepositAnnualIncome1,
+    data.AnnualIncome1 = '';
 
-    if (e.id == 1) {
-      deposit_InitialValue2[0].DepositCurrentValue1 = "";
-      deposit_InitialValue2[0].DepositFinancialInstitution1 = "";
-      deposit_InitialValue2[0].DepositIncomeYield1 = "";
-    } else if (e.id == 2) {
-      deposit_InitialValue2[0].DepositCurrentValue2 = "";
-      deposit_InitialValue2[0].DepositFinancialInstitution2 = "";
-      deposit_InitialValue2[0].DepositIncomeYield2 = "";
-    } else if (e.id == 3) {
-      deposit_InitialValue2[0].DepositCurrentValue3 = "";
-      deposit_InitialValue2[0].DepositFinancialInstitution3 = "";
-      deposit_InitialValue2[0].DepositIncomeYield3 = "";
-    }
+    // setDepositList([data]);
+
+    axios
+    .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${data.Email}`,data)
+    .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setDepositList(clientFilterObj);
+      });
+    }, 500);
+    
+ 
+  };
+  let deleteHandler_Deposit2 = (e) => {
+    // console.log(e)
+    // setDepositList(
+      let data = e;
+      data.CurrentValue2='';
+      data.FinancialInstitution2='';
+      data.IncomeYield2='';
+      // AnnualIncome1:values.DepositAnnualIncome1,
+      data.AnnualIncome2 = '';
+  
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${data.Email}`,data)
+      .then((res) => console.log("data Updated successfully"));
+  
+  
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+          setDepositList(clientFilterObj);
+        });
+      }, 500);
+  
+ 
+  };
+  let deleteHandler_Deposit3 = (e) => {
+    // console.log(e)
+    // setDepositList(
+          let data = e;
+    data.CurrentValue3='';
+    data.FinancialInstitution3='';
+    data.IncomeYield3='';
+    // AnnualIncome1:values.DepositAnnualIncome1,
+    data.AnnualIncome3 = '';
+
+   
+    axios
+    .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${data.Email}`,data)
+    .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setDepositList(clientFilterObj);
+      });
+    }, 500);
+
+ 
   };
 
   const [Share_initialValues2, setShare_initialValues2] = useState([]);
@@ -1391,6 +1426,73 @@ const InvestmentTrust = () => {
     handleClose8();
   };
 
+  useEffect(()=>{
+
+    let email=localStorage.getItem("EditClient")
+
+    //BankAccounts is added in get Api 
+    axios
+    .get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`)
+    .then((res) => {
+    let clientObj=(res.data)
+      let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      let data = {
+        CurrentValue1: "",
+        FinancialInstitution1: "",
+        IncomeYield1: "",
+        AnnualIncome1: "",
+    
+        CurrentValue2: "",
+        FinancialInstitution2: "",
+        IncomeYield2: "",
+        AnnualIncome2: "",
+    
+        CurrentValue3: "",
+        FinancialInstitution3: "",
+        IncomeYield3: "",
+        AnnualIncome3: "",
+      }
+      if (clientFilterObj.length > 0) {
+        setBankAccountList([data]);
+        set_isEdit_BankAccountList(true);
+      } 
+    })
+
+  
+
+    axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+      console.log("got it");
+      let clientObj = res.data;
+      let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      let data= {
+        DepositCurrentValue1: " ",
+        DepositFinancialInstitution1: " ",
+        DepositIncomeYield1: " ",
+        DepositAnnualIncome1: " ",
+    
+        DepositCurrentValue2: " ",
+        DepositFinancialInstitution2: " ",
+        DepositIncomeYield2: " ",
+        DepositAnnualIncome2: " ",
+    
+        DepositCurrentValue3: " ",
+        DepositFinancialInstitution3: " ",
+        DepositIncomeYield3: " ",
+        DepositAnnualIncome3: " ",
+      };
+
+      if (clientFilterObj.length > 0) {
+        setDepositList([data]);
+        set_isEdit_deposit(true);
+      }
+
+    });
+  
+    
+
+  },[])
+
+
   return (
     <>
       <div className="container-fluid">
@@ -1795,7 +1897,7 @@ const InvestmentTrust = () => {
                       <Formik
                         initialValues={
                           isEdit_bankAccountList
-                            ? bankAccountList2[0]
+                            ? bankAccountList[0]
                             : Bank_initialValues
                         }
                         validationSchema={Bank_validationSchema}
@@ -2133,36 +2235,73 @@ const InvestmentTrust = () => {
                           </tr>
                         </thead>
                         <tbody>
+                          
                           {bankAccountList.map((elem, index) => {
-                            // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
-
-                            return (
-                              <tr key={index}>
-                                <td>{elem.CurrentValue}</td>
-                                <td>{elem.FinancialInstitution}</td>
-                                <td>{elem.IncomeYield}</td>
-                                <td>{elem.AnnualIncome}</td>
-                                <td>
-                                  <button
-                                    type="button"
-                                    onClick={(e) =>
-                                      deleteHandler_Bank(elem, index)
-                                    }
-                                    className="btn btn-danger btn-sm"
-                                  >
-                                    delete
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => updateHandler_Bank(elem)}
-                                    className="btn btn-warning btn-sm mx-2"
-                                  >
-                                    update
-                                  </button>
-                                </td>
-                              </tr>
-                            );
+                            //bank one
+                            if (elem.FinancialInstitution1) {
+                              return (
+                                <tr key={index}>
+                                <td>{elem.CurrentValue1}</td>
+                                <td>{elem.FinancialInstitution1}</td>
+                                <td>{elem.IncomeYield1}</td>
+                                <td>{elem.AnnualIncome1}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Bank1(elem)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) =>{set_isEdit_BankAccountList(true); handleShow();}} className="btn btn-warning btn-sm mx-2" >
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                              }
                           })}
+
+                          {bankAccountList.map((elem, index) => {
+                            //bank two
+                            if (elem.FinancialInstitution2) {
+                              return (
+                                <tr key={index}>
+                                <td>{elem.CurrentValue2}</td>
+                                <td>{elem.FinancialInstitution2}</td>
+                                <td>{elem.IncomeYield2}</td>
+                                <td>{elem.AnnualIncome2}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Bank2(elem)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => { set_isEdit_BankAccountList(true); handleShow();}} className="btn btn-warning btn-sm mx-2" >
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                              }
+                          })}
+
+                          {bankAccountList.map((elem, index) => {
+                            //bank two
+                            if (elem.FinancialInstitution3) {
+                              return (
+                                <tr key={index}>
+                                <td>{elem.CurrentValue3}</td>
+                                <td>{elem.FinancialInstitution3}</td>
+                                <td>{elem.IncomeYield3}</td>
+                                <td>{elem.AnnualIncome3}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Bank3(elem)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => { set_isEdit_BankAccountList(true); handleShow();}} className="btn btn-warning btn-sm mx-2" >
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                              }
+                          })}
+
                         </tbody>
                       </table>
                     </div>
@@ -2211,11 +2350,7 @@ const InvestmentTrust = () => {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={
-                          isEdit_deposit
-                            ? deposit_InitialValue2[0]
-                            : Deposit_initialValues
-                        }
+                        initialValues={isEdit_deposit ? depositList[0]: Deposit_initialValues}
                         validationSchema={Deposit_validationSchema}
                         onSubmit={Deposit_onSubmit}
                       >
@@ -2553,34 +2688,69 @@ const InvestmentTrust = () => {
                         </thead>
                         <tbody>
                           {depositList.map((elem, index) => {
-                            // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                            if (elem.FinancialInstitution1) {
+                              return (
+                                <tr key={index}>
+                                  <td>{elem.CurrentValue1}</td>
+                                  <td>{elem.FinancialInstitution1}</td>
+                                  <td>{elem.IncomeYield1}</td>
+                                  <td>{elem.AnnualIncome1}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Deposit1(elem, index)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => {set_isEdit_deposit(true);handleShow2();}} className="btn btn-warning btn-sm mx-2">
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
 
-                            return (
-                              <tr key={index}>
-                                <td>{elem.DepositCurrentValue}</td>
-                                <td>{elem.DepositFinancialInstituion}</td>
-                                <td>{elem.DepositIncomeYield}</td>
-                                <td>{elem.DepositAnnualIncome}</td>
-                                <td>
-                                  <button
-                                    type="button"
-                                    onClick={(e) =>
-                                      deleteHandler_Deposit(elem, index)
-                                    }
-                                    className="btn btn-danger btn-sm"
-                                  >
-                                    delete
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => updateHandler_Deposit(elem)}
-                                    className="btn btn-warning btn-sm mx-2"
-                                  >
-                                    update
-                                  </button>
-                                </td>
-                              </tr>
-                            );
+                          })}
+
+                          {depositList.map((elem, index) => {
+                            if (elem.FinancialInstitution2) {
+                              return (
+                                <tr key={index}>
+                                  <td>{elem.CurrentValue2}</td>
+                                  <td>{elem.FinancialInstitution2}</td>
+                                  <td>{elem.IncomeYield2}</td>
+                                  <td>{elem.AnnualIncome2}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Deposit2(elem, index)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => {set_isEdit_deposit(true);handleShow2();}} className="btn btn-warning btn-sm mx-2">
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
+
+                          })}
+
+                          {depositList.map((elem, index) => {
+                            if (elem.FinancialInstitution3) {
+                              return (
+                                <tr key={index}>
+                                  <td>{elem.CurrentValue3}</td>
+                                  <td>{elem.FinancialInstitution3}</td>
+                                  <td>{elem.IncomeYield3}</td>
+                                  <td>{elem.AnnualIncome3}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Deposit3(elem, index)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => {set_isEdit_deposit(true);handleShow2();}} className="btn btn-warning btn-sm mx-2">
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
+
                           })}
                         </tbody>
                       </table>

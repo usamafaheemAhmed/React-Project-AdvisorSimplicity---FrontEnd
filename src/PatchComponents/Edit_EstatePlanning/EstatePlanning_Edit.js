@@ -1,50 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import Modal from "react-bootstrap/Modal";
-import * as Yup from 'yup';
-import 'yup-phone';
+import React, { useState, useEffect } from "react"
+import Modal from "react-bootstrap/Modal"
+import * as Yup from "yup"
+import "yup-phone"
 import plus from "./images/plus.svg"
-import notebook from './images/notebook.svg';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import notebook from "./images/notebook.svg"
+import { ErrorMessage, Field, Form, Formik } from "formik"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const EstatePlanning_Edit = () => {
-  const [POA, setPOA] = useState(false);
-  const [POA2, setPOA2] = useState(false);
+  const [POA, setPOA] = useState(false)
+  const [POA2, setPOA2] = useState(false)
 
-  const [ClientPOAListUpdate, setClientPOAListUpdate] = useState([]);
-  const [ClientEstatePlanningFlag, setClientEstatePlanningFlag] =useState(false);
-  
-  
-  const [PartnerPOAListUpdate, setPartnerPOAListUpdate] = useState([]);
-  const [PartnerEstatePlanningFlag, setPartnerEstatePlanningFlag] =useState(false);
+  const [ClientPOAListUpdate, setClientPOAListUpdate] = useState([])
+  const [ClientEstatePlanningFlag, setClientEstatePlanningFlag] =
+    useState(false)
 
+  const [PartnerPOAListUpdate, setPartnerPOAListUpdate] = useState([])
+  const [PartnerEstatePlanningFlag, setPartnerEstatePlanningFlag] =
+    useState(false)
 
-  const [show2, setShow2] = useState(false);
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
-  const [haveWills, setHaveWills] = useState(false);
-  const [haveWills2, setHaveWills2] = useState(false);
-  const [estatePlanning, setEstatePlanning] = useState(false);
-  const [estatePlanning2, setEstatePlanning2] = useState(false);
-  const [isPartnered, setIsPartnered] = useState();
+  const [show2, setShow2] = useState(false)
+  const handleClose2 = () => setShow2(false)
+  const handleShow2 = () => setShow2(true)
+  const [haveWills, setHaveWills] = useState(false)
+  const [haveWills2, setHaveWills2] = useState(false)
+  const [estatePlanning, setEstatePlanning] = useState(false)
+  const [estatePlanning2, setEstatePlanning2] = useState(false)
+  const [isPartnered, setIsPartnered] = useState()
 
-  const [updateIndex, setUpdateIndex] = useState();
+  // const [updateIndex, setUpdateIndex] = useState()
 
-  const [ClientPOAList, setClientPOAList] = useState([]);
-  const [ClientPOAList2, setClientPOAList2] = useState([]);
+  const [ClientPOAList, setClientPOAList] = useState([])
+  const [ClientPOAList2, setClientPOAList2] = useState([])
 
-  let partner = window.localStorage.getItem("partner");
+  let partner = window.localStorage.getItem("partner")
 
-    // API States
-    const [clientDataState, setClientData] = useState([])
-    const [poaClientData, setPoaClientData] = useState([])
-    const [PartnerDataState, setPartnerData] = useState([])
-    const [poaPartnerData, setPoaPartnerData] = useState([])
-
-
+  const [clientDataState, setClientData] = useState([]);
+  const [PartnerDataState, setPartnerData] = useState([]);
 
 
   useEffect(() => {
@@ -64,10 +59,17 @@ const EstatePlanning_Edit = () => {
     .get(`http://localhost:7000/Client-EstatePlanning`)
     .then((res) => {
     let clientObj=(res.data)
-    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    setClientData(clientFilterObj[0])
+    let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      
+      let date = new Date(clientFilterObj[0].PreparationDate);
+      clientFilterObj[0].PreparationDate = date;
+      
+      date = new Date(clientFilterObj[0].LastReviewDate);
+      clientFilterObj[0].LastReviewDate = date;
+      
+      setClientData(clientFilterObj[0]);
       //  console.log(res.data)
-      // console.log("clientFilterObj",clientFilterObj[0])
+      console.log("clientFilterObj",clientFilterObj[0])
     })
 
     // client data Modal
@@ -76,7 +78,7 @@ const EstatePlanning_Edit = () => {
     .then((res) => {
     let clientObj=(res.data)
     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    setPoaClientData(clientFilterObj[0])
+    setClientPOAList(clientFilterObj)
       //  console.log(res.data)
       //  console.log(clientFilterObj)
       
@@ -87,9 +89,16 @@ const EstatePlanning_Edit = () => {
     .get(`http://localhost:7000/Partner-EstatePlanning`)
     .then((res) => {
     let clientObj=(res.data)
-    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+    let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      
+      let date = new Date(clientFilterObj[0].PreparationDate);
+      clientFilterObj[0].PreparationDate = date;
+      
+      date = new Date(clientFilterObj[0].LastReviewDate);
+      clientFilterObj[0].LastReviewDate = date;
+
     setPartnerData(clientFilterObj[0])
-       console.log("Partner",clientFilterObj[0])
+      //  console.log("Partner",clientFilterObj[0])
       
     })
 
@@ -99,7 +108,7 @@ const EstatePlanning_Edit = () => {
     .then((res) => {
     let clientObj=(res.data)
     let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    setPoaPartnerData(clientFilterObj[0])
+    setClientPOAList2(clientFilterObj)
     //  console.log(res.data)
       
     })
@@ -111,68 +120,68 @@ const EstatePlanning_Edit = () => {
 
   let estatePlanningHandler = (elem) => {
     if (elem === "No") {
-      setEstatePlanning(false);
+      setEstatePlanning(false)
     } else {
-      setEstatePlanning(true);
+      setEstatePlanning(true)
     }
-  };
+  }
 
   let estatePlanningHandler2 = (elem) => {
     if (elem === "No") {
-      setEstatePlanning2(false);
+      setEstatePlanning2(false)
     } else {
-      setEstatePlanning2(true);
+      setEstatePlanning2(true)
     }
-  };
+  }
 
   let haveWillsHandler = (elem) => {
     if (elem === "No") {
-      setHaveWills(false);
+      setHaveWills(false)
     } else {
-      setHaveWills(true);
+      setHaveWills(true)
     }
-  };
+  }
 
   let haveWillsHandler2 = (elem) => {
     if (elem === "No") {
-      setHaveWills2(false);
+      setHaveWills2(false)
     } else {
-      setHaveWills2(true);
+      setHaveWills2(true)
     }
-  };
+  }
 
   let POAHandler2 = (elem) => {
     if (elem === "No") {
-      setPOA2(false);
+      setPOA2(false)
     } else {
-      setPOA2(true);
+      setPOA2(true)
     }
-  };
+  }
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
   let POAHandler = (elem) => {
     if (elem === "No") {
-      setPOA(false);
+      setPOA(false)
     } else {
-      setPOA(true);
+      setPOA(true)
     }
-  };
+  }
 
   function ChangeDateFormat(CDoB, HDate) {
-    let CurrentDate = new Date(document.getElementById(HDate).value);
-    let dd = CurrentDate.getDate();
-    let mm = CurrentDate.getMonth();
-    let yyyy = CurrentDate.getFullYear();
-    let setDate = dd + "/" + (mm + 1) + "/" + yyyy;
-    document.getElementById(CDoB).value = setDate;
+    let CurrentDate = new Date(document.getElementById(HDate).value)
+    let dd = CurrentDate.getDate()
+    let mm = CurrentDate.getMonth()
+    let yyyy = CurrentDate.getFullYear()
+    let setDate = dd + "/" + (mm + 1) + "/" + yyyy
+    document.getElementById(CDoB).value = setDate
   }
   let initialValues = {
     haveWillsradio: clientDataState.AnyWill,
     reflectCurrentWishesradio: clientDataState.CurrentWill_Reflection,
-    // datePrepared: clientDataState.PreparationDate,
-    // lastReviewed: clientDataState.LastReviewDate,
+    datePrepared: clientDataState.PreparationDate,
+    lastReviewed: clientDataState.LastReviewDate,
     LocationOfWill: clientDataState.WillLocation,
     allowTestamentaryradio: clientDataState.TestamentaryTest,
     Executor: clientDataState.Executors,
@@ -185,8 +194,8 @@ const EstatePlanning_Edit = () => {
 
     haveWillsradio2: PartnerDataState.AnyWill,
     reflectCurrentWishesradio2: PartnerDataState.CurrentWill_Reflection,
-    // datePrepared2: PartnerDataState.PreparationDate,
-    // lastReviewed2: PartnerDataState.LastReviewDate,
+    datePrepared2: PartnerDataState.PreparationDate,
+    lastReviewed2: PartnerDataState.LastReviewDate,
     LocationOfWill2: PartnerDataState.WillLocation,
     allowTestamentaryradio2: PartnerDataState.TestamentaryTest,
     Executor2: PartnerDataState.Executors,
@@ -251,7 +260,7 @@ const EstatePlanning_Edit = () => {
       then: Yup.string().required("Required"),
       otherwise: Yup.string().notRequired(),
     }),
-  });
+  })
 
   let client_validationSchema = Yup.object({
     LocationOfWill: Yup.string().when("haveWillsradio", {
@@ -280,7 +289,7 @@ const EstatePlanning_Edit = () => {
       then: Yup.string().required("Required"),
       otherwise: Yup.string().notRequired(),
     }),
-  });
+  })
 
   let Navigate = useNavigate();
   function BackFunction() {
@@ -288,11 +297,7 @@ const EstatePlanning_Edit = () => {
   }
 
   let onSubmit = (values) => {
-
-    console.log('clientDataState',clientDataState);
-
-
-    Navigate('/Edit-Super-And-Retirment')
+    //  Navigate('/Edit-Super-And-Retirment')
 
     // partner estate planning
     let PartnerData = {
@@ -308,7 +313,7 @@ const EstatePlanning_Edit = () => {
       SpecificEstateRequirements: values.specificEstatePlanningradio2,
       Details_SpecificRequirements: values.estatePlanningDetails2,
       POA: values.POAradio2,
-    };
+    }
 
     // client estate planning
     let clientData = {
@@ -324,52 +329,65 @@ const EstatePlanning_Edit = () => {
       SpecificEstateRequirements: values.specificEstatePlanningradio,
       Details_SpecificRequirements: values.estatePlanningDetails,
       POA: values.POAradio,
-    };
-
-    console.log('clientData',clientData);
-    console.log('PartnerData',PartnerData);
-    
+    }
 
     if (isPartnered === true) {
-      // console.log(clientData)
-      console.log(PartnerData);
+      console.log(clientData)
+      console.log(PartnerData)
 
       axios
-      .patch(`http://localhost:7000/Client-EstatePlanning/Update-Client-EstatePlanning/${localStorage.getItem("EditClient")}`, clientData)
-      // .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-      .then((res) =>  console.log("Client Estate Planning Updated Successfully!"))
-      axios
-      .patch(`http://localhost:7000/Partner-EstatePlanning/Update-Partner-EstatePlanning/${localStorage.getItem("EditClient")}`, PartnerData)
-      // .post('http://localhost:7000/Partner-EstatePlanning/Add-Partner-EstatePlanning', PartnerData)
-      .then((res) =>  console.log("Partner Estate Planning Updated Successfully!"))
+        .patch(
+          `http://localhost:7000/Client-EstatePlanning/Update-Client-EstatePlanning/${clientData.Email}`,
+          clientData
+        )
+        .then((res) => {
+           
+          console.log("Client Estate Planning Updated Successfullly!")
+        })
+
+          setTimeout(() => {
+            axios
+            .patch(
+              `http://localhost:7000/Partner-EstatePlanning/Update-Partner-EstatePlanning/${PartnerData.Email}`,
+              PartnerData
+            )
+              .then((res) => {
+                Navigate('/Edit-Super-And-Retirment');
+                console.log("Partner Estate Planning Updated Successfully!");
+            }
+            )
+          }, 500);
       
     } else {
-      console.log(clientData);
+      console.log(clientData)
       axios
-          .patch(`http://localhost:7000/Client-EstatePlanning/Update-Client-EstatePlanning/${localStorage.getItem("EditClient")}`, clientData)
-          // .post('http://localhost:7000/Client-EstatePlanning/Add-Client-EstatePlanning', clientData)
-          .then((res) =>  console.log("Client Estate Planning Update Successfully!"))
+      .patch(
+        `http://localhost:7000/Client-EstatePlanning/Update-Client-EstatePlanning/${clientData.Email}`,
+        clientData
+      )
+        .then((res) => {
+           Navigate('/Edit-Super-And-Retirment')
+          console.log("Client Estate Planning Updated Successfullly!")
+        })
     }
-  };
+  }
 
   let POA_initialValues = {
-   PowerofAttorney : poaClientData.POA_Type,
-   OtherDescription : poaClientData.POA_OtherDescription,
-  //  dateLastReviewed : poaClientData.POA_ReviewDate,
-   locationOfPOA : poaClientData.POA_Location,
-   POA1 : poaClientData.POA_1,
-   POA2 : poaClientData.POA_2,
-   POA3 : poaClientData.POA_3,
-   POA4 : poaClientData.POA_4,
-   POA5 : poaClientData.POA_5,
-   Relationship1 : poaClientData.Relationship_1,
-   Relationship2 : poaClientData.Relationship_2,
-   Relationship3 : poaClientData.Relationship_3,
-   Relationship4 : poaClientData.Relationship_4,
-   Relationship5 : poaClientData.Relationship_5,
-  };
-
-
+    PowerofAttorney: "",
+    dateLastReviewed: "",
+    OtherDescription: "",
+    locationOfPOA: "",
+    POA1: "",
+    Relationship1: "",
+    POA2: "",
+    Relationship2: "",
+    POA3: "",
+    Relationship3: "",
+    POA4: "",
+    Relationship4: "",
+    POA5: "",
+    Relationship5: "",
+  }
   let POA_validationSchema = Yup.object({
     PowerofAttorney: Yup.string(),
     dateLastReviewed: Yup.date().nullable(),
@@ -390,9 +408,11 @@ const EstatePlanning_Edit = () => {
     Relationship4: Yup.string(),
     POA5: Yup.string(),
     Relationship5: Yup.string(),
-  });
+  })
 
   let POA_onSubmit = (Values) => {
+    let email = localStorage.getItem("ClientEmail")
+
     let client_Modal = {
       Email: localStorage.getItem("ClientEmail"),
       POA_Type: Values.PowerofAttorney,
@@ -409,21 +429,39 @@ const EstatePlanning_Edit = () => {
       Relationship_3: Values.Relationship3,
       Relationship_4: Values.Relationship4,
       Relationship_5: Values.Relationship5,
-    };
+    }
 
     if (ClientEstatePlanningFlag) {
+      setClientEstatePlanningFlag(false)
+      let id = Values.id
+      axios
+        .patch(
+          `http://localhost:7000/Client-ModalEstatePlanning/Update-Client-ModalEstatePlanning/${email}/${id}`,
+          client_Modal
+        )
+        .then((res) => {
+          //Popper Massage
+          console.log("Updated Complete SuccessFully")
+        })
 
-      setClientPOAList(
-        ClientPOAList.filter((ClientPOAList, index) => index !== updateIndex)
-      );
-      setClientPOAList(ClientPOAList=>[...ClientPOAList, client_Modal]);
-      handleClose();
+      setTimeout(() => {
+        axios
+          .get("http://localhost:7000/Client-ModalEstatePlanning")
+          .then((res) => {
+            let childObj = res.data
+            let childFilterObj = childObj.filter((item) => item.Email == email)
+            setClientPOAList(childFilterObj)
+
+            console.log("Client Estate Planning Modal Get Successfullly!")
+          })
+      }, 500)
+
+      handleClose()
     } else {
-    
-      setClientPOAList([...ClientPOAList, client_Modal]);
-      console.log(client_Modal);
+      // setClientPOAList([...ClientPOAList, client_Modal]);
+      // console.log(client_Modal);
 
-      handleClose();
+      handleClose()
 
       axios
         .post(
@@ -431,29 +469,39 @@ const EstatePlanning_Edit = () => {
           client_Modal
         )
         .then((res) => {
-          handleClose();
-          console.log("Client Estate Planning Modal Added Successfullly!");
-        });
+          handleClose()
+          console.log("Client Estate Planning Modal Added Successfullly!")
+        })
+
+      setTimeout(() => {
+        axios
+          .get("http://localhost:7000/Client-ModalEstatePlanning")
+          .then((res) => {
+            let childObj = res.data
+            let childFilterObj = childObj.filter((item) => item.Email == email)
+            setClientPOAList(childFilterObj)
+
+            console.log("Client Estate Planning Modal Get Successfullly!")
+          })
+      }, 500)
     }
-  };
+  }
 
   let POA_initialValues2 = {
-    PowerofAttorney2: poaPartnerData.POA_Type,
-    // datelastReviewed2: poaPartnerData.POA_ReviewDate,
-    OtherDescription2: poaPartnerData.POA_OtherDescription,
-    locationOfPOA2: poaPartnerData.POA_Location,
-    POA12: poaPartnerData.POA_1,
-    POA22: poaPartnerData.POA_2,
-    POA32: poaPartnerData.POA_3,
-    POA42: poaPartnerData.POA_4,
-    POA52: poaPartnerData.POA_5,
-
-    Relationship12: poaPartnerData.Relationship_1,
-    Relationship22: poaPartnerData.Relationship_2,
-    Relationship32: poaPartnerData.Relationship_3,
-    Relationship42: poaPartnerData.Relationship_4,
-    Relationship52: poaPartnerData.Relationship_5,
-  };
+    PowerofAttorney2: "",
+    datelastReviewed2: "",
+    OtherDescription2: "",
+    locationOfPOA2: "",
+    POA12: "",
+    Relationship12: "",
+    POA22: "",
+    Relationship22: "",
+    POA32: "",
+    Relationship32: "",
+    POA42: "",
+    POA52: "",
+    Relationship52: "",
+  }
   let POA_validationSchema2 = Yup.object({
     PowerofAttorney2: Yup.string(),
     datelastReviewed2: Yup.date().nullable(),
@@ -475,19 +523,48 @@ const EstatePlanning_Edit = () => {
     Relationship42: Yup.string(),
     POA52: Yup.string(),
     Relationship52: Yup.string(),
-  });
+  })
 
   let ClientEstatePlanningDelete = (elem, ind) => {
-    setClientPOAList(
-      ClientPOAList.filter((ClientPOAList, index) => index !== ind)
-    );
-  };
+    let email = localStorage.getItem("ClientEmail")
+    let id = elem._id
+
+    // setClientPOAList(
+    //   ClientPOAList.filter((ClientPOAList, index) => index !== ind)
+    // );
+
+    // jojo
+
+    axios
+      .delete(
+        `http://localhost:7000/Client-ModalEstatePlanning/Delete-Client-ModalEstatePlanning/${email}/${id}`
+      )
+      .then((res) => {
+        //Popper Massage
+        console.log("Client Modal Row Deleted Successfully")
+      })
+
+    setTimeout(() => {
+      axios
+        .get("http://localhost:7000/Client-ModalEstatePlanning")
+        .then((res) => {
+          let childObj = res.data
+          let childFilterObj = childObj.filter((item) => item.Email == email)
+          setClientPOAList(childFilterObj)
+
+          console.log("Client Estate Planning Modal Get Successfullly!")
+        })
+    }, 500)
+  }
 
   let ClientEstatePlanningUpdate = (elem, ind) => {
-    setClientEstatePlanningFlag(true);
+    setClientEstatePlanningFlag(true)
+
+    let date = new Date(elem.POA_ReviewDate)
+    elem.POA_ReviewDate = date
 
     let client_Modal = {
-      Email: localStorage.getItem("ClientEmail"),
+      id: elem._id,
       PowerofAttorney: elem.POA_Type,
       OtherDescription: elem.POA_OtherDescription,
       dateLastReviewed: elem.POA_ReviewDate,
@@ -502,13 +579,15 @@ const EstatePlanning_Edit = () => {
       Relationship3: elem.Relationship_3,
       Relationship4: elem.Relationship_4,
       Relationship5: elem.Relationship_5,
-    };
-    setClientPOAListUpdate([client_Modal]);
-    setUpdateIndex(ind);
-    setShow(true);
-  };
+    }
+    setClientPOAListUpdate([client_Modal])
+    // setUpdateIndex(ind);
+    setShow(true)
+  }
 
   let POA_onSubmit2 = (values) => {
+    let email = localStorage.getItem("ClientEmail")
+
     let Partnet_Modal = {
       Email: localStorage.getItem("ClientEmail"),
       POA_Type: values.PowerofAttorney2,
@@ -526,45 +605,98 @@ const EstatePlanning_Edit = () => {
       Relationship_3: values.Relationship32,
       Relationship_4: values.Relationship42,
       Relationship_5: values.Relationship52,
-    };
-
-    if(PartnerEstatePlanningFlag){
-      // alert("jango");
-      
-      setClientPOAList2(
-        ClientPOAList2.filter((ClientPOAList2, index) => index !== updateIndex)
-      );
-      setClientPOAList2(ClientPOAList2=>[...ClientPOAList2, Partnet_Modal]);
-      handleClose2();
-      setPartnerEstatePlanningFlag(false);
     }
-    else{
-      setClientPOAList2([...ClientPOAList2, Partnet_Modal]);
-      console.log(Partnet_Modal);
-      handleClose2();
-  
+
+    if (PartnerEstatePlanningFlag) {
+      setPartnerEstatePlanningFlag(false)
+      let id = values.id
+
+      axios
+        .patch(
+          `http://localhost:7000/Partner-ModalEstatePlanning/Update-Partner-ModalEstatePlanning/${email}/${id}`,
+          Partnet_Modal
+        )
+        .then((res) => {
+          console.log("Partner Updated SuccessFully")
+        })
+      // alert("jango");
+
+      // setClientPOAList2(
+      //   ClientPOAList2.filter((ClientPOAList2, index) => index !== updateIndex)
+      // );
+      // setClientPOAList2(ClientPOAList2=>[...ClientPOAList2, Partnet_Modal]);
+      handleClose2()
+      setPartnerEstatePlanningFlag(false)
+      setTimeout(() => {
+        axios
+          .get("http://localhost:7000/Partner-ModalEstatePlanning")
+          .then((res) => {
+            let childObj = res.data
+            let childFilterObj = childObj.filter((item) => item.Email == email)
+            setClientPOAList2(childFilterObj)
+            console.log("Partner Estate Planning Modal Get Successfullly!")
+          })
+      }, 500)
+    } else {
+      // setClientPOAList2([...ClientPOAList2, Partnet_Modal]);
+      console.log(Partnet_Modal)
+      handleClose2()
+
       axios
         .post(
           "http://localhost:7000/Partner-ModalEstatePlanning/Add-Partner-ModalEstatePlanning",
           Partnet_Modal
         )
         .then((res) => {
-          handleClose2();
-          console.log("Client Estate Planning Modal Added Successfully!");
-        });
+          handleClose2()
+          console.log("Partner Estate Planning Modal Added Successfully!")
+        })
+
+      setTimeout(() => {
+        axios
+          .get("http://localhost:7000/Partner-ModalEstatePlanning")
+          .then((res) => {
+            let childObj = res.data
+            let childFilterObj = childObj.filter((item) => item.Email == email)
+            setClientPOAList2(childFilterObj)
+            console.log("Partner Estate Planning Modal Get Successfullly!")
+          })
+      }, 500)
     }
+  }
 
-   
-  };
+  let PartnerDeleteHandel = (elem, ind) => {
+    let id = elem._id
+    let email = localStorage.getItem("ClientEmail")
+    //chikapu
+    axios
+      .delete(
+        `http://localhost:7000/Partner-ModalEstatePlanning/Delete-Partner-ModalEstatePlanning/${email}/${id}`
+      )
+      .then((res) => {
+        //Popper Massage
+        console.log("Client Modal Row Deleted Successfully")
+      })
 
-  let PartnerDeleteHandel=(elem,ind)=>{
-    setClientPOAList2(ClientPOAList2.filter((ClientPOAList2, index) => index !== ind));
+    setTimeout(() => {
+      axios
+        .get("http://localhost:7000/Partner-ModalEstatePlanning")
+        .then((res) => {
+          let childObj = res.data
+          let childFilterObj = childObj.filter((item) => item.Email == email)
+          setClientPOAList2(childFilterObj)
+          console.log("Partner Estate Planning Modal Get Successfullly!")
+        })
+    }, 500)
   }
   let PartnerEstatePlanningUpdate = (e, ind) => {
-    setPartnerEstatePlanningFlag(true);
+    setPartnerEstatePlanningFlag(true)
+
+    let date = new Date(e.POA_ReviewDate)
+    e.POA_ReviewDate = date
 
     let Partnet_Modal = {
-      Email: localStorage.getItem("ClientEmail"),
+      id: e._id,
       PowerofAttorney2: e.POA_Type,
       datelastReviewed2: e.POA_ReviewDate,
       OtherDescription2: e.POA_OtherDescription,
@@ -580,11 +712,11 @@ const EstatePlanning_Edit = () => {
       Relationship32: e.Relationship_3,
       Relationship42: e.Relationship_4,
       Relationship52: e.Relationship_5,
-    };
-    setPartnerPOAListUpdate([Partnet_Modal]);
-    setUpdateIndex(ind);
-    setShow2(true);
-  };
+    }
+    setPartnerPOAListUpdate([Partnet_Modal])
+    // setUpdateIndex(ind);
+    setShow2(true)
+  }
 
   return (
     <>
@@ -976,7 +1108,7 @@ const EstatePlanning_Edit = () => {
                                   htmlFor="estatePlanningDetails"
                                   className="form-label"
                                 >
-                                  Please enter details below 2322323
+                                  Please enter details below
                                 </label>
                                 <Field
                                   type="text"
@@ -1102,6 +1234,7 @@ const EstatePlanning_Edit = () => {
                                   <div className="">
                                     {/* Row 1*/}
                                     <div className="row">
+                                      <input type="hidden" name="_id" />
                                       <div className="col-md-6">
                                         <div className="mb-3">
                                           <label
@@ -1481,7 +1614,7 @@ const EstatePlanning_Edit = () => {
                                       Save
                                     </button>
                                     <button
-                                    type="button"
+                                      type="button"
                                       className="float-end btn w-25  btn-outline  backBtn mx-3"
                                       onClick={handleClose}
                                     >
@@ -1504,7 +1637,7 @@ const EstatePlanning_Edit = () => {
                           <thead className="text-light" id="tableHead">
                             <tr>
                               <th>POA Type</th>
-                              <th>Number of POA</th>
+                              <th>Name of POA</th>
                               <th>Operations</th>
                             </tr>
                           </thead>
@@ -1512,12 +1645,30 @@ const EstatePlanning_Edit = () => {
                           <tbody>
                             {/* ClientPOAList  */}
                             {ClientPOAList.map((elem, index) => {
-                              let { POA_Type } = elem;
+                              let { POA_Type } = elem
                               if (ClientPOAList[0].POA_Type !== "") {
                                 return (
                                   <tr key={index}>
                                     <td className="fw-bold">{POA_Type}</td>
-                                    <td>Cal</td>
+                                    <td>
+                                      <ol className="list-group list-group-numbered">
+                                        <li className="list-group-item m-0 p-0 border-0">
+                                          {elem.POA_1}
+                                        </li>
+                                        <li className="list-group-item m-0 p-0 border-0">
+                                          {elem.POA_2}
+                                        </li>
+                                        <li className="list-group-item m-0 p-0 border-0">
+                                          {elem.POA_3}
+                                        </li>
+                                        <li className="list-group-item m-0 p-0 border-0">
+                                          {elem.POA_4}
+                                        </li>
+                                        <li className="list-group-item m-0 p-0 border-0">
+                                          {elem.POA_5}
+                                        </li>
+                                      </ol>
+                                    </td>
                                     <td>
                                       <button
                                         type="button"
@@ -1525,7 +1676,7 @@ const EstatePlanning_Edit = () => {
                                           ClientEstatePlanningDelete(
                                             elem,
                                             index
-                                          );
+                                          )
                                         }}
                                         className="btn btn-danger btn-sm"
                                       >
@@ -1537,7 +1688,7 @@ const EstatePlanning_Edit = () => {
                                           ClientEstatePlanningUpdate(
                                             elem,
                                             index
-                                          );
+                                          )
                                         }}
                                         className="btn btn-warning btn-sm mx-2"
                                       >
@@ -1545,7 +1696,7 @@ const EstatePlanning_Edit = () => {
                                       </button>
                                     </td>
                                   </tr>
-                                );
+                                )
                               } else {
                               }
                             })}
@@ -2043,7 +2194,11 @@ const EstatePlanning_Edit = () => {
                               </Modal.Title>
                             </Modal.Header>
                             <Formik
-                              initialValues={ PartnerEstatePlanningFlag? PartnerPOAListUpdate[0] :POA_initialValues2}
+                              initialValues={
+                                PartnerEstatePlanningFlag
+                                  ? PartnerPOAListUpdate[0]
+                                  : POA_initialValues2
+                              }
                               validationSchema={POA_validationSchema2}
                               onSubmit={POA_onSubmit2}
                             >
@@ -2059,6 +2214,9 @@ const EstatePlanning_Edit = () => {
 
                                     <div className="">
                                       {/* Row 1*/}
+
+                                      <input type="hidden" name="_id" />
+
                                       <div className="row">
                                         <div className="col-md-6">
                                           <div className="mb-3">
@@ -2440,7 +2598,7 @@ const EstatePlanning_Edit = () => {
                                         Save
                                       </button>
                                       <button
-                                      type="button"
+                                        type="button"
                                         className="float-end btn w-25  btn-outline  backBtn mx-3"
                                         onClick={handleClose2}
                                       >
@@ -2462,7 +2620,7 @@ const EstatePlanning_Edit = () => {
                               <thead className="text-light" id="tableHead">
                                 <tr>
                                   <th>POA Type</th>
-                                  <th>Number of POA</th>
+                                  <th>Name of POA</th>
                                   <th>Operations</th>
                                 </tr>
                               </thead>
@@ -2470,30 +2628,55 @@ const EstatePlanning_Edit = () => {
                               <tbody>
                                 {/* ClientPOAList  */}
                                 {ClientPOAList2.map((elem, index) => {
-                                  let { POA_Type } = elem;
+                                  let { POA_Type } = elem
                                   if (ClientPOAList2[0].POA_Type !== "") {
                                     return (
                                       <tr key={index}>
                                         <td className="fw-bold">{POA_Type}</td>
-                                        <td>Cal</td>
+                                        <td>
+                                          <ol className="list-group list-group-numbered">
+                                            <li className="list-group-item m-0 p-0 border-0">
+                                              {elem.POA_1}
+                                            </li>
+                                            <li className="list-group-item m-0 p-0 border-0">
+                                              {elem.POA_2}
+                                            </li>
+                                            <li className="list-group-item m-0 p-0 border-0">
+                                              {elem.POA_3}
+                                            </li>
+                                            <li className="list-group-item m-0 p-0 border-0">
+                                              {elem.POA_4}
+                                            </li>
+                                            <li className="list-group-item m-0 p-0 border-0">
+                                              {elem.POA_5}
+                                            </li>
+                                          </ol>
+                                        </td>
                                         <td>
                                           <button
                                             type="button"
-                                            className="btn btn-danger btn-sm" 
-                                            onClick={(e)=>{PartnerDeleteHandel(elem,index)}}
+                                            className="btn btn-danger btn-sm"
+                                            onClick={(e) => {
+                                              PartnerDeleteHandel(elem, index)
+                                            }}
                                           >
                                             delete
                                           </button>
                                           <button
                                             type="button"
                                             className="btn btn-warning btn-sm mx-2"
-                                            onClick={(e)=>{PartnerEstatePlanningUpdate(elem,index)}}
+                                            onClick={(e) => {
+                                              PartnerEstatePlanningUpdate(
+                                                elem,
+                                                index
+                                              )
+                                            }}
                                           >
                                             update
                                           </button>
                                         </td>
                                       </tr>
-                                    );
+                                    )
                                   } else {
                                   }
                                 })}
@@ -2531,7 +2714,7 @@ const EstatePlanning_Edit = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 export default EstatePlanning_Edit;

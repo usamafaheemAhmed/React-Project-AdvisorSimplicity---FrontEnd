@@ -77,28 +77,25 @@ const AssetsLiabilities_Edit = () => {
 
       // // Modal personal assets
 
-      // axios
-      // .get(`http://localhost:7000/Client-PersonalAssets`)
-      // .then((res) => {
-      // let modalObj=(res.data)
-      // let objectFilterObj=modalObj.filter((item) => item.Email ==email);
-      // setPersonalAssetsModal(objectFilterObj[0])
-      // console.log(res.data)
+      axios
+      .get(`http://localhost:7000/Client-PersonalAssets`)
+      .then((res) => {
+      let modalObj=(res.data)
+      let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+      setPersonalAssets(objectFilterObj)
+      console.log(res.data)
+      })
+    
 
-      // })
-
-      // // personal loan modal
-      // axios
-      // .get(`http://localhost:7000/Client-PersonalDebts`)
-      // .then((res) => {
-      // let modalObj=(res.data)
-      // let objectFilterObj=modalObj.filter((item) => item.Email ==email);
-      // setPersonalLoanModal(objectFilterObj[0])
-      // console.log(res.data)
-
-
-      
-      // })
+      // personal loan modal
+      axios
+      .get(`http://localhost:7000/Client-PersonalDebts`)
+      .then((res) => {
+      let modalObj=(res.data)
+      let objectFilterObj=modalObj.filter((item) => item.Email ==email);
+      setPersonalLoans(objectFilterObj)
+      console.log(res.data)
+      })
   
     
      }, [])
@@ -145,7 +142,7 @@ const AssetsLiabilities_Edit = () => {
   let Navigate = useNavigate();
 
   function BackFunction() {
-    Navigate("/Professional-Advisors");
+    Navigate("/Edit-Professional-Advisors");
   }
   let onSubmit = (Values) => {
     let AssetsDetails = {
@@ -156,14 +153,11 @@ const AssetsLiabilities_Edit = () => {
     };
 
     axios
-      .post(
-        "http://localhost:7000/Client-Assets/Add-Client-Assets",
-        AssetsDetails
-      )
-      .then((res) => console.log("Assets Details Added Successfully!"));
+      .patch(`http://localhost:7000/Client-Assets/Update-Client-Assets/${AssetsDetails.Email}`,AssetsDetails)
+      .then((res) => console.log("Assets Details Updated Successfully!"));
 
     console.log(AssetsDetails);
-    Navigate("/Investments");
+    Navigate("/Edit-Investments");
   };
 
   let own_initialValues = {
