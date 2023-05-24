@@ -5,12 +5,17 @@ import "yup-phone";
 import plus from "./images/plus.svg";
 import notebook from "./images/notebook.svg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import DatePicker from "react-datepicker";
 import axios from "axios";
+
+
+
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 const InvestmentTrust_Edit = () => {
-  const [updateIndex, setUpdateIndex] = useState();
+
+  const [investmentInnerModalObj, setInvestmentInnerModalObj] = useState([]);
+  const [investmentFormObj, setInvestmentFromObj] = useState([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -21,28 +26,28 @@ const InvestmentTrust_Edit = () => {
   const handleShow2 = () => setShow2(true);
 
   const [show3, setShow3] = useState(false);
-  const handleClose3 = () => setShow3(false);
+  const handleClose3 = () => { setShow3(false); setIs_Share(false); }
   const handleShow3 = () => setShow3(true);
 
   const [show4, setShow4] = useState(false);
-  const handleClose4 = () => setShow4(false);
+  const handleClose4 = () => { setShow4(false); setIs_Loan(false); }
   const handleShow4 = () => setShow4(true);
   // manage funds
   // 1st modal
   const [show5, setShow5] = useState(false);
-  const handleClose5 = () => setShow5(false);
+  const handleClose5 = () => { setShow5(false); setIs_manageFund(false); }
   const handleShow5 = () => setShow5(true);
 
   // 2nd modal
   const [show6, setShow6] = useState(false);
-  const handleClose6 = () => setShow6(false);
+  const handleClose6 = () => { setShow6(false); setIs_manageLoan(false); }
   const handleShow6 = () => setShow6(true);
 
   // manage funds
 
   //investment properties
   const [show7, setShow7] = useState(false);
-  const handleClose7 = () => setShow7(false);
+  const handleClose7 = () => { setShow7(false); setIs_investment(false); }
   const handleShow7 = () => setShow7(true);
 
   //  ModalinModal
@@ -50,26 +55,6 @@ const InvestmentTrust_Edit = () => {
   const handleClose8 = () => setShow8(false);
   const handleShow8 = () => setShow8(true);
   //investment properties
-
-
-
-  // Using states to store APIs data 
-
-  const [bankAccountListObj, setBankAccountListObj] = useState([]);
-
-  const [depositListObj, setdepositListObj] = useState([]);
-  
-  const [investmentInnerModalObj, setInvestmentInnerModalObj] = useState([]);
-  
-  const [investmentFormObj, setInvestmentFromObj] = useState([]);
-
-
-
-
-
-
-
-
 
   let letters = /^[a-zA-Z ]*$/;
   const [DistributionsTakenState, setDistributionsTakenState] = useState(false);
@@ -90,7 +75,7 @@ const InvestmentTrust_Edit = () => {
     TrusteeType: investmentFormObj.TrusteeType,
     CorporateTrusteeName: investmentFormObj.CorporateTrusteeName,
     NumberofDirectors: investmentFormObj.TotalDirectors,
-    EstablishmentDate:"",
+    EstablishmentDate:investmentFormObj.EstablishmentDate,
     NameofAccountant: investmentFormObj.AccountantName,
     DistributionCashradio: investmentFormObj.CashDistribution,
     DirectorName1: investmentFormObj.Director1Name,
@@ -100,6 +85,7 @@ const InvestmentTrust_Edit = () => {
     loansAssociatedradio: investmentFormObj.AustralianSharePortfolio,
     managedloansAssociatedradio: investmentFormObj.ManagedFunds,
   };
+
   let validationSchema = Yup.object({
     NameofFamilyTrust: Yup.string().matches(letters, "only letters"),
     TypeofTrust: Yup.string(),
@@ -110,7 +96,7 @@ const InvestmentTrust_Edit = () => {
       then: Yup.string(),
       otherwise: Yup.string().notRequired(),
     }),
-    EstablishmentDate: Yup.date().nullable(),
+    EstablishmentDate: Yup.date().required("Required").nullable(),
     NameofAccountant: Yup.string().matches(letters, "only letters"),
     NumberofDirectors: Yup.string(),
   });
@@ -120,7 +106,6 @@ const InvestmentTrust_Edit = () => {
     Navigate("/Edit-SMSF");
   }
   let onSubmit = (values) => {
-    Navigate("/Edit-Personal-Insurance");
     let AddData = {
       Email: localStorage.getItem("ClientEmail"),
       FamilyTrustName: values.NameofFamilyTrust,
@@ -146,35 +131,30 @@ const InvestmentTrust_Edit = () => {
     console.log(AddData);
     // Post Api
 
-    // axios
-    //   .post(
-    //     "http://localhost:7000/Client-InvestmentTrust-InvestmentForm/Add-Client-InvestmentForm",
-    //     AddData
-    //   )
-    //   .then((res) => {
-    //     console.log("Client  Added Successfully!");
-    //     Navigate("/Edit-Personal-Insurance");
-    //   });
+    axios.patch(`http://localhost:7000/Client-InvestmentTrust-InvestmentForm/Update-Client-InvestmentForm/${AddData.Email}`,AddData)
+      .then((res) => {
+        console.log("Client Update Successfully!");
+        Navigate("/Edit-Personal-Insurance");
+      });
   };
 
   const [bankAccountList, setBankAccountList] = useState([]);
-  const [bankAccountList2, setBankAccountList2] = useState([]);
   const [isEdit_bankAccountList, set_isEdit_BankAccountList] = useState(false);
 
   let Bank_initialValues = {
-    CurrentValue1: bankAccountListObj.CurrentValue1,
-    FinancialInstitution1: bankAccountListObj.FinancialInstitution1,
-    IncomeYield1: bankAccountListObj.IncomeYield1,
+    CurrentValue1: "",
+    FinancialInstitution1: "",
+    IncomeYield1: "",
     AnnualIncome1: "",
 
-    CurrentValue2: bankAccountListObj.CurrentValue2,
-    FinancialInstitution2: bankAccountListObj.FinancialInstitution2,
-    IncomeYield2: bankAccountListObj.IncomeYield2,
+    CurrentValue2: "",
+    FinancialInstitution2: "",
+    IncomeYield2: "",
     AnnualIncome2: "",
 
-    CurrentValue3: bankAccountListObj.CurrentValue3,
-    FinancialInstitution3: bankAccountListObj.FinancialInstitution3,
-    IncomeYield3:  bankAccountListObj.IncomeYield3,
+    CurrentValue3: "",
+    FinancialInstitution3: "",
+    IncomeYield3: "",
     AnnualIncome3: "",
   };
   let Bank_validationSchema = Yup.object({
@@ -218,10 +198,10 @@ const InvestmentTrust_Edit = () => {
     ),
   });
 
-  const [bankObj, setBankObj] = useState([]);
   let Bank_onSubmit = (values) => {
-    set_isEdit_BankAccountList(true);
+  
     let emailasID = localStorage.getItem("ClientEmail");
+    // alert("data ");
     let Bank_Data = {
       Email: localStorage.getItem("ClientEmail"),
 
@@ -244,126 +224,134 @@ const InvestmentTrust_Edit = () => {
       AnnualIncome3: 5000,
     };
 
-    setBankAccountList2([Bank_Data]);
-
-    //  console.log(Bank_Data)
-
-    let bankAccount1 = {
-      id: 1,
-      CurrentValue: values.CurrentValue1,
-      FinancialInstitution: values.FinancialInstitution1,
-      IncomeYield: values.IncomeYield1,
-      // AnnualIncome1:values.AnnualIncome1,
-      AnnualIncome: 5000,
-    };
-    let bankAccount2 = {
-      id: 2,
-      CurrentValue: values.CurrentValue2,
-      FinancialInstitution: values.FinancialInstitution2,
-      IncomeYield: values.IncomeYield2,
-      // AnnualIncome2:values.AnnualIncome2,
-      AnnualIncome: 5000,
-    };
-    let bankAccount3 = {
-      id: 3,
-      CurrentValue: values.CurrentValue3,
-      FinancialInstitution: values.FinancialInstitution3,
-      IncomeYield: values.IncomeYield3,
-      // AnnualIncome3:values.AnnualIncome3,
-      AnnualIncome: 5000,
-    };
-    setBankAccountList([bankAccount1, bankAccount2, bankAccount3]);
-
-    console.log(bankAccountList);
-    set_isEdit_BankAccountList(true);
-    if (isEdit_bankAccountList == false) {
+    if (isEdit_bankAccountList) {
       axios
-        .post(
-          "http://localhost:7000/Client-InvestmentTrust/Add-Client-BankAccounts",
-          Bank_Data
-        )
-        .then((res) => console.log("data added successfully"));
-    } else {
-      axios
-        .patch(
-          ` http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,
-          Bank_Data
-        )
-        .then((res) => console.log("data Updated successfully"))
-        .catch((err) => {
-          if (err.response) {
-            console.log(err.response.status);
-            console.log(err.response.statusText);
-            console.log(err.message);
-            console.log(err.response.headers); // 👉️ {... response headers here}
-            console.log("ss", err.response.data); // 👉️ {... response data here}
-          }
-        });
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${Bank_Data.Email}`,Bank_Data)
+      .then((res) => console.log("data Updated successfully"));
     }
+    else {
+      axios
+        .post("http://localhost:7000/Client-InvestmentTrust-BankAccounts/Add-Client-BankAccounts",Bank_Data)
+        .then((res) => console.log("data added successfully"));
+      set_isEdit_BankAccountList(true);
+    }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == Bank_Data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+
+
 
     handleClose();
   };
 
-  let updateHandler_Bank = (elem) => {
-    set_isEdit_BankAccountList(true);
-    handleShow();
-  };
 
-  let deleteHandler_Bank = (e, index) => {
-    let emailasID = localStorage.getItem("ClientEmail");
-    console.log(bankAccountList2);
+  let deleteHandler_Bank1 = (e) => {
 
-    setBankAccountList(
-      bankAccountList.filter((object) => {
-        return object.id !== e.id;
-      })
-    );
+    let data = e;
 
-    if (e.id == 1) {
-      bankAccountList2[0].CurrentValue1 = "";
-      bankAccountList2[0].FinancialInstitution1 = "";
-      bankAccountList2[0].IncomeYield1 = "";
-      bankAccountList2[0].AnnualIncome1 = "";
-    } else if (e.id == 2) {
-      bankAccountList2[0].CurrentValue2 = "";
-      bankAccountList2[0].FinancialInstitution2 = "";
-      bankAccountList2[0].IncomeYield2 = "";
-      bankAccountList2[0].AnnualIncome2 = "";
-    } else if (e.id == 3) {
-      bankAccountList2[0].CurrentValue3 = "";
-      bankAccountList2[0].FinancialInstitution3 = "";
-      bankAccountList2[0].IncomeYield3 = "";
-      bankAccountList2[0].AnnualIncome3 = "";
-    }
+    data.CurrentValue1 = '';
+    data.FinancialInstitution1='';
+    data.IncomeYield1 = '';
+    // AnnualIncome1:values.AnnualIncome1,
+    data.AnnualIncome1 = '';
+
+    // setBankAccountList([data]);
 
     axios
-      .patch(
-        `http://localhost:7000/Client-InvestmentTrust/Update-Client-BankAccounts/${emailasID}`,
-        bankAccountList2[0]
-      )
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${data.Email}`,data)
       .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+
   };
 
-  const [depositList, setdepositList] = useState([]);
+  let deleteHandler_Bank2 = (e) => {
+    // let emailasID = localStorage.getItem("ClientEmail");
+
+    let data = e;
+
+    data.CurrentValue2 = '';
+    data.FinancialInstitution2='';
+    data.IncomeYield2 = '';
+    data.AnnualIncome2 = '';
+
+
+
+    axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${data.Email}`,data)
+      .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+  };
+
+  let deleteHandler_Bank3 = (e) => {
+
+      let data = e;
+
+      data.CurrentValue3 = '';
+      data.FinancialInstitution3='';
+      data.IncomeYield3 = '';
+      data.AnnualIncome3 = '';
+  
+
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-BankAccounts/Update-Client-BankAccounts/${data.Email}`,data)
+      .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setBankAccountList(clientFilterObj);
+      });
+    }, 500);
+  };
+
+
+  const [depositList, setDepositList] = useState([]);
   const [deposit_InitialValue2, setdeposit_InitialValue2] = useState([]);
 
   const [isEdit_deposit, set_isEdit_deposit] = useState(false);
 
   let Deposit_initialValues = {
-    DepositCurrentValue1: depositListObj.CurrentValue1,
-    DepositFinancialInstitution1: depositListObj.FinancialInstitution1,
-    DepositIncomeYield1: depositListObj.IncomeYield1,
-    DepositAnnualIncome1: depositListObj.AnnualIncome1,
+    DepositCurrentValue1: "",
+    DepositFinancialInstitution1: "",
+    DepositIncomeYield1: "",
+    DepositAnnualIncome1: "",
 
-    DepositCurrentValue2: depositListObj.CurrentValue2,
-    DepositFinancialInstitution2: depositListObj.FinancialInstitution2,
-    DepositIncomeYield2: depositListObj.IncomeYield2,
-    DepositAnnualIncome2: depositListObj.AnnualIncome2,
+    DepositCurrentValue2: "",
+    DepositFinancialInstitution2: "",
+    DepositIncomeYield2: "",
+    DepositAnnualIncome2: "",
 
-    DepositCurrentValue3: depositListObj.CurrentValue3,
-    DepositFinancialInstitution3: depositListObj.FinancialInstitution3,
-    DepositIncomeYield3: depositListObj.IncomeYield3,
-    DepositAnnualIncome3: depositListObj.AnnualIncome3,
+    DepositCurrentValue3: "",
+    DepositFinancialInstitution3: "",
+    DepositIncomeYield3: "",
+    DepositAnnualIncome3: "",
   };
   let Deposit_validationSchema = Yup.object({
     DepositCurrentValue1: Yup.number().test(
@@ -407,7 +395,8 @@ const InvestmentTrust_Edit = () => {
   });
 
   let Deposit_onSubmit = (values) => {
-    set_isEdit_deposit(true);
+
+ 
 
     let depositData = {
       Email: localStorage.getItem("ClientEmail"),
@@ -431,94 +420,143 @@ const InvestmentTrust_Edit = () => {
       AnnualIncome3: 5000,
     };
 
-    let depositData2 = {
-      DepositCurrentValue1: values.DepositCurrentValue1,
-      DepositFinancialInstitution1: values.DepositFinancialInstitution1,
-      DepositIncomeYield1: values.DepositIncomeYield1,
-      // AnnualIncome1:values.DepositAnnualIncome1,
-      DepositAnnualIncome1: 5000,
 
-      DepositCurrentValue2: values.DepositCurrentValue2,
-      DepositFinancialInstitution2: values.DepositFinancialInstitution2,
-      DepositIncomeYield2: values.DepositIncomeYield2,
-      // AnnualIncome2:values.DepositAnnualIncome2,
-      DepositAnnualIncome2: 5000,
+    console.log(" Deposits ",depositData);
 
-      DepositCurrentValue3: values.DepositCurrentValue3,
-      DepositFinancialInstitution3: values.DepositFinancialInstitution3,
-      DepositIncomeYield3: values.DepositIncomeYield3,
-      // AnnualIncome3:values.DepositAnnualIncome3,
-      DepositAnnualIncome3: 5000,
-    };
+    if (isEdit_deposit) {
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${depositData.Email}`,depositData)
+      .then((res) => console.log("data Updated successfully"));  
 
-    let deposit1 = {
-      id: 1,
-      DepositCurrentValue: values.DepositCurrentValue1,
-      DepositFinancialInstituion: values.DepositFinancialInstitution1,
-      DepositIncomeYield: values.DepositIncomeYield1,
-      // AnnualIncome1:values.DepositAnnualIncome1,
-      DepositAnnualIncome: 5000,
-    };
+    } else {
+       
+      axios
+        .post("http://localhost:7000/Client-InvestmentTrust-TermDeposit/Add-Client-TermDeposit", depositData)
+        .then((res) => console.log("data added successfully"));
+    }
 
-    let deposit2 = {
-      id: 2,
-      DepositCurrentValue: values.DepositCurrentValue2,
-      DepositFinancialInstituion: values.DepositFinancialInstitution2,
-      DepositIncomeYield: values.DepositIncomeYield2,
-      // AnnualIncome2:values.DepositAnnualIncome2,
-      DepositAnnualIncome: 5000,
-    };
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == depositData.Email);
+        setDepositList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
 
-    let deposit3 = {
-      id: 3,
-      DepositCurrentValue: values.DepositCurrentValue3,
-      DepositFinancialInstituion: values.DepositFinancialInstitution3,
-      DepositIncomeYield: values.DepositIncomeYield3,
-      // AnnualIncome:values.DepositAnnualIncome3,
-      DepositAnnualIncome: 5000,
-    };
 
-    setdepositList([deposit1, deposit2, deposit3]);
-
-    setdeposit_InitialValue2([depositData2]);
-
-    console.log(depositData);
-
-    axios
-      .post(
-        "http://localhost:7000/Client-InvestmentTrust/Add-Client-TermDeposit",
-        depositData
-      )
-      .then((res) => console.log("data added successfully"));
     handleClose2();
   };
 
-  let updateHandler_Deposit = (elem) => {
+  let UpdateHandler_Deposit = (elem) => {
     set_isEdit_deposit(true);
+
+    let depositData = {
+      DepositCurrentValue1: elem.CurrentValue1,
+      DepositFinancialInstitution1: elem.FinancialInstitution1,
+      DepositIncomeYield1: elem.IncomeYield1,
+      // AnnualIncome1:values.DepositAnnualIncome1,
+      DepositAnnualIncome1:elem.AnnualIncome1,
+
+      DepositCurrentValue2: elem.CurrentValue2,
+      DepositFinancialInstitution2: elem.FinancialInstitution2,
+      DepositIncomeYield2: elem.IncomeYield2,
+      // AnnualIncome2:values.DepositAnnualIncome2,
+      DepositAnnualIncome2:elem.AnnualIncome2,
+
+      DepositCurrentValue3: elem.CurrentValue3,
+      DepositFinancialInstitution3: elem.FinancialInstitution3,
+      DepositIncomeYield3: elem.IncomeYield3,
+      // AnnualIncome3:values.DepositAnnualIncome3,
+      DepositAnnualIncome3:elem.AnnualIncome3,
+    };
+    setdeposit_InitialValue2([depositData]);
+
     handleShow2();
-  };
+  }
 
-  let deleteHandler_Deposit = (e, index) => {
+  let deleteHandler_Deposit1 = (e) => {
     // console.log(e)
-    setdepositList(
-      depositList.filter((object) => {
-        return object.id !== e.id;
-      })
-    );
+    // setDepositList(
+    
+    let data = e;
+    data.CurrentValue1='';
+    data.FinancialInstitution1='';
+    data.IncomeYield1='';
+    // AnnualIncome1:values.DepositAnnualIncome1,
+    data.AnnualIncome1 = '';
 
-    if (e.id == 1) {
-      deposit_InitialValue2[0].DepositCurrentValue1 = "";
-      deposit_InitialValue2[0].DepositFinancialInstitution1 = "";
-      deposit_InitialValue2[0].DepositIncomeYield1 = "";
-    } else if (e.id == 2) {
-      deposit_InitialValue2[0].DepositCurrentValue2 = "";
-      deposit_InitialValue2[0].DepositFinancialInstitution2 = "";
-      deposit_InitialValue2[0].DepositIncomeYield2 = "";
-    } else if (e.id == 3) {
-      deposit_InitialValue2[0].DepositCurrentValue3 = "";
-      deposit_InitialValue2[0].DepositFinancialInstitution3 = "";
-      deposit_InitialValue2[0].DepositIncomeYield3 = "";
-    }
+    // setDepositList([data]);
+
+    axios
+    .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${data.Email}`,data)
+    .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setDepositList(clientFilterObj);
+      });
+    }, 500);
+    
+ 
+  };
+  let deleteHandler_Deposit2 = (e) => {
+    // console.log(e)
+    // setDepositList(
+      let data = e;
+      data.CurrentValue2='';
+      data.FinancialInstitution2='';
+      data.IncomeYield2='';
+      // AnnualIncome1:values.DepositAnnualIncome1,
+      data.AnnualIncome2 = '';
+  
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${data.Email}`,data)
+      .then((res) => console.log("data Updated successfully"));
+  
+  
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+          setDepositList(clientFilterObj);
+        });
+      }, 500);
+  
+ 
+  };
+  let deleteHandler_Deposit3 = (e) => {
+    // console.log(e)
+    // setDepositList(
+          let data = e;
+    data.CurrentValue3='';
+    data.FinancialInstitution3='';
+    data.IncomeYield3='';
+    // AnnualIncome1:values.DepositAnnualIncome1,
+    data.AnnualIncome3 = '';
+
+   
+    axios
+    .patch(`http://localhost:7000/Client-InvestmentTrust-TermDeposit/Update-Client-TermDeposit/${data.Email}`,data)
+    .then((res) => console.log("data Updated successfully"));
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == data.Email);
+        setDepositList(clientFilterObj);
+      });
+    }, 500);
+
+ 
   };
 
   const [Share_initialValues2, setShare_initialValues2] = useState([]);
@@ -583,13 +621,6 @@ const InvestmentTrust_Edit = () => {
   });
 
   let Share_onSubmit = (values) => {
-    let myDate = new Date(values.PurchaseDate);
-
-    let day = myDate.getDate();
-    let month = myDate.getMonth();
-    let year = myDate.getFullYear();
-
-    let PurchaseDate = day + "/" + month + "/" + year;
 
     // console.log(PurchaseDate)
     let AddData = {
@@ -599,7 +630,7 @@ const InvestmentTrust_Edit = () => {
       CurrentSharePrice: values.CurrentSharePrice,
       TotalShareValue: 5000, //TotalShareValue:'', read only
       CostBase: values.CostBase,
-      PurchaseDate: PurchaseDate,
+      PurchaseDate: values.PurchaseDate,
       IncomePA: values.Incomepa,
 
       IncomePAType: values.IncomepaType,
@@ -614,44 +645,55 @@ const InvestmentTrust_Edit = () => {
     };
 
     if (is_Share) {
-      setAustralianShareList(
-        AustralianShareList.filter(
-          (AustralianShareList, index) => index !== updateIndex
-        )
-      );
-      setAustralianShareList((AustralianShareList) => [
-        ...AustralianShareList,
-        AddData,
-      ]);
-      console.log(AddData);
+
+      let id = values.id;
+
+      axios
+      .patch(`http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Update-Client-Australian-Market-Share/${AddData.Email}/${id}`,AddData)
+      .then((res) => console.log("data Updated successfully"));
 
       setIs_Share(false);
-      handleClose3();
+      // handleClose3();
     } else {
-      setAustralianShareList([...AustralianShareList, AddData]);
       console.log(AddData);
       axios
         .post(
-          "http://localhost:7000/Client-InvestmentTrust/Add-Client-Australian-Market-Share",
+          "http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Add-Client-Australian-Market-Share",
           AddData
         )
         .then((res) => console.log("Data Added Successfully"));
-
-
-      setIs_Share(false);
-      handleClose3();
     }
+
+    setTimeout(() => {
+
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Australian-Market-Share`).then((res) => {
+        console.log("Australian Share List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == AddData.Email);
+        setAustralianShareList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+
+    }, 500);
+
+  handleClose3();
+    
   };
 
   let updateHandler_AustralianShare = (elem, ind) => {
     setIs_Share(true);
+
+    let date = new Date (elem.PurchaseDate);
+    elem.PurchaseDate = date; 
+
     let AddData2 = {
+      id:elem._id,
       ShareInvestmentName: elem.InvestmentName,
       NoOfShares: elem.NumberOfShares,
       CurrentSharePrice: elem.CurrentSharePrice,
       TotalShareValue: elem.TotalShareValue, //TotalShareValue:'', read only
       CostBase: elem.CostBase,
-      //  PurchaseDate: elem.PurchaseDate,
+       PurchaseDate: elem.PurchaseDate,
       Incomepa: elem.IncomePA,
       IncomepaType: elem.IncomePAType,
       TotalIncomePa: elem.TotalIncomePA, //TotalIncomePa:'', //read only
@@ -660,15 +702,40 @@ const InvestmentTrust_Edit = () => {
       RegInvestmentsPA: elem.RegInvestmentsPA,
     };
     setShare_initialValues2(AddData2);
-    setUpdateIndex(ind);
+    // setUpdateIndex(ind);
     handleShow3();
+    console.log(AddData2);
   };
 
   let deleteHandler_AustralianShare = (elem, ind) => {
     // set_isEdit_BankAccountList(true)
-    setAustralianShareList(
-      AustralianShareList.filter((AustralianShareList, index) => index !== ind)
-    );
+    // setAustralianShareList(
+    //   AustralianShareList.filter((AustralianShareList, index) => index !== ind)
+    // );
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Delete-Client-Australian-Market-Share/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Australian Share Market Remove");
+    });
+
+
+    setTimeout(() => {
+
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Australian-Market-Share`).then((res) => {
+        console.log("Australian Share List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setAustralianShareList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+
+    }, 500);
+
 
     // handleShow3();
   };
@@ -744,36 +811,41 @@ const InvestmentTrust_Edit = () => {
     };
 
     if (is_Loan) {
-      setAustralianLoanList(
-        AustralianLoanList.filter(
-          (AustralianLoanList, index) => index !== updateIndex
-        )
-      );
-      setAustralianLoanList((AustralianLoanList) => [
-        ...AustralianLoanList,
-        myData,
-      ]);
-      handleClose4();
-      setIs_Loan(false);
-    } else {
-      setAustralianLoanList([...AustralianLoanList, myData]);
-      console.log(myData);
+      let id = values.id;
 
       axios
-        .post(
-          "http://localhost:7000/Client-InvestmentTrust/Add-Client-Australian-Market-Portfolio",
-          myData
-        )
-        .then((res) => console.log("data Added Successfully"));
-      handleClose4();
+        .patch(`http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Update-Client-Australian-Market-Portfolio/${myData.Email}/${id}`, myData)
+        .then((res) => { console.log("data Updated successfully"); handleClose4(); });
+      
+      setIs_Loan(false);
+    } else {
 
+      axios
+        .post("http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Add-Client-Australian-Market-Portfolio",myData)
+        .then((res) => {
+          console.log("data Added Successfully");
+          handleClose4();
+        });
     }
+    
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Australian-Market-Portfolio`).then((res) => {
+        console.log("Australian Share List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == myData.Email);
+        setAustralianLoanList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+
+    }, 500);
+
   };
 
   let updateHandler_AustralianLoan = (elem, ind) => {
     setIs_Loan(true);
 
     let myData = {
+      id:elem._id,
       Email: localStorage.getItem("ClientEmail"),
       AustralianPortfolioLoanType: elem.AustralianPortfolioLoanType,
       AustralianPortfolioCurrentBalance: elem.AustralianPortfolioCurrentBalance,
@@ -793,14 +865,32 @@ const InvestmentTrust_Edit = () => {
     };
 
     setLoan_initialValues2([myData]);
-    setUpdateIndex(ind);
+    // setUpdateIndex(ind);
     handleShow4();
   };
 
   let deleteHandler_AustralianLoan = (elem, ind) => {
-    setAustralianLoanList(
-      AustralianLoanList.filter((AustralianLoanList, index) => index !== ind)
-    );
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Delete-Client-Australian-Market-Portfolio/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Australian Share Market Remove");
+    });
+
+    setTimeout(() => {
+
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-AustralianSharePortfolio/Australian-Market-Portfolio`).then((res) => {
+        console.log("Australian Share List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setAustralianLoanList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+
+    }, 500);
     // handleShow4();
   };
 
@@ -863,6 +953,7 @@ const InvestmentTrust_Edit = () => {
   });
 
   let manageFund_onSubmit = (values) => {
+   
     let myData = {
       Email: localStorage.getItem("ClientEmail"),
       PlatformName: values.PlatformName,
@@ -881,36 +972,44 @@ const InvestmentTrust_Edit = () => {
 
     if(is_manageFund){
 
-      setManageFundList(manageFundList.filter((manageFundList, index) => index !== updateIndex));
-      setManageFundList(manageFundList =>[...manageFundList, myData]);
-      handleClose5();
-      setIs_manageFund(false);
+      let id = values.id;
 
-
-    }else{
-
-
-      console.log(myData);
-      setManageFundList([...manageFundList, myData]);
       axios
-        .post(
-          "http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds",
-          myData
-        )
+        .patch(`http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Update-Client-ManagedFunds/${myData.Email}/${id}`, myData)
+        .then((res) => { console.log("data Updated successfully"); handleClose5(); setIs_manageFund(false); });
+
+
+
+    } else {
+      axios
+        .post("http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Add-Client-ManagedFunds",myData)
         .then((ref) => {
-          console.log("Data Added Successfully !");
-          setManageFundList([...manageFundList, myData]);
+          console.log("Manage Fund List get Successfully !");
+        handleClose5();
         });
-  
-      handleClose5();
     }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Client-ManagedFunds`).then((res) => {
+        console.log("Manage Fund List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == myData.Email);
+        setManageFundList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
 
 
   };
   let updateHandler_ManageFund = (elem,ind) => {
     // console.log(elem);
     setIs_manageFund(true);
+
+    let date = new Date(elem.PurchaseDate);
+    elem.PurchaseDate = date;
+
     let myData = {
+      id: elem._id,
       Email: localStorage.getItem("ClientEmail"),
       PlatformName: elem.PlatformName,
       InvestmentName: elem.InvestmentName,
@@ -918,23 +1017,42 @@ const InvestmentTrust_Edit = () => {
       CurrentShareUnitPrice: elem.CurrentSharePrice,
       managedCurrentValue: 5000, //managedCurrentValue read only
       OriginalInvestment: elem.OriginalInvestment,
-      // managedPurchaseDate: elem.PurchaseDate,
+      managedPurchaseDate: elem.PurchaseDate,
       managedIncomepa: elem.IncomePA,
       managedIncomepaType: elem.IncomePAType,
       managedTotalIncomePA: 5000, //managedTotalIncomePA read only
       managedRegInvestmentsPA: elem.RegInvestmentsPA,
       managedReinvestincomeradio: elem.ReinvestIncome,
     };
+
     setManageFund_initialValues2([myData])
     
-    setUpdateIndex(ind);
+    // setUpdateIndex(ind);
     handleShow5();
   };
 
   let deleteHandler_ManageFund = (elem,ind) => {
     
-    setManageFundList(manageFundList.filter((manageFundList, index) => index !== ind));
-    // handleShow4();
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Delete-Client-ManagedFunds/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Manage Fund List Remove");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-ManagedFunds/Client-ManagedFunds`).then((res) => {
+        console.log("Manage Fund List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setManageFundList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
   };
 
   // managed fund
@@ -1005,30 +1123,38 @@ const InvestmentTrust_Edit = () => {
       ManagedFundsPortfolioDeductibleLoanAmount: values.DeductibleAmountofLoan,
       ManagedFundsPortfolioYearRemaining: values.YearRemaning,
     };
-    console.log(myData);
+    // console.log(myData);
 
     if (is_manageLoan){
+      let id = values.id;
 
-      setManageLoanList(manageLoanList.filter((manageLoanList, index) => index !== updateIndex));
-      setManageLoanList(manageLoanList =>[...manageLoanList, myData]);
-      handleClose6();
-      setIs_manageLoan(false);
-
-
+      axios
+        .patch(`http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio/Update-Client-ManagedFunds-Portfolio/${myData.Email}/${id}`, myData)
+        .then((res) => { console.log("data Updated successfully"); handleClose6(); setIs_manageLoan(false); });
+      
     }
     else{
 
       axios
-      .post(
-        "http://localhost:7000/Client-InvestmentTrust/Add-Client-ManagedFunds-Portfolio",
-        myData
-      )
+      .post("http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio/Add-Client-ManagedFunds-Portfolio",myData)
       .then((ref) => {
         console.log("Managed Fund Portfolio Added Succeccfully!");
+        // setManageLoanList([...manageLoanList, myData]);
+        handleClose6();
       });
-    setManageLoanList([...manageLoanList, myData]);
-    handleClose6();
+
     }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio`).then((res) => {
+        console.log("Manage Fund List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == myData.Email);
+        setManageLoanList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
 
 
   };
@@ -1037,6 +1163,7 @@ const InvestmentTrust_Edit = () => {
     setIs_manageLoan(true);
 
     let myData = {
+      id: elem._id,
       Email: localStorage.getItem("ClientEmail"),
       Typeofloan: elem.ManagedFundsPortfolioLoanType,
       CurrentBalance: elem.ManagedFundsPortfolioCurrentBalance,
@@ -1055,13 +1182,34 @@ const InvestmentTrust_Edit = () => {
     };
 
     setmanageLoan_initialValues2([myData]);
-    setUpdateIndex(ind);
+    // setUpdateIndex(ind);
     handleShow6();
 
   };
 
   let deleteHandler_ManageLoan = (elem,ind) => {
-    setManageLoanList(manageLoanList.filter((manageLoanList, index) => index !== ind));
+    // setManageLoanList(manageLoanList.filter((manageLoanList, index) => index !== ind));
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio/Delete-Client-ManagedFunds-Portfolio/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Manage Loan List Remove");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-ManagedFundsPortfolio`).then((res) => {
+        console.log("Manage Fund List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setManageLoanList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
   };
   // managed loan
 
@@ -1222,28 +1370,34 @@ const InvestmentTrust_Edit = () => {
 
     if (is_investment){
 
-      setInvestmentList(investmentList.filter((investmentList, index) => index !== updateIndex));
-      setInvestmentList(investmentList =>[...investmentList, myData]);
-      handleClose7();
-      setIs_investment(false);
+      let id = values.id;
+
+      axios
+        .patch(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties/Update-Client-InvestmentProperties/${myData.Email}/${id}`, myData)
+        .then((res) => { console.log("data Updated successfully"); handleClose7(); setIs_investment(false); });
 
 
     }
     else{
 
-      console.log(myData);
       axios
-        .post(
-          "http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentProperties",
-          myData
-        )
+        .post("http://localhost:7000/Client-InvestmentTrust-InvestmentProperties/Add-Client-InvestmentProperties",myData)
         .then((res) => {
           console.log("Data added sussessfully!");
+          handleClose7();
         });
-  
-      setInvestmentList([...investmentList, myData]);
-      handleClose7();
+
     }
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties`).then((res) => {
+        console.log("Manage Fund List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == myData.Email);
+        setInvestmentList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
 
   };
 
@@ -1251,6 +1405,7 @@ const InvestmentTrust_Edit = () => {
     setIs_investment(true);
 
     let myData = {
+      id:elem._id,
       Email: localStorage.getItem("ClientEmail"),
       InvestmentCurrentValue: elem.CurrentValue, // num
       InvestmentCostBasePurchasePrice: elem.CostBase, // num
@@ -1276,14 +1431,39 @@ const InvestmentTrust_Edit = () => {
     };
 
     setInvestment_initialValues2([myData])
-    setUpdateIndex(ind);
+    // setUpdateIndex(ind);
     handleShow7();
     // handleShow4()
   };
 
   let deleteHandler_Investment = (elem,ind) => {
     // alert("delete");
-    setInvestmentList(investmentList.filter((investmentList, index) => index !== ind));
+    // setInvestmentList(investmentList.filter((investmentList, index) => index !== ind));
+
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties/Delete-Client-InvestmentProperties/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Manage Loan List Remove");
+    });
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties`).then((res) => {
+        console.log("Manage Fund List get Successfully");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setInvestmentList(clientFilterObj);
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+
+
+
   };
   //investment properties
 
@@ -1303,6 +1483,7 @@ const InvestmentTrust_Edit = () => {
     ProfessionalFees2:  investmentInnerModalObj.ProfessionalFees,
     AllOther2:  investmentInnerModalObj.AllOther,
   };
+
   let Investment_validationSchema_Modal = Yup.object({
     BodyCorporateFees2: Yup.number().test(
       "Is positive?",
@@ -1382,16 +1563,26 @@ const InvestmentTrust_Edit = () => {
 
     axios
       .post(
-        "http://localhost:7000/Client-InvestmentTrust/Add-Client-InvestmentPropertiesModal",
+        `http://localhost:7000/Client-InvestmentTrust-InvestmentProperties-Modal/Update-Client-InvestmentPropertiesModal/${myData.Email}`,
         myData
       )
       .then((res) => {
         console.log("Data Added Successfully!");
       });
+    
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-InvestmentTrust-InvestmentProperties-Modal`).then((res) => {
+          console.log("Manage Fund List get Successfully");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == myData.Email);
+          setInvestmentInnerModalObj(clientFilterObj[0]);
+          console.log(clientFilterObj);
+        });
+      }, 500);
+    
+    
     handleClose8();
   };
-
-
 
   useEffect(()=>{
 
@@ -1401,32 +1592,34 @@ const InvestmentTrust_Edit = () => {
     .get(`http://localhost:7000/Client-InvestmentTrust-InvestmentForm`)
     .then((res) => {
     let clientObj=(res.data)
-    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
+      let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      // values.EstablishmentDate
+      let date = new Date(clientFilterObj[0].EstablishmentDate)
+      clientFilterObj[0].EstablishmentDate = date;
+
     setInvestmentFromObj(clientFilterObj[0])
-     console.log(clientFilterObj);
+    //  console.log(clientFilterObj);
     })
 
 
 
 
     //BankAccounts is added in get Api 
-    axios
-    .get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`)
-    .then((res) => {
-    let clientObj=(res.data)
-    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    setBankAccountListObj(clientFilterObj[0])
-    //  console.log(clientFilterObj);
-    })
+    axios.get(`http://localhost:7000/Client-InvestmentTrust-BankAccounts`).then((res) => {
+      console.log("got it");
+      let clientObj = res.data;
+      let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      setBankAccountList(clientFilterObj);
+      set_isEdit_BankAccountList(true);
+    });
 
-    axios
-    .get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`)
-    .then((res) => {
-    let clientObj=(res.data)
-    let clientFilterObj=clientObj.filter((item) => item.Email ==email);
-    setdepositListObj(clientFilterObj[0])
-    //  console.log(clientFilterObj);
-    })
+    axios.get(`http://localhost:7000/Client-InvestmentTrust-TermDeposit`).then((res) => {
+      console.log("got it");
+      let clientObj = res.data;
+      let clientFilterObj = clientObj.filter((item) => item.Email == email);
+      setDepositList(clientFilterObj);
+      // console.log(clientFilterObj);
+    });
 
     axios
     .get(`http://localhost:7000/Client-InvestmentTrust-AustralianShareMarket/Australian-Market-Share`)
@@ -1492,8 +1685,6 @@ const InvestmentTrust_Edit = () => {
 
 
   },[])
-
-
 
 
 
@@ -1902,7 +2093,7 @@ const InvestmentTrust_Edit = () => {
                       <Formik
                         initialValues={
                           isEdit_bankAccountList
-                            ? bankAccountList2[0]
+                            ? bankAccountList[0]
                             : Bank_initialValues
                         }
                         validationSchema={Bank_validationSchema}
@@ -2213,8 +2404,8 @@ const InvestmentTrust_Edit = () => {
                                 >
                                   Save
                                 </button>
-                                <button 
-                                type="button"
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose}
                                 >
@@ -2240,36 +2431,73 @@ const InvestmentTrust_Edit = () => {
                           </tr>
                         </thead>
                         <tbody>
+                          
                           {bankAccountList.map((elem, index) => {
-                            // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
-
-                            return (
-                              <tr key={index}>
-                                <td>{elem.CurrentValue}</td>
-                                <td>{elem.FinancialInstitution}</td>
-                                <td>{elem.IncomeYield}</td>
-                                <td>{elem.AnnualIncome}</td>
-                                <td>
-                                  <button
-                                    type="button"
-                                    onClick={(e) =>
-                                      deleteHandler_Bank(elem, index)
-                                    }
-                                    className="btn btn-danger btn-sm"
-                                  >
-                                    delete
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => updateHandler_Bank(elem)}
-                                    className="btn btn-warning btn-sm mx-2"
-                                  >
-                                    update
-                                  </button>
-                                </td>
-                              </tr>
-                            );
+                            //bank one
+                            if (elem.FinancialInstitution1) {
+                              return (
+                                <tr key={index}>
+                                <td>{elem.CurrentValue1}</td>
+                                <td>{elem.FinancialInstitution1}</td>
+                                <td>{elem.IncomeYield1}</td>
+                                <td>{elem.AnnualIncome1}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Bank1(elem)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) =>{set_isEdit_BankAccountList(true); handleShow();}} className="btn btn-warning btn-sm mx-2" >
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                              }
                           })}
+
+                          {bankAccountList.map((elem, index) => {
+                            //bank two
+                            if (elem.FinancialInstitution2) {
+                              return (
+                                <tr key={index}>
+                                <td>{elem.CurrentValue2}</td>
+                                <td>{elem.FinancialInstitution2}</td>
+                                <td>{elem.IncomeYield2}</td>
+                                <td>{elem.AnnualIncome2}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Bank2(elem)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => { set_isEdit_BankAccountList(true); handleShow();}} className="btn btn-warning btn-sm mx-2" >
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                              }
+                          })}
+
+                          {bankAccountList.map((elem, index) => {
+                            //bank two
+                            if (elem.FinancialInstitution3) {
+                              return (
+                                <tr key={index}>
+                                <td>{elem.CurrentValue3}</td>
+                                <td>{elem.FinancialInstitution3}</td>
+                                <td>{elem.IncomeYield3}</td>
+                                <td>{elem.AnnualIncome3}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Bank3(elem)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => { set_isEdit_BankAccountList(true); handleShow();}} className="btn btn-warning btn-sm mx-2" >
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                              }
+                          })}
+
                         </tbody>
                       </table>
                     </div>
@@ -2318,11 +2546,7 @@ const InvestmentTrust_Edit = () => {
                         </Modal.Title>
                       </Modal.Header>
                       <Formik
-                        initialValues={
-                          isEdit_deposit
-                            ? deposit_InitialValue2[0]
-                            : Deposit_initialValues
-                        }
+                        initialValues={isEdit_deposit ? deposit_InitialValue2[0]: Deposit_initialValues}
                         validationSchema={Deposit_validationSchema}
                         onSubmit={Deposit_onSubmit}
                       >
@@ -2632,7 +2856,7 @@ const InvestmentTrust_Edit = () => {
                                   Save
                                 </button>
                                 <button
-                                type="button"
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose2}
                                 >
@@ -2660,34 +2884,69 @@ const InvestmentTrust_Edit = () => {
                         </thead>
                         <tbody>
                           {depositList.map((elem, index) => {
-                            // let {ChildName,childDoBID,childRelationship,childAge,childGender}=elem;
+                            if (elem.FinancialInstitution1) {
+                              return (
+                                <tr key={index}>
+                                  <td>{elem.CurrentValue1}</td>
+                                  <td>{elem.FinancialInstitution1}</td>
+                                  <td>{elem.IncomeYield1}</td>
+                                  <td>{elem.AnnualIncome1}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Deposit1(elem, index)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => UpdateHandler_Deposit(elem)} className="btn btn-warning btn-sm mx-2">
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
 
-                            return (
-                              <tr key={index}>
-                                <td>{elem.DepositCurrentValue}</td>
-                                <td>{elem.DepositFinancialInstituion}</td>
-                                <td>{elem.DepositIncomeYield}</td>
-                                <td>{elem.DepositAnnualIncome}</td>
-                                <td>
-                                  <button
-                                    type="button"
-                                    onClick={(e) =>
-                                      deleteHandler_Deposit(elem, index)
-                                    }
-                                    className="btn btn-danger btn-sm"
-                                  >
-                                    delete
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => updateHandler_Deposit(elem)}
-                                    className="btn btn-warning btn-sm mx-2"
-                                  >
-                                    update
-                                  </button>
-                                </td>
-                              </tr>
-                            );
+                          })}
+
+                          {depositList.map((elem, index) => {
+                            if (elem.FinancialInstitution2) {
+                              return (
+                                <tr key={index}>
+                                  <td>{elem.CurrentValue2}</td>
+                                  <td>{elem.FinancialInstitution2}</td>
+                                  <td>{elem.IncomeYield2}</td>
+                                  <td>{elem.AnnualIncome2}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Deposit2(elem, index)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => { UpdateHandler_Deposit(elem)}} className="btn btn-warning btn-sm mx-2">
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
+
+                          })}
+
+                          {depositList.map((elem, index) => {
+                            if (elem.FinancialInstitution3) {
+                              return (
+                                <tr key={index}>
+                                  <td>{elem.CurrentValue3}</td>
+                                  <td>{elem.FinancialInstitution3}</td>
+                                  <td>{elem.IncomeYield3}</td>
+                                  <td>{elem.AnnualIncome3}</td>
+                                  <td>
+                                    <button type="button" onClick={(e) => deleteHandler_Deposit3(elem, index)} className="btn btn-danger btn-sm" >
+                                      delete
+                                    </button>
+                                    <button type="button" onClick={(e) => { UpdateHandler_Deposit(elem)}} className="btn btn-warning btn-sm mx-2">
+                                      update
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
+
                           })}
                         </tbody>
                       </table>
@@ -3087,7 +3346,7 @@ const InvestmentTrust_Edit = () => {
                                   Save
                                 </button>
                                 <button
-                                type="button"
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose3}
                                 >
@@ -3627,7 +3886,7 @@ const InvestmentTrust_Edit = () => {
                                     Save
                                   </button>
                                   <button
-                                  type="button"
+                                  type='button'
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose4}
                                   >
@@ -4118,7 +4377,7 @@ const InvestmentTrust_Edit = () => {
                                   Save
                                 </button>
                                 <button
-                                type="button"
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose5}
                                 >
@@ -4650,8 +4909,8 @@ const InvestmentTrust_Edit = () => {
                                   >
                                     Save
                                   </button>
-                                  <button 
-                                  type="button"
+                                  <button
+                                  type='button'
                                     className="float-end btn w-25  btn-outline  backBtn mx-3"
                                     onClick={handleClose6}
                                   >
@@ -4711,8 +4970,8 @@ const InvestmentTrust_Edit = () => {
                   </div>
                   {/*Manage Funds */}
 
-                  {/* investment Properties */}
 
+                  {/* investment Properties */}
                   <div className="shadow py-4 px-4 my-5">
                     <h3 className="text-center">InvestMent properties</h3>
                     <div className="row">
@@ -5360,8 +5619,8 @@ const InvestmentTrust_Edit = () => {
                                 >
                                   Save
                                 </button>
-                                <button 
-                                type="button"
+                                <button
+                                type='button'
                                   className="float-end btn w-25  btn-outline  backBtn mx-3"
                                   onClick={handleClose7}
                                 >
@@ -5428,6 +5687,7 @@ const InvestmentTrust_Edit = () => {
                     {/* InvestMent properties Table */}
                   </div>
                   {/* investment Properties */}
+
 
                   {/* ModalInMOdal */}
                   {/* -------------Deposit modal---------------------------- */}
@@ -5755,8 +6015,8 @@ const InvestmentTrust_Edit = () => {
                               >
                                 Save
                               </button>
-                              <button 
-                              type="button"
+                              <button
+                              type='button'
                                 className="float-end btn w-25  btn-outline  backBtn mx-3"
                                 onClick={handleClose8}
                               >

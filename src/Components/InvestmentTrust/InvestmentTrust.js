@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 const InvestmentTrust = () => {
-  const [updateIndex, setUpdateIndex] = useState();
+
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);

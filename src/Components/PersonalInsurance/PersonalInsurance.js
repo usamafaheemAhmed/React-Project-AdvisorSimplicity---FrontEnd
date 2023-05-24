@@ -143,7 +143,7 @@ useEffect(() => {
 
    const [PersonalInsuranceCover, setPersonalInsuranceCover] = useState(false);
   const [PersonalInsuranceCovershow, setPersonalInsuranceCoverShow] = useState(false);
-  const PersonalInsuranceCoverhandleClose = () => setPersonalInsuranceCoverShow(false);
+  const PersonalInsuranceCoverhandleClose = () => { setPersonalInsuranceCoverShow(false); setClientLifeTPDUpdateFlag(false); }
   const PersonalInsuranceCoverhandleShow = () => setPersonalInsuranceCoverShow(true);
   let PersonalInsuranceCoverHandler=(elem)=>{
     if (elem==="No"){
@@ -156,7 +156,7 @@ useEffect(() => {
 
   const [Partner_PersonalInsuranceCover, setPartner_PersonalInsuranceCover] = useState(false);  
   const [Partner_PersonalInsuranceCovershow, setPartner_PersonalInsuranceCoverShow] = useState(false);
-  const Partner_PersonalInsuranceCoverhandleClose = () => setPartner_PersonalInsuranceCoverShow(false);
+  const Partner_PersonalInsuranceCoverhandleClose = () => { setPartner_PersonalInsuranceCoverShow(false); setPartnerLifeTPDUpdateFlag(false); }
   const Partner_PersonalInsuranceCoverhandleShow = () => setPartner_PersonalInsuranceCoverShow(true);
   let Partner_PersonalInsuranceCoverHandler=(elem)=>{
     if (elem==="No"){
@@ -169,12 +169,12 @@ useEffect(() => {
 
   
   const [PersonalInsuranceCovershow2, setPersonalInsuranceCoverShow2] = useState(false);
-  const PersonalInsuranceCover2handleClose = () => setPersonalInsuranceCoverShow2(false);
+  const PersonalInsuranceCover2handleClose = () => { setPersonalInsuranceCoverShow2(false); setClientIncomeProtectionUpdateFlag(false); }
   const PersonalInsuranceCover2handleShow = () => setPersonalInsuranceCoverShow2(true);
  
 
   const [Partner_PersonalInsuranceCovershow2, setPartner_PersonalInsuranceCoverShow2] = useState(false);
-  const Partner_PersonalInsuranceCover2handleClose = () => setPartner_PersonalInsuranceCoverShow2(false);
+  const Partner_PersonalInsuranceCover2handleClose = () => { setPartner_PersonalInsuranceCoverShow2(false); setPartnerIncomeProtectionUpdateFlag(false); }
   const Partner_PersonalInsuranceCover2handleShow = () => setPartner_PersonalInsuranceCoverShow2(true);
  
 
@@ -583,26 +583,38 @@ useEffect(() => {
 
 
       if(PartnerLifeTPDUpdateFlag){
-        setIsPartnerListLifeTPD(isPartnerListLifeTPD.filter((isPartnerListLifeTPD, index) => index !== updateIndex));
-        setIsPartnerListLifeTPD(isPartnerListLifeTPD =>[...isPartnerListLifeTPD, LifeData]);
-        setIsPartnerListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
-        Partner_PersonalInsuranceCoverhandleClose();
-        setPartnerLifeTPDUpdateFlag(false);
+
+        let id = values.id;
+        console.log(LifeData);
+
+        axios
+        .patch(`http://localhost:7000/Partner-Life-Insurance/Update-Partner-Insurance-Life/${LifeData.Email}/${id}`,LifeData)
+          .then((res) => { console.log("data Updated successfully");
+          Partner_PersonalInsuranceCoverhandleClose();
+          setPartnerLifeTPDUpdateFlag(false);
+          });
+
       }
       else{
-        setIsPartnerListLifeTPD([...isPartnerListLifeTPD, LifeData]);
-        setIsPartnerNumber(isPartnerNumber+1);
-        Partner_PersonalInsuranceCoverhandleClose();
-  
-      //  console.log(LifeData);
   
        axios
        .post('http://localhost:7000/Partner-Life-Insurance/Add-Partner-Insurance-Life',LifeData)
        .then((ref)=>{
-        console.log("data Added successfully")
+         console.log("Partner List Life TPD added ");
         Partner_PersonalInsuranceCoverhandleClose();
        })
       }
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Partner-Life-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == LifeData.Email);
+          setIsPartnerListLifeTPD(clientFilterObj);
+          setIsPartnerNumber(clientFilterObj[clientFilterObj.length-1].Life_PolicyID+1);
+          console.log(clientFilterObj);
+        });
+      }, 500);
 
 
 
@@ -610,17 +622,47 @@ useEffect(() => {
 
       let PartnerListLifeTPDDeleteHandler = (elem, ind)=>{
 
-        setIsPartnerListLifeTPD(isPartnerListLifeTPD.filter((isPartnerListLifeTPD, index) => index !== ind));
-        setIsPartnerNumber(isPartnerNumber-1);
+        // setIsPartnerListLifeTPD(isPartnerListLifeTPD.filter((isPartnerListLifeTPD, index) => index !== ind));
+        // setIsPartnerNumber(isPartnerNumber-1);
+
+
+        let id = elem._id;
+        let email = elem.Email;
+    
+        axios
+        .delete(`http://localhost:7000/Partner-Life-Insurance/Delete-Partner-Insurance-Life/${email}/${id}`)
+        .then((res) => {
+          //Popper Massage
+          console.log("Partner List Life TPD Remove");
+        });
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Partner-Life-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == email);
+          setIsPartnerListLifeTPD(clientFilterObj);
+          if (clientFilterObj.length == 0) {
+            setIsPartnerNumber(1);
+          } else {
+            setIsPartnerNumber(clientFilterObj[clientFilterObj.length-1].Life_PolicyID+1);
+          }
+          console.log(clientFilterObj);
+        });
+      }, 500);
+        
       }
 
       let PartnerListLifeTPDUpdateHandler = (elem, ind)=>{
-        // alert("PartnerListLifeTPDUpdateHandler");
-  
-  
         setPartnerLifeTPDUpdateFlag(true);
+
+        let date = new Date(elem.Life_PolicyDateCommenced);
+        elem.Life_PolicyDateCommenced = date; 
+        date = new Date(elem.Life_PolicyDateRenewal);
+        elem.Life_PolicyDateRenewal = date;
   
-        let LifeData={
+        let LifeData = {
+          id:elem._id,
           Email: localStorage.getItem("ClientEmail"),
           PersonalInsurancePolicyNO1:elem.Life_PolicyID, // read only
           PersonalInsuranceLifeRadio:elem.Life,
@@ -649,13 +691,7 @@ useEffect(() => {
           PersonalInsuranceLoadingDescription1:elem.Life_Details_LoadingExecutions,
         }
   
-  
-        // console.log(LifeData);
-        // console.log(PartnerLifeTPDUpdateFlag);
-        
         setPartnerListLifeTPDTOUpdate([LifeData]);
-        // console.log(PartnerListLifeTPDTOUpdate);
-        setUpdateIndex(ind);
         Partner_PersonalInsuranceCoverhandleShow();
       }
 
@@ -691,41 +727,84 @@ useEffect(() => {
 
       if(PartnerIncomeProtectionUpdateFlag){
 
-        setIsPartnerListIncomeProtection(isPartnerListIncomeProtection.filter((isPartnerListIncomeProtection, index) => index !== updateIndex));
-        setIsPartnerListIncomeProtection(isPartnerListIncomeProtection =>[...isPartnerListIncomeProtection, partnerData]);
-        setIsPartnerListIncomeProtection(prevState => [...prevState].sort((a, b) => (a.Income_PolicyID > b.Income_PolicyID) ? 1 : -1));
-        
-        Partner_PersonalInsuranceCover2handleClose();
-        setClientIncomeProtectionUpdateFlag(false);
+        let id = values.id;
+        console.log(partnerData);
+
+        axios
+        .patch(`http://localhost:7000/Partner-Income-Insurance/Update-Partner-Insurance-Income/${partnerData.Email}/${id}`,partnerData)
+          .then((res) => { console.log("Partner_Income Updated successfully");
+          Partner_PersonalInsuranceCover2handleClose();
+          setPartnerIncomeProtectionUpdateFlag(false);
+          });
 
       }
       else{
-        setIsPartnerListIncomeProtection([...isPartnerListIncomeProtection, partnerData]);
-        setIsPartnerNumber2(isPartnerNumber2+1);
-        Partner_PersonalInsuranceCover2handleClose();
-
-    // console.log(partnerData)
 
     axios
     .post('http://localhost:7000/Partner-Income-Insurance/Add-Partner-Insurance-Income',partnerData)
     .then((res)=>{
-      console.log("Data Added Successfully!")
+      console.log("Partner_Income Added Successfully!")
       Partner_PersonalInsuranceCover2handleClose();
     })
       }
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Partner-Income-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == partnerData.Email);
+          setIsPartnerListIncomeProtection(clientFilterObj);
+          setIsPartnerNumber2(clientFilterObj[clientFilterObj.length-1].Income_PolicyID+1);
+          console.log(clientFilterObj);
+        });
+      }, 500);
     }
 
     let PartnerListIncomeProtectionDeleteHandler = (elem, ind)=>{
 
-      setIsPartnerListIncomeProtection(isPartnerListIncomeProtection.filter((isPartnerListIncomeProtection, index) => index !== ind));
-      setIsPartnerNumber2(isPartnerNumber2-1);
+      // setIsPartnerListIncomeProtection(isPartnerListIncomeProtection.filter((isPartnerListIncomeProtection, index) => index !== ind));
+      // setIsPartnerNumber2(isPartnerNumber2-1);
+
+
+      let id = elem._id;
+      let email = elem.Email;
+  
+      axios
+      .delete(`http://localhost:7000/Partner-Income-Insurance/Delete-Partner-Insurance-Income/${email}/${id}`)
+      .then((res) => {
+        //Popper Massage
+        console.log("Partner List Income Protection TPD Remove");
+      });
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Partner-Income-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == email);
+          setIsPartnerListIncomeProtection(clientFilterObj);
+          if (clientFilterObj.length == 0) {
+            setIsPartnerNumber2(1);
+          }
+          else {
+            setIsPartnerNumber2(clientFilterObj[clientFilterObj.length-1].Income_PolicyID+1);
+          }
+          console.log(clientFilterObj);
+        });
+      }, 500);
+
 
     }
 
     let PartnerListIncomeProtectionUpdateHandler = (elem, ind)=>{
       setPartnerIncomeProtectionUpdateFlag(true);
 
-      let clientData={
+      let date = new Date(elem.Income_PolicyDateCommenced);
+      elem.Income_PolicyDateCommenced = date;
+      date = new Date(elem.Income_PolicyDateRenewal);
+      elem.Income_PolicyDateRenewal = date;
+
+      let clientData = {
+        id:elem._id,
       Email: localStorage.getItem("ClientEmail"),
       PersonalInsurance2PolicyNO1:elem.Income_PolicyID,  // read only
       PersonalInsurance2PolicyOwner:elem.Income_PolicyOwner,
@@ -753,14 +832,14 @@ useEffect(() => {
       }
 
       setPartnerListIncomeProtectionUpdate([clientData]);
-      setUpdateIndex(ind);
+      // setUpdateIndex(ind);
       Partner_PersonalInsuranceCover2handleShow();
     }
     
 
-
-
-    let Client_onSubmit_Life = (values) => {
+  let Client_onSubmit_Life = (values) => {
+    localStorage.getItem("ClientEmail", "usamafaheem@gmail.com");
+    localStorage.getItem("EditClient", "usamafaheem@gmail.com");
      
       let LifeData={
         Email: localStorage.getItem("ClientEmail"),
@@ -792,18 +871,18 @@ useEffect(() => {
 
       if(ClientLifeTPDUpdateFlag){
 
+        let id = values.id;
+        console.log(LifeData);
 
-        setIsClientListLifeTPD(isClientListLifeTPD.filter((isClientListLifeTPD, index) => index !== updateIndex));
-        setIsClientListLifeTPD(isClientListLifeTPD =>[...isClientListLifeTPD, LifeData]);
-        setIsClientListLifeTPD(prevState => [...prevState].sort((a, b) => (a.Life_PolicyID > b.Life_PolicyID) ? 1 : -1));
-        PersonalInsuranceCoverhandleClose();
-        setClientLifeTPDUpdateFlag(false);
-
+        axios
+        .patch(`http://localhost:7000/Client-Life-Insurance/Update-Client-Insurance-Life/${LifeData.Email}/${id}`,LifeData)
+          .then((res) => { console.log("data Updated successfully");
+            PersonalInsuranceCoverhandleClose();
+            setClientLifeTPDUpdateFlag(false);
+          });
+  
       }
       else{
-        setIsClientListLifeTPD([...isClientListLifeTPD, LifeData]);
-        setIsClientNumber(isClientNumber+1);
-         PersonalInsuranceCoverhandleClose();
    
         axios
         .post('http://localhost:7000/Client-Life-Insurance/Add-Client-Insurance-Life',LifeData)
@@ -811,12 +890,104 @@ useEffect(() => {
          console.log("cliend life data added successfully!")
          PersonalInsuranceCoverhandleClose();
         })
-
       }
 
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Life-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == LifeData.Email);
+          setIsClientListLifeTPD(clientFilterObj);
+          // alert(clientFilterObj.length);
+          setIsClientNumber(clientFilterObj[clientFilterObj.length-1].Life_PolicyID+1);
+          console.log(clientFilterObj);
+        });
+      }, 500);
 
 
+
+  }
+  let ClientListLifeTPDDeleteHandler = (elem, ind)=>{
+    // alert("ClientListLifeTPDDeleteHandler");
+    // setIsClientListLifeTPD(isClientListLifeTPD.filter((isClientListLifeTPD, index) => index !== ind));
+    // setIsClientNumber(isClientNumber-1);
+
+
+    let id = elem._id;
+    let email = elem.Email;
+
+    axios
+    .delete(`http://localhost:7000/Client-Life-Insurance/Delete-Client-Insurance-Life/${email}/${id}`)
+    .then((res) => {
+      //Popper Massage
+      console.log("Australian Share Market Remove");
+    });
+
+
+    setTimeout(() => {
+      axios.get(`http://localhost:7000/Client-Life-Insurance`).then((res) => {
+        console.log("got it");
+        let clientObj = res.data;
+        let clientFilterObj = clientObj.filter((item) => item.Email == email);
+        setIsClientListLifeTPD(clientFilterObj);
+        if (clientFilterObj.length == 0) {
+          setIsClientNumber(1);
+        }
+        else {
+          setIsClientNumber(clientFilterObj[clientFilterObj.length-1].Life_PolicyID+1);
+        }
+        console.log(clientFilterObj);
+      });
+    }, 500);
+
+  }
+  let ClientListLifeTPDUpdateHandler = (elem, ind)=>{
+
+    setClientLifeTPDUpdateFlag(true);
+
+    let date = new Date(elem.Life_PolicyDateCommenced);
+    elem.Life_PolicyDateCommenced = date; 
+    date = new Date(elem.Life_PolicyDateRenewal);
+    elem.Life_PolicyDateRenewal = date;
+
+    let LifeData = {
+      id:elem._id,
+      Email: localStorage.getItem("ClientEmail"),
+      PersonalInsurancePolicyNO1:elem.Life_PolicyID, // read only
+      PersonalInsuranceLifeRadio:elem.Life,
+      PersonalInsuranceTPDRadio:elem.TPD,
+      PersonalInsuranceTraumaRadio: elem.Trauma,
+      LifeInput:elem.LifeInput,
+      TPDInput:elem.TPDInput,
+      TraumaInput:elem.TraumaInput,
+
+
+      PersonalInsurancePolicyOwner:elem.Life_PolicyOwner,
+      PersonalInsuranceLifeInsured:elem.Life_Insured,
+      PersonalInsuranceInsuranceCompany:elem.Life_InsuranceCompany,
+      PersonalInsuranceProductName:elem.Life_InsuranceProduct,
+      PersonalInsurancePolicySrNo:elem.Life_PolicyNumber,
+      PersonalInsuranceCommencedDate:elem.Life_PolicyDateCommenced,
+      PersonalInsuranceRenewalDate:elem.Life_PolicyDateRenewal,
+      // Life_Smoker:clientSmoker,
+      PersonalInsurancePremiumPA:elem.Life_PremiumPA,
+      PersonalInsurancePremiumType:elem.Life_PremiumType,
+
+      PersonalInsuranceCPIIndexedRadio:elem.Life_CPI_Indexed,
+      PersonalInsuranceSuperannuationRadio:elem.Life_SuperannuationPolicy,
+      PersonalInsuranceContinuationRadio:elem.Life_ContinuationPolicy,
+      PersonalInsuranceLoadingRadio:elem.Life_LoadingExecutions,
+      PersonalInsuranceLoadingDescription1:elem.Life_Details_LoadingExecutions,
     }
+
+
+    // console.log(LifeData);
+
+    setClientListLifeTPDTOUpdate([LifeData]);
+    // setUpdateIndex(ind);
+    PersonalInsuranceCoverhandleShow();
+  }
+
 
     let Client_onSubmit_Income = (values) => {
 
@@ -850,86 +1021,86 @@ useEffect(() => {
     
       if(ClientIncomeProtectionUpdateFlag)
       {
+      let id = values.id;
+      console.log(clientData);
 
-      setIsClientListIncomeProtection(isClientListIncomeProtection.filter((isClientListIncomeProtection, index) => index !== updateIndex));
-      setIsClientListIncomeProtection(isClientListIncomeProtection =>[...isClientListIncomeProtection, clientData]);
-      setIsClientListIncomeProtection(prevState => [...prevState].sort((a, b) => (a.Income_PolicyID > b.Income_PolicyID) ? 1 : -1));
-      PersonalInsuranceCover2handleClose();
-      setClientIncomeProtectionUpdateFlag(false);
+      axios
+      .patch(`http://localhost:7000/Client-Income-Insurance/Update-Client-Insurance-Income/${clientData.Email}/${id}`,clientData)
+        .then((res) => { console.log("data Updated successfully");
+        PersonalInsuranceCover2handleClose();
+        setClientIncomeProtectionUpdateFlag(false);
+        });
 
       }
       else{
 
-      setIsClientListIncomeProtection([...isClientListIncomeProtection, clientData]);
-      setIsClientNumber2(isClientNumber2+1);
-      // PersonalInsuranceCover2handleClose();
-     
       axios
       .post('http://localhost:7000/Client-Income-Insurance/Add-Client-Insurance-Income',clientData)
       .then((res)=>{
         console.log("Data Added Successfully!")
-        // PersonalInsuranceCover2handleClose();
+        PersonalInsuranceCover2handleClose();
       })
 
       }
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Income-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == clientData.Email);
+          setIsClientListIncomeProtection(clientFilterObj);
+          setIsClientNumber2(clientFilterObj[clientFilterObj.length-1].Income_PolicyID+1);
+          console.log(clientFilterObj);
+        });
+      }, 500);
+
+
+
       }
-
-    let ClientListLifeTPDDeleteHandler = (elem, ind)=>{
-      // alert("ClientListLifeTPDDeleteHandler");
-      setIsClientListLifeTPD(isClientListLifeTPD.filter((isClientListLifeTPD, index) => index !== ind));
-      setIsClientNumber(isClientNumber-1);
-    }
-    let ClientListLifeTPDUpdateHandler = (elem, ind)=>{
-      // alert("ClientListLifeTPDDeleteHandler");
-
-
-      setClientLifeTPDUpdateFlag(true);
-
-      let LifeData={
-        Email: localStorage.getItem("ClientEmail"),
-        PersonalInsurancePolicyNO1:elem.Life_PolicyID, // read only
-        PersonalInsuranceLifeRadio:elem.Life,
-        PersonalInsuranceTPDRadio:elem.TPD,
-        PersonalInsuranceTraumaRadio:elem.Trauma,
-
-        PersonalInsurancePolicyOwner:elem.Life_PolicyOwner,
-        PersonalInsuranceLifeInsured:elem.Life_Insured,
-        PersonalInsuranceInsuranceCompany:elem.Life_InsuranceCompany,
-        PersonalInsuranceProductName:elem.Life_InsuranceProduct,
-        PersonalInsurancePolicySrNo:elem.Life_PolicyNumber,
-        PersonalInsuranceCommencedDate:elem.Life_PolicyDateCommenced,
-        PersonalInsuranceRenewalDate:elem.Life_PolicyDateRenewal,
-        // Life_Smoker:clientSmoker,
-        PersonalInsurancePremiumPA:elem.Life_PremiumPA,
-        PersonalInsurancePremiumType:elem.Life_PremiumType,
-
-        PersonalInsuranceCPIIndexedRadio:elem.Life_CPI_Indexed,
-        PersonalInsuranceSuperannuationRadio:elem.Life_SuperannuationPolicy,
-        PersonalInsuranceContinuationRadio:elem.Life_ContinuationPolicy,
-        PersonalInsuranceLoadingRadio:elem.Life_LoadingExecutions,
-        PersonalInsuranceLoadingDescription1:elem.Life_Details_LoadingExecutions,
-      }
-
-
-      // console.log(LifeData);
-
-      setClientListLifeTPDTOUpdate([LifeData]);
-      setUpdateIndex(ind);
-      PersonalInsuranceCoverhandleShow();
-    }
-
-   
     let ClientListIncomeProtectionDeleteHandler = (elem, ind)=>{
 
-      setIsClientListIncomeProtection(isClientListIncomeProtection.filter((isClientListIncomeProtection, index) => index !== ind));
-      setIsClientNumber2(isClientNumber2-1);
+      // setIsClientListIncomeProtection(isClientListIncomeProtection.filter((isClientListIncomeProtection, index) => index !== ind));
+      // setIsClientNumber2(isClientNumber2-1);
+
+      let id = elem._id;
+      let email = elem.Email;
+  
+      axios
+      .delete(`http://localhost:7000/Client-Income-Insurance/Delete-Client-Insurance/${email}/${id}`)
+      .then((res) => {
+        //Popper Massage
+        console.log("Australian Share Market Remove");
+      });
+
+
+      setTimeout(() => {
+        axios.get(`http://localhost:7000/Client-Income-Insurance`).then((res) => {
+          console.log("got it");
+          let clientObj = res.data;
+          let clientFilterObj = clientObj.filter((item) => item.Email == email);
+          setIsClientListIncomeProtection(clientFilterObj);
+          if (clientFilterObj.length == 0) {
+            setIsClientNumber2(1);
+          }
+          else {
+            setIsClientNumber2(clientFilterObj[clientFilterObj.length-1].Income_PolicyID+1);
+          }
+          console.log(clientFilterObj);
+        });
+      }, 500);
 
     }
 
     let ClientListIncomeProtectionUpdateHandler = (elem, ind)=>{
       setClientIncomeProtectionUpdateFlag(true);
 
-      let clientData={
+      let date = new Date(elem.Income_PolicyDateCommenced);
+      elem.Income_PolicyDateCommenced = date;
+      date = new Date(elem.Income_PolicyDateRenewal);
+      elem.Income_PolicyDateRenewal = date; 
+
+      let clientData = {
+      id:elem._id,
       Email: localStorage.getItem("ClientEmail"),
       PersonalInsurance2PolicyNO1:elem.Income_PolicyID,  // read only
       PersonalInsurance2PolicyOwner:elem.Income_PolicyOwner,
@@ -957,7 +1128,7 @@ useEffect(() => {
       }
 
       setClientListIncomeProtectionUpdate([clientData]);
-      setUpdateIndex(ind);
+      // setUpdateIndex(ind);
       PersonalInsuranceCover2handleShow();
     }
     
@@ -2544,7 +2715,7 @@ useEffect(() => {
                                                     return (
                                                       <tr key={index}>
                                                         <td className="fw-bold">{elem.Life_PolicyOwner}</td>
-                                                        <td>Cal</td>
+                                                        <td>{elem.LifeInput}/{elem.TPDInput}/{elem.TraumaInput}</td>
                                                         <td>{elem.Life_Insured}</td>
                                                         <td>{elem.Life_InsuranceCompany}</td>
                                                         <td>{elem.Life_InsuranceProduct}</td>
@@ -3219,8 +3390,25 @@ useEffect(() => {
                                       <div className="col-md-6">
                                       <div className="mb-3">
                                         <label htmlFor="PersonalInsurance2CommencedDate" className="form-label">Date Commenced</   label>
-                                        <Field type="date" className="form-control shadow inputDesign" 
-                                        id="PersonalInsurance2CommencedDate" name='PersonalInsurance2CommencedDate'/>
+                                  {/* <Field type="date" className="form-control shadow inputDesign" 
+                                      id="PersonalInsurance2CommencedDate" name='PersonalInsurance2CommencedDate' />  */}
+                                        <DatePicker
+                                        className="form-control inputDesign shadow"
+                                        showIcon
+                                        id="PersonalInsurance2CommencedDate"
+                                        name="PersonalInsurance2CommencedDate"
+                                        selected={values.PersonalInsurance2CommencedDate}
+                                        onChange={(date) =>
+                                          setFieldValue("PersonalInsurance2CommencedDate", date)
+                                        }
+                                        dateFormat="dd/MM/yyyy"
+                                        placeholderText="dd/mm/yyyy"
+                                        maxDate={new Date()}
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dropdownMode="select"
+                                        onBlur={handleBlur}
+                                      />
                                         <ErrorMessage component='div' className='text-danger fw-bold' name='PersonalInsurance2CommencedDate' />
                                       </div>            
                                       </div>                                        
