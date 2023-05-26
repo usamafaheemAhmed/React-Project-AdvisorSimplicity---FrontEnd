@@ -255,75 +255,6 @@ const PersonalDetail = () => {
     document.getElementById(elem).classList.add("selectedchildBtn");
   };
 
-  let ageHandler = (Dob, Age) => {
-    let DOB = document.getElementById(Dob).value;
-    let dateinYear = DOB.split("/");
-    let DOBDate = dateinYear[0];
-    let DOBMonth = dateinYear[1];
-    let DOBYear = dateinYear[2];
-
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    if (DOBMonth > month) {
-      let age = parseFloat(year) - parseFloat(DOBYear);
-      document.getElementById(Age).value = age - 1 || 0;
-    } else {
-      let age = parseFloat(year) - parseFloat(DOBYear);
-      document.getElementById(Age).value = age || 0;
-    }
-
-    if (DOBMonth == month) {
-      if (DOBDate >= day) {
-        let age = parseFloat(year) - parseFloat(DOBYear);
-        document.getElementById(Age).value = age - 1 || 0;
-      } else {
-        let age = parseFloat(year) - parseFloat(DOBYear);
-        document.getElementById(Age).value = age || 0;
-      }
-    }
-  };
-
-  function ChangeDateFormat(CDoB, HDate) {
-    let CurrentDate = new Date(document.getElementById(HDate).value);
-    let dd = CurrentDate.getDate();
-    let mm = CurrentDate.getMonth();
-    let yyyy = CurrentDate.getFullYear();
-    let setDate = dd + "/" + (mm + 1) + "/" + yyyy;
-    document.getElementById(CDoB).value = setDate;
-  }
-  let partnerAgeHandler = (Dob, Age) => {
-    let DOB = document.getElementById(Dob).value;
-    let dateinYear = DOB.split("/");
-    let DOBDate = dateinYear[0];
-    let DOBMonth = dateinYear[1];
-    let DOBYear = dateinYear[2];
-
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    if (DOBMonth > month) {
-      let age = parseFloat(year) - parseFloat(DOBYear);
-      document.getElementById(Age).value = age - 1 || 0;
-    } else {
-      let age = parseFloat(year) - parseFloat(DOBYear);
-      document.getElementById(Age).value = age || 0;
-    }
-
-    if (DOBMonth == month) {
-      if (DOBDate >= day) {
-        let age = parseFloat(year) - parseFloat(DOBYear);
-        document.getElementById(Age).value = age - 1 || 0;
-      } else {
-        let age = parseFloat(year) - parseFloat(DOBYear);
-        document.getElementById(Age).value = age || 0;
-      }
-    }
-  };
 
   const initialValues = {
     titleID: "",
@@ -582,16 +513,8 @@ const PersonalDetail = () => {
   });
 
   // ----------------------------------------------------------------------
-  let ageHandler2 = () => {
-    let DOB = document.getElementById("childDoBID").value;
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let currentDate = `${year}-${month}-${day}`;
-    let age = parseFloat(currentDate) - parseFloat(DOB);
-    document.getElementById("childAge").value = age || 0;
-  };
+
+
   let modalGenderHandler = (elem) => {
     if (elem == "female") {
       // window.localStorage.setItem("gender",elem)
