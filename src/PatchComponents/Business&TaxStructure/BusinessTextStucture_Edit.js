@@ -3078,7 +3078,7 @@ handleClosePartner();
                 {/*  row 6*/}
 
                  {/* 7 row */}
-                {dividendsTakenAsCash &&
+                {values.dividendsTakenradio === "Yes" &&
                  <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
@@ -3117,7 +3117,7 @@ handleClosePartner();
                         <ErrorMessage component='div' className='text-danger fw-bold' name="privatePartner" />
                       </div>
                     </div>
-                  </div>}
+                  </div>  }
                   {/*7 row*/}
                 </div>
               </div>
@@ -3762,7 +3762,7 @@ handleClosePartner();
                 {/*  row 6*/}
 
                  {/* 7 row */}
-                {DistributionsTakenState &&
+                {values.DistributionsTakenradio==="Yes" &&
                  <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">

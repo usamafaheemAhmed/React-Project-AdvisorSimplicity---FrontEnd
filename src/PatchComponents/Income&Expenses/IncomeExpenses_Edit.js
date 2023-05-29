@@ -21,6 +21,33 @@ const IncomeExpenses_Edit = () => {
     const [totalPersonal, setTotalPersonal] = useState(0);
     const [totalTransport, setTotalTransport] = useState(0);
     const [totalInsurance, setTotalInsurance] = useState(0);
+    
+    
+  // const [WhatIsData, setWhatisData] = useState(() => {
+  //   let email = localStorage.getItem("EditClient");
+  //   axios.get(`http://localhost:7000/Client-ExpenseIncome`).then((res) => {
+  //     let clientObj = res.data;
+  //     let clientFilterObj = clientObj.filter((item) => item.Email == email);
+
+  //     let date = new Date(clientFilterObj[0].Client_ActualDate);
+  //     clientFilterObj[0].Client_ActualDate = date;
+
+  //     // Client_CommencementDate
+  //     date = new Date(clientFilterObj[0].Client_CommencementDate);
+  //     clientFilterObj[0].Client_CommencementDate = date;
+
+  //     setclientData(clientFilterObj[0]);
+
+  //     setTimeout(() => {
+  //       creditCardStateHandler();
+  //       carStateHandler();
+  //     }, 500);
+
+      
+  //     return (clientFilterObj[0]);
+  //     // console.log(clientFilterObj[0])
+    //   });
+  //   });
 
   
 
@@ -81,6 +108,12 @@ const IncomeExpenses_Edit = () => {
       clientFilterObj[0].Client_CommencementDate = date;
 
       setclientData(clientFilterObj[0]);
+
+      setTimeout(() => {
+        creditCardStateHandler();
+        carStateHandler();
+      }, 1000);
+
       // console.log(clientFilterObj[0])
     });
 
@@ -93,6 +126,14 @@ const IncomeExpenses_Edit = () => {
       partnerFilterObj[0].Partner_CommencementDate = date;
 
       setPartnerData(partnerFilterObj[0]);
+
+        setTimeout(() => {
+          carStateHandler2();
+          creditCardStateHandler2();
+        }, 1000);
+
+
+
       // console.log(partnerFilterObj)
     });
 
@@ -103,6 +144,14 @@ const IncomeExpenses_Edit = () => {
       setModalData(objectFilterObj[0]);
       // console.log(res.data)
     });
+
+      // alert("check Now")
+    
+      // console.log("WhatIsData");
+      // console.log(WhatIsData);
+
+
+    
   }, []);
 
   let expectingInheritancesHandler = (elem) => {
@@ -567,24 +616,39 @@ const IncomeExpenses_Edit = () => {
       .required("Required"),
     clientEmployerFBTStatus: Yup.string().required("Required"),
 
-    clientCostBaseofCar: Yup.number().when("whatDoYouHave", {
-      is: (abc) => abc.includes("car"),
-      then: Yup.number().required("Required"),
+    clientCostBaseofCar: Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car') ,
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
 
-    clientRunningCostsofCarPackaged: Yup.number().when("whatDoYouHave", {
-      is: (abc) => abc.includes("car"),
-      then: Yup.number().required("Required"),
+    clientRunningCostsofCarPackaged:Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car') ,
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
 
-    clientCreditCardMortgageorOther: Yup.number().when("whatDoYouHave", {
-      is: (whatDoYouHave) =>
-        whatDoYouHave.includes("CreditCard") ||
-        whatDoYouHave.includes("Mortgage") ||
-        whatDoYouHave.includes("Other"),
-      then: Yup.number().required("Required"),
+    clientCreditCardMortgageorOther:Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('CreditCard') || abc.includes('Mortgage') || abc.includes('Other'),
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
     clientEmploymentStatus: Yup.string().required("Required"),
@@ -643,26 +707,44 @@ const IncomeExpenses_Edit = () => {
       .matches(letters, "Only letters")
       .required("Required"),
     clientEmployerFBTStatus2: Yup.string().required("Required"),
-    clientCostBaseofCar2: Yup.number().when("whatDoYouHave2", {
-      is: (abc) => abc.includes("car"),
-      then: Yup.number().required("Required"),
+
+     clientCostBaseofCar2: Yup.number()
+    .when('whatDoYouHave2', {
+      is: abc => abc.includes('car') ,
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
 
-    clientRunningCostsofCarPackaged2: Yup.number().when("whatDoYouHave2", {
-      is: (abc) => abc.includes("car"),
-      then: Yup.number().required("Required"),
+    clientRunningCostsofCarPackaged2:Yup.number()
+    .when('whatDoYouHave2', {
+      is: abc => abc.includes('car') ,
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
 
-    clientCreditCardMortgageorOther2: Yup.number().when("whatDoYouHave2", {
-      is: (whatDoYouHave) =>
-        whatDoYouHave.includes("CreditCard") ||
-        whatDoYouHave.includes("Mortgage") ||
-        whatDoYouHave.includes("Other"),
-      then: Yup.number().required("Required"),
+    clientCreditCardMortgageorOther2:Yup.number()
+    .when('whatDoYouHave2', {
+      is: abc => abc.includes('CreditCard') || abc.includes('Mortgage') || abc.includes('Other'),
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
+
+
     clientEmploymentStatus2: Yup.string().required("Required"),
     clientNameofCompany2: Yup.string()
       .matches(letters, "Only letters")
@@ -932,22 +1014,37 @@ const IncomeExpenses_Edit = () => {
       .matches(letters, "Only letters")
       .required("Required"),
     clientEmployerFBTStatus: Yup.string().required("Required"),
-    clientCostBaseofCar: Yup.number().when("whatDoYouHave", {
-      is: (abc) => abc.includes("car"),
-      then: Yup.number().required("Required"),
+    clientCostBaseofCar: Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car') ,
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
-    clientRunningCostsofCarPackaged: Yup.number().when("whatDoYouHave", {
-      is: (abc) => abc.includes("car"),
-      then: Yup.number().required("Required"),
+    clientRunningCostsofCarPackaged:Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('car') ,
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
-    clientCreditCardMortgageorOther: Yup.number().when("whatDoYouHave", {
-      is: (whatDoYouHave) =>
-        whatDoYouHave.includes("CreditCard") ||
-        whatDoYouHave.includes("Mortgage") ||
-        whatDoYouHave.includes("Other"),
-      then: Yup.number().required("Required"),
+    clientCreditCardMortgageorOther:Yup.number()
+    .when('whatDoYouHave', {
+      is: abc => abc.includes('CreditCard') || abc.includes('Mortgage') || abc.includes('Other'),
+      then: Yup.number().required('Required')
+      .test(
+            "Is positive?",
+            "Must be a positive number",
+            (value)=> value >0
+          ),
       otherwise: Yup.number().notRequired(),
     }),
     clientEmploymentStatus: Yup.string().required("Required"),
@@ -1687,7 +1784,7 @@ const IncomeExpenses_Edit = () => {
                         {/* 2 row */}
 
                         {/* 3 row */}
-                        {carState && (
+                        {carState &&  (
                           <div className="row">
                             <div className="col-md-6">
                               <div className="mb-3">
@@ -1790,7 +1887,7 @@ const IncomeExpenses_Edit = () => {
                           </div>
 
                           <div className="col-md-6">
-                            {creditCardState && (
+                            {creditCardState &&  (
                               <div className="mb-3">
                                 <label
                                   htmlFor="clientCreditCardMortgageorOther"
